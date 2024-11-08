@@ -1,14 +1,12 @@
 import 'package:go_router/go_router.dart';
-import 'package:iscanner_app/app.dart';
-import 'package:iscanner_app/common/router/route_config.dart';
-import 'package:iscanner_app/ui/common/app_navigator.dart';
-import 'package:iscanner_app/ui/page/bottom_tab/bottom_tab_cubit.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 
 class LoginNavigator extends AppNavigator {
   LoginNavigator({required super.context});
 
   void navigateToRegister() {
-    injector<BottomTabCubit>().updateIndex(6);
+    GoRouter.of(context).pushReplacementNamed(AppRouter.register);
   }
 
   void navigateToResetPassword() {

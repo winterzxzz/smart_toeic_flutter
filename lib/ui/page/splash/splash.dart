@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iscanner_app/common/router/route_config.dart';
-import 'package:iscanner_app/ui/common/app_images.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashPage extends StatefulWidget {
@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void redirect() async {
     await Future.delayed(const Duration(seconds: 2), () {
-      GoRouter.of(context).goNamed(AppRouter.bottomTab);
+      GoRouter.of(context).goNamed(AppRouter.home);
     });
   }
 }

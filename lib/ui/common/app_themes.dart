@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iscanner_app/common/configs/app_configs.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'app_colors.dart';
 
 class AppThemes {

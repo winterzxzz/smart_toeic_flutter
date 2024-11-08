@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomTabState extends Equatable {
   final int selectedIndex;
+  final StatefulNavigationShell? navigationShell;
 
   const BottomTabState({
     required this.selectedIndex,
+    this.navigationShell,
   });
 
   // initial state
@@ -15,10 +18,14 @@ class BottomTabState extends Equatable {
   // copy with
   BottomTabState copyWith({
     int? selectedIndex,
+    StatefulNavigationShell? navigationShell,
   }) {
-    return BottomTabState(selectedIndex: selectedIndex ?? this.selectedIndex);
+    return BottomTabState(
+      selectedIndex: selectedIndex ?? this.selectedIndex,
+      navigationShell: navigationShell ?? this.navigationShell,
+    );
   }
 
   @override
-  List<Object> get props => [selectedIndex];
+  List<Object?> get props => [selectedIndex, navigationShell];
 }

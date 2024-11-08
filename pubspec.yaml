@@ -1,4 +1,4 @@
-name: iscanner_app
+name: toeic_desktop
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -67,7 +67,6 @@ dependencies:
   open_file: ^3.5.9
   window_manager: ^0.4.3
   font_awesome_flutter: ^10.8.0
-  
 
 dev_dependencies:
   flutter_test:

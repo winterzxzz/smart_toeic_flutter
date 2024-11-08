@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart' hide Headers;
-import 'package:iscanner_app/data/models/entities/ie_meta_data.dart';
-import 'package:iscanner_app/data/models/entities/ocr_meta_data.dart';
-import 'package:iscanner_app/data/models/response/check_process_status_response.dart';
-import 'package:iscanner_app/data/models/response/document_ie_response.dart';
+import 'package:toeic_desktop/data/models/entities/ie_meta_data.dart';
+import 'package:toeic_desktop/data/models/entities/ocr_meta_data.dart';
+import 'package:toeic_desktop/data/models/response/check_process_status_response.dart';
+import 'package:toeic_desktop/data/models/response/document_ie_response.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_client.g.dart';

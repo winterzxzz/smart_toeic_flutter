@@ -1,4 +1,4 @@
-# iscanner_app
+# toeic_desktop
 
 A new Flutter project.
 

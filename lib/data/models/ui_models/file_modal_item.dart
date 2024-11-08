@@ -1,4 +1,4 @@
-import 'package:iscanner_app/ui/common/app_images.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 
 class FileModalItem {
   final String icon;

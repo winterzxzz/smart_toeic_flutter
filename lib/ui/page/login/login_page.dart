@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iscanner_app/ui/common/app_colors.dart';
-import 'package:iscanner_app/ui/page/login/login_navigator.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/login/login_navigator.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

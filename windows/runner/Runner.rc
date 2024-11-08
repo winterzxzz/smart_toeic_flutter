@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.paditech" "\0"
-            VALUE "FileDescription", "iscanner_app" "\0"
+            VALUE "FileDescription", "toeic_desktop" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "iscanner_app" "\0"
+            VALUE "InternalName", "toeic_desktop" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.paditech. All rights reserved." "\0"
-            VALUE "OriginalFilename", "iscanner_app.exe" "\0"
-            VALUE "ProductName", "iscanner_app" "\0"
+            VALUE "OriginalFilename", "toeic_desktop.exe" "\0"
+            VALUE "ProductName", "toeic_desktop" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

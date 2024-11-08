@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iscanner_app/data/models/enums/start_with.dart';
+import 'package:toeic_desktop/data/models/enums/start_with.dart';
 
 import '../../configs/app_configs.dart';
 import '../../../data/database/share_preferences_helper.dart';

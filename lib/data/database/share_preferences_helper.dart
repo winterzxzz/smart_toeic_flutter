@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iscanner_app/common/utils/string_ext.dart';
-import 'package:iscanner_app/data/models/enums/start_with.dart';
+import 'package:toeic_desktop/common/utils/string_ext.dart';
+import 'package:toeic_desktop/data/models/enums/start_with.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/enums/language.dart';

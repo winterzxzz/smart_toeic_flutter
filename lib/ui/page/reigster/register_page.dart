@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iscanner_app/ui/common/app_colors.dart';
-import 'package:iscanner_app/ui/page/reigster/register_navigator.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/reigster/register_navigator.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -138,7 +138,9 @@ class RegisterPage extends StatelessWidget {
                         ),
                         const Spacer(),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              navigator.navigateToResetPassword();
+                            },
                             child: const Text(
                               'Forgot password?',
                               style: TextStyle(

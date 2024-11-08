@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iscanner_app/data/models/enums/start_with.dart';
+import 'package:toeic_desktop/data/models/enums/start_with.dart';
 
 extension StringExt on String {
   // from string convert to ThemeMode

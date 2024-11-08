@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:iscanner_app/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/reset_password/reset_password_navigator.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   const ResetPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final navigator = ResetPasswordNavigator(context: context);
     return Scaffold(
-      appBar: AppBar(),
       body: SizedBox(
         width: double.infinity,
         child: Column(
@@ -65,6 +66,20 @@ class ResetPasswordPage extends StatelessWidget {
                         child: const Text(
                           'Send',
                           style: TextStyle(color: AppColors.textWhite),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    TextButton(
+                      onPressed: () {
+                        navigator.navigateToLogin();
+                      },
+                      child: const Text(
+                        'Back to login',
+                        style: TextStyle(
+                          color: AppColors.textBlue,
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColors.textBlue,
                         ),
                       ),
                     ),
