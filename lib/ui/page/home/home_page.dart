@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/blog_card.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/exam_card.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/result_card.dart';
 
@@ -16,9 +17,9 @@ class _HomePageState extends State<HomePage> {
   late CarouselSliderController _carouselController;
   int currentIndex = 0;
   List<String> images = [
-    "https://i.pinimg.com/736x/72/d5/67/72d56749e83ccd1199706bd20032c2c0.jpg",
-    "https://i.pinimg.com/736x/af/2b/07/af2b07652c61cc94a1753ce8b9e8ac1d.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROSZmC9xziv7Jzsk0FHro4jDX832AcovE1SfVAZ3WzTZuncC5CD6QpcICHC1MSiIUpFRs&usqp=CAU",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCFwiOk1DeEmRzq_PDSV0TFlMynCWTm4iFcg&s",
+    "https://i.ytimg.com/vi/7wqBQ4cdrhw/maxresdefault.jpg",
+    "https://dbkpop.com/wp-content/uploads/2022/07/aespa_Girls_Winter_6.jpg",
   ];
 
   @override
@@ -42,8 +43,63 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 32),
             _buildResultSection(),
             const SizedBox(height: 32),
+            _buildBlogSection(),
+            const SizedBox(height: 32),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildBlogSection() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
+      child: Column(
+        children: [
+          Text(
+            "Blog Knowledge",
+            style: Theme.of(context).textTheme.headlineMedium!.apply(
+                  color: AppColors.textBlack,
+                  fontWeightDelta: 2,
+                ),
+          ),
+          const SizedBox(height: 16),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: BlogCard(
+                  imageUrl:
+                      'https://i.pinimg.com/736x/72/d5/67/72d56749e83ccd1199706bd20032c2c0.jpg',
+                  title: 'TOEIC Listening and Reading',
+                  author: 'John Doe',
+                  content:
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                ),
+              ),
+              Expanded(
+                child: BlogCard(
+                  imageUrl:
+                      'https://i.pinimg.com/736x/af/2b/07/af2b07652c61cc94a1753ce8b9e8ac1d.jpg',
+                  title: 'TOEIC Speaking',
+                  author: 'John Doe',
+                  content:
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                ),
+              ),
+              Expanded(
+                child: BlogCard(
+                  imageUrl:
+                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROSZmC9xziv7Jzsk0FHro4jDX832AcovE1SfVAZ3WzTZuncC5CD6QpcICHC1MSiIUpFRs&usqp=CAU',
+                  title: 'TOEIC Writing',
+                  author: 'John Doe',
+                  content:
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -262,42 +318,18 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // Button
-                          SizedBox(
-                            height: 45,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: const Text(
-                                "Start Free Trial",
-                                style: TextStyle(
-                                  color: AppColors.textWhite,
-                                ),
-                              ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: const Text(
+                              "Start Free Trial",
                             ),
                           ),
                           const SizedBox(width: 10),
                           // Button
-                          SizedBox(
-                            height: 45,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                backgroundColor: AppColors.primary,
-                              ),
-                              onPressed: () {},
-                              child: const Text(
-                                "Learn More",
-                                style: TextStyle(
-                                  color: AppColors.textWhite,
-                                ),
-                              ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: const Text(
+                              "Learn More",
                             ),
                           ),
                         ],

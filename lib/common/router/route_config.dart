@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
+import 'package:toeic_desktop/ui/page/flashcard/flash_card.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
@@ -30,7 +31,7 @@ class AppRouter {
   static const String practiceTest = "/practice-test";
   static const String toeicFullExam = "/toeic-full-exam";
   static const String resources = "/resources";
-  static const String contact = "/contact";
+  static const String flashcard = "/flashcard";
   static const String about = "/about";
 
   // GoRouter configuration
@@ -90,11 +91,9 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: contact,
-              path: contact,
-              builder: (context, state) => const Center(
-                child: Text('Contact'),
-              ),
+              name: flashcard,
+              path: flashcard,
+              builder: (context, state) => const FlashCardPage(),
             ),
           ],
         ),

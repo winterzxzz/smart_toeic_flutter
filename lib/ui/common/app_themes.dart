@@ -123,6 +123,9 @@ class AppThemes {
         cardTheme: CardTheme(
           color: appbarColor,
         ),
+        elevatedButtonTheme: brightness == Brightness.dark
+            ? TElevatedButtonTheme.darkElevatedButtonTheme
+            : TElevatedButtonTheme.lightElevatedButtonTheme,
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: appbarColor,
         ),
@@ -133,4 +136,40 @@ class AppThemes {
           backgroundColor: appbarColor,
         ));
   }
+}
+
+class TElevatedButtonTheme {
+  TElevatedButtonTheme._(); //To avoid creating instances
+
+  /* -- Light Theme -- */
+  static final lightElevatedButtonTheme = ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 0,
+      foregroundColor: AppColors.textWhite,
+      backgroundColor: AppColors.primary,
+      disabledForegroundColor: AppColors.gray1,
+      disabledBackgroundColor: AppColors.buttonBGDisabled,
+      side: const BorderSide(color: AppColors.primary),
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      textStyle: const TextStyle(
+          color: AppColors.textWhite, fontWeight: FontWeight.w600),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+  );
+
+  /* -- Dark Theme -- */
+  static final darkElevatedButtonTheme = ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 0,
+      foregroundColor: AppColors.textWhite,
+      backgroundColor: AppColors.primary,
+      disabledForegroundColor: AppColors.gray1,
+      disabledBackgroundColor: AppColors.buttonBGDisabled,
+      side: const BorderSide(color: AppColors.primary),
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      textStyle: const TextStyle(
+          color: AppColors.textWhite, fontWeight: FontWeight.w600),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+  );
 }

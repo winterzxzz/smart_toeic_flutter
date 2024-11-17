@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'common/configs/app_configs.dart';
 import 'common/global_blocs/setting/app_setting_cubit.dart';
 import 'common/router/route_config.dart';
