@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/flashcard/flash_card.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
+import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
@@ -28,11 +30,11 @@ class AppRouter {
   static const String resetPassword = "/reset-password";
   // App routes
   static const String home = "/home";
-  static const String practiceTest = "/practice-test";
-  static const String toeicFullExam = "/toeic-full-exam";
-  static const String resources = "/resources";
-  static const String flashcard = "/flashcard";
-  static const String about = "/about";
+  static const String gioiThieu = "/gioi-thieu";
+  static const String deThiOnline = "/de-thi-online";
+  static const String flashCards = "/flash-cards";
+  static const String blog = "/blog";
+  static const String kichHoatTaiKhoan = "/kich-hoat-tai-khoan";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -58,10 +60,10 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: about,
-              path: about,
+              name: gioiThieu,
+              path: gioiThieu,
               builder: (context, state) => const Center(
-                child: Text('About'),
+                child: Text('Giới thiệu'),
               ),
             ),
           ],
@@ -69,10 +71,10 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: resources,
-              path: resources,
+              name: deThiOnline,
+              path: deThiOnline,
               builder: (context, state) => const Center(
-                child: Text('Resources'),
+                child: Text('De Thi Online'),
               ),
             ),
           ],
@@ -80,19 +82,8 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: practiceTest,
-              path: practiceTest,
-              builder: (context, state) => const Center(
-                child: Text('Practice Test'),
-              ),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: flashcard,
-              path: flashcard,
+              name: flashCards,
+              path: flashCards,
               builder: (context, state) => const FlashCardPage(),
             ),
           ],
@@ -100,11 +91,18 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: toeicFullExam,
-              path: toeicFullExam,
-              builder: (context, state) => const Center(
-                child: Text('Toeic Full Exam'),
-              ),
+              name: blog,
+              path: blog,
+              builder: (context, state) => const BlogPage(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              name: kichHoatTaiKhoan,
+              path: kichHoatTaiKhoan,
+              builder: (context, state) => const PricingPlanScreen(),
             ),
           ],
         ),

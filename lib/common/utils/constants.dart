@@ -1,14 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
 import 'package:toeic_desktop/data/models/ui_models/flash_card.dart';
-import 'package:toeic_desktop/data/models/ui_models/home_item.dart';
+import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
 
 class Constants {
-  static List<BottomTabItem> bottomTabItems = [
-    BottomTabItem(title: 'About'),
-    BottomTabItem(title: 'Resources'),
-    BottomTabItem(title: 'Practice tests'),
-    BottomTabItem(title: 'Flashcard'),
-    BottomTabItem(title: 'Toeic full exam'),
-  ];
+
 
   static List<Flashcard> flashcards = [
     Flashcard(
@@ -123,5 +119,67 @@ class Constants {
         imageUrl:
             'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
         author: 'John Doe'),
+  ];
+
+  static List<BlogItem> blogs = [
+    BlogItem(
+        imageUrl:
+            'https://kenh14cdn.com/203336854389633024/2023/4/30/photo1682772628140-16827726282301463572662-16828396997672050284284.jpeg',
+        title: 'Node.js Best Practices',
+        description:
+            'Create websites that look great on any device with these responsive design techniques.',
+        countComments: 12,
+        countViews: 1290,
+        date: '2024-07-12'),
+    BlogItem(
+        imageUrl:
+            'https://kenh14cdn.com/203336854389633024/2023/4/30/photo1682772628140-16827726282301463572662-16828396997672050284284.jpeg',
+        title: 'Node.js Best Practices',
+        description:
+            'Create websites that look great on any device with these responsive design techniques.',
+        countComments: 12,
+        countViews: 1290,
+        date: '2024-07-12'),
+    BlogItem(
+        imageUrl:
+            'https://kenh14cdn.com/203336854389633024/2023/4/30/photo1682772628140-16827726282301463572662-16828396997672050284284.jpeg',
+        title: 'Node.js Best Practices',
+        description:
+            'Create websites that look great on any device with these responsive design techniques.',
+        countComments: 12,
+        countViews: 1290,
+        date: '2024-07-12'),
+    BlogItem(
+        imageUrl:
+            'https://kenh14cdn.com/203336854389633024/2023/4/30/photo1682772628140-16827726282301463572662-16828396997672050284284.jpeg',
+        title: 'Node.js Best Practices',
+        description:
+            'Create websites that look great on any device with these responsive design techniques.',
+        countComments: 12,
+        countViews: 1290,
+        date: '2024-07-12'),
+  ];
+
+  static List<ServiceItem> services = [
+    ServiceItem(
+        icon: Icons.smart_toy_outlined,
+        title: 'AI Render',
+        desciption:
+            'Advanced AI-powered tools to enhance your TOEIC preparation experience.'),
+    ServiceItem(
+        icon: Icons.library_books_outlined,
+        title: 'Flashcards',
+        desciption:
+            'Interactive flashcards to boost your vocabulary and language skills efficiently.'),
+    ServiceItem(
+        icon: Icons.list_alt_outlined,
+        title: 'Practice Exams',
+        desciption:
+            'Realistic TOEIC practice exams to assess and improve your test-taking abilities.'),
+    ServiceItem(
+        icon: Icons.analytics_outlined,
+        title: 'Result Analysis',
+        desciption:
+            'Detailed analysis of your exam performance to identify strengths and areas for improvement.'),
   ];
 }

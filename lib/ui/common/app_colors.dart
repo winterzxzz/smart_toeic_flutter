@@ -64,7 +64,7 @@ class AppColors {
   static const Color buttonBGWhite = Color(0xFFcdd0d5);
   static const Color buttonBGPrimary = primary;
   static const Color buttonBGBlack = Color(0xFF4A4A4A);
-  static const Color buttonBGDisabled = Color(0xFFFDD18F);
+  static const Color buttonBGDisabled = Colors.white;
   static const Color buttonBorder = Color(0xFFC9C8C8);
   static Color buttonSentRequest = primary.withOpacity(0.7);
 

@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/blog_card.dart';
+import 'package:toeic_desktop/ui/page/blog/widgets/blog_vertical.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/exam_card.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/result_card.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/service_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,8 +40,9 @@ class _HomePageState extends State<HomePage> {
             _buildSliderSection(),
             const SizedBox(height: 32),
             // Toeic exam section
-            // heading
             _buildExamSection(),
+            const SizedBox(height: 32),
+            _buildServiceSection(),
             const SizedBox(height: 32),
             _buildResultSection(),
             const SizedBox(height: 32),
@@ -64,40 +67,13 @@ class _HomePageState extends State<HomePage> {
                 ),
           ),
           const SizedBox(height: 16),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: BlogCard(
-                  imageUrl:
-                      'https://i.pinimg.com/736x/72/d5/67/72d56749e83ccd1199706bd20032c2c0.jpg',
-                  title: 'TOEIC Listening and Reading',
-                  author: 'John Doe',
-                  content:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                ),
-              ),
-              Expanded(
-                child: BlogCard(
-                  imageUrl:
-                      'https://i.pinimg.com/736x/af/2b/07/af2b07652c61cc94a1753ce8b9e8ac1d.jpg',
-                  title: 'TOEIC Speaking',
-                  author: 'John Doe',
-                  content:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                ),
-              ),
-              Expanded(
-                child: BlogCard(
-                  imageUrl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROSZmC9xziv7Jzsk0FHro4jDX832AcovE1SfVAZ3WzTZuncC5CD6QpcICHC1MSiIUpFRs&usqp=CAU',
-                  title: 'TOEIC Writing',
-                  author: 'John Doe',
-                  content:
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                ),
-              ),
-            ],
+            children: Constants.blogs.take(4).map((blog) {
+              return Expanded(
+                child: BlogVerticalCard(blogItem: blog),
+              );
+            }).toList(),
           )
         ],
       ),
@@ -310,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                         "Enhance your TOEIC Listening skills with our comprehensive audio exercises and practice tests.",
                         style: Theme.of(context)
                             .textTheme
-                            .bodySmall!
+                            .bodyLarge!
                             .apply(color: AppColors.textWhite),
                       ),
                       const Spacer(),
@@ -387,6 +363,32 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildServiceSection() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
+      child: Column(
+        children: [
+          Text(
+            "Our TOEIC Preparation Services",
+            style: Theme.of(context).textTheme.headlineMedium!.apply(
+                  color: AppColors.textBlack,
+                  fontWeightDelta: 2,
+                ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: Constants.services.map((service) {
+              return Expanded(
+                child: ServiceCard(item: service),
+              );
+            }).toList(),
+          )
         ],
       ),
     );

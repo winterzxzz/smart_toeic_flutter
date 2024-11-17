@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/data/models/enums/bottom_tab_enum.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 
@@ -43,11 +43,10 @@ class _BottomTabPageState extends State<BottomTabPage> {
             // Center - Navigation
             Row(
               mainAxisSize: MainAxisSize.min,
-              children: Constants.bottomTabItems
+              children: BottomTabEnum.values
                   .map((item) => TextButton(
                         onPressed: () {
-                          final index =
-                              Constants.bottomTabItems.indexOf(item) + 1;
+                          final index = item.index + 1;
                           injector<BottomTabCubit>().updateIndex(index);
                         },
                         child: Text(
@@ -70,7 +69,7 @@ class _BottomTabPageState extends State<BottomTabPage> {
                 ),
               ),
               onPressed: () {
-                final index = Constants.bottomTabItems.length + 1;
+                final index = BottomTabEnum.values.length + 1;
                 injector<BottomTabCubit>().updateIndex(index);
               },
               child: const Text(
