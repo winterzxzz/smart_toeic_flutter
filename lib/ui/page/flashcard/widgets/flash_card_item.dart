@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/ui_models/flash_card.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
@@ -16,7 +18,9 @@ class FlashcardItem extends StatelessWidget {
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        onTap: () {},
+        onTap: () {
+          GoRouter.of(context).pushNamed(AppRouter.flashCardDetail);
+        },
         overlayColor: WidgetStatePropertyAll(Colors.pink.withOpacity(0.1)),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
