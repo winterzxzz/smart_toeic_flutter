@@ -7,24 +7,21 @@ class FlashcardGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 5,
-          childAspectRatio: 0.8,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          mainAxisExtent: 180,
-        ),
-        itemCount: Constants.flashcards.length,
-        itemBuilder: (context, index) {
-          final item = Constants.flashcards[index];
-          return FlashcardItem(flashcard: item);
-        },
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 5,
+        childAspectRatio: 0.8,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        mainAxisExtent: 180,
       ),
+      itemCount: Constants.flashcards.length,
+      itemBuilder: (context, index) {
+        final item = Constants.flashcards[index];
+        return FlashcardItem(flashcard: item);
+      },
     );
   }
 }

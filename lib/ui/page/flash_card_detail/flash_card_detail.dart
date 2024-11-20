@@ -14,7 +14,7 @@ final List<Map<String, dynamic>> flashcards = [
       'They had to abandon their attempt to climb the mountain.'
     ],
     'image':
-        'https://study4.com/media/decks_media/camielts/5/media/Quitting.jpg',
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
   {
     'word': 'abdomen',
@@ -23,7 +23,7 @@ final List<Map<String, dynamic>> flashcards = [
         'the part of the body below the chest that contains the stomach, bowels, etc',
     'examples': [],
     'image':
-        'https://study4.com/media/decks_media/camielts/3/media/abdominal-massage-s.jpg',
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
   {
     'word': 'abdominal',
@@ -31,7 +31,7 @@ final List<Map<String, dynamic>> flashcards = [
     'definition': 'connected with the part of the body below the chest',
     'examples': ['abdominal pains'],
     'image':
-        'https://study4.com/media/decks_media/camielts/3/media/Depositphotos_10479057_m-480x300.jpg'
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
   {
     'word': 'abide',
@@ -39,7 +39,7 @@ final List<Map<String, dynamic>> flashcards = [
     'definition': 'to accept and act according to a law, an agreement, etc',
     'examples': ['to abide by the rules'],
     'image':
-        'https://study4.com/media/decks_media/camielts/5/media/Quitting.jpg',
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
   {
     'word': 'ability',
@@ -47,7 +47,7 @@ final List<Map<String, dynamic>> flashcards = [
     'definition': 'the fact that somebody is able to do something',
     'examples': ['She has the ability to learn quickly.'],
     'image':
-        'https://study4.com/media/decks_media/camielts/5/media/Quitting.jpg',
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
   {
     'word': 'able',
@@ -55,7 +55,7 @@ final List<Map<String, dynamic>> flashcards = [
     'definition': 'having the power or skill to do something',
     'examples': ['She is able to speak three languages.'],
     'image':
-        'https://study4.com/media/decks_media/camielts/5/media/Quitting.jpg',
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
   {
     'word': 'abnormal',
@@ -64,7 +64,7 @@ final List<Map<String, dynamic>> flashcards = [
         'not normal according to a standard, rule or model; not usual or typical',
     'examples': ['abnormal behaviour'],
     'image':
-        'https://study4.com/media/decks_media/camielts/5/media/Quitting.jpg',
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
   {
     'word': 'aboard',
@@ -72,7 +72,7 @@ final List<Map<String, dynamic>> flashcards = [
     'definition': 'on or into a ship, an aircraft, a bus, etc',
     'examples': ['Welcome aboard!'],
     'image':
-        'https://study4.com/media/decks_media/camielts/5/media/Quitting.jpg',
+        'https://image.tienphong.vn/600x315/Uploaded/2024/cf-vsxrmrs/2024_04_12/winter-8423.jpg'
   },
 ];
 

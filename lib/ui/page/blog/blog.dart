@@ -8,7 +8,7 @@ class BlogPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         margin: EdgeInsets.symmetric(
-            horizontal: MediaQuery.sizeOf(context).width * 0.1),
+            horizontal: MediaQuery.sizeOf(context).width * 0.2),
         child: Row(
           children: [
             const SizedBox(width: 32),
@@ -28,21 +28,32 @@ class BlogPage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
             'Chuyên mục',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16),
-          Text('Tìm hiểu về STUDY4'),
-          Text('Tính năng trên STUDY4'),
+          Text(
+            'Tìm hiểu về STUDY4',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          InkWell(onTap: () {}, child: Text('Tính năng trên STUDY4')),
           Text('Khóa học trên STUDY4'),
           SizedBox(height: 16),
-          Text('Review của học viên STUDY4'),
+          Divider(),
+          Text(
+            'Review của học viên STUDY4',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           Text('Học viên IELTS'),
           Text('Học viên TOEIC'),
           SizedBox(height: 16),
-          Text('Luyện thi IELTS'),
+          Divider(),
+          Text(
+            'Luyện thi IELTS',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           Text('IELTS Listening'),
           Text('IELTS Reading'),
           Text('IELTS Speaking'),
@@ -51,7 +62,11 @@ class BlogPage extends StatelessWidget {
           Text('Thông tin kỳ thi IELTS'),
           Text('Kinh nghiệm thi IELTS'),
           SizedBox(height: 16),
-          Text('Luyện thi TOEIC'),
+          Divider(),
+          Text(
+            'Luyện thi TOEIC',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           Text('TOEIC Listening'),
           Text('TOEIC Reading'),
           Text('TOEIC Materials'),
@@ -115,57 +130,71 @@ class BlogPage extends StatelessWidget {
     required String author,
     required int commentCount,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              imageUrl,
-              width: 180,
-              height: 180,
-              fit: BoxFit.cover,
+    return Card(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
+              ),
+              child: Image.network(
+                imageUrl,
+                width: 180,
+                height: 180,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                category,
-                style: const TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(description),
-              const SizedBox(height: 8),
-              Row(
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(date),
-                  const SizedBox(width: 8),
-                  Text('bởi $author'),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.comment, size: 16),
-                  const SizedBox(width: 4),
-                  Text('$commentCount bình luận'),
+                  Text(
+                    category,
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Text(date),
+                      const SizedBox(width: 8),
+                      Text('bởi $author'),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.comment, size: 16),
+                      const SizedBox(width: 4),
+                      Text('$commentCount bình luận'),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(width: 16),
+          ],
+        ),
       ),
     );
   }

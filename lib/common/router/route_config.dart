@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
+import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail.dart';
 import 'package:toeic_desktop/ui/page/flash_card_practice/flash_card_practice.dart';
 import 'package:toeic_desktop/ui/page/flashcard/flash_card.dart';
@@ -10,6 +11,7 @@ import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.da
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
+import 'package:toeic_desktop/ui/page/test_detail/test_detail_page.dart';
 
 import '../../ui/page/splash/splash.dart';
 
@@ -39,6 +41,7 @@ class AppRouter {
   static const String kichHoatTaiKhoan = "/kich-hoat-tai-khoan";
   static const String flashCardDetail = "/flash-card-detail";
   static const String flashCardPractive = "/flash-card-practive";
+  static const String testDetail = "/test-detail";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -77,9 +80,12 @@ class AppRouter {
             GoRoute(
               name: deThiOnline,
               path: deThiOnline,
-              builder: (context, state) => const Center(
-                child: Text('De Thi Online'),
-              ),
+              builder: (context, state) => const SimulationTestScreen(),
+            ),
+            GoRoute(
+              name: testDetail,
+              path: testDetail,
+              builder: (context, state) => const TestDetailPage(),
             ),
           ],
         ),

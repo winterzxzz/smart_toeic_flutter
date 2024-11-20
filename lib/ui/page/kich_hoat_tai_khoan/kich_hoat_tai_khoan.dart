@@ -132,12 +132,16 @@ class PricingPlanScreen extends StatelessWidget {
     required bool isCurrentPlan,
     required VoidCallback? onPressed,
   }) {
+    final Color backgroundColor =
+        isCurrentPlan ? Colors.white : AppColors.primary;
+    final Color textColor = isCurrentPlan ? Colors.black : Colors.white;
+    final Color borderColor =
+        isCurrentPlan ? Colors.grey.shade300 : Colors.black;
     return Container(
       width: MediaQuery.sizeOf(context).width * 0.4,
       decoration: BoxDecoration(
-        border: isCurrentPlan
-            ? Border.all(color: Colors.grey.shade300)
-            : Border.all(color: Colors.black),
+        color: backgroundColor,
+        border: Border.all(color: borderColor),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -154,7 +158,11 @@ class PricingPlanScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -162,6 +170,7 @@ class PricingPlanScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -193,8 +202,7 @@ class PricingPlanScreen extends StatelessWidget {
                         child: Text(
                           features[index],
                           style: TextStyle(
-                            color:
-                                available[index] ? Colors.black : Colors.grey,
+                            color: textColor,
                           ),
                         ),
                       ),
@@ -223,6 +231,10 @@ class PricingPlanScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: onPressed,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppColors.primary,
+                ),
                 child: Text('Nâng cấp ngay'),
               ),
             ),

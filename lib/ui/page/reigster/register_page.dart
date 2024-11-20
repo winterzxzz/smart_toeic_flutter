@@ -45,7 +45,7 @@ class RegisterPage extends StatelessWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: AppColors.textBlue,
+                            color: AppColors.primary,
                             width: 2,
                           ),
                         ),
@@ -67,7 +67,7 @@ class RegisterPage extends StatelessWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: AppColors.textBlue,
+                            color: AppColors.primary,
                             width: 2,
                           ),
                         ),
@@ -90,7 +90,7 @@ class RegisterPage extends StatelessWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: AppColors.textBlue,
+                            color: AppColors.primary,
                             width: 2,
                           ),
                         ),

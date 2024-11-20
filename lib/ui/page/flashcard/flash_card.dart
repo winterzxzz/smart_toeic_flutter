@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_grid.dart';
+import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_my_list.dart';
 
 class FlashCardPage extends StatefulWidget {
   const FlashCardPage({super.key});
@@ -11,20 +12,111 @@ class FlashCardPage extends StatefulWidget {
 class _FlashCardPageState extends State<FlashCardPage> {
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        body: Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
+          margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.1),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              // TabBar
+              TabBar(
+                splashBorderRadius: BorderRadius.circular(10),
+                dividerHeight: 0,
+                tabAlignment: TabAlignment.center,
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelColor: Colors.blue, // Replace AppColors.primary
+                indicatorColor: Colors.blue, // Replace AppColors.primary
+                unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
+                tabs: const [
+                  Tab(
+                    height: 35,
+                    child: Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.list),
+                          SizedBox(width: 4),
+                          Text('My list'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    height: 35,
+                    child: Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.book),
+                          SizedBox(width: 4),
+                          Text('Studying'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    height: 35,
+                    child: Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Row(
+                          children: [Icon(Icons.explore), Text('Discover')]),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: TabBarView(
+                  children: const [
+                    MyListFlashCardPage(),
+                    StudyingFlashCardPage(),
+                    DiscoverFlashCardPage(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StudyingFlashCardPage extends StatefulWidget {
+  const StudyingFlashCardPage({
+    super.key,
+  });
+
+  @override
+  State<StudyingFlashCardPage> createState() => _StudyingFlashCardPageState();
+}
+
+class _StudyingFlashCardPageState extends State<StudyingFlashCardPage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 32),
-            Center(
-                child: SizedBox(
+            SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.5,
               child: Column(
                 children: [
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: _showCreateFlashcardDialog,
+                        onPressed: () {
+                          _showCreateFlashcardDialog();
+                        },
                         child: Text('Tạo flashcard')),
                   ),
                   const SizedBox(height: 16),
@@ -45,7 +137,7 @@ class _FlashCardPageState extends State<FlashCardPage> {
                   )
                 ],
               ),
-            )),
+            ),
             SizedBox(height: 32),
             FlashcardGrid(),
           ],
@@ -95,5 +187,19 @@ class _FlashCardPageState extends State<FlashCardPage> {
         ],
       ),
     );
+  }
+}
+
+class DiscoverFlashCardPage extends StatefulWidget {
+  const DiscoverFlashCardPage({super.key});
+
+  @override
+  State<DiscoverFlashCardPage> createState() => _DiscoverFlashCardPageState();
+}
+
+class _DiscoverFlashCardPageState extends State<DiscoverFlashCardPage> {
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold();
   }
 }
