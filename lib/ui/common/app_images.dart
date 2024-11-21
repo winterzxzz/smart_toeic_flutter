@@ -74,4 +74,5 @@ class AppImages {
   // animations
   static const splashAnimation = 'assets/animations/splash.json';
   static const scanning = 'assets/animations/scanning.json';
+  
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 final List<Map<String, dynamic>> parts = [
@@ -284,7 +286,9 @@ class PracticeMode extends StatelessWidget {
           ),
           SizedBox(height: 16),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).pushNamed(AppRouter.practiceTest);
+            },
             child: Container(
               width: 150,
               height: 45,

@@ -9,6 +9,7 @@ import 'package:toeic_desktop/ui/page/flashcard/flash_card.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
+import 'package:toeic_desktop/ui/page/practice_test/practice_test.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
 import 'package:toeic_desktop/ui/page/test_detail/test_detail_page.dart';
@@ -42,6 +43,7 @@ class AppRouter {
   static const String flashCardDetail = "/flash-card-detail";
   static const String flashCardPractive = "/flash-card-practive";
   static const String testDetail = "/test-detail";
+  static const String practiceTest = "/practice-test";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -86,6 +88,11 @@ class AppRouter {
               name: testDetail,
               path: testDetail,
               builder: (context, state) => const TestDetailPage(),
+            ),
+            GoRoute(
+              name: practiceTest,
+              path: practiceTest,
+              builder: (context, state) => const PracticeTestPage(),
             ),
           ],
         ),
