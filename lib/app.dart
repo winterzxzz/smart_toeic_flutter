@@ -4,9 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
+import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
+import 'package:toeic_desktop/data/network/repositories/practice_test_repository.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
+import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
+import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
 import 'common/configs/app_configs.dart';
 import 'common/global_blocs/setting/app_setting_cubit.dart';
 import 'common/router/route_config.dart';
@@ -28,49 +33,62 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider<AppSettingCubit>(
-            create: (context) => injector<AppSettingCubit>()),
-        BlocProvider<BottomTabCubit>(
-            create: (context) => injector<BottomTabCubit>()),
+        RepositoryProvider<PracticeTestRepository>(
+          create: (context) => injector<PracticeTestRepository>(),
+        ),
+        RepositoryProvider<AuthRepository>(
+          create: (context) => injector<AuthRepository>(),
+        ),
       ],
-      child: BlocBuilder<AppSettingCubit, AppSettingState>(
-        builder: (context, state) {
-          return GestureDetector(
-            onTap: () {
-              _hideKeyboard(context);
-            },
-            child: GlobalLoaderOverlay(
-              useDefaultLoading: false,
-              overlayWidgetBuilder: (_) {
-                return Center(
-                  child: Container(
-                    color: AppColors.gray1,
-                    width: 40,
-                    height: 40,
-                    child: Center(
-                        child: Container(
-                      alignment: Alignment.center,
-                      child: const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(AppColors.primary),
-                        ),
-                      ),
-                    )),
-                  ),
-                );
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AppSettingCubit>(
+              create: (context) => injector<AppSettingCubit>()),
+          BlocProvider<BottomTabCubit>(
+              create: (context) => injector<BottomTabCubit>()),
+          BlocProvider<UserCubit>(
+            create: (context) => injector<UserCubit>(),
+          ),
+        ],
+        child: BlocBuilder<AppSettingCubit, AppSettingState>(
+          builder: (context, state) {
+            return GestureDetector(
+              onTap: () {
+                _hideKeyboard(context);
               },
-              child: _buildMaterialApp(
-                locale: state.language.local,
-                theme: state.themeMode,
+              child: GlobalLoaderOverlay(
+                useDefaultLoading: false,
+                overlayWidgetBuilder: (_) {
+                  return Center(
+                    child: Container(
+                      color: AppColors.gray1,
+                      width: 40,
+                      height: 40,
+                      child: Center(
+                          child: Container(
+                        alignment: Alignment.center,
+                        child: const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColors.primary),
+                          ),
+                        ),
+                      )),
+                    ),
+                  );
+                },
+                child: _buildMaterialApp(
+                  locale: state.language.local,
+                  theme: state.themeMode,
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

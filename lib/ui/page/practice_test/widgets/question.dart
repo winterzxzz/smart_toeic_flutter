@@ -1,31 +1,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
-class QuestionWidget extends StatefulWidget {
+class QuestionWidget extends StatelessWidget {
   const QuestionWidget({
     super.key,
-    required this.startNumber,
-    required this.indexQuestion,
-    this.urlAudio,
-    this.urlImage,
-    this.questionContent,
-    this.numbersOfAnswers = 4,
-    this.options,
+    required this.question,
   });
-  final int startNumber;
-  final int indexQuestion;
-  final String? urlAudio;
-  final String? urlImage;
-  final String? questionContent;
-  final int numbersOfAnswers;
-  final List<String>? options;
-  @override
-  State<QuestionWidget> createState() => _QuestionWidgetState();
-}
-
-class _QuestionWidgetState extends State<QuestionWidget> {
+  final Question question;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,8 +17,9 @@ class _QuestionWidgetState extends State<QuestionWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.urlAudio != null)
+          if (question.audio != null)
             Container(
+              margin: EdgeInsets.only(bottom: 16),
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: AppColors.gray3,
@@ -68,24 +53,32 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                 ],
               ),
             ),
-          if (widget.urlAudio != null) const SizedBox(height: 16),
-          if (widget.urlImage != null)
+          if (question.image != null)
             Container(
               constraints: BoxConstraints(maxWidth: 500),
               child: Image.network(
-                widget.urlImage!,
+                question.image!,
               ),
             ),
-          if (widget.urlImage != null) const SizedBox(height: 16),
+          if (question.image != null) const SizedBox(height: 16),
           const SizedBox(
             height: 16,
           ),
           QuestionInfoWidget(
-            startNumber: widget.startNumber,
-            indexQuestion: widget.indexQuestion,
-            numbersOfAnswers: widget.numbersOfAnswers,
-            questionContent: widget.questionContent,
-            options: widget.options,
+            questionNumber: question.id,
+            questionContent: question.question,
+            options: question.option4 != null
+                ? [
+                    question.option1,
+                    question.option2,
+                    question.option3,
+                    question.option4,
+                  ]
+                : [
+                    question.option1,
+                    question.option2,
+                    question.option3,
+                  ],
           ),
         ],
       ),
@@ -94,19 +87,16 @@ class _QuestionWidgetState extends State<QuestionWidget> {
 }
 
 class QuestionInfoWidget extends StatelessWidget {
-  const QuestionInfoWidget(
-      {super.key,
-      required this.startNumber,
-      required this.indexQuestion,
-      required this.numbersOfAnswers,
-      this.questionContent,
-      this.options});
+  const QuestionInfoWidget({
+    super.key,
+    required this.questionNumber,
+    this.questionContent,
+    required this.options,
+  });
 
-  final int startNumber;
-  final int indexQuestion;
-  final int numbersOfAnswers;
+  final int questionNumber;
   final String? questionContent;
-  final List<String>? options;
+  final List<String?> options;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -118,7 +108,7 @@ class QuestionInfoWidget extends StatelessWidget {
             CircleAvatar(
               backgroundColor: Colors.blue.shade100,
               child: Text(
-                '${startNumber + indexQuestion}',
+                '$questionNumber',
                 style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
@@ -135,7 +125,7 @@ class QuestionInfoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (questionContent != null) Text(questionContent!),
-              ...List.generate(numbersOfAnswers, (index) {
+              ...List.generate(options.length, (index) {
                 String optionLabel =
                     String.fromCharCode(65 + index); // A, B, C, D
                 return Row(
@@ -150,8 +140,8 @@ class QuestionInfoWidget extends StatelessWidget {
                     Text(
                       "$optionLabel.",
                     ),
-                    if (options != null) const SizedBox(width: 8),
-                    if (options != null) Text(options![index]),
+                    const SizedBox(width: 8),
+                    if (options[index] != null) Text(options[index] ?? ''),
                   ],
                 );
               }),

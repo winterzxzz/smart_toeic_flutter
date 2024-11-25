@@ -70,6 +70,7 @@ class AppImages {
   static const icFileLock = 'assets/vectors/ic_file_lock.svg';
   static const icOcr = 'assets/vectors/ic_ocr.svg';
   static const icIe = 'assets/vectors/ic_ie.svg';
+  static const icUserAvatarDefault = 'assets/vectors/ic_user_avatar_default.svg';
 
   // animations
   static const splashAnimation = 'assets/animations/splash.json';

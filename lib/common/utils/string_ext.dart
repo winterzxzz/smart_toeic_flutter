@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/data/models/enums/start_with.dart';
 
 extension StringExt on String {
   // from string convert to ThemeMode
@@ -13,18 +12,6 @@ extension StringExt on String {
         return ThemeMode.dark;
       default:
         return ThemeMode.system;
-    }
-  }
-
-  // from string convert to start with
-  StartWith toStartWith() {
-    switch (this) {
-      case 'Home':
-        return StartWith.home;
-      case 'My files':
-        return StartWith.myFiles;
-      default:
-        return StartWith.home;
     }
   }
 }

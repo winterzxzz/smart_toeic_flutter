@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_page.dart';
@@ -12,7 +13,7 @@ import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
-import 'package:toeic_desktop/ui/page/test_detail/test_detail_page.dart';
+import 'package:toeic_desktop/ui/page/mode_test/mode_test_page.dart';
 
 import '../../ui/page/splash/splash.dart';
 
@@ -42,7 +43,7 @@ class AppRouter {
   static const String kichHoatTaiKhoan = "/kich-hoat-tai-khoan";
   static const String flashCardDetail = "/flash-card-detail";
   static const String flashCardPractive = "/flash-card-practive";
-  static const String testDetail = "/test-detail";
+  static const String modeTest = "/mode-test";
   static const String practiceTest = "/practice-test";
 
   // GoRouter configuration
@@ -85,14 +86,19 @@ class AppRouter {
               builder: (context, state) => const SimulationTestScreen(),
             ),
             GoRoute(
-              name: testDetail,
-              path: testDetail,
-              builder: (context, state) => const TestDetailPage(),
+              name: modeTest,
+              path: modeTest,
+              builder: (context, state) => const ModeTestpage(),
             ),
             GoRoute(
               name: practiceTest,
               path: practiceTest,
-              builder: (context, state) => const PracticeTestPage(),
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final parts = args['parts'] as List<PartEnum>;
+                final duration = args['duration'] as Duration;
+                return PracticeTestPage(parts: parts, duration: duration);
+              },
             ),
           ],
         ),

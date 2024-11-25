@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/bottom_tab_enum.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomTabPage extends StatefulWidget {
   const BottomTabPage({super.key, required this.navigationShell});
@@ -60,22 +64,50 @@ class _BottomTabPageState extends State<BottomTabPage> {
             ),
 
             // Right - Login Button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: () {
-                final index = BottomTabEnum.values.length + 1;
-                injector<BottomTabCubit>().updateIndex(index);
+            BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                if (state.user != null) {
+                  return GestureDetector(
+                    onTap: () {
+                      // Show menu
+                      showMenu(
+                        context: context,
+                        position: const RelativeRect.fromLTRB(32, 0, 0, 32),
+                        items: [
+                          PopupMenuItem(
+                            child: Text('Logout'),
+                            onTap: () {
+                              injector<UserCubit>().removeUser();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                    child: SvgPicture.asset(
+                      AppImages.icUserAvatarDefault,
+                      width: 32,
+                      height: 32,
+                    ),
+                  );
+                }
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    final index = BottomTabEnum.values.length + 1;
+                    injector<BottomTabCubit>().updateIndex(index);
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: AppColors.textWhite),
+                  ),
+                );
               },
-              child: const Text(
-                'Login',
-                style: TextStyle(color: AppColors.textWhite),
-              ),
             ),
           ],
         ),

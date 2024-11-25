@@ -11,51 +11,108 @@ class SimulationTestScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          bottom: PreferredSize(
+          title: PreferredSize(
             preferredSize: Size.fromHeight(20),
             child: TabBar(
               splashBorderRadius: BorderRadius.circular(10),
               dividerHeight: 0,
               tabAlignment: TabAlignment.center,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.blue,
-              ),
+              labelColor: Colors.blue, // Replace AppColors.primary
+              indicatorColor: Colors.blue, // Replace AppColors.primary
+              unselectedLabelColor: Colors.grey,
               tabs: const [
                 Tab(
-                  icon: Icon(Icons.list),
-                  text: 'Tất cả',
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(Icons.list),
+                      SizedBox(width: 4),
+                      Text('Tất cả'),
+                    ],
+                  ),
                 ),
                 Tab(
-                  icon: Icon(Icons.book),
-                  text: 'Rút gọn',
+                  height: 35,
+                  child: Row(
+                    children: [
+                      Icon(Icons.book),
+                      SizedBox(width: 4),
+                      Text('Rút gọn'),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
         ),
-        body: Container(
-          margin: EdgeInsets.only(top: 32),
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.2),
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                mainAxisExtent: 300),
-            itemCount: 8, // Number of tests (replace as needed)
-            itemBuilder: (context, index) {
-              return SimulationTestCard(
-                testNumber: index + 1,
-                duration: "40 phút",
-                views: (100000 * (index + 1)).toString(),
-                comments: (100 * (index + 1)).toString(),
-                tags: const ["#IELTS Academic", "#Listening"],
-              );
-            },
-          ),
+        body: TabBarView(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.1),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      runAlignment: WrapAlignment.center,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(22, (index) {
+                        // Number of tests (replace as needed)
+                        return SizedBox(
+                          height: 200,
+                          width: 300,
+                          child: SimulationTestCard(
+                            testNumber: index + 1,
+                            duration: "40 phút",
+                            views: (100000 * (index + 1)).toString(),
+                            comments: (100 * (index + 1)).toString(),
+                            tags: const ["#IELTS Academic", "#Listening"],
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.1),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      runAlignment: WrapAlignment.center,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(2, (index) {
+                        // Number of tests (replace as needed)
+                        return SizedBox(
+                          height: 200,
+                          width: 300,
+                          child: SimulationTestCard(
+                            testNumber: index + 1,
+                            duration: "40 phút",
+                            views: (100000 * (index + 1)).toString(),
+                            comments: (100 * (index + 1)).toString(),
+                            tags: const ["#IELTS Academic", "#Listening"],
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -123,7 +180,7 @@ class SimulationTestCard extends StatelessWidget {
                   foregroundColor: Colors.blue,
                 ),
                 onPressed: () {
-                  GoRouter.of(context).pushNamed(AppRouter.testDetail);
+                  GoRouter.of(context).pushNamed(AppRouter.modeTest);
                 },
                 child: Text("Chi tiết"),
               ),

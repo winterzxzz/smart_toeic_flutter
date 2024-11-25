@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
 import 'package:toeic_desktop/data/models/ui_models/flash_card.dart';
+import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
 
 class Constants {
-
-
   static List<Flashcard> flashcards = [
     Flashcard(
         title: 'Cambridge Vocabulary for IELTS (20 units)',
@@ -182,4 +182,151 @@ class Constants {
         desciption:
             'Detailed analysis of your exam performance to identify strengths and areas for improvement.'),
   ];
+
+  static List<String> timeLimit = [
+    '-- Chọn thời gian --',
+    '10 phút',
+    '20 phút',
+    '30 phút',
+    '40 phút',
+    '50 phút',
+    '60 phút',
+    '120 phút',
+    'Không giới hạn',
+  ];
+
+  static List<PartModel> parts = [
+    PartModel(
+      partEnum: PartEnum.part1,
+    numberOfQuestions: 6,
+    tags: [
+      "#[Part 1] Tranh tái người",
+      "#[Part 1] Tranh tái vật",
+    ],
+  ),
+  PartModel(
+    partEnum: PartEnum.part2,
+    numberOfQuestions: 25,
+    tags: [
+      "#[Part 2] Câu hỏi WHAT",
+      "#[Part 2] Câu hỏi WHO",
+      "#[Part 2] Câu hỏi WHERE",
+      "#[Part 2] Câu hỏi WHEN",
+      "#[Part 2] Câu hỏi HOW",
+      "#[Part 2] Câu hỏi YES/NO",
+      "#[Part 2] Câu hỏi đuôi",
+      "#[Part 2] Câu hỏi lựa chọn",
+      "#[Part 2] Câu yêu cầu, đề nghị",
+      "#[Part 2] Câu trần thuật",
+    ],
+  ),
+  PartModel(
+    partEnum: PartEnum.part3,
+    numberOfQuestions: 39,
+    tags: [
+      "#[Part 3] Câu hỏi về chủ đề, mục đích",
+      "#[Part 3] Câu hỏi về danh tính người nói",
+      "#[Part 3] Câu hỏi về chi tiết cuộc hội thoại",
+      "#[Part 3] Câu hỏi kết hợp bảng biểu",
+      "#[Part 3] Chủ đề: Company - General Office Work",
+      "#[Part 3] Chủ đề: Company - Personnel",
+      "#[Part 3] Chủ đề: Company - Event, Project",
+      "#[Part 3] Chủ đề: Transportation",
+      "#[Part 3] Chủ đề: Shopping, Service",
+      "#[Part 3] Chủ đề: Order, delivery",
+    ],
+  ),
+  PartModel(
+    partEnum: PartEnum.part4,
+    numberOfQuestions: 20,
+    tags: [
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+      "#[Part 4] Câu hỏi về chủ đề, mục đích",
+    ],
+  ),
+  PartModel(
+    partEnum: PartEnum.part5,
+    numberOfQuestions: 10,
+    tags: [
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+      "#[Part 5] Câu hỏi về chủ đề, mục đích",
+    ],
+  ),
+  PartModel(
+    partEnum: PartEnum.part6,
+    numberOfQuestions: 10,
+    tags: [
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+      "#[Part 6] Câu hỏi về chủ đề, mục đích",
+    ],
+  ),
+  PartModel(
+    partEnum: PartEnum.part7,
+    numberOfQuestions: 10,
+    tags: [
+      "#[Part 7] Câu hỏi về chủ đề, mục đích",
+      "#[Part 7] Câu hỏi về chủ đề, mục đích",
+      "#[Part 7] Câu hỏi về chủ đề, mục đích",
+      "#[Part 7] Câu hỏi về chủ đề, mục đích",
+      "#[Part 7] Câu hỏi về chủ đề, mục đích",
+      "#[Part 7] Câu hỏi về chủ đề, mục đích",
+      "#[Part 7] Câu hỏi về chủ đề, mục đích",
+    ],
+  ),
+  // Add more parts as needed
+];
+}
+
+extension ConstantsExtension on Constants {
+  static Duration getTimeLimit(String time) {
+    switch (time) {
+      case '10 phút':
+        return Duration(minutes: 10);
+      case '20 phút':
+        return Duration(minutes: 20);
+      case '30 phút':
+        return Duration(minutes: 30);
+      case '40 phút':
+        return Duration(minutes: 40);
+      case '50 phút':
+        return Duration(minutes: 50);
+      case '60 phút':
+        return Duration(minutes: 60);
+      case '120 phút':
+        return Duration(minutes: 120);
+      case 'Không giới hạn':
+        return Duration(minutes: 00);
+      default:
+        return Duration(minutes: 120);
+    }
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/common/utils/string_ext.dart';
-import 'package:toeic_desktop/data/models/enums/start_with.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/enums/language.dart';
@@ -72,20 +71,8 @@ class SharedPreferencesHelper {
     await prefs.setString(_theme, theme.name);
   }
 
-  static Future<StartWith> getStartWith() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final startWith = prefs.getString(_startWith) ?? "Home";
-      return startWith.toStartWith();
-    } catch (e) {
-      return StartWith.home;
-    }
-  }
 
-  static Future<void> setStartWith(StartWith startWith) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_startWith, startWith.name);
-  }
+
 
   static Future<bool> getIsUseBiometric() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

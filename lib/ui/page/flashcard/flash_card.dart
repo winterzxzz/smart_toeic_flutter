@@ -15,6 +15,53 @@ class _FlashCardPageState extends State<FlashCardPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 40,
+          title: TabBar(
+            splashBorderRadius: BorderRadius.circular(10),
+            dividerHeight: 0,
+            tabAlignment: TabAlignment.center,
+            indicatorSize: TabBarIndicatorSize.tab,
+            labelColor: Colors.blue, // Replace AppColors.primary
+            indicatorColor: Colors.blue, // Replace AppColors.primary
+            unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
+            tabs: const [
+              Tab(
+                height: 35,
+                child: Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.list),
+                      SizedBox(width: 4),
+                      Text('My list'),
+                    ],
+                  ),
+                ),
+              ),
+              Tab(
+                height: 35,
+                child: Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.book),
+                      SizedBox(width: 4),
+                      Text('Studying'),
+                    ],
+                  ),
+                ),
+              ),
+              Tab(
+                height: 35,
+                child: Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Row(children: [Icon(Icons.explore), Text('Discover')]),
+                ),
+              ),
+            ],
+          ),
+        ),
         body: Container(
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: const BoxDecoration(
@@ -25,53 +72,6 @@ class _FlashCardPageState extends State<FlashCardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
-              // TabBar
-              TabBar(
-                splashBorderRadius: BorderRadius.circular(10),
-                dividerHeight: 0,
-                tabAlignment: TabAlignment.center,
-                indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: Colors.blue, // Replace AppColors.primary
-                indicatorColor: Colors.blue, // Replace AppColors.primary
-                unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
-                tabs: const [
-                  Tab(
-                    height: 35,
-                    child: Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.list),
-                          SizedBox(width: 4),
-                          Text('My list'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    height: 35,
-                    child: Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.book),
-                          SizedBox(width: 4),
-                          Text('Studying'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    height: 35,
-                    child: Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Row(
-                          children: [Icon(Icons.explore), Text('Discover')]),
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 16),
               Expanded(
                 child: TabBarView(

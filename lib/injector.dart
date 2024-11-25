@@ -9,5 +9,12 @@ Future<void> init() async {
         () => ApiClient(injector(), baseUrl: AppConfigs.baseUrl))
     ..registerLazySingleton<AppSettingCubit>(() => AppSettingCubit())
     ..registerLazySingleton<BottomTabCubit>(() => BottomTabCubit())
-    ..registerFactory<LoginCubit>(() => LoginCubit());
+    ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
+    ..registerLazySingleton<PracticeTestRepository>(
+        () => PracticeTestRepositoryImpl(injector()))
+    ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
+    ..registerLazySingleton<AuthRepository>(
+        () => AuthRepositoryImpl(injector()))
+    ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
+    ..registerLazySingleton<UserCubit>(() => UserCubit());
 }

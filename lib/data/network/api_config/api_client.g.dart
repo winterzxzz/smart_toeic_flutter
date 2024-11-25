@@ -22,370 +22,27 @@ class _ApiClient implements ApiClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<int>> extractOcr({
-    required File file,
-    required String returnType,
-    int? isPreprocess,
-    int? removeNoise,
-    int? extractFigure,
-    int? extractTextInFigure,
-    int? extractTable,
-    int? isFullLine,
-    int? extractParagraph,
-    int? extractSignature,
-    int? startPage,
-    int? endPage,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.files.add(MapEntry(
-      'file',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    _data.fields.add(MapEntry(
-      'return_type',
-      returnType,
-    ));
-    if (isPreprocess != null) {
-      _data.fields.add(MapEntry(
-        'is_preprocess',
-        isPreprocess.toString(),
-      ));
-    }
-    if (removeNoise != null) {
-      _data.fields.add(MapEntry(
-        'remove_noise',
-        removeNoise.toString(),
-      ));
-    }
-    if (extractFigure != null) {
-      _data.fields.add(MapEntry(
-        'extract_figure',
-        extractFigure.toString(),
-      ));
-    }
-    if (extractTextInFigure != null) {
-      _data.fields.add(MapEntry(
-        'extract_text_in_figure',
-        extractTextInFigure.toString(),
-      ));
-    }
-    if (extractTable != null) {
-      _data.fields.add(MapEntry(
-        'extract_table',
-        extractTable.toString(),
-      ));
-    }
-    if (isFullLine != null) {
-      _data.fields.add(MapEntry(
-        'is_full_line',
-        isFullLine.toString(),
-      ));
-    }
-    if (extractParagraph != null) {
-      _data.fields.add(MapEntry(
-        'extract_paragraph',
-        extractParagraph.toString(),
-      ));
-    }
-    if (extractSignature != null) {
-      _data.fields.add(MapEntry(
-        'extract_signature',
-        extractSignature.toString(),
-      ));
-    }
-    if (startPage != null) {
-      _data.fields.add(MapEntry(
-        'start_page',
-        startPage.toString(),
-      ));
-    }
-    if (endPage != null) {
-      _data.fields.add(MapEntry(
-        'end_page',
-        endPage.toString(),
-      ));
-    }
-    final _options = _setStreamType<List<int>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-      responseType: ResponseType.bytes,
-    )
-        .compose(
-          _dio.options,
-          '/ocr/extract_ocr',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<int> _value;
-    try {
-      _value = _result.data!.cast<int>();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<OcrMetaData> extractOcrJson({
-    required File file,
-    required String returnType,
-    int? isPreprocess,
-    int? removeNoise,
-    int? extractFigure,
-    int? extractTextInFigure,
-    int? extractTable,
-    int? isFullLine,
-    int? extractParagraph,
-    int? extractSignature,
-    int? startPage,
-    int? endPage,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.files.add(MapEntry(
-      'file',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    _data.fields.add(MapEntry(
-      'return_type',
-      returnType,
-    ));
-    if (isPreprocess != null) {
-      _data.fields.add(MapEntry(
-        'is_preprocess',
-        isPreprocess.toString(),
-      ));
-    }
-    if (removeNoise != null) {
-      _data.fields.add(MapEntry(
-        'remove_noise',
-        removeNoise.toString(),
-      ));
-    }
-    if (extractFigure != null) {
-      _data.fields.add(MapEntry(
-        'extract_figure',
-        extractFigure.toString(),
-      ));
-    }
-    if (extractTextInFigure != null) {
-      _data.fields.add(MapEntry(
-        'extract_text_in_figure',
-        extractTextInFigure.toString(),
-      ));
-    }
-    if (extractTable != null) {
-      _data.fields.add(MapEntry(
-        'extract_table',
-        extractTable.toString(),
-      ));
-    }
-    if (isFullLine != null) {
-      _data.fields.add(MapEntry(
-        'is_full_line',
-        isFullLine.toString(),
-      ));
-    }
-    if (extractParagraph != null) {
-      _data.fields.add(MapEntry(
-        'extract_paragraph',
-        extractParagraph.toString(),
-      ));
-    }
-    if (extractSignature != null) {
-      _data.fields.add(MapEntry(
-        'extract_signature',
-        extractSignature.toString(),
-      ));
-    }
-    if (startPage != null) {
-      _data.fields.add(MapEntry(
-        'start_page',
-        startPage.toString(),
-      ));
-    }
-    if (endPage != null) {
-      _data.fields.add(MapEntry(
-        'end_page',
-        endPage.toString(),
-      ));
-    }
-    final _options = _setStreamType<OcrMetaData>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-      responseType: ResponseType.json,
-    )
-        .compose(
-          _dio.options,
-          '/ocr/extract_ocr',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late OcrMetaData _value;
-    try {
-      _value = OcrMetaData.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<DocumentIEResponse> documentIE({
-    required File file,
-    required String returnType,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.files.add(MapEntry(
-      'file',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    _data.fields.add(MapEntry(
-      'return_type',
-      returnType,
-    ));
-    final _options = _setStreamType<DocumentIEResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
-        .compose(
-          _dio.options,
-          '/ie/document_ie',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DocumentIEResponse _value;
-    try {
-      _value = DocumentIEResponse.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<IeMetadata> documentIEJson({
-    required File file,
-    required String returnType,
-    int? returnNow,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.files.add(MapEntry(
-      'file',
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    _data.fields.add(MapEntry(
-      'return_type',
-      returnType,
-    ));
-    if (returnNow != null) {
-      _data.fields.add(MapEntry(
-        'return_now',
-        returnNow.toString(),
-      ));
-    }
-    final _options = _setStreamType<IeMetadata>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-      responseType: ResponseType.json,
-    )
-        .compose(
-          _dio.options,
-          '/ie/document_ie',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late IeMetadata _value;
-    try {
-      _value = IeMetadata.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<CheckProcessStatusResponse> checkProcessStatus(
-    String sessionId,
-    String returnType,
+  Future<UserEntity> signUp(
+    String email,
+    String name,
+    String password,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'session_id': sessionId,
-      'return_type': returnType,
+      'email': email,
+      'name': name,
+      'password': password,
     };
-    final _options = _setStreamType<CheckProcessStatusResponse>(Options(
+    final _options = _setStreamType<UserEntity>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/check_process_status',
+          '/user/auth/signup',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -395,9 +52,9 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CheckProcessStatusResponse _value;
+    late UserEntity _value;
     try {
-      _value = CheckProcessStatusResponse.fromJson(_result.data!);
+      _value = UserEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -406,26 +63,25 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<IeMetadata> checkProcessStatusJson(
-    String sessionId,
-    String returnType,
+  Future<UserEntity> login(
+    String email,
+    String password,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'session_id': sessionId,
-      'return_type': returnType,
+      'email': email,
+      'password': password,
     };
-    final _options = _setStreamType<IeMetadata>(Options(
+    final _options = _setStreamType<UserEntity>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
-      responseType: ResponseType.json,
     )
         .compose(
           _dio.options,
-          '/check_process_status',
+          '/user/auth/login',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -435,49 +91,9 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late IeMetadata _value;
+    late UserEntity _value;
     try {
-      _value = IeMetadata.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<List<int>> checkProcessStatusFile(
-    String sessionId,
-    String returnType,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {
-      'session_id': sessionId,
-      'return_type': returnType,
-    };
-    final _options = _setStreamType<List<int>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      responseType: ResponseType.bytes,
-    )
-        .compose(
-          _dio.options,
-          '/check_process_status',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<int> _value;
-    try {
-      _value = _result.data!.cast<int>();
+      _value = UserEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

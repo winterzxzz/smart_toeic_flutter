@@ -2,17 +2,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/utils/app_validartor.dart';
-import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
-import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/page/login/login_state.dart';
+import 'package:toeic_desktop/ui/page/reigster/register_state.dart';
 
-class LoginCubit extends Cubit<LoginState> {
+import '../../../data/models/enums/load_status.dart';
+import '../../../data/network/repositories/auth_repository.dart';
+import '../../../language/generated/l10n.dart';
+
+class RegisterCubit extends Cubit<RegisterState> {
   final AuthRepository authRepo;
 
-  LoginCubit(this.authRepo) : super(LoginState.initial());
+  RegisterCubit(this.authRepo) : super(const RegisterState());
 
-  Future<void> login(String email, String password) async {
+  Future<void> register(String email, String name, String password) async {
     try {
       if (!AppValidator.validateEmpty(email)) {
         throw (S.current.empty_email_error);
@@ -20,7 +21,9 @@ class LoginCubit extends Cubit<LoginState> {
       if (!AppValidator.validateEmpty(password)) {
         throw (S.current.empty_password_error);
       }
-
+      if (!AppValidator.validateEmpty(name)) {
+        throw (S.current.empty_email_error);
+      }
       if (!AppValidator.validateEmail(email)) {
         throw (S.current.invalid_email_error);
       }
@@ -33,18 +36,19 @@ class LoginCubit extends Cubit<LoginState> {
       if (!AppValidator.validateLength(password, 6, 30)) {
         throw (S.current.confirm_password_length_error);
       }
-      emit(state.copyWith(loadStatus: LoadStatus.loading));
-      final result = await authRepo.login(email, password);
+      emit(state.copyWith(loadDataStatus: LoadStatus.loading));
+      final result =
+          await authRepo.signUp(email: email, name: name, password: password);
       result.fold(
           (error) => emit(state.copyWith(
-              loadStatus: LoadStatus.failure,
-              errorMessage: error.message)), (response) {
-        injector<UserCubit>().setUser(response);
-        emit(state.copyWith(loadStatus: LoadStatus.success));
+              loadDataStatus: LoadStatus.failure,
+              message: error.message)), (response) {
+        injector<UserCubit>().setUser(response!);
+        emit(state.copyWith(loadDataStatus: LoadStatus.success));
       });
     } catch (e) {
       emit(state.copyWith(
-          loadStatus: LoadStatus.failure, errorMessage: e.toString()));
+          loadDataStatus: LoadStatus.failure, message: e.toString()));
     }
   }
 }

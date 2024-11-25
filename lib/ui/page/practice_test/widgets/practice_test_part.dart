@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
+import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 
 class PracticeTestPart extends StatelessWidget {
   const PracticeTestPart({
     super.key,
     required this.title,
-    required this.numberQuestions,
-    required this.startNumber,
+    required this.questions,
   });
 
   final String title;
-  final int numberQuestions;
-  final int startNumber;
+  final List<Question> questions;
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +35,35 @@ class PracticeTestPart extends StatelessWidget {
             mainAxisSpacing: 8.0,
             mainAxisExtent: 40,
           ),
-          itemCount: numberQuestions, // Numbers 7 to 31
+          itemCount: questions.length,
           itemBuilder: (context, index) {
-            int number = startNumber + index; // Start from 7
             return InkWell(
-              onTap: () {},
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                child: Text(
-                  '$number',
-                ),
+              onTap: () {
+                context
+                    .read<PracticeTestCubit>()
+                    .setFocusQuestion(questions[index]);
+              },
+              child: BlocSelector<PracticeTestCubit, PracticeTestState, int>(
+                selector: (state) {
+                  return state.focusQuestion;
+                },
+                builder: (context, id) {
+                  final isFocus = questions[index].id == id;
+                  return Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: isFocus ? AppColors.primary : Colors.white,
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: Text(
+                      '${questions[index].id}',
+                      style: TextStyle(
+                        color: isFocus ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  );
+                },
               ),
             );
           },
