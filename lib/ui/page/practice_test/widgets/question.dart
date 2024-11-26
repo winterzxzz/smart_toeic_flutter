@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
 
 class QuestionWidget extends StatelessWidget {
   const QuestionWidget({
@@ -17,42 +15,7 @@ class QuestionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (question.audio != null)
-            Container(
-              margin: EdgeInsets.only(bottom: 16),
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppColors.gray3,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Icon(
-                        Icons.play_arrow,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Slider(
-                      min: 0,
-                      max: 1,
-                      value: Random().nextDouble() * 1,
-                      onChanged: (value) {},
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          if (question.audio != null) AudioSection(audioUrl: question.audio!),
           if (question.image != null)
             Container(
               constraints: BoxConstraints(maxWidth: 500),

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum BottomTabEnum {
   gioiThieu,
   deThiOnline,
@@ -34,6 +36,21 @@ extension BottomTabEnumExtension on BottomTabEnum {
         return 3;
       case BottomTabEnum.kichHoatTaiKhoan:
         return 4;
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case BottomTabEnum.gioiThieu:
+        return Icons.home;
+      case BottomTabEnum.deThiOnline:
+        return Icons.book;
+      case BottomTabEnum.flashCards:
+        return Icons.flash_on;
+      case BottomTabEnum.blog:
+        return Icons.article;
+      case BottomTabEnum.kichHoatTaiKhoan:
+        return Icons.person;
     }
   }
 }

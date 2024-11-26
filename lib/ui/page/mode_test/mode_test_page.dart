@@ -20,6 +20,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           title: TabBar(
             splashBorderRadius: BorderRadius.circular(10),
             dividerHeight: 0,
@@ -59,13 +60,13 @@ class _ModeTestpageState extends State<ModeTestpage> {
           ),
         ),
         body: Container(
-          width: MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.8,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: Colors.white,
           ),
           margin: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.2,
+            horizontal: MediaQuery.of(context).size.width * 0.1,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,19 +214,26 @@ class _PracticeModeState extends State<PracticeMode> {
           ),
           SizedBox(height: 16),
           InkWell(
-            onTap: () {
-              GoRouter.of(context)
-                  .pushReplacementNamed(AppRouter.practiceTest, extra: {
-                'parts': selectedParts,
-                'duration': ConstantsExtension.getTimeLimit(duration ?? ''),
-              });
-            },
+            onTap: selectedParts.isEmpty
+                ? null
+                : () {
+                    final sortedParts = selectedParts.toList();
+                    sortedParts.sort((a, b) => a.index - b.index);
+                    GoRouter.of(context)
+                        .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                      'parts': sortedParts,
+                      'duration':
+                          ConstantsExtension.getTimeLimit(duration ?? ''),
+                    });
+                  },
             child: Container(
               width: 150,
               height: 45,
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: selectedParts.isEmpty
+                    ? Colors.grey[500]
+                    : AppColors.primary,
                 borderRadius: BorderRadius.circular(10),
               ),
               alignment: Alignment.center,

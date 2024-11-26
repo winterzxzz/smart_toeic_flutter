@@ -11,16 +11,18 @@ class SimulationTestScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           title: PreferredSize(
             preferredSize: Size.fromHeight(20),
             child: TabBar(
+              isScrollable: true,
               splashBorderRadius: BorderRadius.circular(10),
               dividerHeight: 0,
-              tabAlignment: TabAlignment.center,
               indicatorSize: TabBarIndicatorSize.tab,
               labelColor: Colors.blue, // Replace AppColors.primary
               indicatorColor: Colors.blue, // Replace AppColors.primary
               unselectedLabelColor: Colors.grey,
+              tabAlignment: TabAlignment.start,
               tabs: const [
                 Tab(
                   height: 35,
@@ -48,68 +50,58 @@ class SimulationTestScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.1),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 32),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      runAlignment: WrapAlignment.center,
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: List.generate(22, (index) {
-                        // Number of tests (replace as needed)
-                        return SizedBox(
-                          height: 200,
-                          width: 300,
-                          child: SimulationTestCard(
-                            testNumber: index + 1,
-                            duration: "40 phút",
-                            views: (100000 * (index + 1)).toString(),
-                            comments: (100 * (index + 1)).toString(),
-                            tags: const ["#IELTS Academic", "#Listening"],
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 32),
-                  ],
-                ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    runAlignment: WrapAlignment.start,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: List.generate(22, (index) {
+                      // Number of tests (replace as needed)
+                      return SizedBox(
+                        height: 200,
+                        width: 300,
+                        child: SimulationTestCard(
+                          testNumber: index + 1,
+                          duration: "40 phút",
+                          views: (100000 * (index + 1)).toString(),
+                          comments: (100 * (index + 1)).toString(),
+                          tags: const ["#IELTS Academic", "#Listening"],
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 32),
+                ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.1),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 32),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      runAlignment: WrapAlignment.center,
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: List.generate(2, (index) {
-                        // Number of tests (replace as needed)
-                        return SizedBox(
-                          height: 200,
-                          width: 300,
-                          child: SimulationTestCard(
-                            testNumber: index + 1,
-                            duration: "40 phút",
-                            views: (100000 * (index + 1)).toString(),
-                            comments: (100 * (index + 1)).toString(),
-                            tags: const ["#IELTS Academic", "#Listening"],
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 32),
-                  ],
-                ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    runAlignment: WrapAlignment.start,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: List.generate(2, (index) {
+                      // Number of tests (replace as needed)
+                      return SizedBox(
+                        height: 200,
+                        width: 300,
+                        child: SimulationTestCard(
+                          testNumber: index + 1,
+                          duration: "40 phút",
+                          views: (100000 * (index + 1)).toString(),
+                          comments: (100 * (index + 1)).toString(),
+                          tags: const ["#IELTS Academic", "#Listening"],
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 32),
+                ],
               ),
             ),
           ],

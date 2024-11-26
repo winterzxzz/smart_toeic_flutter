@@ -90,16 +90,6 @@ class AppRouter {
               path: modeTest,
               builder: (context, state) => const ModeTestpage(),
             ),
-            GoRoute(
-              name: practiceTest,
-              path: practiceTest,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final parts = args['parts'] as List<PartEnum>;
-                final duration = args['duration'] as Duration;
-                return PracticeTestPage(parts: parts, duration: duration);
-              },
-            ),
           ],
         ),
         StatefulShellBranch(
@@ -159,6 +149,16 @@ class AppRouter {
           ],
         ),
       ],
+    ),
+    GoRoute(
+      name: practiceTest,
+      path: practiceTest,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final parts = args['parts'] as List<PartEnum>;
+        final duration = args['duration'] as Duration;
+        return PracticeTestPage(parts: parts, duration: duration);
+      },
     ),
   ];
 }

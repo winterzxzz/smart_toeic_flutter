@@ -12,11 +12,11 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   PracticeTestCubit(this._practiceTestRepository)
       : super(PracticeTestState.initial());
 
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   void setUrlAudio(String url) async {
-    await _audioPlayer.setSourceUrl(url).then((_) async {
-      await _audioPlayer.resume();
+    await audioPlayer.setSourceUrl(url).then((_) async {
+      await audioPlayer.resume();
     });
   }
 
@@ -33,7 +33,8 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   }
 
   void initPracticeTest(List<PartEnum> parts, Duration duration) async {
-    emit(state.copyWith(parts: parts, duration: duration));
+    emit(state.copyWith(
+        parts: parts, duration: duration, focusPart: parts.first));
     await getPracticeTestDetail();
   }
 
@@ -70,9 +71,15 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     ));
   }
 
+  void submitPracticeTest() {
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
+
+    emit(state.copyWith(loadStatus: LoadStatus.success));
+  }
+
   @override
   Future<void> close() {
-    _audioPlayer.dispose();
+    audioPlayer.dispose();
     return super.close();
   }
 }

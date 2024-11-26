@@ -69,6 +69,7 @@ class _PageState extends State<Page> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(),
         body: SizedBox(
           width: double.infinity,
           child: Column(

@@ -138,7 +138,7 @@ class PricingPlanScreen extends StatelessWidget {
     final Color borderColor =
         isCurrentPlan ? Colors.grey.shade300 : Colors.black;
     return Container(
-      width: MediaQuery.sizeOf(context).width * 0.4,
+      width: MediaQuery.sizeOf(context).width * 0.3,
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(color: borderColor),

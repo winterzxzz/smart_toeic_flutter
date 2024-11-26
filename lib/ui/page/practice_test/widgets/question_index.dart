@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
@@ -71,7 +72,24 @@ class _QuestionIndexState extends State<QuestionIndex> {
                   height: 16,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    // show dialog  confirm
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Nộp bài'),
+                        content: Text('Bạn có chắc chắn muốn nộp bài không?'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                GoRouter.of(context).pop();
+                              },
+                              child: Text('Hủy')),
+                          TextButton(onPressed: () {}, child: Text('Nộp bài')),
+                        ],
+                      ),
+                    );
+                  },
                   child: Container(
                     width: double.infinity,
                     height: 45,

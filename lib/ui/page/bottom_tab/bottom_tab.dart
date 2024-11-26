@@ -27,92 +27,143 @@ class _BottomTabPageState extends State<BottomTabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        elevation: 4,
-        shadowColor: Colors.black.withOpacity(0.1),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Left - Logo
-            InkWell(
-              onTap: () {
-                injector<BottomTabCubit>().updateIndex(0);
-              },
-              child: const Text(
-                'Toeic',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              ),
+      body: Row(
+        children: [
+          Container(
+            width: 256,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
             ),
-            // Center - Navigation
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: BottomTabEnum.values
-                  .map((item) => TextButton(
-                        onPressed: () {
-                          final index = item.index + 1;
-                          injector<BottomTabCubit>().updateIndex(index);
-                        },
-                        child: Text(
-                          item.title,
-                          style: const TextStyle(
-                            color: AppColors.textBlack,
-                          ),
-                        ),
-                      ))
-                  .toList(),
-            ),
-
-            // Right - Login Button
-            BlocBuilder<UserCubit, UserState>(
-              builder: (context, state) {
-                if (state.user != null) {
-                  return GestureDetector(
-                    onTap: () {
-                      // Show menu
-                      showMenu(
-                        context: context,
-                        position: const RelativeRect.fromLTRB(32, 0, 0, 32),
-                        items: [
-                          PopupMenuItem(
-                            child: Text('Logout'),
-                            onTap: () {
-                              injector<UserCubit>().removeUser();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                    child: SvgPicture.asset(
-                      AppImages.icUserAvatarDefault,
-                      width: 32,
-                      height: 32,
-                    ),
-                  );
-                }
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () {
-                    final index = BottomTabEnum.values.length + 1;
-                    injector<BottomTabCubit>().updateIndex(index);
+            child: Column(
+              children: [
+                // Left - Logo
+                InkWell(
+                  onTap: () {
+                    injector<BottomTabCubit>().updateIndex(0);
                   },
                   child: const Text(
-                    'Login',
-                    style: TextStyle(color: AppColors.textWhite),
+                    'Toeic',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textWhite,
+                    ),
                   ),
-                );
-              },
+                ),
+                const SizedBox(height: 16),
+                // Center - Navigation
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: BottomTabEnum.values
+                      .map((item) => InkWell(
+                            onTap: () {
+                              final index = item.index + 1;
+                              injector<BottomTabCubit>().updateIndex(index);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 16,
+                              ),
+                              margin: const EdgeInsets.only(bottom: 8, left: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  bottomLeft: Radius.circular(8),
+                                ),
+                                color: widget.navigationShell.currentIndex ==
+                                        item.index + 1
+                                    ? Theme.of(context).scaffoldBackgroundColor
+                                    : Colors.transparent,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    item.icon,
+                                    color:
+                                        widget.navigationShell.currentIndex ==
+                                                item.index + 1
+                                            ? AppColors.textBlack
+                                            : AppColors.textWhite,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    item.title,
+                                    style: TextStyle(
+                                      color:
+                                          widget.navigationShell.currentIndex ==
+                                                  item.index + 1
+                                              ? AppColors.textBlack
+                                              : AppColors.textWhite,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
+
+                const Spacer(),
+
+                // Right - Login Button
+                BlocBuilder<UserCubit, UserState>(
+                  builder: (context, state) {
+                    if (state.user != null) {
+                      return GestureDetector(
+                        onTap: () {
+                          // Show menu
+                          showMenu(
+                            context: context,
+                            position: const RelativeRect.fromLTRB(32, 0, 0, 32),
+                            items: [
+                              PopupMenuItem(
+                                child: Text('Logout'),
+                                onTap: () {
+                                  injector<UserCubit>().removeUser();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                        child: SvgPicture.asset(
+                          AppImages.icUserAvatarDefault,
+                          width: 32,
+                          height: 32,
+                        ),
+                      );
+                    }
+                    return Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          injector<BottomTabCubit>()
+                              .updateIndex(BottomTabEnum.values.length + 1);
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(color: AppColors.textBlack),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+              ],
             ),
-          ],
-        ),
+          ),
+          Expanded(child: widget.navigationShell),
+        ],
       ),
-      body: widget.navigationShell,
     );
   }
 }

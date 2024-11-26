@@ -6,10 +6,10 @@ class RegisterNavigator extends AppNavigator {
   RegisterNavigator({required super.context});
 
   void navigateToLogin() {
-    GoRouter.of(context).pushReplacementNamed(AppRouter.login);
+    GoRouter.of(context).pop();
   }
 
   void navigateToResetPassword() {
-    GoRouter.of(context).pushNamed(AppRouter.resetPassword);
+    GoRouter.of(context).pushReplacementNamed(AppRouter.resetPassword);
   }
 }

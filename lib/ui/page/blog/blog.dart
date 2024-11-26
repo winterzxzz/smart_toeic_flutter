@@ -6,18 +6,14 @@ class BlogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: MediaQuery.sizeOf(context).width * 0.2),
-        child: Row(
-          children: [
-            const SizedBox(width: 32),
-            _buildSidebar(),
-            Expanded(
-              child: _buildMainContent(),
-            ),
-          ],
-        ),
+      body: Row(
+        children: [
+          const SizedBox(width: 32),
+          _buildSidebar(),
+          Expanded(
+            child: _buildMainContent(),
+          ),
+        ],
       ),
     );
   }
