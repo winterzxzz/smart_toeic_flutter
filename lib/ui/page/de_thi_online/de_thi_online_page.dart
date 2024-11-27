@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class SimulationTestScreen extends StatelessWidget {
   const SimulationTestScreen({super.key});
@@ -19,8 +20,8 @@ class SimulationTestScreen extends StatelessWidget {
               splashBorderRadius: BorderRadius.circular(10),
               dividerHeight: 0,
               indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: Colors.blue, // Replace AppColors.primary
-              indicatorColor: Colors.blue, // Replace AppColors.primary
+              labelColor: AppColors.primary, // Replace AppColors.primary
+              indicatorColor: AppColors.primary, // Replace AppColors.primary
               unselectedLabelColor: Colors.grey,
               tabAlignment: TabAlignment.start,
               tabs: const [
@@ -158,7 +159,6 @@ class SimulationTestCard extends StatelessWidget {
                         child: Chip(
                           label: Text(tag),
                           backgroundColor: Colors.blue[50],
-                          labelStyle: TextStyle(color: Colors.blue),
                         ),
                       ))
                   .toList(),
@@ -167,10 +167,6 @@ class SimulationTestCard extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  foregroundColor: Colors.blue,
-                ),
                 onPressed: () {
                   GoRouter.of(context).pushNamed(AppRouter.modeTest);
                 },

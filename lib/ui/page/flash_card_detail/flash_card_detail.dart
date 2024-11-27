@@ -102,6 +102,18 @@ class FlashCardDetailPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.sizeOf(context).width * 0.2),
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  GoRouter.of(context).pushReplacementNamed(AppRouter.quizz);
+                },
+                child: Text('Làm quizz'),
+              ),
+            ),
+            const SizedBox(height: 16),
             SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.6,
               child: Row(

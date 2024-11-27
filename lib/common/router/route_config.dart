@@ -11,9 +11,11 @@ import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test.dart';
+import 'package:toeic_desktop/ui/page/quizz/quizz_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
 import 'package:toeic_desktop/ui/page/mode_test/mode_test_page.dart';
+import 'package:toeic_desktop/ui/page/result_test/result_test_page.dart';
 
 import '../../ui/page/splash/splash.dart';
 
@@ -45,6 +47,8 @@ class AppRouter {
   static const String flashCardPractive = "/flash-card-practive";
   static const String modeTest = "/mode-test";
   static const String practiceTest = "/practice-test";
+  static const String quizz = "/quizz";
+  static const String resultTest = "/result-test";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -108,7 +112,12 @@ class AppRouter {
               name: flashCardPractive,
               path: flashCardPractive,
               builder: (context, state) => const FlashCardPracticePage(),
-            )
+            ),
+            GoRoute(
+              name: quizz,
+              path: quizz,
+              builder: (context, state) => const QuizzPage(),
+            ),
           ],
         ),
         StatefulShellBranch(
@@ -159,6 +168,11 @@ class AppRouter {
         final duration = args['duration'] as Duration;
         return PracticeTestPage(parts: parts, duration: duration);
       },
+    ),
+    GoRoute(
+      name: resultTest,
+      path: resultTest,
+      builder: (context, state) => const ResultTestPage(),
     ),
   ];
 }

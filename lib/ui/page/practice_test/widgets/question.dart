@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
 
 class QuestionWidget extends StatelessWidget {
@@ -28,20 +30,7 @@ class QuestionWidget extends StatelessWidget {
             height: 16,
           ),
           QuestionInfoWidget(
-            questionNumber: question.id,
-            questionContent: question.question,
-            options: question.option4 != null
-                ? [
-                    question.option1,
-                    question.option2,
-                    question.option3,
-                    question.option4,
-                  ]
-                : [
-                    question.option1,
-                    question.option2,
-                    question.option3,
-                  ],
+            question: question,
           ),
         ],
       ),
@@ -52,14 +41,10 @@ class QuestionWidget extends StatelessWidget {
 class QuestionInfoWidget extends StatelessWidget {
   const QuestionInfoWidget({
     super.key,
-    required this.questionNumber,
-    this.questionContent,
-    required this.options,
+    required this.question,
   });
+  final Question question;
 
-  final int questionNumber;
-  final String? questionContent;
-  final List<String?> options;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -71,8 +56,8 @@ class QuestionInfoWidget extends StatelessWidget {
             CircleAvatar(
               backgroundColor: Colors.blue.shade100,
               child: Text(
-                '$questionNumber',
-                style: TextStyle(
+                '${question.id}',
+                style: const TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
                 ),
@@ -87,27 +72,46 @@ class QuestionInfoWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (questionContent != null) Text(questionContent!),
-              ...List.generate(options.length, (index) {
-                String optionLabel =
-                    String.fromCharCode(65 + index); // A, B, C, D
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Radio<int>(
-                      value: index,
-                      groupValue: null, // Default selected value
-                      activeColor: Colors.red,
-                      onChanged: (value) {},
-                    ),
-                    Text(
-                      "$optionLabel.",
-                    ),
-                    const SizedBox(width: 8),
-                    if (options[index] != null) Text(options[index] ?? ''),
-                  ],
-                );
-              }),
+              if (question.question != null) Text(question.question ?? ''),
+              Builder(builder: (context) {
+                List<String?> options = [
+                  question.option1,
+                  question.option2,
+                  question.option3,
+                  question.option4,
+                ];
+                return Column(children: [
+                  ...List.generate(
+                    options.length,
+                    (index) {
+                      if (options[index] == null) return const SizedBox();
+                      String optionLabel =
+                          String.fromCharCode(65 + index); // A, B, C, D
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Radio<String>(
+                            value: optionLabel,
+                            groupValue:
+                                question.userAnswer, // Default selected value
+                            activeColor: Colors.red,
+                            onChanged: (value) {
+                              context
+                                  .read<PracticeTestCubit>()
+                                  .setUserAnswer(question, optionLabel);
+                            },
+                          ),
+                          Text(
+                            "$optionLabel.",
+                          ),
+                          const SizedBox(width: 8),
+                          Text(options[index]!),
+                        ],
+                      );
+                    },
+                  ),
+                ]);
+              })
             ],
           ),
         ),

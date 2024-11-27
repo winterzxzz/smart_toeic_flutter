@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
@@ -49,81 +50,95 @@ class _QuestionIndexState extends State<QuestionIndex> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PracticeTestCubit, PracticeTestState>(
-      builder: (context, state) {
-        return SingleChildScrollView(
-          child: Container(
-            width: 300,
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+    return SingleChildScrollView(
+      child: Container(
+        width: 300,
+        padding: EdgeInsets.all(16),
+        margin: EdgeInsets.only(top: 70),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Thời gian còn lại:'),
+            Text(
+              '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Thời gian còn lại:'),
-                Text(
-                  '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                InkWell(
-                  onTap: () {
-                    // show dialog  confirm
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('Nộp bài'),
-                        content: Text('Bạn có chắc chắn muốn nộp bài không?'),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                GoRouter.of(context).pop();
-                              },
-                              child: Text('Hủy')),
-                          TextButton(onPressed: () {}, child: Text('Nộp bài')),
-                        ],
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 45,
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Nộp bài'.toUpperCase(),
-                      style: TextStyle(color: Colors.white),
-                    ),
+            const SizedBox(
+              height: 16,
+            ),
+            InkWell(
+              onTap: () {
+                // show dialog  confirm
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Nộp bài'),
+                    content: Text('Bạn có chắc chắn muốn nộp bài không?'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            GoRouter.of(context).pop();
+                          },
+                          child: Text('Hủy')),
+                      TextButton(
+                          onPressed: () {
+                            GoRouter.of(context)
+                                .pushReplacement(AppRouter.resultTest);
+                          },
+                          child: Text(
+                            'Nộp bài',
+                            style: TextStyle(color: Colors.red),
+                          )),
+                    ],
                   ),
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                height: 45,
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                ...state.parts.map((part) => Column(
-                      children: [
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        PracticeTestPart(
-                          title: part.name,
-                          questions: state.questions
-                              .where(
-                                  (question) => question.part == part.numValue)
-                              .toList(),
-                        ),
-                      ],
-                    )),
-              ],
+                alignment: Alignment.center,
+                child: Text(
+                  'Nộp bài'.toUpperCase(),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
-          ),
-        );
-      },
+            BlocBuilder<PracticeTestCubit, PracticeTestState>(
+              buildWhen: (previous, current) =>
+                  previous.parts != current.parts ||
+                  previous.questions != current.questions,
+              builder: (context, state) {
+                return Column(children: [
+                  ...state.parts.map((part) => Column(
+                        children: [
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          PracticeTestPart(
+                            title: part.name,
+                            questions: state.questions
+                                .where((question) =>
+                                    question.part == part.numValue)
+                                .toList(),
+                          ),
+                        ],
+                      ))
+                ]);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

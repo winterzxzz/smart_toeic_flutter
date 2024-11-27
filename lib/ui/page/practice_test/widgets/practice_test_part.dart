@@ -43,23 +43,24 @@ class PracticeTestPart extends StatelessWidget {
                     .read<PracticeTestCubit>()
                     .setFocusQuestion(questions[index]);
               },
-              child: BlocSelector<PracticeTestCubit, PracticeTestState, int>(
+              child: BlocSelector<PracticeTestCubit, PracticeTestState,
+                  List<Question>>(
                 selector: (state) {
-                  return state.focusQuestion;
+                  return state.questionsOfPart;
                 },
-                builder: (context, id) {
-                  final isFocus = questions[index].id == id;
+                builder: (context, questionsOfPart) {
+                  final isAnswered = questions[index].userAnswer != null;
                   return Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isFocus ? AppColors.primary : Colors.white,
+                      color: isAnswered ? AppColors.primary : Colors.white,
                       border: Border.all(color: Colors.black),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Text(
                       '${questions[index].id}',
                       style: TextStyle(
-                        color: isFocus ? Colors.white : Colors.black,
+                        color: isAnswered ? Colors.white : Colors.black,
                       ),
                     ),
                   );

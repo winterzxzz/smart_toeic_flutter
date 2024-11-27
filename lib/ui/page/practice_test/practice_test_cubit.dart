@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -9,8 +10,21 @@ import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final PracticeTestRepository _practiceTestRepository;
 
+  late ScrollController scrollController;
+
   PracticeTestCubit(this._practiceTestRepository)
-      : super(PracticeTestState.initial());
+      : super(PracticeTestState.initial()) {
+    scrollController = ScrollController();
+  }
+
+  void _scrollToQuestion(int index) {
+    if (scrollController.position.maxScrollExtent < index * 600) return;
+    scrollController.animateTo(
+      index * 600,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   final AudioPlayer audioPlayer = AudioPlayer();
 
@@ -43,6 +57,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     final questionsOfPart = state.questions
         .where((question) => question.part == partOfQuestion)
         .toList();
+    _scrollToQuestion(questionsOfPart.indexOf(question));
     if (partOfQuestion == state.focusPart.numValue) {
       emit(state.copyWith(
         focusQuestion: question.id,
@@ -71,10 +86,26 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     ));
   }
 
-  void submitPracticeTest() {
+  Future<void> submitPracticeTest() async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
-
+    await Future.delayed(const Duration(seconds: 2));
     emit(state.copyWith(loadStatus: LoadStatus.success));
+  }
+
+  void setUserAnswer(Question question, String userAnswer) {
+    final newQuestions = state.questions.map((q) {
+      if (q.id == question.id) {
+        return question.copyWith(userAnswer: userAnswer);
+      }
+      return q;
+    }).toList();
+    final newQuestionsOfPart = newQuestions
+        .where((question) => question.part == state.focusPart.numValue)
+        .toList();
+    emit(state.copyWith(
+      questions: newQuestions,
+      questionsOfPart: newQuestionsOfPart,
+    ));
   }
 
   @override

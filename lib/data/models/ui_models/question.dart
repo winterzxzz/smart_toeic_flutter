@@ -11,7 +11,7 @@ class Question {
   final String correctAnswer;
   final int part;
   final List<String> categories;
-  final bool isAnswered;
+  final String? userAnswer;
 
   Question({
     required this.id,
@@ -26,7 +26,7 @@ class Question {
     required this.correctAnswer,
     required this.part,
     required this.categories,
-    this.isAnswered = false,
+    this.userAnswer,
   });
 
   // copy with
@@ -43,7 +43,7 @@ class Question {
     String? correctAnswer,
     int? part,
     List<String>? categories,
-    bool? isAnswered,
+    String? userAnswer,
   }) {
     return Question(
       id: id ?? this.id,
@@ -54,10 +54,11 @@ class Question {
       option1: option1 ?? this.option1,
       option2: option2 ?? this.option2,
       option3: option3 ?? this.option3,
+      option4: option4 ?? this.option4,
       correctAnswer: correctAnswer ?? this.correctAnswer,
       part: part ?? this.part,
       categories: categories ?? this.categories,
-      isAnswered: isAnswered ?? this.isAnswered,
+      userAnswer: userAnswer ?? this.userAnswer,
     );
   }
 
@@ -75,6 +76,7 @@ class Question {
       correctAnswer: json['correctAnswer'],
       part: json['part'],
       categories: List<String>.from(json['categories'] ?? []),
+      userAnswer: json['userAnswer'],
     );
   }
 }

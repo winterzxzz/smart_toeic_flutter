@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_discover.dart';
 import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_my_list.dart';
 import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_studying.dart';
@@ -25,8 +26,8 @@ class _FlashCardPageState extends State<FlashCardPage> {
               splashBorderRadius: BorderRadius.circular(10),
               dividerHeight: 0,
               indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: Colors.blue, // Replace AppColors.primary
-              indicatorColor: Colors.blue, // Replace AppColors.primary
+              labelColor: AppColors.primary, // Replace AppColors.primary
+              indicatorColor: AppColors.primary, // Replace AppColors.primary
               unselectedLabelColor: Colors.grey,
               tabAlignment: TabAlignment.start,
               tabs: const [
