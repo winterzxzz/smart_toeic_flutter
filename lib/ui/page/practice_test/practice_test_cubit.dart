@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/practice_test_repository.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 
@@ -86,10 +87,35 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     ));
   }
 
-  Future<void> submitPracticeTest() async {
-    emit(state.copyWith(loadStatus: LoadStatus.loading));
-    await Future.delayed(const Duration(seconds: 2));
-    emit(state.copyWith(loadStatus: LoadStatus.success));
+  ResultModel calculateResult() {
+    final totalQuestions = state.questions.length;
+    final totalAnswerdQuestions = state.questions
+        .where((question) => question.userAnswer != null)
+        .toList();
+    final correctQuestions = totalAnswerdQuestions
+        .where((question) => question.correctAnswer == question.userAnswer)
+        .toList();
+    final incorrectQuestions = totalAnswerdQuestions
+        .where((question) => question.correctAnswer != question.userAnswer)
+        .toList();
+    final notAnswerQuestions = totalQuestions - totalAnswerdQuestions.length;
+
+    final listeningScore = correctQuestions.length * 10;
+    final readingScore = correctQuestions.length * 10;
+    final overallScore = listeningScore + readingScore;
+
+    final resultModel = ResultModel(
+      testName: state.title,
+      totalQuestion: totalQuestions,
+      correctQuestion: correctQuestions.length,
+      incorrectQuestion: incorrectQuestions.length,
+      notAnswerQuestion: notAnswerQuestions,
+      overallScore: overallScore,
+      listeningScore: listeningScore,
+      readingScore: readingScore,
+      duration: state.duration,
+    );
+    return resultModel;
   }
 
   void setUserAnswer(Question question, String userAnswer) {

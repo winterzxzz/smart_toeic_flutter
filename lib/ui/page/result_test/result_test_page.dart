@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class ResultTestPage extends StatelessWidget {
-  const ResultTestPage({super.key});
+  const ResultTestPage({super.key, required this.resultModel});
+
+  final ResultModel resultModel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Kết quả thi: New Economy TOEIC Test 1'),
+        title: Text('Kết quả thi: ${resultModel.testName}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,19 +33,22 @@ class ResultTestPage extends StatelessWidget {
                   ResultInfoItem(
                     icon: Icons.check,
                     title: 'Kết quả làm bài',
-                    value: '1/200',
+                    value:
+                        '${resultModel.correctQuestion}/${resultModel.totalQuestion}',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(
                     icon: Icons.check,
                     title: 'Độ chính xác(#đúng/#tổng)',
-                    value: '100%',
+                    value:
+                        '${(resultModel.correctQuestion / resultModel.totalQuestion) * 100}%',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(
                     icon: Icons.timer,
                     title: 'Thời gian hoàn thành',
-                    value: '0:04:48',
+                    value:
+                        '${resultModel.duration.inMinutes}:${resultModel.duration.inSeconds % 60 < 10 ? '0' : ''}${resultModel.duration.inSeconds % 60}',
                   ),
                 ],
               ),
@@ -87,14 +93,22 @@ class ResultTestPage extends StatelessWidget {
                     children: [
                       Expanded(
                           child: _buildScoreBox(
-                              'Trả lời đúng', '1', Colors.green)),
+                              'Trả lời đúng',
+                              '${resultModel.correctQuestion}',
+                              Colors.green)),
                       Expanded(
                           child:
                               _buildScoreBox('Trả lời sai', '0', Colors.red)),
                       Expanded(
-                          child: _buildScoreBox('Bỏ qua', '199', Colors.grey)),
+                          child: _buildScoreBox(
+                              'Bỏ qua',
+                              '${resultModel.notAnswerQuestion}',
+                              Colors.grey)),
                       Expanded(
-                          child: _buildScoreBox('Điểm', '15', Colors.blue)),
+                          child: _buildScoreBox(
+                              'Điểm',
+                              '${resultModel.overallScore}',
+                              Colors.blue)),
                     ],
                   ),
 
@@ -106,18 +120,24 @@ class ResultTestPage extends StatelessWidget {
                     children: [
                       Expanded(
                           child: _buildProgressSection(
-                              'Listening', '15/495', '1/100')),
+                              'Listening',
+                              '${resultModel.listeningScore}/495',
+                              '${resultModel.correctQuestion}/100')),
                       Expanded(
                           child: _buildProgressSection(
-                              'Reading', '0/495', '0/100')),
+                              'Reading',
+                              '${resultModel.readingScore}/495',
+                              '${resultModel.correctQuestion}/100')),
                     ],
                   ),
 
                   SizedBox(height: 20),
                   SizedBox(
                       width: double.infinity,
-                      child:
-                          _buildProgressSection('Overall', '0/990', '0/200')),
+                      child: _buildProgressSection(
+                          'Overall',
+                          '${resultModel.overallScore}/990',
+                          '${resultModel.correctQuestion}/200')),
 
                   SizedBox(height: 50),
                 ],

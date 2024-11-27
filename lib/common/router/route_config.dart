@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_page.dart';
@@ -172,7 +173,11 @@ class AppRouter {
     GoRoute(
       name: resultTest,
       path: resultTest,
-      builder: (context, state) => const ResultTestPage(),
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final resultModel = args['resultModel'] as ResultModel;
+        return ResultTestPage(resultModel: resultModel);
+      },
     ),
   ];
 }
