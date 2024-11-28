@@ -7,7 +7,9 @@ import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class ModeTestpage extends StatefulWidget {
-  const ModeTestpage({super.key});
+  const ModeTestpage({super.key, required this.testId});
+
+  final String testId;
 
   @override
   State<ModeTestpage> createState() => _ModeTestpageState();
@@ -76,7 +78,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
               Expanded(
                 child: TabBarView(
                   children: [
-                    PracticeMode(),
+                    PracticeMode(testId: widget.testId),
                     SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,6 +99,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
                               GoRouter.of(context).pushReplacementNamed(
                                   AppRouter.practiceTest,
                                   extra: {
+                                    'testId': widget.testId,
                                     'parts': Constants.parts
                                         .map((part) => part.partEnum)
                                         .toList(),
@@ -136,7 +139,10 @@ class _ModeTestpageState extends State<ModeTestpage> {
 class PracticeMode extends StatefulWidget {
   const PracticeMode({
     super.key,
+    required this.testId,
   });
+
+  final String testId;
 
   @override
   State<PracticeMode> createState() => _PracticeModeState();
@@ -221,6 +227,7 @@ class _PracticeModeState extends State<PracticeMode> {
                     sortedParts.sort((a, b) => a.index - b.index);
                     GoRouter.of(context)
                         .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                      'testId': widget.testId,
                       'parts': sortedParts,
                       'duration':
                           ConstantsExtension.getTimeLimit(duration ?? ''),

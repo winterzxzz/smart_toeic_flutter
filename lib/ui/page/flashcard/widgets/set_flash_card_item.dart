@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/models/ui_models/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/set_flash_card.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class FlashcardItem extends StatelessWidget {
-  final Flashcard flashcard;
+  final SetFlashCard flashcard;
 
   const FlashcardItem({super.key, required this.flashcard});
 
@@ -17,7 +17,9 @@ class FlashcardItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         onTap: () {
-          GoRouter.of(context).pushNamed(AppRouter.flashCardDetail);
+          GoRouter.of(context).pushNamed(AppRouter.flashCardDetail, extra: {
+            'setId': flashcard.id,
+          });
         },
         overlayColor: WidgetStatePropertyAll(Colors.pink.withOpacity(0.1)),
         child: Padding(
@@ -36,7 +38,7 @@ class FlashcardItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '${flashcard.wordCount} từ',
+                    '${flashcard.numberOfFlashcards} flashcards',
                   ),
                   const SizedBox(width: 16),
                   Container(
@@ -46,19 +48,12 @@ class FlashcardItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 16),
                   Text(
-                    '👥 ${flashcard.learnerCount}',
+                    '👥 ${flashcard.description}',
                   ),
                 ],
               ),
               Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(flashcard.imageUrl),
-                  ),
-                  const SizedBox(width: 16),
-                  Text(flashcard.author)
-                ],
+                children: [const SizedBox(width: 16), Text(flashcard.userId)],
               ), // Placeholder for the icon/logo
             ],
           ),

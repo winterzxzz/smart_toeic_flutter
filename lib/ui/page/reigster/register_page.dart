@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_navigator.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_state.dart';
@@ -65,7 +66,7 @@ class _PageState extends State<Page> {
         }
         if (LoadStatus.success == state.loadDataStatus) {
           _navigator.success("Welcome to TOEIC Prep");
-          injector<BottomTabCubit>().updateIndex(0);
+          GoRouter.of(context).go(AppRouter.home);
         }
       },
       child: Scaffold(

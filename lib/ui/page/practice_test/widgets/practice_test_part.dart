@@ -13,7 +13,7 @@ class PracticeTestPart extends StatelessWidget {
   });
 
   final String title;
-  final List<Question> questions;
+  final List<QuestionModel> questions;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class PracticeTestPart extends StatelessWidget {
                     .setFocusQuestion(questions[index]);
               },
               child: BlocSelector<PracticeTestCubit, PracticeTestState,
-                  List<Question>>(
+                  List<QuestionModel>>(
                 selector: (state) {
                   return state.questionsOfPart;
                 },

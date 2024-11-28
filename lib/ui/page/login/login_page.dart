@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_navigator.dart';
 import 'package:toeic_desktop/ui/page/login/login_state.dart';
@@ -50,20 +51,20 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final _navigator = LoginNavigator(context: context);
+    final navigator = LoginNavigator(context: context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (LoadStatus.loading == state.loadStatus) {
-          _navigator.showLoadingOverlay();
+          navigator.showLoadingOverlay();
         } else {
-          _navigator.hideLoadingOverlay();
+          navigator.hideLoadingOverlay();
         }
         if (LoadStatus.failure == state.loadStatus) {
-          _navigator.error(state.errorMessage);
+          navigator.error(state.errorMessage);
         }
         if (LoadStatus.success == state.loadStatus) {
-          _navigator.success("Welcome back!");
-          injector<BottomTabCubit>().updateIndex(0);
+          navigator.success("Welcome back!");
+          GoRouter.of(context).go(AppRouter.home);
         }
       },
       child: Scaffold(
@@ -183,7 +184,7 @@ class _PageState extends State<Page> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              _navigator.navigateToRegister();
+                              navigator.navigateToRegister();
                             },
                             child: const Text.rich(TextSpan(
                               text: 'Don\'t have an account? ',
@@ -202,7 +203,7 @@ class _PageState extends State<Page> {
                           const Spacer(),
                           TextButton(
                               onPressed: () {
-                                _navigator.navigateToResetPassword();
+                                navigator.navigateToResetPassword();
                               },
                               child: const Text(
                                 'Forgot password?',

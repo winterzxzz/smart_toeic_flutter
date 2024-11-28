@@ -2,16 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_grid.dart';
 
-class MyListFlashCardPage extends StatefulWidget {
-  const MyListFlashCardPage({super.key});
+class StudyingFlashCardPage extends StatefulWidget {
+  const StudyingFlashCardPage({super.key});
 
   @override
-  State<MyListFlashCardPage> createState() => _MyListFlashCardPageState();
+  State<StudyingFlashCardPage> createState() => _StudyingFlashCardPageState();
 }
 
-class _MyListFlashCardPageState extends State<MyListFlashCardPage> {
+class _StudyingFlashCardPageState extends State<StudyingFlashCardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,26 +31,49 @@ class _MyListFlashCardPageState extends State<MyListFlashCardPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  width: 150,
-                  height: 45,
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(10),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      width: 150,
+                      height: 45,
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          Icon(Icons.add, color: Colors.white),
+                          Text(
+                            'Create Flashcard',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.add, color: Colors.white),
-                      Text(
-                        'Create Flashcard',
+                  const SizedBox(width: 32),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      width: 150,
+                      height: 45,
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Select Flashcard Set',
                         style: TextStyle(color: Colors.white),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
               const SizedBox(height: 32),
               Text(
@@ -59,7 +81,8 @@ class _MyListFlashCardPageState extends State<MyListFlashCardPage> {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 16),
-              FlashcardGrid(),
+              // SetFlashCardGrid(flashcards: state.flashCards),
+              const SizedBox(height: 32),
             ],
           ),
         ),

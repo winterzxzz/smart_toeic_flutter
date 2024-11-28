@@ -4,17 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
-import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
-import 'package:toeic_desktop/data/network/repositories/practice_test_repository.dart';
+import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
-  final PracticeTestRepository _practiceTestRepository;
+  final TestRepository _testRepository;
 
   late ScrollController scrollController;
 
-  PracticeTestCubit(this._practiceTestRepository)
-      : super(PracticeTestState.initial()) {
+  PracticeTestCubit(this._testRepository) : super(PracticeTestState.initial()) {
     scrollController = ScrollController();
   }
 
@@ -35,25 +33,34 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     });
   }
 
-  Future<void> getPracticeTestDetail() async {
+  Future<void> getPracticeTestDetail(String testId) async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
-    final questions = await _practiceTestRepository.getPracticeTestDetail();
-    emit(state.copyWith(
-      questions: questions,
-      loadStatus: LoadStatus.success,
-      questionsOfPart: questions
-          .where((question) => question.part == state.focusPart.numValue)
-          .toList(),
-    ));
+    final response = await _testRepository.getDetailTest(testId);
+    response.fold(
+      (l) => emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+      )),
+      (questions) => emit(state.copyWith(
+        questions: questions,
+        loadStatus: LoadStatus.success,
+        questionsOfPart: questions
+            .where((question) => question.part == state.focusPart.numValue)
+            .toList(),
+      )),
+    );
   }
 
-  void initPracticeTest(List<PartEnum> parts, Duration duration) async {
+  void initPracticeTest(
+      List<PartEnum> parts, Duration duration, String testId) async {
     emit(state.copyWith(
-        parts: parts, duration: duration, focusPart: parts.first));
-    await getPracticeTestDetail();
+        parts: parts,
+        duration: duration,
+        focusPart: parts.first,
+        testId: testId));
+    await getPracticeTestDetail(testId);
   }
 
-  void setFocusQuestion(Question question) {
+  void setFocusQuestion(QuestionModel question) {
     final partOfQuestion = question.part;
     final questionsOfPart = state.questions
         .where((question) => question.part == partOfQuestion)
@@ -87,38 +94,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     ));
   }
 
-  ResultModel calculateResult() {
-    final totalQuestions = state.questions.length;
-    final totalAnswerdQuestions = state.questions
-        .where((question) => question.userAnswer != null)
-        .toList();
-    final correctQuestions = totalAnswerdQuestions
-        .where((question) => question.correctAnswer == question.userAnswer)
-        .toList();
-    final incorrectQuestions = totalAnswerdQuestions
-        .where((question) => question.correctAnswer != question.userAnswer)
-        .toList();
-    final notAnswerQuestions = totalQuestions - totalAnswerdQuestions.length;
-
-    final listeningScore = correctQuestions.length * 10;
-    final readingScore = correctQuestions.length * 10;
-    final overallScore = listeningScore + readingScore;
-
-    final resultModel = ResultModel(
-      testName: state.title,
-      totalQuestion: totalQuestions,
-      correctQuestion: correctQuestions.length,
-      incorrectQuestion: incorrectQuestions.length,
-      notAnswerQuestion: notAnswerQuestions,
-      overallScore: overallScore,
-      listeningScore: listeningScore,
-      readingScore: readingScore,
-      duration: state.duration,
-    );
-    return resultModel;
-  }
-
-  void setUserAnswer(Question question, String userAnswer) {
+  void setUserAnswer(QuestionModel question, String userAnswer) {
     final newQuestions = state.questions.map((q) {
       if (q.id == question.id) {
         return question.copyWith(userAnswer: userAnswer);

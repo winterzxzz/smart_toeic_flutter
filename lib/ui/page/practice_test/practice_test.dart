@@ -11,11 +11,16 @@ import 'package:toeic_desktop/ui/page/practice_test/widgets/question.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/question_index.dart';
 
 class PracticeTestPage extends StatefulWidget {
-  const PracticeTestPage(
-      {super.key, required this.parts, required this.duration});
+  const PracticeTestPage({
+    super.key,
+    required this.parts,
+    required this.duration,
+    required this.testId,
+  });
 
   final List<PartEnum> parts;
   final Duration duration;
+  final String testId;
 
   @override
   State<PracticeTestPage> createState() => _PracticeTestPageState();
@@ -26,7 +31,7 @@ class _PracticeTestPageState extends State<PracticeTestPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<PracticeTestCubit>()
-        ..initPracticeTest(widget.parts, widget.duration),
+        ..initPracticeTest(widget.parts, widget.duration, widget.testId),
       child: Page(),
     );
   }
@@ -132,7 +137,7 @@ class SideQuestion extends StatelessWidget {
                     height: 32,
                   ),
                   BlocSelector<PracticeTestCubit, PracticeTestState,
-                      List<Question>>(
+                      List<QuestionModel>>(
                     selector: (state) {
                       return state.questionsOfPart;
                     },

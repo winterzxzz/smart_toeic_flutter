@@ -26,9 +26,9 @@ class ApiInterceptors extends QueuedInterceptorsWrapper {
         "⚠️ ERROR[$statusCode] => PATH: $path \n Response: ${err.response?.data}");
     switch (statusCode) {
       case 401:
-        SecureStorageHelper.instance.removeToken();
-        GoRouter.of(AppRouter.navigationKey.currentContext!)
-            .pushReplacementNamed(AppRouter.splash);
+        // SecureStorageHelper.instance.removeToken();
+        // GoRouter.of(AppRouter.navigationKey.currentContext!)
+        //     .pushReplacementNamed(AppRouter.splash);
         handler.next(err);
       default:
         handler.next(err);

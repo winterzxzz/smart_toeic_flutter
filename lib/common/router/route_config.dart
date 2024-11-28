@@ -93,7 +93,11 @@ class AppRouter {
             GoRoute(
               name: modeTest,
               path: modeTest,
-              builder: (context, state) => const ModeTestpage(),
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final testId = args['testId'] as String;
+                return ModeTestpage(testId: testId);
+              },
             ),
           ],
         ),
@@ -107,7 +111,11 @@ class AppRouter {
             GoRoute(
               name: flashCardDetail,
               path: flashCardDetail,
-              builder: (context, state) => FlashCardDetailPage(),
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final setId = args['setId'] as String;
+                return FlashCardDetailPage(setId: setId);
+              },
             ),
             GoRoute(
               name: flashCardPractive,
@@ -167,7 +175,8 @@ class AppRouter {
         final args = state.extra as Map<String, dynamic>;
         final parts = args['parts'] as List<PartEnum>;
         final duration = args['duration'] as Duration;
-        return PracticeTestPage(parts: parts, duration: duration);
+        final testId = args['testId'] as String;
+        return PracticeTestPage(parts: parts, duration: duration, testId: testId);
       },
     ),
     GoRoute(

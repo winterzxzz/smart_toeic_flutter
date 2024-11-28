@@ -132,6 +132,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
                                   listeningScore: listeningScore,
                                   readingScore: readingScore,
                                   duration: remainingTime,
+                                  questions: state.questions,
                                 );
                                 if (context.mounted) {
                                   GoRouter.of(context).pushReplacementNamed(

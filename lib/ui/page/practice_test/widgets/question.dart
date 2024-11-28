@@ -9,7 +9,7 @@ class QuestionWidget extends StatelessWidget {
     super.key,
     required this.question,
   });
-  final Question question;
+  final QuestionModel question;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +43,7 @@ class QuestionInfoWidget extends StatelessWidget {
     super.key,
     required this.question,
   });
-  final Question question;
+  final QuestionModel question;
 
   @override
   Widget build(BuildContext context) {

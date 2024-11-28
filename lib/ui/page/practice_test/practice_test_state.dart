@@ -5,8 +5,10 @@ import 'package:toeic_desktop/data/models/ui_models/question.dart';
 
 class PracticeTestState extends Equatable {
   final LoadStatus loadStatus;
-  final List<Question> questions;
-  final List<Question> questionsOfPart;
+  final String message;
+  final String testId;
+  final List<QuestionModel> questions;
+  final List<QuestionModel> questionsOfPart;
   final List<PartEnum> parts;
   final String title;
   final PartEnum focusPart;
@@ -16,6 +18,8 @@ class PracticeTestState extends Equatable {
 
   const PracticeTestState({
     required this.loadStatus,
+    required this.message,
+    required this.testId,
     required this.questions,
     required this.questionsOfPart,
     required this.parts,
@@ -31,6 +35,8 @@ class PracticeTestState extends Equatable {
   factory PracticeTestState.initial() {
     return PracticeTestState(
       loadStatus: LoadStatus.initial,
+      message: '',
+      testId: '',
       questions: [],
       questionsOfPart: [],
       parts: [],
@@ -46,17 +52,21 @@ class PracticeTestState extends Equatable {
 
   PracticeTestState copyWith({
     LoadStatus? loadStatus,
-    List<Question>? questions,
-    List<Question>? questionsOfPart,
+    List<QuestionModel>? questions,
+    List<QuestionModel>? questionsOfPart,
     List<PartEnum>? parts,
     PartEnum? focusPart,
     int? focusQuestion,
     Duration? duration,
     bool? isTestMode,
     String? title,
+    String? message,
+    String? testId,
   }) {
     return PracticeTestState(
       loadStatus: loadStatus ?? this.loadStatus,
+      message: message ?? this.message,
+      testId: testId ?? this.testId,
       questions: questions ?? this.questions,
       questionsOfPart: questionsOfPart ?? this.questionsOfPart,
       parts: parts ?? this.parts,
@@ -71,6 +81,8 @@ class PracticeTestState extends Equatable {
   @override
   List<Object?> get props => [
         loadStatus,
+        message,
+        testId,
         questions,
         questionsOfPart,
         parts,
@@ -79,5 +91,7 @@ class PracticeTestState extends Equatable {
         duration,
         isTestMode,
         title,
+        message,
+        testId,
       ];
 }

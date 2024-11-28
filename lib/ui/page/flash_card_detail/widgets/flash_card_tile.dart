@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:text_to_speech/text_to_speech.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card.dart';
 
 class FlashcardTile extends StatefulWidget {
-  final Map<String, dynamic> flashcard;
+  final FlashCard flashcard;
 
   const FlashcardTile({super.key, required this.flashcard});
 
@@ -40,7 +41,7 @@ class _FlashcardTileState extends State<FlashcardTile> {
               Row(
                 children: [
                   Text(
-                    widget.flashcard['word'],
+                    widget.flashcard.word,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -53,7 +54,7 @@ class _FlashcardTileState extends State<FlashcardTile> {
                   // Add a button to play the pronunciation
                   InkWell(
                     onTap: () {
-                      _speak(widget.flashcard['word']);
+                      _speak(widget.flashcard.word);
                     },
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
@@ -80,31 +81,38 @@ class _FlashcardTileState extends State<FlashcardTile> {
                         Row(
                           children: [
                             _buildPronunciation(
-                                widget.flashcard['pronunciation']['uk'], 'UK'),
-                            SizedBox(width: 16),
-                            _buildPronunciation(
-                                widget.flashcard['pronunciation']['us'], 'US'),
+                                widget.flashcard.pronunciation, 'UK'),
                           ],
                         ),
                         SizedBox(height: 8),
                         Text(
-                          widget.flashcard['definition'],
+                          'Translate: ${widget.flashcard.translation}',
                           style: TextStyle(fontSize: 16),
                         ),
-                        if (widget.flashcard['examples'].isNotEmpty) ...[
+                        SizedBox(height: 8),
+                        Text(
+                          'Definition:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.flashcard.definition,
+                        ),
+                        Text('Example Sentences:',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        if (widget.flashcard.exampleSentence.isNotEmpty) ...[
                           SizedBox(height: 8),
-                          ...widget.flashcard['examples'].map((example) => Text(
-                                '- $example',
-                                style: TextStyle(color: Colors.grey[700]),
-                              )),
+                          ...widget.flashcard.exampleSentence
+                              .map((example) => Text(
+                                    '- $example',
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  )),
                         ],
+                        SizedBox(height: 8),
+                        Text('Note:',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(widget.flashcard.note),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 300,
-                    height: 200,
-                    child: Image.network(widget.flashcard['image']),
                   ),
                 ],
               ),

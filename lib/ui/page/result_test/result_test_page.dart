@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
@@ -67,7 +68,10 @@ class ResultTestPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.textBlue,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            GoRouter.of(context)
+                                .pushReplacementNamed(AppRouter.practiceTest);
+                          },
                           child: Text('Xem đáp án')),
                       SizedBox(width: 16),
                       ElevatedButton(
@@ -92,23 +96,17 @@ class ResultTestPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                          child: _buildScoreBox(
-                              'Trả lời đúng',
-                              '${resultModel.correctQuestion}',
-                              Colors.green)),
+                          child: _buildScoreBox('Trả lời đúng',
+                              '${resultModel.correctQuestion}', Colors.green)),
                       Expanded(
                           child:
                               _buildScoreBox('Trả lời sai', '0', Colors.red)),
                       Expanded(
-                          child: _buildScoreBox(
-                              'Bỏ qua',
-                              '${resultModel.notAnswerQuestion}',
-                              Colors.grey)),
+                          child: _buildScoreBox('Bỏ qua',
+                              '${resultModel.notAnswerQuestion}', Colors.grey)),
                       Expanded(
-                          child: _buildScoreBox(
-                              'Điểm',
-                              '${resultModel.overallScore}',
-                              Colors.blue)),
+                          child: _buildScoreBox('Điểm',
+                              '${resultModel.overallScore}', Colors.blue)),
                     ],
                   ),
 

@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
-import 'package:toeic_desktop/data/models/enums/bottom_tab_enum.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomTabPage extends StatefulWidget {
   const BottomTabPage({super.key, required this.navigationShell});
+
   final StatefulNavigationShell navigationShell;
 
   @override
@@ -30,7 +31,6 @@ class _BottomTabPageState extends State<BottomTabPage>
   @override
   void initState() {
     super.initState();
-    injector<BottomTabCubit>().updateNavigationShell(widget.navigationShell);
     _animationController = AnimationController(
       duration: Duration(milliseconds: 300),
       vsync: this,
@@ -90,7 +90,7 @@ class _BottomTabPageState extends State<BottomTabPage>
                     // Left - Logo
                     InkWell(
                       onTap: () {
-                        injector<BottomTabCubit>().updateIndex(0);
+                        GoRouter.of(context).go(AppRouter.home);
                       },
                       child: const Text(
                         'Toeic',
@@ -106,11 +106,10 @@ class _BottomTabPageState extends State<BottomTabPage>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: BottomTabEnum.values
+                      children: Constants.bottomTabs
                           .map((item) => InkWell(
                                 onTap: () {
-                                  final index = item.index + 1;
-                                  injector<BottomTabCubit>().updateIndex(index);
+                                  GoRouter.of(context).go(item.route);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -124,12 +123,13 @@ class _BottomTabPageState extends State<BottomTabPage>
                                       topLeft: Radius.circular(8),
                                       bottomLeft: Radius.circular(8),
                                     ),
-                                    color:
-                                        widget.navigationShell.currentIndex ==
-                                                item.index + 1
-                                            ? Theme.of(context)
-                                                .scaffoldBackgroundColor
-                                            : Colors.transparent,
+                                    color: widget
+                                                .navigationShell.currentIndex ==
+                                            Constants.bottomTabs.indexOf(item) +
+                                                1
+                                        ? Theme.of(context)
+                                            .scaffoldBackgroundColor
+                                        : Colors.transparent,
                                   ),
                                   child: Row(
                                     children: [
@@ -137,7 +137,9 @@ class _BottomTabPageState extends State<BottomTabPage>
                                         item.icon,
                                         color: widget.navigationShell
                                                     .currentIndex ==
-                                                item.index + 1
+                                                Constants.bottomTabs
+                                                        .indexOf(item) +
+                                                    1
                                             ? AppColors.textBlack
                                             : AppColors.textWhite,
                                       ),
@@ -147,7 +149,9 @@ class _BottomTabPageState extends State<BottomTabPage>
                                         style: TextStyle(
                                           color: widget.navigationShell
                                                       .currentIndex ==
-                                                  item.index + 1
+                                                  Constants.bottomTabs
+                                                          .indexOf(item) +
+                                                      1
                                               ? AppColors.textBlack
                                               : AppColors.textWhite,
                                         ),
@@ -279,8 +283,7 @@ class _BottomTabPageState extends State<BottomTabPage>
                               ),
                             ),
                             onPressed: () {
-                              injector<BottomTabCubit>()
-                                  .updateIndex(BottomTabEnum.values.length + 1);
+                              GoRouter.of(context).go(AppRouter.login);
                             },
                             child: const Text(
                               'Login',

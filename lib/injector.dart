@@ -8,13 +8,18 @@ Future<void> init() async {
     ..registerLazySingleton<ApiClient>(
         () => ApiClient(injector(), baseUrl: AppConfigs.baseUrl))
     ..registerLazySingleton<AppSettingCubit>(() => AppSettingCubit())
-    ..registerLazySingleton<BottomTabCubit>(() => BottomTabCubit())
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
-    ..registerLazySingleton<PracticeTestRepository>(
-        () => PracticeTestRepositoryImpl(injector()))
+    ..registerLazySingleton<TestRepository>(
+        () => TestRepositoryImpl(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
     ..registerLazySingleton<AuthRepository>(
         () => AuthRepositoryImpl(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
-    ..registerLazySingleton<UserCubit>(() => UserCubit());
+    ..registerLazySingleton<UserCubit>(() => UserCubit())
+    ..registerLazySingleton<FlashCardRespository>(
+        () => FlashCardRespositoryImpl(injector()))
+    ..registerFactory<FlashCardCubit>(() => FlashCardCubit(injector()))
+    ..registerFactory<FlashCardDetailCubit>(
+        () => FlashCardDetailCubit(injector()))
+    ..registerFactory<DeThiOnlineCubit>(() => DeThiOnlineCubit(injector()));
 }

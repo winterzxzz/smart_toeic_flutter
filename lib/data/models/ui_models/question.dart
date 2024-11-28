@@ -1,4 +1,4 @@
-class Question {
+class QuestionModel {
   final int id;
   final String? image;
   final String? audio;
@@ -10,10 +10,9 @@ class Question {
   final String? option4;
   final String correctAnswer;
   final int part;
-  final List<String> categories;
   final String? userAnswer;
 
-  Question({
+  QuestionModel({
     required this.id,
     this.image,
     this.audio,
@@ -25,12 +24,11 @@ class Question {
     this.option4,
     required this.correctAnswer,
     required this.part,
-    required this.categories,
     this.userAnswer,
   });
 
   // copy with
-  Question copyWith({
+  QuestionModel copyWith({
     int? id,
     String? image,
     String? audio,
@@ -42,10 +40,9 @@ class Question {
     String? option4,
     String? correctAnswer,
     int? part,
-    List<String>? categories,
     String? userAnswer,
   }) {
-    return Question(
+    return QuestionModel(
       id: id ?? this.id,
       image: image ?? this.image,
       audio: audio ?? this.audio,
@@ -57,26 +54,7 @@ class Question {
       option4: option4 ?? this.option4,
       correctAnswer: correctAnswer ?? this.correctAnswer,
       part: part ?? this.part,
-      categories: categories ?? this.categories,
       userAnswer: userAnswer ?? this.userAnswer,
-    );
-  }
-
-  factory Question.fromJson(Map<String, dynamic> json) {
-    return Question(
-      id: json['id'],
-      image: json['image'],
-      audio: json['audio'],
-      paragraph: json['paragraph'],
-      question: json['question'],
-      option1: json['option1'],
-      option2: json['option2'],
-      option3: json['option3'],
-      option4: json['option4'],
-      correctAnswer: json['correctAnswer'],
-      part: json['part'],
-      categories: List<String>.from(json['categories'] ?? []),
-      userAnswer: json['userAnswer'],
     );
   }
 }
