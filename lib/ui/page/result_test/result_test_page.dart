@@ -42,7 +42,7 @@ class ResultTestPage extends StatelessWidget {
                     icon: Icons.check,
                     title: 'Độ chính xác(#đúng/#tổng)',
                     value:
-                        '${(resultModel.correctQuestion / resultModel.totalQuestion) * 100}%',
+                        '${((resultModel.correctQuestion / resultModel.totalQuestion) * 100).toStringAsFixed(2)}%',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(

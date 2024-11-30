@@ -21,5 +21,6 @@ Future<void> init() async {
     ..registerFactory<FlashCardCubit>(() => FlashCardCubit(injector()))
     ..registerFactory<FlashCardDetailCubit>(
         () => FlashCardDetailCubit(injector()))
-    ..registerFactory<DeThiOnlineCubit>(() => DeThiOnlineCubit(injector()));
+    ..registerFactory<DeThiOnlineCubit>(() => DeThiOnlineCubit(injector()))
+    ..registerFactory<SplashCubit>(() => SplashCubit(injector()));
 }

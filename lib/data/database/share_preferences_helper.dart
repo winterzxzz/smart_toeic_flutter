@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/common/utils/string_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,8 +12,8 @@ class SharedPreferencesHelper {
   static const _currentLanguageKey = 'current_language';
   static const _userId = 'sendbird_user_id';
   static const _theme = 'theme';
-  static const _startWith = 'start_with';
   static const _isUseBiometric = 'is_use_biometric';
+  static const _cookie = 'cookie';
 
   static Future<bool> isFirstRun() async {
     try {
@@ -71,9 +73,6 @@ class SharedPreferencesHelper {
     await prefs.setString(_theme, theme.name);
   }
 
-
-
-
   static Future<bool> getIsUseBiometric() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_isUseBiometric) ?? false;
@@ -114,5 +113,23 @@ class SharedPreferencesHelper {
 
   Future<bool> removeSendBirdUserId() async {
     return await _prefs.remove(_userId);
+  }
+
+  Future<void> storeCookies(Map<String, String> cookieMap) async {
+    final cookiesJson = jsonEncode(cookieMap);
+    await _prefs.setString(_cookie, cookiesJson);
+  }
+
+  String? getCookies() {
+    final cookiesJson = _prefs.getString(_cookie);
+    if (cookiesJson != null) {
+      final cookieMap = jsonDecode(cookiesJson) as Map<String, dynamic>;
+      return cookieMap.entries.map((e) => '${e.key}=${e.value}').join('; ');
+    }
+    return null;
+  }
+
+  void removeCookies() async {
+    await _prefs.remove(_cookie);
   }
 }

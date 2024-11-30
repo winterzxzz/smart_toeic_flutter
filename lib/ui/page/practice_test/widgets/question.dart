@@ -13,6 +13,7 @@ class QuestionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: ValueKey(question.id),
       margin: EdgeInsets.only(bottom: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,40 +73,38 @@ class QuestionInfoWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (question.question != null) Text(question.question ?? ''),
+              if (question.question != null && question.part > 2)
+                Text(question.question ?? ''),
               Builder(builder: (context) {
-                List<String?> options = [
-                  question.option1,
-                  question.option2,
-                  question.option3,
-                  question.option4,
-                ];
                 return Column(children: [
                   ...List.generate(
-                    options.length,
+                    question.options.length,
                     (index) {
-                      if (options[index] == null) return const SizedBox();
-                      String optionLabel =
-                          String.fromCharCode(65 + index); // A, B, C, D
+                      final option = question.options[index];
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Radio<String>(
-                            value: optionLabel,
+                            value: option.id.name,
                             groupValue:
                                 question.userAnswer, // Default selected value
                             activeColor: Colors.red,
                             onChanged: (value) {
                               context
                                   .read<PracticeTestCubit>()
-                                  .setUserAnswer(question, optionLabel);
+                                  .setUserAnswer(question, value!);
                             },
                           ),
                           Text(
-                            "$optionLabel.",
+                            '${option.id.name}. ',
                           ),
-                          const SizedBox(width: 8),
-                          Text(options[index]!),
+                          if (question.part > 2)
+                            Column(
+                              children: [
+                                const SizedBox(width: 8),
+                                Text(option.content.toString()),
+                              ],
+                            )
                         ],
                       );
                     },

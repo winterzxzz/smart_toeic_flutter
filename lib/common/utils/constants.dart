@@ -186,6 +186,7 @@ class Constants {
 
   static List<String> timeLimit = [
     '-- Chọn thời gian --',
+    '1 phút',
     '10 phút',
     '20 phút',
     '30 phút',
@@ -338,6 +339,8 @@ class Constants {
 extension ConstantsExtension on Constants {
   static Duration getTimeLimit(String time) {
     switch (time) {
+      case '1 phút':
+        return Duration(minutes: 1);
       case '10 phút':
         return Duration(minutes: 10);
       case '20 phút':

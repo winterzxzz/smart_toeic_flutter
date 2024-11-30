@@ -15,6 +15,7 @@ import 'package:toeic_desktop/ui/page/flashcard/flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
+import 'package:toeic_desktop/ui/page/splash/splash_cubit.dart';
 import 'common/configs/app_configs.dart';
 import 'common/global_blocs/setting/app_setting_cubit.dart';
 import 'common/router/route_config.dart';

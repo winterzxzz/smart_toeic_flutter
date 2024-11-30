@@ -24,6 +24,8 @@ void main() async {
     await windowManager.focus();
   });
 
+  
+
   await SharedPreferencesHelper().initialize();
   await init();
   Bloc.observer = AppBlocObserver();

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'share_preferences_helper.dart';
@@ -6,6 +8,7 @@ class SecureStorageHelper {
   // The value stored in SecureStore will not be deleted when the app is uninstalled.
   static const _apiTokenKey = 'api_token';
   static const _userIdKey = 'user_id';
+  static const _cookieKey = 'cookie';
 
   final FlutterSecureStorage _storage;
 
@@ -63,5 +66,23 @@ class SecureStorageHelper {
 
   void removeUserId() async {
     await _storage.delete(key: _userIdKey);
+  }
+
+  Future<void> storeCookies(Map<String, String> cookieMap) async {
+    final cookiesJson = jsonEncode(cookieMap);
+    await _storage.write(key: _cookieKey, value: cookiesJson);
+  }
+
+  Future<String?> getCookies() async {
+    final cookiesJson = await _storage.read(key: _cookieKey);
+    if (cookiesJson != null) {
+      final cookieMap = jsonDecode(cookiesJson) as Map<String, dynamic>;
+      return cookieMap.entries.map((e) => '${e.key}=${e.value}').join('; ');
+    }
+    return null;
+  }
+
+  void removeCookies() async {
+    await _storage.delete(key: _cookieKey);
   }
 }

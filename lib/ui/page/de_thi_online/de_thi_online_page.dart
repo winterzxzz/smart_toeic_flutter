@@ -60,26 +60,29 @@ class Page extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state.loadStatus == LoadStatus.success) {
             return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    runAlignment: WrapAlignment.start,
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: List.generate(state.tests.length, (index) {
-                      // Number of tests (replace as needed)
-                      return SizedBox(
-                        height: 200,
-                        width: 300,
-                        child: SimulationTestCard(
-                          test: state.tests[index],
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 32),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  children: [
+                    Wrap(
+                      alignment: WrapAlignment.start,
+                      runAlignment: WrapAlignment.start,
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(state.tests.length, (index) {
+                        // Number of tests (replace as needed)
+                        return SizedBox(
+                          height: 200,
+                          width: 300,
+                          child: SimulationTestCard(
+                            test: state.tests[index],
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             );
           }

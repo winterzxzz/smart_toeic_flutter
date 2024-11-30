@@ -28,3 +28,7 @@ class PartModel {
     );
   }
 }
+
+extension PartModelExtension on PartModel {
+  PartEnum get numValue => partEnum;
+}

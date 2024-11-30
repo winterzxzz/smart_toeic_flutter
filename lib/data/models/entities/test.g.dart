@@ -15,7 +15,9 @@ Test _$TestFromJson(Map<String, dynamic> json) => Test(
       code: json['code'] as String,
       numberOfQuestions: (json['numberOfQuestions'] as num).toInt(),
       createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
       duration: (json['duration'] as num).toInt(),
       fileName: json['fileName'] as String,
       parts: (json['parts'] as List<dynamic>)
@@ -32,7 +34,7 @@ Map<String, dynamic> _$TestToJson(Test instance) => <String, dynamic>{
       'code': instance.code,
       'numberOfQuestions': instance.numberOfQuestions,
       'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
       'duration': instance.duration,
       'fileName': instance.fileName,
       'parts': instance.parts,

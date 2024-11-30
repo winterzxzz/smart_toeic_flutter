@@ -5,7 +5,6 @@ import 'package:toeic_desktop/data/models/entities/question.dart';
 import 'package:toeic_desktop/data/models/entities/set_flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/test.dart';
 import 'package:toeic_desktop/data/models/entities/user_entity.dart';
-import 'package:toeic_desktop/data/models/ui_models/question.dart';
 
 part 'api_client.g.dart';
 
@@ -27,6 +26,9 @@ abstract class ApiClient {
     @Field("password") String password,
   );
 
+  @GET('user/auth/getinfor')
+  Future<UserEntity> getUser();
+
   @GET('/user/flashcard/set?setFlashcardId={setFlashcardId}')
   Future<List<FlashCard>> getFlashCardSet(
     @Path("setFlashcardId") String setFlashcardId,
@@ -42,6 +44,9 @@ abstract class ApiClient {
   Future<List<Test>> getTest(
     @Query("limit") int limit,
   );
+
+  @GET('/pub/test')
+  Future<List<Test>> getTestPublic();
 
   @GET('/pub/test/handle-excel?id={testId}')
   Future<List<Question>> getDetailTest(

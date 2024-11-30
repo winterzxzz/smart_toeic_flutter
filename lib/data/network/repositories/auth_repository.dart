@@ -12,6 +12,8 @@ abstract class AuthRepository {
     required String name,
     required String password,
   });
+
+  Future<Either<ApiError, UserEntity>> getUser();
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -38,6 +40,16 @@ class AuthRepositoryImpl extends AuthRepository {
   }) async {
     try {
       final result = await apiClient.signUp(email, name, password);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+  
+  @override
+  Future<Either<ApiError, UserEntity>> getUser() async {
+    try {
+      final result = await apiClient.getUser();
       return Right(result);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));

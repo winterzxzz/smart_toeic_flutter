@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
@@ -10,17 +11,18 @@ import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final TestRepository _testRepository;
 
-  late ScrollController scrollController;
+  late ItemScrollController itemScrollController;
+  late ItemPositionsListener itemPositionListener;
 
   PracticeTestCubit(this._testRepository) : super(PracticeTestState.initial()) {
-    scrollController = ScrollController();
+    itemScrollController = ItemScrollController();
+    itemPositionListener = ItemPositionsListener.create();
   }
 
-  void _scrollToQuestion(int index) {
-    if (scrollController.position.maxScrollExtent < index * 600) return;
-    scrollController.animateTo(
-      index * 600,
-      duration: const Duration(milliseconds: 300),
+  Future<void> _scrollToQuestion(int index) async {
+    await itemScrollController.scrollTo(
+      index: index + 1,
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
@@ -33,7 +35,8 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     });
   }
 
-  Future<void> getPracticeTestDetail(String testId) async {
+  Future<void> getPracticeTestDetail(
+      String testId, List<PartEnum> parts) async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final response = await _testRepository.getDetailTest(testId);
     response.fold(
@@ -41,9 +44,9 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         loadStatus: LoadStatus.failure,
       )),
       (questions) => emit(state.copyWith(
-        questions: questions,
+        questions: _setQuestionFollowPartSelected(questions, parts),
         loadStatus: LoadStatus.success,
-        questionsOfPart: questions
+        questionsOfPart: _setQuestionFollowPartSelected(questions, parts)
             .where((question) => question.part == state.focusPart.numValue)
             .toList(),
       )),
@@ -57,7 +60,18 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         duration: duration,
         focusPart: parts.first,
         testId: testId));
-    await getPracticeTestDetail(testId);
+    await getPracticeTestDetail(testId, parts);
+  }
+
+  List<QuestionModel> _setQuestionFollowPartSelected(
+      List<QuestionModel> questions, List<PartEnum> parts) {
+    List<QuestionModel> listQuestion = [];
+    for (var part in parts) {
+      listQuestion.addAll(questions
+          .where((question) => question.part == part.numValue)
+          .toList());
+    }
+    return listQuestion;
   }
 
   void setFocusQuestion(QuestionModel question) {
@@ -81,17 +95,20 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   }
 
   void setFocusPart(PartEnum part) {
-    final firstQuestionOfPart = state.questions
-        .where((question) => question.part == part.numValue)
-        .first;
     final questionsOfPart = state.questions
         .where((question) => question.part == part.numValue)
         .toList();
-    emit(state.copyWith(
-      focusPart: part,
-      focusQuestion: firstQuestionOfPart.id,
-      questionsOfPart: questionsOfPart,
-    ));
+    if (questionsOfPart.isEmpty) {
+      emit(state.copyWith(
+        focusPart: part,
+      ));
+    } else {
+      emit(state.copyWith(
+        focusPart: part,
+        focusQuestion: questionsOfPart.first.id,
+        questionsOfPart: questionsOfPart,
+      ));
+    }
   }
 
   void setUserAnswer(QuestionModel question, String userAnswer) {

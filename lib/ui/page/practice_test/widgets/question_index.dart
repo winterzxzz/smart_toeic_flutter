@@ -39,6 +39,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
           remainingTime = remainingTime - Duration(seconds: 1);
         });
       } else {
+        submitTest();
         timer.cancel();
       }
     });
@@ -56,7 +57,6 @@ class _QuestionIndexState extends State<QuestionIndex> {
       child: Container(
         width: 300,
         padding: EdgeInsets.all(16),
-        margin: EdgeInsets.only(top: 70),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -93,55 +93,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
                               },
                               child: Text('Hủy')),
                           TextButton(
-                              onPressed: () async {
-                                AppNavigator(context: context)
-                                    .showLoadingOverlay();
-                                await Future.delayed(Duration(seconds: 2));
-                                final totalQuestions = state.questions.length;
-                                final totalAnswerdQuestions = state.questions
-                                    .where((question) =>
-                                        question.userAnswer != null)
-                                    .toList();
-                                final correctQuestions = totalAnswerdQuestions
-                                    .where((question) =>
-                                        question.correctAnswer ==
-                                        question.userAnswer)
-                                    .toList();
-                                final incorrectQuestions = totalAnswerdQuestions
-                                    .where((question) =>
-                                        question.correctAnswer !=
-                                        question.userAnswer)
-                                    .toList();
-                                final notAnswerQuestions = totalQuestions -
-                                    totalAnswerdQuestions.length;
-
-                                final listeningScore =
-                                    correctQuestions.length * 10;
-                                final readingScore =
-                                    correctQuestions.length * 10;
-                                final overallScore =
-                                    listeningScore + readingScore;
-
-                                final resultModel = ResultModel(
-                                  testName: state.title,
-                                  totalQuestion: totalQuestions,
-                                  correctQuestion: correctQuestions.length,
-                                  incorrectQuestion: incorrectQuestions.length,
-                                  notAnswerQuestion: notAnswerQuestions,
-                                  overallScore: overallScore,
-                                  listeningScore: listeningScore,
-                                  readingScore: readingScore,
-                                  duration: remainingTime,
-                                  questions: state.questions,
-                                );
-                                if (context.mounted) {
-                                  GoRouter.of(context).pushReplacementNamed(
-                                      AppRouter.resultTest,
-                                      extra: {'resultModel': resultModel});
-                                  AppNavigator(context: context)
-                                      .hideLoadingOverlay();
-                                }
-                              },
+                              onPressed: submitTest,
                               child: Text(
                                 'Nộp bài',
                                 style: TextStyle(color: Colors.red),
@@ -186,5 +138,43 @@ class _QuestionIndexState extends State<QuestionIndex> {
         ),
       ),
     );
+  }
+
+  void submitTest() async {
+    AppNavigator(context: context).showLoadingOverlay();
+    final cubit = context.read<PracticeTestCubit>();
+    final totalQuestions = cubit.state.questions.length;
+    final answerdQuestions = cubit.state.questions
+        .where((question) => question.userAnswer != null)
+        .toList();
+    final totalAnswerdQuestions = answerdQuestions.length;
+    final totalCorrectQuestions = answerdQuestions
+        .where((question) => question.correctAnswer == question.userAnswer)
+        .toList()
+        .length;
+    final incorrectQuestions = totalAnswerdQuestions - totalCorrectQuestions;
+    final notAnswerQuestions = totalQuestions - totalAnswerdQuestions;
+
+    final listeningScore = totalCorrectQuestions * 10;
+    final readingScore = totalCorrectQuestions * 10;
+    final overallScore = listeningScore + readingScore;
+
+    final resultModel = ResultModel(
+      testName: cubit.state.title,
+      totalQuestion: totalQuestions,
+      correctQuestion: totalCorrectQuestions,
+      incorrectQuestion: incorrectQuestions,
+      notAnswerQuestion: notAnswerQuestions,
+      overallScore: overallScore,
+      listeningScore: listeningScore,
+      readingScore: readingScore,
+      duration: cubit.state.duration,
+      questions: cubit.state.questions,
+    );
+    if (mounted) {
+      GoRouter.of(context).pushReplacementNamed(AppRouter.resultTest,
+          extra: {'resultModel': resultModel});
+      AppNavigator(context: context).hideLoadingOverlay();
+    }
   }
 }

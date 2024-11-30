@@ -5,6 +5,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,35 +48,41 @@ class _BottomTabPageState extends State<BottomTabPage>
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.primary,
-        ),
-        child: IconButton(
-          onPressed: () {
-            setState(() {
-              _isChatVisible = !_isChatVisible;
-              if (_isChatVisible) {
-                _animationController.forward();
-              } else {
-                _animationController.reverse();
-              }
-            });
-          },
-          icon: _isChatVisible
-              ? Icon(
-                  Icons.close,
-                  color: AppColors.textWhite,
-                )
-              : Icon(
-                  Icons.message,
-                  color: AppColors.textWhite,
-                ),
-        ),
-      ),
+      floatingActionButton: Builder(builder: (context) {
+        final isLogin = SharedPreferencesHelper().getCookies() != null;
+        if (!isLogin) {
+          return Container();
+        }
+        return Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppColors.primary,
+          ),
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _isChatVisible = !_isChatVisible;
+                if (_isChatVisible) {
+                  _animationController.forward();
+                } else {
+                  _animationController.reverse();
+                }
+              });
+            },
+            icon: _isChatVisible
+                ? Icon(
+                    Icons.close,
+                    color: AppColors.textWhite,
+                  )
+                : Icon(
+                    Icons.message,
+                    color: AppColors.textWhite,
+                  ),
+          ),
+        );
+      }),
       body: Stack(
         children: [
           Row(
@@ -92,14 +99,21 @@ class _BottomTabPageState extends State<BottomTabPage>
                       onTap: () {
                         GoRouter.of(context).go(AppRouter.home);
                       },
-                      child: const Text(
-                        'Toeic',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textWhite,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: const Text(
+                          'Toeic',
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textWhite,
+                          ),
                         ),
                       ),
+                    ),
+                    const Divider(
+                      height: 1,
+                      color: AppColors.gray1,
                     ),
                     const SizedBox(height: 16),
                     // Center - Navigation
@@ -147,14 +161,14 @@ class _BottomTabPageState extends State<BottomTabPage>
                                       Text(
                                         item.title,
                                         style: TextStyle(
-                                          color: widget.navigationShell
-                                                      .currentIndex ==
-                                                  Constants.bottomTabs
-                                                          .indexOf(item) +
-                                                      1
-                                              ? AppColors.textBlack
-                                              : AppColors.textWhite,
-                                        ),
+                                            color: widget.navigationShell
+                                                        .currentIndex ==
+                                                    Constants.bottomTabs
+                                                            .indexOf(item) +
+                                                        1
+                                                ? AppColors.textBlack
+                                                : AppColors.textWhite,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
@@ -235,7 +249,7 @@ class _BottomTabPageState extends State<BottomTabPage>
                                               onPressed: () {
                                                 Navigator.pop(context);
                                                 injector<UserCubit>()
-                                                    .removeUser();
+                                                    .removeUser(context);
                                               },
                                               child: Text('Logout'),
                                             ),

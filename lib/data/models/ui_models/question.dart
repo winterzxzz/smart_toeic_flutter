@@ -1,3 +1,5 @@
+import 'package:toeic_desktop/data/models/entities/question.dart';
+
 class QuestionModel {
   final int id;
   final String? image;
@@ -8,6 +10,7 @@ class QuestionModel {
   final String option2;
   final String option3;
   final String? option4;
+  final List<Option> options;
   final String correctAnswer;
   final int part;
   final String? userAnswer;
@@ -22,6 +25,7 @@ class QuestionModel {
     required this.option2,
     required this.option3,
     this.option4,
+    required this.options,
     required this.correctAnswer,
     required this.part,
     this.userAnswer,
@@ -38,6 +42,7 @@ class QuestionModel {
     String? option2,
     String? option3,
     String? option4,
+    List<Option>? options,
     String? correctAnswer,
     int? part,
     String? userAnswer,
@@ -52,6 +57,7 @@ class QuestionModel {
       option2: option2 ?? this.option2,
       option3: option3 ?? this.option3,
       option4: option4 ?? this.option4,
+      options: options ?? this.options,
       correctAnswer: correctAnswer ?? this.correctAnswer,
       part: part ?? this.part,
       userAnswer: userAnswer ?? this.userAnswer,

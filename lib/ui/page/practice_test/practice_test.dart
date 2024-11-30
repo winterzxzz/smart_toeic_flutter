@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/heading_practice_test.dart';
@@ -49,24 +52,41 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              width: 16,
-            ),
-            SideQuestion(),
-            const SizedBox(
-              width: 16,
-            ),
-            QuestionIndex(),
-            const SizedBox(
-              width: 16,
-            ),
-          ],
+    return BlocListener<PracticeTestCubit, PracticeTestState>(
+      listener: (context, state) {
+        if (state.loadStatus == LoadStatus.loading) {
+          AppNavigator(context: context).showLoadingOverlay();
+        } else {
+          AppNavigator(context: context).hideLoadingOverlay();
+        }
+      },
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
+          body: Column(
+            children: [
+              HeadingPracticeTest(),
+              Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(child: SideQuestion()),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    QuestionIndex(),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -80,29 +100,34 @@ class SideQuestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        controller: context.read<PracticeTestCubit>().scrollController,
-        child: Column(
-          children: [
-            HeadingPracticeTest(),
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  // Select part
-                  BlocBuilder<PracticeTestCubit, PracticeTestState>(
-                    buildWhen: (previous, current) {
-                      return previous.parts != current.parts ||
-                          previous.focusPart != current.focusPart;
-                    },
-                    builder: (context, state) {
-                      return Row(
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: BlocSelector<PracticeTestCubit, PracticeTestState,
+          List<QuestionModel>>(
+        selector: (state) {
+          return state.questionsOfPart;
+        },
+        builder: (context, questions) {
+          return ScrollablePositionedList.builder(
+            scrollDirection: Axis.vertical,
+            itemScrollController:
+                context.read<PracticeTestCubit>().itemScrollController,
+            itemCount: questions.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return BlocBuilder<PracticeTestCubit, PracticeTestState>(
+                  buildWhen: (previous, current) {
+                    return previous.parts != current.parts ||
+                        previous.focusPart != current.focusPart;
+                  },
+                  builder: (context, state) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 16),
+                      child: Row(
                         children: state.parts
                             .map((part) => InkWell(
                                   onTap: () {
@@ -130,37 +155,15 @@ class SideQuestion extends StatelessWidget {
                                   ),
                                 ))
                             .toList(),
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  BlocSelector<PracticeTestCubit, PracticeTestState,
-                      List<QuestionModel>>(
-                    selector: (state) {
-                      return state.questionsOfPart;
-                    },
-                    builder: (context, questionsOfPart) {
-                      return SelectionArea(
-                        child: Column(
-                          children: questionsOfPart
-                              .map((question) => QuestionWidget(
-                                    question: question,
-                                  ))
-                              .toList(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-          ],
-        ),
+                      ),
+                    );
+                  },
+                );
+              }
+              return QuestionWidget(question: questions[index - 1]);
+            },
+          );
+        },
       ),
     );
   }

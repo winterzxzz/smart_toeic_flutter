@@ -29,57 +29,55 @@ class _MyListFlashCardPageState extends State<MyListFlashCardPage> {
         builder: (context, state) {
           if (state.loadStatus == LoadStatus.loading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state.loadStatus == LoadStatus.failure) {
-            return Center(child: Text(state.message));
           } else if (state.loadStatus == LoadStatus.success) {
             return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 32),
-                  Row(
-                    children: [
-                      FlashCardMyListItem(),
-                      const SizedBox(width: 16),
-                      FlashCardMyListItem(),
-                      const SizedBox(width: 16),
-                      FlashCardMyListItem(),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: 150,
-                      height: 45,
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.add, color: Colors.white),
-                          Text(
-                            'Create Flashcard',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 32),
+                    Row(
+                      children: [
+                        FlashCardMyListItem(),
+                        const SizedBox(width: 16),
+                        FlashCardMyListItem(),
+                        const SizedBox(width: 16),
+                        FlashCardMyListItem(),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        width: 150,
+                        height: 45,
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.add, color: Colors.white),
+                            Text(
+                              'Create Flashcard',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    'Flashcard Categories ',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  SetFlashCardGrid(flashcards: state.flashCards),
-                  const SizedBox(height: 32),
-                ],
-              ),
+                    const SizedBox(height: 32),
+                    Text(
+                      'Flashcard Categories ',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    SetFlashCardGrid(flashcards: state.flashCards),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             );
           }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
@@ -29,6 +30,16 @@ class AppRouter {
       routes: _routes,
       debugLogDiagnostics: true,
       navigatorKey: navigationKey,
+      redirect: (context, state) {
+        final isLogin = SharedPreferencesHelper().getCookies() != null;
+        if (!isLogin) {
+          if (state.uri.path == deThiOnline || state.uri.path == flashCards) {
+            return login;
+          }
+          return null;
+        }
+        return null;
+      },
       initialLocation: splash);
 
   ///main page
@@ -176,7 +187,8 @@ class AppRouter {
         final parts = args['parts'] as List<PartEnum>;
         final duration = args['duration'] as Duration;
         final testId = args['testId'] as String;
-        return PracticeTestPage(parts: parts, duration: duration, testId: testId);
+        return PracticeTestPage(
+            parts: parts, duration: duration, testId: testId);
       },
     ),
     GoRoute(
