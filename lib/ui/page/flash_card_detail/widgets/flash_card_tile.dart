@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_pop_over.dart';
+import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/form_flash_card_dia_log.dart';
+import 'package:toeic_desktop/ui/page/flashcard/widgets/set_flash_card_item.dart';
 
 class FlashcardTile extends StatefulWidget {
   final FlashCard flashcard;
@@ -65,8 +74,28 @@ class _FlashcardTileState extends State<FlashcardTile> {
                         ),
                         child: Icon(
                           Icons.volume_up_outlined,
-                          color: Colors.blue,
+                          color: AppColors.primary,
                         )),
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.purple,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      widget.flashcard.partOfSpeech.join(', '),
+                      style: TextStyle(
+                          color: AppColors.textWhite,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    onPressed: _showMenuDialog,
+                    icon: Icon(Icons.more_vert),
                   )
                 ],
               ),
@@ -119,6 +148,47 @@ class _FlashcardTileState extends State<FlashcardTile> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showMenuDialog() {
+    showPopMenuOver(
+      context,
+      ListItems(
+        popupMenus: [
+          PopupMenu(
+            title: 'Update',
+            icon: Icons.update,
+            onPressed: () async {
+              GoRouter.of(context).pop();
+              await Future.delayed(Duration(milliseconds: 100));
+              if (mounted) {
+                showCreateFlashCardDialog(context, flashCard: widget.flashcard,
+                    onSave: (flashCardRequest) {
+                  context.read<FlashCardDetailCubit>().updateFlashCard(
+                      widget.flashcard.id,
+                      flashCardRequest.word,
+                      flashCardRequest.translation);
+                });
+              }
+            },
+          ),
+          PopupMenu(
+            title: 'Delete',
+            icon: Icons.delete,
+            onPressed: () {
+              GoRouter.of(context).pop();
+              showConfirmDialog(context, 'Bạn có chắc chắn muốn xóa không?',
+                  'Hành động này không thể hoàn tác. Điều này sẽ xóa vĩnh viễn dữ liệu của bạn.',
+                  () {
+                context
+                    .read<FlashCardDetailCubit>()
+                    .deleteFlashCard(widget.flashcard.id);
+              });
+            },
+          ),
+        ],
       ),
     );
   }

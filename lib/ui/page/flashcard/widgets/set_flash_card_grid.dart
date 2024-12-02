@@ -15,8 +15,8 @@ class SetFlashCardGrid extends StatelessWidget {
       children: flashcards
           .map(
             (item) => SizedBox(
+              height: 250,
               width: MediaQuery.of(context).size.width / 4,
-              height: 180,
               child: FlashcardItem(flashcard: item),
             ),
           )

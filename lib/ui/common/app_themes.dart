@@ -134,6 +134,9 @@ class AppThemes {
         ),
         dialogTheme: DialogTheme(
           backgroundColor: appbarColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ));
   }
 }
@@ -148,8 +151,8 @@ class TElevatedButtonTheme {
       foregroundColor: AppColors.textWhite,
       backgroundColor: AppColors.primary,
       disabledForegroundColor: AppColors.gray1,
-      disabledBackgroundColor: AppColors.buttonBGDisabled,
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       textStyle: const TextStyle(
           color: AppColors.textWhite, fontWeight: FontWeight.w600),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -163,8 +166,8 @@ class TElevatedButtonTheme {
       foregroundColor: AppColors.textWhite,
       backgroundColor: AppColors.primary,
       disabledForegroundColor: AppColors.gray1,
-      disabledBackgroundColor: AppColors.buttonBGDisabled,
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       textStyle: const TextStyle(
           color: AppColors.textWhite, fontWeight: FontWeight.w600),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

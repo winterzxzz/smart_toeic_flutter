@@ -8,6 +8,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_cubit.dart';
 import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_state.dart';
+import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
 
 class SimulationTestScreen extends StatelessWidget {
   const SimulationTestScreen({super.key});
@@ -29,26 +30,6 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: PreferredSize(
-          preferredSize: Size.fromHeight(20),
-          child: DropdownButton<String>(
-            value: "all",
-            items: [
-              DropdownMenuItem<String>(
-                value: "all",
-                child: Text("Tất cả"),
-              ),
-              DropdownMenuItem<String>(
-                value: "short",
-                child: Text("Rút gọn"),
-              ),
-            ],
-            onChanged: (value) {},
-          ),
-        ),
-      ),
       body: BlocConsumer<DeThiOnlineCubit, DeThiOnlineState>(
         listener: (context, state) {
           if (state.loadStatus == LoadStatus.failure) {
@@ -63,7 +44,18 @@ class Page extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 150,
+                      height: 45,
+                      child: CustomDropdownExample(
+                        data: ["All", "Short"],
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     Wrap(
                       alignment: WrapAlignment.start,
                       runAlignment: WrapAlignment.start,
@@ -132,7 +124,7 @@ class SimulationTestCard extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   GoRouter.of(context).pushNamed(AppRouter.modeTest, extra: {
-                    'testId': test.id,
+                    'test': test,
                   });
                 },
                 child: Text("Chi tiết"),

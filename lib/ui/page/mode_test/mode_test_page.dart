@@ -2,136 +2,129 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/data/models/entities/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
 
 class ModeTestpage extends StatefulWidget {
-  const ModeTestpage({super.key, required this.testId});
+  const ModeTestpage({super.key, required this.test});
 
-  final String testId;
+  final Test test;
 
   @override
   State<ModeTestpage> createState() => _ModeTestpageState();
 }
 
 class _ModeTestpageState extends State<ModeTestpage> {
+  bool isPracticeMode = true;
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: TabBar(
-            splashBorderRadius: BorderRadius.circular(10),
-            dividerHeight: 0,
-            tabAlignment: TabAlignment.center,
-            indicatorSize: TabBarIndicatorSize.tab,
-            labelColor: Colors.blue, // Replace AppColors.primary
-            indicatorColor: Colors.blue, // Replace AppColors.primary
-            unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
-            tabs: const [
-              Tab(
-                height: 35,
-                child: Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.list),
-                      SizedBox(width: 4),
-                      Text('Luyện tập'),
-                    ],
-                  ),
-                ),
-              ),
-              Tab(
-                height: 35,
-                child: Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.book),
-                      SizedBox(width: 4),
-                      Text('Làm full test'),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: Text(widget.test.title),
+      ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
         ),
-        body: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          margin: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.1,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              // Specify height for TabBarView
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    PracticeMode(testId: widget.testId),
-                    SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.yellowAccent.withOpacity(.2)),
-                            child: Text(
-                              'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
-                              style: TextStyle(color: Colors.orange),
-                            ),
-                          ),
-                          SizedBox(height: 32),
-                          InkWell(
-                            onTap: () {
-                              GoRouter.of(context).pushReplacementNamed(
-                                  AppRouter.practiceTest,
-                                  extra: {
-                                    'testId': widget.testId,
-                                    'parts': Constants.parts
-                                        .map((part) => part.partEnum)
-                                        .toList(),
-                                    'duration': Duration(minutes: 120),
-                                  });
-                            },
-                            child: Container(
-                              width: 150,
-                              height: 45,
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Bắt đầu thi'.toUpperCase(),
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 32),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+        margin: EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            Center(
+              child: ToggleButtons(
+                borderRadius: BorderRadius.circular(8),
+                fillColor: AppColors.primary.withOpacity(0.2),
+                selectedColor: Colors.black,
+                color: Colors.grey,
+                isSelected: [isPracticeMode, !isPracticeMode],
+                onPressed: (index) {
+                  setState(() {
+                    isPracticeMode = index == 0;
+                  });
+                },
+                children: [
+                  Container(
+                    color: Colors.red,
+                    margin: const EdgeInsets.all(4),
+                    child: Text('Luyện tập'),
+                  ),
+                  Container(
+                    child: Text('Thực chiến'),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: isPracticeMode
+                  ? PracticeMode(testId: widget.test.id)
+                  : FullTestMode(widget: widget),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class FullTestMode extends StatelessWidget {
+  const FullTestMode({
+    super.key,
+    required this.widget,
+  });
+
+  final ModeTestpage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.yellowAccent.withOpacity(.2)),
+          child: Text(
+            'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+            style: TextStyle(color: Colors.orange),
+          ),
+        ),
+        SizedBox(height: 32),
+        InkWell(
+          onTap: () {
+            GoRouter.of(context)
+                .pushReplacementNamed(AppRouter.practiceTest, extra: {
+              'testId': widget.test.id,
+              'parts': Constants.parts.map((part) => part.partEnum).toList(),
+              'duration': Duration(minutes: 120),
+            });
+          },
+          child: Container(
+            width: 150,
+            height: 45,
+            padding: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              'Bắt đầu thi'.toUpperCase(),
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        SizedBox(height: 32),
+      ],
     );
   }
 }
@@ -191,32 +184,12 @@ class _PracticeModeState extends State<PracticeMode> {
             style: TextStyle(fontSize: 16),
           ),
           SizedBox(height: 16),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[100],
-              border: Border.all(color: Colors.grey[300]!),
-            ),
-            child: DropdownButton<String>(
-              underline: Container(),
-              isExpanded: true,
-              icon: Icon(Icons.arrow_drop_down),
-              borderRadius: BorderRadius.circular(10),
-              items: Constants.timeLimit
-                  .map((time) => DropdownMenuItem<String>(
-                        value: time,
-                        child: Text(time),
-                      ))
-                  .toList(),
-              hint: Text(Constants.timeLimit.first),
-              value: duration,
-              onChanged: (value) {
-                duration = value;
-                setState(() {});
-              },
-            ),
+          CustomDropdownExample(
+            data: Constants.timeLimit,
+            onChanged: (value) {
+              duration = value;
+              setState(() {});
+            },
           ),
           SizedBox(height: 16),
           InkWell(
@@ -302,6 +275,7 @@ class _QuestionPartState extends State<QuestionPart> {
             widget.part.tags.length,
             (index) => Chip(
               label: Text(widget.part.tags[index]),
+              side: BorderSide(color: Colors.blue.withOpacity(0.2)),
               backgroundColor: Colors.blue[50],
               labelStyle: TextStyle(color: Colors.blue),
             ),

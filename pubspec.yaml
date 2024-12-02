@@ -55,7 +55,6 @@ dependencies:
   either_dart: ^1.0.0
   # for dependency injection => https://pub.dev/packages/get_it
   get_it: ^7.7.0
-  fluttertoast: ^8.2.6
   flutter_speed_dial: ^7.0.0
   carousel_slider: ^5.0.0
   flutter_svg: ^2.0.10+1
@@ -69,6 +68,10 @@ dependencies:
   flutter_flip_card: ^0.0.6
   audioplayers: ^6.1.0
   scrollable_positioned_list: ^0.3.8
+  animated_custom_dropdown: ^3.1.1
+  popup_menu_plus: ^0.0.6
+  popover: ^0.3.0+1
+  toastification: ^2.3.0
 
 dev_dependencies:
   flutter_test:

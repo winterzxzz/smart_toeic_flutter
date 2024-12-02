@@ -32,6 +32,7 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      animationDuration: const Duration(milliseconds: 500),
       length: 3,
       child: Scaffold(
         appBar: AppBar(
@@ -39,14 +40,12 @@ class Page extends StatelessWidget {
           title: PreferredSize(
             preferredSize: Size.fromHeight(20),
             child: TabBar(
-              isScrollable: true,
-              splashBorderRadius: BorderRadius.circular(10),
               dividerHeight: 0,
+              tabAlignment: TabAlignment.center,
               indicatorSize: TabBarIndicatorSize.tab,
+              indicatorColor: AppColors.primary,
               labelColor: AppColors.primary, // Replace AppColors.primary
-              indicatorColor: AppColors.primary, // Replace AppColors.primary
-              unselectedLabelColor: Colors.grey,
-              tabAlignment: TabAlignment.start,
+              unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
               tabs: const [
                 Tab(
                   height: 35,

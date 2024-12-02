@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_page.dart';
-import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail.dart';
-import 'package:toeic_desktop/ui/page/flash_card_practice/flash_card_practice.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card.dart';
+import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
+import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.dart';
+import 'package:toeic_desktop/ui/page/flashcard/flash_card_page.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test.dart';
-import 'package:toeic_desktop/ui/page/quizz/quizz_page.dart';
+import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
 import 'package:toeic_desktop/ui/page/mode_test/mode_test_page.dart';
@@ -106,8 +108,8 @@ class AppRouter {
               path: modeTest,
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
-                final testId = args['testId'] as String;
-                return ModeTestpage(testId: testId);
+                final test = args['test'] as Test;
+                return ModeTestpage(test: test);
               },
             ),
           ],
@@ -125,18 +127,35 @@ class AppRouter {
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
                 final setId = args['setId'] as String;
-                return FlashCardDetailPage(setId: setId);
+                final title = args['title'] as String;
+                return FlashCardDetailPage(setId: setId, title: title);
               },
             ),
             GoRoute(
               name: flashCardPractive,
               path: flashCardPractive,
-              builder: (context, state) => const FlashCardPracticePage(),
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final title = args['title'] as String;
+                final flashCards = args['flashCards'] as List<FlashCard>;
+                return FlashCardPracticePage(
+                  title: title,
+                  flashCards: flashCards,
+                );
+              },
             ),
             GoRoute(
               name: quizz,
               path: quizz,
-              builder: (context, state) => const QuizzPage(),
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final title = args['title'] as String;
+                final flashCards = args['flashCards'] as List<FlashCard>;
+                return FlashCardQuizPage(
+                  title: title,
+                  flashCards: flashCards,
+                );
+              },
             ),
           ],
         ),

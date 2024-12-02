@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -201,11 +200,4 @@ class AppNavigator {
               Text(message, style: const TextStyle(color: AppColors.textWhite)),
         ),
       );
-
-  void showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-    );
-  }
 }
