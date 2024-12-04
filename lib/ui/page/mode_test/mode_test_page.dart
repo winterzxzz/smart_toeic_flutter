@@ -39,30 +39,29 @@ class _ModeTestpageState extends State<ModeTestpage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            Center(
-              child: ToggleButtons(
-                borderRadius: BorderRadius.circular(8),
-                fillColor: AppColors.primary.withOpacity(0.2),
-                selectedColor: Colors.black,
-                color: Colors.grey,
-                isSelected: [isPracticeMode, !isPracticeMode],
-                onPressed: (index) {
-                  setState(() {
-                    isPracticeMode = index == 0;
-                  });
-                },
-                children: [
-                  Container(
-                    color: Colors.red,
-                    margin: const EdgeInsets.all(4),
-                    child: Text('Luyện tập'),
-                  ),
-                  Container(
-                    child: Text('Thực chiến'),
-                  ),
-                ],
-              ),
+            ToggleButtons(
+              borderRadius: BorderRadius.circular(8),
+              fillColor: AppColors.primary.withOpacity(0.2),
+              selectedColor: Colors.black,
+              color: Colors.grey,
+              isSelected: [isPracticeMode, !isPracticeMode],
+              onPressed: (index) {
+                setState(() {
+                  isPracticeMode = index == 0;
+                });
+              },
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  child: Text('Practice'),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  child: Text('Test'),
+                ),
+              ],
             ),
+            SizedBox(height: 16),
             Expanded(
               child: isPracticeMode
                   ? PracticeMode(testId: widget.test.id)
@@ -85,46 +84,50 @@ class FullTestMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.yellowAccent.withOpacity(.2)),
-          child: Text(
-            'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
-            style: TextStyle(color: Colors.orange),
-          ),
-        ),
-        SizedBox(height: 32),
-        InkWell(
-          onTap: () {
-            GoRouter.of(context)
-                .pushReplacementNamed(AppRouter.practiceTest, extra: {
-              'testId': widget.test.id,
-              'parts': Constants.parts.map((part) => part.partEnum).toList(),
-              'duration': Duration(minutes: 120),
-            });
-          },
-          child: Container(
-            width: 150,
-            height: 45,
-            padding: EdgeInsets.all(4),
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            alignment: Alignment.center,
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.yellowAccent.withOpacity(.2)),
             child: Text(
-              'Bắt đầu thi'.toUpperCase(),
-              style: TextStyle(color: Colors.white),
+              'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+              style: TextStyle(color: Colors.orange),
             ),
           ),
-        ),
-        SizedBox(height: 32),
-      ],
+          SizedBox(height: 32),
+          InkWell(
+            onTap: () {
+              GoRouter.of(context)
+                  .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                'testId': widget.test.id,
+                'parts': Constants.parts.map((part) => part.partEnum).toList(),
+                'duration': Duration(minutes: 120),
+              });
+            },
+            child: Container(
+              width: 150,
+              height: 45,
+              padding: EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                'Bắt đầu thi'.toUpperCase(),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          SizedBox(height: 32),
+        ],
+      ),
     );
   }
 }

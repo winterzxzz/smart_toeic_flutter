@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/models/entities/test.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_cubit.dart';
-import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_state.dart';
+import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
+import 'package:toeic_desktop/ui/page/test_online/test_online_state.dart';
 import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
+import 'package:toeic_desktop/ui/page/test_online/widgets/test_card.dart';
 
 class SimulationTestScreen extends StatelessWidget {
   const SimulationTestScreen({super.key});
@@ -66,7 +64,7 @@ class Page extends StatelessWidget {
                         return SizedBox(
                           height: 200,
                           width: 300,
-                          child: SimulationTestCard(
+                          child: TestCard(
                             test: state.tests[index],
                           ),
                         );
@@ -80,58 +78,6 @@ class Page extends StatelessWidget {
           }
           return const SizedBox();
         },
-      ),
-    );
-  }
-}
-
-class SimulationTestCard extends StatelessWidget {
-  const SimulationTestCard({
-    super.key,
-    required this.test,
-  });
-
-  final Test test;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              test.title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              "${test.duration} | 📄 ${test.attempts.length} attempts | ${test.type}",
-            ),
-            SizedBox(height: 8),
-            Text(
-              "${test.numberOfParts} phần thi | ${test.numberOfQuestions} câu hỏi",
-              style: TextStyle(color: Colors.grey[600]),
-            ),
-            SizedBox(height: 8),
-            Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  GoRouter.of(context).pushNamed(AppRouter.modeTest, extra: {
-                    'test': test,
-                  });
-                },
-                child: Text("Chi tiết"),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

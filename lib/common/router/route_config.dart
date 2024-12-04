@@ -7,14 +7,15 @@ import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
-import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_page.dart';
+import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.dart';
+import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_result.dart';
 import 'package:toeic_desktop/ui/page/flashcard/flash_card_page.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test.dart';
+import 'package:toeic_desktop/ui/page/practice_test/practice_test_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
@@ -61,7 +62,8 @@ class AppRouter {
   static const String flashCardPractive = "/flash-card-practive";
   static const String modeTest = "/mode-test";
   static const String practiceTest = "/practice-test";
-  static const String quizz = "/quizz";
+  static const String flashCardQuizz = "/flash-card-quizz";
+  static const String flashCardQuizzResult = "/flash-card-quizz-result";
   static const String resultTest = "/result-test";
 
   // GoRouter configuration
@@ -145,8 +147,8 @@ class AppRouter {
               },
             ),
             GoRoute(
-              name: quizz,
-              path: quizz,
+              name: flashCardQuizz,
+              path: flashCardQuizz,
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
                 final title = args['title'] as String;
@@ -154,6 +156,19 @@ class AppRouter {
                 return FlashCardQuizPage(
                   title: title,
                   flashCards: flashCards,
+                );
+              },
+            ),
+            GoRoute(
+              name: flashCardQuizzResult,
+              path: flashCardQuizzResult,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final correctAnswers = args['correctAnswers'] as int;
+                final totalQuestions = args['totalQuestions'] as int;
+                return FlashCardQuizResultPage(
+                  correctAnswers: correctAnswers,
+                  totalQuestions: totalQuestions,
                 );
               },
             ),

@@ -1,395 +1,81 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/common/utils/constants.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/blog/widgets/blog_vertical.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/exam_card.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/result_card.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/service_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
+import 'package:toeic_desktop/ui/page/home/home_state.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/blog_section.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/result_section.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/service_section.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/slider_section.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/test_section.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => injector<HomeCubit>()..init(),
+      child: const Page(),
+    );
+  }
 }
 
-class _HomePageState extends State<HomePage> {
-  late CarouselSliderController _carouselController;
-  int currentIndex = 0;
-  List<String> images = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCFwiOk1DeEmRzq_PDSV0TFlMynCWTm4iFcg&s",
-    "https://i.ytimg.com/vi/7wqBQ4cdrhw/maxresdefault.jpg",
-    "https://dbkpop.com/wp-content/uploads/2022/07/aespa_Girls_Winter_6.jpg",
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _carouselController = CarouselSliderController();
-  }
+class Page extends StatelessWidget {
+  const Page({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Slider background images
-            _buildSliderSection(),
-            const SizedBox(height: 32),
-            // Toeic exam section
-            _buildExamSection(),
-            const SizedBox(height: 32),
-            _buildServiceSection(),
-            const SizedBox(height: 32),
-            _buildResultSection(),
-            const SizedBox(height: 32),
-            _buildBlogSection(),
-            const SizedBox(height: 32),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBlogSection() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
-      child: Column(
-        children: [
-          Text(
-            "Blog Knowledge",
-            style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  color: AppColors.textBlack,
-                  fontWeightDelta: 2,
-                ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: Constants.blogs.take(4).map((blog) {
-              return Expanded(
-                child: BlogVerticalCard(blogItem: blog),
+        child: BlocConsumer<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state.loadStatus == LoadStatus.loading) {
+              AppNavigator(context: context).showLoadingOverlay(
+                message: "Loading...",
               );
-            }).toList(),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildResultSection() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
-      child: Column(
-        children: [
-          Text(
-            "Your Exam Results",
-            style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  color: AppColors.textBlack,
-                  fontWeightDelta: 2,
-                ),
-          ),
-          const SizedBox(height: 16),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: ExamResultCard(
-                  title: 'TOEIC Listening and Reading',
-                  date: '2024-03-15',
-                  time: '2 hours',
-                  correct: 180,
-                  attempted: 195,
-                  total: 200,
-                ),
-              ),
-              Expanded(
-                child: ExamResultCard(
-                  title: 'TOEIC Speaking',
-                  date: '2024-03-20',
-                  time: '20 minutes',
-                  correct: 160,
-                  attempted: 170,
-                  total: 200,
-                ),
-              ),
-              Expanded(
-                child: ExamResultCard(
-                  title: 'TOEIC Writing',
-                  date: '2024-03-25',
-                  time: '60 minutes',
-                  correct: 140,
-                  attempted: 150,
-                  total: 200,
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildExamSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          Text(
-            "TOEIC Exam",
-            style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  color: AppColors.textBlack,
-                  fontWeightDelta: 2,
-                ),
-          ),
-          const SizedBox(height: 16),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: ExamCard(
-                  title: 'TOEIC Listening',
-                  description: 'Test your English listening skills',
-                  time: '45 min',
-                  questions: '100 questions',
-                  comments: '24 comments',
-                  parts: '4 parts',
-                ),
-              ),
-              Expanded(
-                child: ExamCard(
-                  title: 'TOEIC Reading',
-                  description: 'Assess your English reading comprehension',
-                  time: '75 min',
-                  questions: '100 questions',
-                  comments: '32 comments',
-                  parts: '3 parts',
-                ),
-              ),
-              Expanded(
-                child: ExamCard(
-                  title: 'TOEIC Speaking',
-                  description: 'Evaluate your English speaking abilities',
-                  time: '20 min',
-                  questions: '11 questions',
-                  comments: '18 comments',
-                  parts: '6 parts',
-                ),
-              ),
-              Expanded(
-                child: ExamCard(
-                  title: 'TOEIC Writing',
-                  description: 'Measure your English writing skills',
-                  time: '60 min',
-                  questions: '8 questions',
-                  comments: '22 comments',
-                  parts: '2 parts',
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSliderSection() {
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.5,
-      child: Stack(
-        children: [
-          CarouselSlider(
-            carouselController: _carouselController,
-            disableGesture: true,
-            options: CarouselOptions(
-              viewportFraction: 1,
-              height: MediaQuery.sizeOf(context).height * 0.5,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              onPageChanged: (index, reason) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-            ),
-            items: images.map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: CachedNetworkImage(
-                      imageUrl: i,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            } else if (state.loadStatus == LoadStatus.failure) {
+              AppNavigator(context: context).error(state.message);
+            }
+          },
+          builder: (context, state) {
+            if (state.loadStatus == LoadStatus.success) {
+              return Column(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      _carouselController.previousPage();
-                      setState(() {
-                        if (currentIndex > 0) {
-                          currentIndex--;
-                        } else {
-                          currentIndex = images.length - 1;
-                        }
-                      });
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      margin: const EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        border: Border.all(
-                          color: Colors.white,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 100),
-                      const Spacer(),
-                      Text(
-                        "Master TOEIC Listening",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayMedium!
-                            .apply(color: AppColors.textWhite),
-                      ),
-                      Text(
-                        "Enhance your TOEIC Listening skills with our comprehensive audio exercises and practice tests.",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .apply(color: AppColors.textWhite),
-                      ),
-                      const Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Button
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Start Free Trial",
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          // Button
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Learn More",
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      // slider indicator
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: images.map((i) {
-                          return Container(
-                            width: 16,
-                            height: 16,
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            decoration: BoxDecoration(
-                              color: currentIndex == images.indexOf(i)
-                                  ? AppColors.textWhite
-                                  : AppColors.primary,
-                              shape: BoxShape.circle,
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  )),
-                  InkWell(
-                    onTap: () {
-                      _carouselController.nextPage();
-                      setState(() {
-                        if (currentIndex < images.length - 1) {
-                          currentIndex++;
-                        } else {
-                          currentIndex = 0;
-                        }
-                      });
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      margin: const EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        border: Border.all(
-                          color: Colors.white,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  // Slider background images
+                  SliderSection(),
+                  const SizedBox(height: 32),
+                  // Toeic exam section
+                  TestSection(tests: state.tests),
+                  const SizedBox(height: 32),
+                  ResultSection(results: state.resultTests),
+                  const SizedBox(height: 32),
+                  ServiceSection(),
+                  const SizedBox(height: 32),
+                  BlogSection(),
+                  const SizedBox(height: 32),
                 ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildServiceSection() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
-      child: Column(
-        children: [
-          Text(
-            "Our TOEIC Preparation Services",
-            style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  color: AppColors.textBlack,
-                  fontWeightDelta: 2,
-                ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: Constants.services.map((service) {
-              return Expanded(
-                child: ServiceCard(item: service),
               );
-            }).toList(),
-          )
-        ],
+            }
+            return Column(
+              children: [
+                // Slider background images
+                SliderSection(),
+                const SizedBox(height: 32),
+                // Toeic exam section
+                const SizedBox(height: 32),
+                ServiceSection(),
+                const SizedBox(height: 32),
+                BlogSection(),
+                const SizedBox(height: 32),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

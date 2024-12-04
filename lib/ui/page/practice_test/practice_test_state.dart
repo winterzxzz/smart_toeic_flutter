@@ -14,7 +14,7 @@ class PracticeTestState extends Equatable {
   final PartEnum focusPart;
   final int focusQuestion;
   final Duration duration;
-  final bool isTestMode;
+  final bool isShowAnswer;
 
   const PracticeTestState({
     required this.loadStatus,
@@ -27,7 +27,7 @@ class PracticeTestState extends Equatable {
     required this.focusPart,
     required this.focusQuestion,
     required this.duration,
-    required this.isTestMode,
+    required this.isShowAnswer,
   });
 
   // init state
@@ -44,7 +44,7 @@ class PracticeTestState extends Equatable {
       focusPart: PartEnum.part1,
       focusQuestion: 1,
       duration: Duration(minutes: 120),
-      isTestMode: false,
+      isShowAnswer: false,
     );
   }
 
@@ -58,10 +58,10 @@ class PracticeTestState extends Equatable {
     PartEnum? focusPart,
     int? focusQuestion,
     Duration? duration,
-    bool? isTestMode,
     String? title,
     String? message,
     String? testId,
+    bool? isShowAnswer,
   }) {
     return PracticeTestState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -73,8 +73,8 @@ class PracticeTestState extends Equatable {
       focusPart: focusPart ?? this.focusPart,
       focusQuestion: focusQuestion ?? this.focusQuestion,
       duration: duration ?? this.duration,
-      isTestMode: isTestMode ?? this.isTestMode,
       title: title ?? this.title,
+      isShowAnswer: isShowAnswer ?? this.isShowAnswer,
     );
   }
 
@@ -89,9 +89,9 @@ class PracticeTestState extends Equatable {
         focusPart,
         focusQuestion,
         duration,
-        isTestMode,
         title,
         message,
         testId,
+        isShowAnswer,
       ];
 }

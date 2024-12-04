@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:toeic_desktop/data/models/entities/result_test.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/score_tile.dart';
 
 class ExamResultCard extends StatelessWidget {
-  final String title;
-  final String date;
-  final String time;
-  final int correct;
-  final int attempted;
-  final int total;
+  final ResultTest result;
 
   const ExamResultCard({
     super.key,
-    required this.title,
-    required this.date,
-    required this.time,
-    required this.correct,
-    required this.attempted,
-    required this.total,
+    required this.result,
   });
 
   @override
@@ -35,7 +27,7 @@ class ExamResultCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              result.testId.title,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -47,7 +39,8 @@ class ExamResultCard extends StatelessWidget {
                 const Icon(Icons.calendar_today,
                     size: 16, color: Colors.black54),
                 const SizedBox(width: 4),
-                Text(date, style: const TextStyle(color: Colors.black54)),
+                Text(DateFormat('dd/MM/yyyy').format(result.createdAt),
+                    style: const TextStyle(color: Colors.black54)),
               ],
             ),
             const SizedBox(height: 4),
@@ -55,7 +48,9 @@ class ExamResultCard extends StatelessWidget {
               children: [
                 const Icon(Icons.access_time, size: 16, color: Colors.black54),
                 const SizedBox(width: 4),
-                Text(time, style: const TextStyle(color: Colors.black54)),
+                Text(
+                    '${result.secondTime}s',
+                    style: const TextStyle(color: Colors.black54)),
               ],
             ),
             const SizedBox(height: 16),
@@ -65,19 +60,19 @@ class ExamResultCard extends StatelessWidget {
                 ScoreTile(
                   icon: Icons.check_circle,
                   label: 'Correct',
-                  score: correct,
+                  score: result.numberOfCorrectAnswers,
                   color: Colors.green,
                 ),
                 ScoreTile(
                   icon: Icons.edit,
                   label: 'Attempted',
-                  score: attempted,
+                  score: result.testId.attempts.length,
                   color: Colors.blue,
                 ),
                 ScoreTile(
                   icon: Icons.help,
                   label: 'Total',
-                  score: total,
+                  score: result.numberOfQuestions,
                   color: Colors.orange,
                 ),
               ],

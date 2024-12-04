@@ -6,26 +6,39 @@ class FlashCardQuizzState extends Equatable {
   final LoadStatus loadStatus;
   final String message;
   final List<FlashCardQuizz> flashCardQuizzs;
+  final int currentIndex;
+  final Map<String, String> selectedOption;
 
   const FlashCardQuizzState(
       {required this.loadStatus,
       required this.flashCardQuizzs,
-      required this.message});
+      required this.message,
+      required this.currentIndex,
+      required this.selectedOption});
 
   factory FlashCardQuizzState.initial() => FlashCardQuizzState(
-      loadStatus: LoadStatus.initial, flashCardQuizzs: [], message: '');
+      loadStatus: LoadStatus.initial,
+      flashCardQuizzs: [],
+      message: '',
+      currentIndex: 0,
+      selectedOption: {});
 
   FlashCardQuizzState copyWith({
     LoadStatus? loadStatus,
     List<FlashCardQuizz>? flashCardQuizzs,
     String? message,
+    int? currentIndex,
+    Map<String, String>? selectedOption,
   }) =>
       FlashCardQuizzState(
         loadStatus: loadStatus ?? this.loadStatus,
         flashCardQuizzs: flashCardQuizzs ?? this.flashCardQuizzs,
         message: message ?? this.message,
+        currentIndex: currentIndex ?? this.currentIndex,
+        selectedOption: selectedOption ?? this.selectedOption,
       );
 
   @override
-  List<Object> get props => [loadStatus, flashCardQuizzs, message];
+  List<Object> get props =>
+      [loadStatus, flashCardQuizzs, message, currentIndex, selectedOption];
 }

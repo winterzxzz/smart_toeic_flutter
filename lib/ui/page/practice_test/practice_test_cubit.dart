@@ -1,11 +1,16 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
@@ -53,14 +58,24 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     );
   }
 
-  void initPracticeTest(
-      List<PartEnum> parts, Duration duration, String testId) async {
-    emit(state.copyWith(
-        parts: parts,
-        duration: duration,
-        focusPart: parts.first,
-        testId: testId));
-    await getPracticeTestDetail(testId, parts);
+  void initPracticeTest(List<PartEnum> parts, Duration duration, String testId,
+      {List<QuestionModel>? questions}) async {
+    if (questions != null) {
+      emit(state.copyWith(
+          parts: parts,
+          duration: duration,
+          focusPart: parts.first,
+          testId: testId,
+          isShowAnswer: true,
+          questions: questions));
+    } else {
+      emit(state.copyWith(
+          parts: parts,
+          duration: duration,
+          focusPart: parts.first,
+          testId: testId));
+      await getPracticeTestDetail(testId, parts);
+    }
   }
 
   List<QuestionModel> _setQuestionFollowPartSelected(
@@ -125,6 +140,71 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       questions: newQuestions,
       questionsOfPart: newQuestionsOfPart,
     ));
+  }
+
+  void submitTest(BuildContext context, Duration remainingTime) async {
+    AppNavigator(context: context).showLoadingOverlay();
+    final totalQuestions = state.questions.length;
+    final answerdQuestions = state.questions
+        .where((question) => question.userAnswer != null)
+        .toList();
+    final totalAnswerdQuestions = answerdQuestions.length;
+    final totalCorrectQuestions = answerdQuestions
+        .where((question) => question.correctAnswer == question.userAnswer)
+        .toList()
+        .length;
+    final incorrectQuestions = totalAnswerdQuestions - totalCorrectQuestions;
+    final notAnswerQuestions = totalQuestions - totalAnswerdQuestions;
+
+    final listeningScore = totalCorrectQuestions * 10;
+    final readingScore = totalCorrectQuestions * 10;
+    final overallScore = listeningScore + readingScore;
+    final totalDurationDoIt = state.duration - remainingTime;
+
+    final resultModel = ResultModel(
+      testName: state.title,
+      totalQuestion: totalQuestions,
+      correctQuestion: totalCorrectQuestions,
+      incorrectQuestion: incorrectQuestions,
+      notAnswerQuestion: notAnswerQuestions,
+      overallScore: overallScore,
+      listeningScore: listeningScore,
+      readingScore: readingScore,
+      duration: totalDurationDoIt,
+      questions: state.questions,
+    );
+
+    ResultTestRequest request = ResultTestRequest(
+      rs: Rs(
+        testId: state.testId,
+        numberOfQuestions: totalQuestions,
+        secondTime: totalDurationDoIt.inSeconds,
+      ),
+      rsis: answerdQuestions
+          .map((question) => Rsi(
+                useranswer: question.userAnswer!,
+                correctanswer: question.correctAnswer,
+                questionNum: question.id.toString(),
+                rsiPart: question.part,
+              ))
+          .toList(),
+    );
+
+    final response = await _testRepository.submitTest(request);
+    response.fold(
+      (l) => emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+      )),
+      (r) => emit(state.copyWith(
+        loadStatus: LoadStatus.success,
+      )),
+    );
+    if (context.mounted) {
+      AppNavigator(context: context).hideLoadingOverlay();
+      AppNavigator(context: context).success('Submit test success');
+      GoRouter.of(context).pushReplacementNamed(AppRouter.resultTest,
+          extra: {'resultModel': resultModel});
+    }
   }
 
   @override

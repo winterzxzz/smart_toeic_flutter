@@ -19,11 +19,13 @@ class PracticeTestPage extends StatefulWidget {
     required this.parts,
     required this.duration,
     required this.testId,
+    this.questions,
   });
 
   final List<PartEnum> parts;
   final Duration duration;
   final String testId;
+  final List<QuestionModel>? questions;
 
   @override
   State<PracticeTestPage> createState() => _PracticeTestPageState();

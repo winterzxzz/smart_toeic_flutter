@@ -102,84 +102,7 @@ class _PageState extends State<Page> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 32),
-          child: Column(
-            children: [
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final flashCards =
-                        context.read<FlashCardDetailCubit>().state.flashCards;
-                    GoRouter.of(context).pushNamed(AppRouter.quizz, extra: {
-                      'title': widget.title,
-                      'flashCards': flashCards,
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(Icons.play_circle_outline_rounded),
-                      SizedBox(width: 8),
-                      Text('Luyện tập flashcards'),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        final flashCards = context
-                            .read<FlashCardDetailCubit>()
-                            .state
-                            .flashCards;
-                        GoRouter.of(context)
-                            .pushNamed(AppRouter.flashCardPractive, extra: {
-                          'title': widget.title,
-                          'flashCards': flashCards,
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.shuffle),
-                          SizedBox(width: 8),
-                          Text(
-                            'Xem ngẫu nhiên',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        GoRouter.of(context).pushNamed(AppRouter.quizz);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.pause_circle_outline_rounded),
-                          SizedBox(width: 8),
-                          Text('Dừng học bộ này'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
+      body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
                   listener: (context, state) {
                 if (state.loadStatus == LoadStatus.failure) {
                   AppNavigator(context: context).error(state.message);
@@ -189,19 +112,101 @@ class _PageState extends State<Page> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (state.loadStatus == LoadStatus.success) {
-                  return Column(
-                    children: [
-                      ...state.flashCards.map(
-                          (flashcard) => FlashcardTile(flashcard: flashcard)),
-                    ],
+                  return SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 32),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 32),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                final flashCards = context
+                                    .read<FlashCardDetailCubit>()
+                                    .state
+                                    .flashCards;
+                                GoRouter.of(context).pushNamed(
+                                    AppRouter.flashCardQuizz,
+                                    extra: {
+                                      'title': widget.title,
+                                      'flashCards': flashCards,
+                                    });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.play_circle_outline_rounded),
+                                  SizedBox(width: 8),
+                                  Text('Luyện tập flashcards'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    final flashCards = context
+                                        .read<FlashCardDetailCubit>()
+                                        .state
+                                        .flashCards;
+                                    GoRouter.of(context).pushNamed(
+                                        AppRouter.flashCardPractive,
+                                        extra: {
+                                          'title': widget.title,
+                                          'flashCards': flashCards,
+                                        });
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.shuffle),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        'Xem ngẫu nhiên',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.pause_circle_outline_rounded),
+                                      SizedBox(width: 8),
+                                      Text('Dừng học bộ này'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Column(
+                                children: [
+                                  ...state.flashCards.map((flashcard) =>
+                                      FlashcardTile(flashcard: flashcard)),
+                                ],
+                              )
+                        ],
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox();
               })
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

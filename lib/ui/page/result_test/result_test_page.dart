@@ -14,7 +14,7 @@ class ResultTestPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Kết quả thi: ${resultModel.testName}'),
+        title: Text('Test Result: ${resultModel.testName}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,21 +33,21 @@ class ResultTestPage extends StatelessWidget {
                 children: [
                   ResultInfoItem(
                     icon: Icons.check,
-                    title: 'Kết quả làm bài',
+                    title: 'Test Result',
                     value:
                         '${resultModel.correctQuestion}/${resultModel.totalQuestion}',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(
                     icon: Icons.check,
-                    title: 'Độ chính xác(#đúng/#tổng)',
+                    title: 'Accuracy(#correct/#total)',
                     value:
                         '${((resultModel.correctQuestion / resultModel.totalQuestion) * 100).toStringAsFixed(2)}%',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(
                     icon: Icons.timer,
-                    title: 'Thời gian hoàn thành',
+                    title: 'Time to finish',
                     value:
                         '${resultModel.duration.inMinutes}:${resultModel.duration.inSeconds % 60 < 10 ? '0' : ''}${resultModel.duration.inSeconds % 60}',
                   ),
@@ -65,19 +65,15 @@ class ResultTestPage extends StatelessWidget {
                   Row(
                     children: [
                       ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.textBlue,
-                          ),
                           onPressed: () {
                             GoRouter.of(context)
                                 .pushReplacementNamed(AppRouter.practiceTest);
                           },
-                          child: Text('Xem đáp án')),
+                          child: Text('View Answer')),
                       SizedBox(width: 16),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                AppColors.textBlue.withOpacity(0.15),
+                            backgroundColor: AppColors.textWhite,
                             side: BorderSide(
                               color: AppColors.textBlack,
                             ),
@@ -86,7 +82,7 @@ class ResultTestPage extends StatelessWidget {
                             GoRouter.of(context).pop();
                           },
                           child: Text(
-                            'Quay về trang đề thi',
+                            'Back to test page',
                             style: TextStyle(color: AppColors.textBlack),
                           )),
                     ],
@@ -96,16 +92,16 @@ class ResultTestPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                          child: _buildScoreBox('Trả lời đúng',
+                          child: _buildScoreBox('Correct',
                               '${resultModel.correctQuestion}', Colors.green)),
                       Expanded(
                           child:
-                              _buildScoreBox('Trả lời sai', '0', Colors.red)),
+                              _buildScoreBox('Incorrect', '0', Colors.red)),
                       Expanded(
-                          child: _buildScoreBox('Bỏ qua',
+                          child: _buildScoreBox('Skip',
                               '${resultModel.notAnswerQuestion}', Colors.grey)),
                       Expanded(
-                          child: _buildScoreBox('Điểm',
+                          child: _buildScoreBox('Score',
                               '${resultModel.overallScore}', Colors.blue)),
                     ],
                   ),
@@ -157,11 +153,11 @@ class ResultTestPage extends StatelessWidget {
         child: Column(
           children: [
             Icon(
-              label == 'Trả lời đúng'
+              label == 'Correct'
                   ? Icons.check_circle
-                  : label == 'Trả lời sai'
+                  : label == 'Incorrect'
                       ? Icons.cancel
-                      : label == 'Bỏ qua'
+                      : label == 'Skip'
                           ? Icons.remove_circle
                           : Icons.flag,
               color: color,
@@ -187,7 +183,8 @@ class ResultTestPage extends StatelessWidget {
             SizedBox(height: 8),
             Text(score,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Text('Trả lời đúng: $correct', style: TextStyle(fontSize: 12)),
+            Text('Correct: $correct',
+                style: TextStyle(fontSize: 12, color: AppColors.success)),
           ],
         ),
       ),
@@ -220,7 +217,7 @@ class ResultInfoItem extends StatelessWidget {
             child: Text(title),
           ),
           const Spacer(),
-          Text(value, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.success)),
         ],
       ),
     );

@@ -48,16 +48,23 @@ class AppNavigator {
     );
   }
 
-  void showLoadingOverlay() {
+  void showLoadingOverlay({String? message}) {
     context.loaderOverlay.show(widgetBuilder: (dynamic) {
       return Container(
         width: double.infinity,
         height: double.infinity,
         color: AppColors.backgroundOverlay,
-        child: const Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: AppColors.primary),
+            CircularProgressIndicator(color: AppColors.textWhite),
+            if (message != null) const SizedBox(height: 16),
+            if (message != null)
+              Text(
+                message,
+                style: TextStyle(color: AppColors.textWhite),
+              ),
           ],
         ),
       );

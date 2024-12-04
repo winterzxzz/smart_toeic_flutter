@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
-import 'package:toeic_desktop/ui/page/de_thi_online/de_thi_online_state.dart';
+import 'package:toeic_desktop/ui/page/test_online/test_online_state.dart';
 
 class DeThiOnlineCubit extends Cubit<DeThiOnlineState> {
   final TestRepository _testRepository;

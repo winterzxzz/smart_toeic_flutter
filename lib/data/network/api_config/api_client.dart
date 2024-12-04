@@ -4,11 +4,13 @@ import 'package:toeic_desktop/data/models/entities/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card_ai_gen.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card_quizz.dart';
 import 'package:toeic_desktop/data/models/entities/question.dart';
+import 'package:toeic_desktop/data/models/entities/result_test.dart';
 import 'package:toeic_desktop/data/models/entities/set_flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/test.dart';
 import 'package:toeic_desktop/data/models/entities/user_entity.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
+import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 
 part 'api_client.g.dart';
 
@@ -92,13 +94,28 @@ abstract class ApiClient {
     @Path("testId") String testId,
   );
 
-  @POST('/user/ai-chat/get-fc-infor')
+  @POST('/user/result/items')
+  Future<ResultTest> createResultItem(
+    @Body() ResultTestRequest request,
+  );
+
+  @POST('/user/ai-chat/get-fc-infor/json')
   Future<FlashCardAiGen> getFlashCardInforByAI(
     @Field("prompt") String prompt,
   );
 
-  @POST('/user/ai-chat/get-quizz')
+  @POST('/user/ai-chat/get-quizz/json')
   Future<List<FlashCardQuizz>> getFlashCardQuizz(
     @Body() FlashCardQuizRequest request,
+  );
+
+  @GET('/user/result-item/result?resultId={resultId}')
+  Future<ResultTest> getResultTest(
+    @Path("resultId") String resultId,
+  );
+
+  @GET('/user/result/user?limit={limit}')
+  Future<List<ResultTest>> getResultTestUser(
+    @Query("limit") int limit,
   );
 }
