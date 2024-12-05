@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
@@ -62,7 +61,8 @@ class _PageState extends State<Page> {
                 if (state.flashCardQuizzs.isEmpty) {
                   return Center(child: Text('No data'));
                 }
-                final flashCardQuizz = state.flashCardQuizzs[state.currentIndex];
+                final flashCardQuizz =
+                    state.flashCardQuizzs[state.currentIndex];
                 return Container(
                   width: MediaQuery.sizeOf(context).width * 0.6,
                   height: MediaQuery.sizeOf(context).height * 0.7,
@@ -114,7 +114,8 @@ class _PageState extends State<Page> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: flashCardQuizz.quiz.options
-                              .map((e) => _buildRadioOption(flashCardQuizz.flashcardId, e))
+                              .map((e) => _buildRadioOption(
+                                  flashCardQuizz.flashcardId, e))
                               .toList(),
                         ),
                       ),
@@ -130,8 +131,8 @@ class _PageState extends State<Page> {
                                   : () {
                                       context
                                           .read<FlashCardQuizzCubit>()
-                                    .previousQuestion();
-                              },
+                                          .previousQuestion();
+                                    },
                               child: Text('Previous'),
                             ),
                           ),
@@ -141,13 +142,15 @@ class _PageState extends State<Page> {
                               onPressed: state.currentIndex ==
                                       state.flashCardQuizzs.length - 1
                                   ? () {
-                                    
-                                  }
+                                      context
+                                          .read<FlashCardQuizzCubit>()
+                                          .finishQuizz(context);
+                                    }
                                   : () {
                                       context
                                           .read<FlashCardQuizzCubit>()
-                                    .nextQuestion();
-                              },
+                                          .nextQuestion();
+                                    },
                               child: state.currentIndex ==
                                       state.flashCardQuizzs.length - 1
                                   ? Text('Finish')
@@ -176,9 +179,7 @@ class _PageState extends State<Page> {
       hoverColor: Colors.red,
       splashColor: Colors.red,
       onTap: () {
-        context
-            .read<FlashCardQuizzCubit>()
-            .selectOption(flashcardId, text);
+        context.read<FlashCardQuizzCubit>().selectOption(flashcardId, text);
       },
       child: Container(
         padding: EdgeInsets.all(16),

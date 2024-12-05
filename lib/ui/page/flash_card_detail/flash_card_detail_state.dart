@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card_ai_gen.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 
 class FlashCardDetailState extends Equatable {

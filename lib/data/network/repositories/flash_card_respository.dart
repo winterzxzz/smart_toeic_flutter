@@ -1,25 +1,31 @@
 import 'package:either_dart/either.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card_ai_gen.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card_quizz.dart';
-import 'package:toeic_desktop/data/models/entities/set_flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 
 abstract class FlashCardRespository {
-  Future<Either<Exception, List<SetFlashCard>>> getSetFlashCards();
-  Future<Either<Exception, List<FlashCard>>> getFlashCards(String setId);
   Future<Either<Exception, SetFlashCard>> createFlashCardSet(
       String title, String description);
+  Future<Either<Exception, List<SetFlashCard>>> getSetFlashCards();
   Future<Either<Exception, void>> deleteFlashCardSet(String id);
   Future<Either<Exception, SetFlashCard>> updateFlashCardSet(
       String id, String title, String description);
+
   Future<Either<Exception, FlashCard>> createFlashCard(
       FlashCardRequest flashCardRequest);
+  Future<Either<Exception, List<FlashCard>>> getFlashCards(String setId);
   Future<Either<Exception, FlashCard>> updateFlashCard(
       String id, String word, String translation);
   Future<Either<Exception, void>> deleteFlashCard(String id);
+
+  Future<Either<Exception, List<SetFlashCardLearning>>> getSetFlashCardsLearning();
+  Future<Either<Exception, void>> deleteFlashCardLearning(String learningSetId);
+
   Future<Either<Exception, FlashCardAiGen>> getFlashCardInforByAI(
       String prompt);
   Future<Either<Exception, List<FlashCardQuizz>>> getFlashCardQuizz(
@@ -35,6 +41,17 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
   Future<Either<Exception, List<SetFlashCard>>> getSetFlashCards() async {
     try {
       final response = await _apiClient.getFlashCardUser();
+      return Right(response);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<SetFlashCardLearning>>>
+      getSetFlashCardsLearning() async {
+    try {
+      final response = await _apiClient.getFlashCardLearning();
       return Right(response);
     } on Exception catch (e) {
       return Left(e);
@@ -133,6 +150,17 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
     try {
       final response = await _apiClient.getFlashCardQuizz(request);
       return Right(response);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+  
+  @override
+  Future<Either<Exception, void>> deleteFlashCardLearning(
+      String learningSetId) async {
+    try {
+      await _apiClient.deleteFlashCardLearning(learningSetId);
+      return Right(null);
     } on Exception catch (e) {
       return Left(e);
     }

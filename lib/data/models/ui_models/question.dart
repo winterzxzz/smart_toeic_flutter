@@ -1,4 +1,4 @@
-import 'package:toeic_desktop/data/models/entities/question.dart';
+import 'package:toeic_desktop/data/models/entities/test/question.dart';
 
 class QuestionModel {
   final int id;

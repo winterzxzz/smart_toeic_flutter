@@ -40,11 +40,24 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     });
   }
 
+  void initPracticeTest(List<PartEnum> parts, Duration duration, String testId,
+      String? resultId) async {
+    emit(state.copyWith(
+        parts: parts,
+        duration: duration,
+        focusPart: parts.first,
+        testId: testId));
+    await getPracticeTestDetail(testId, parts, resultId);
+  }
+
   Future<void> getPracticeTestDetail(
-      String testId, List<PartEnum> parts) async {
+      String testId, List<PartEnum> parts, String? resultId) async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
-    final response = await _testRepository.getDetailTest(testId);
-    response.fold(
+    final res1 = await _testRepository.getDetailTest(testId);
+    if (resultId != null) {
+      await getResultTestByResultId(resultId);
+    }
+    res1.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
       )),
@@ -56,26 +69,6 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
             .toList(),
       )),
     );
-  }
-
-  void initPracticeTest(List<PartEnum> parts, Duration duration, String testId,
-      {List<QuestionModel>? questions}) async {
-    if (questions != null) {
-      emit(state.copyWith(
-          parts: parts,
-          duration: duration,
-          focusPart: parts.first,
-          testId: testId,
-          isShowAnswer: true,
-          questions: questions));
-    } else {
-      emit(state.copyWith(
-          parts: parts,
-          duration: duration,
-          focusPart: parts.first,
-          testId: testId));
-      await getPracticeTestDetail(testId, parts);
-    }
   }
 
   List<QuestionModel> _setQuestionFollowPartSelected(
@@ -161,19 +154,6 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     final overallScore = listeningScore + readingScore;
     final totalDurationDoIt = state.duration - remainingTime;
 
-    final resultModel = ResultModel(
-      testName: state.title,
-      totalQuestion: totalQuestions,
-      correctQuestion: totalCorrectQuestions,
-      incorrectQuestion: incorrectQuestions,
-      notAnswerQuestion: notAnswerQuestions,
-      overallScore: overallScore,
-      listeningScore: listeningScore,
-      readingScore: readingScore,
-      duration: totalDurationDoIt,
-      questions: state.questions,
-    );
-
     ResultTestRequest request = ResultTestRequest(
       rs: Rs(
         testId: state.testId,
@@ -195,16 +175,41 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
       )),
+      (r) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.success,
+        ));
+        final resultModel = ResultModel(
+          resultId: r.id,
+          testName: state.title,
+          totalQuestion: totalQuestions,
+          correctQuestion: totalCorrectQuestions,
+          incorrectQuestion: incorrectQuestions,
+          notAnswerQuestion: notAnswerQuestions,
+          overallScore: overallScore,
+          listeningScore: listeningScore,
+          readingScore: readingScore,
+          duration: totalDurationDoIt,
+        );
+        if (context.mounted) {
+          AppNavigator(context: context).hideLoadingOverlay();
+          AppNavigator(context: context).success('Submit test success');
+          GoRouter.of(context).pushReplacementNamed(AppRouter.resultTest,
+              extra: {'resultModel': resultModel});
+        }
+      },
+    );
+  }
+
+  Future<void> getResultTestByResultId(String resultId) async {
+    final response = await _testRepository.getResultTestByResultId(resultId);
+    response.fold(
+      (l) => emit(state.copyWith(loadStatus: LoadStatus.failure)),
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
+        questionsResult: r,
       )),
     );
-    if (context.mounted) {
-      AppNavigator(context: context).hideLoadingOverlay();
-      AppNavigator(context: context).success('Submit test success');
-      GoRouter.of(context).pushReplacementNamed(AppRouter.resultTest,
-          extra: {'resultModel': resultModel});
-    }
   }
 
   @override

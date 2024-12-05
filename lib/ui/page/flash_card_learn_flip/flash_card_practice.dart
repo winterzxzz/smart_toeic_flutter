@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_learn_flip_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/widgets/flash_card_item_back.dart';

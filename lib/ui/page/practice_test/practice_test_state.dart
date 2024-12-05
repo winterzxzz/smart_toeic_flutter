@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
@@ -9,6 +10,7 @@ class PracticeTestState extends Equatable {
   final String testId;
   final List<QuestionModel> questions;
   final List<QuestionModel> questionsOfPart;
+  final List<QuestionResult> questionsResult;
   final List<PartEnum> parts;
   final String title;
   final PartEnum focusPart;
@@ -24,10 +26,11 @@ class PracticeTestState extends Equatable {
     required this.questionsOfPart,
     required this.parts,
     required this.title,
-    required this.focusPart,
+    required this.focusPart,  
     required this.focusQuestion,
     required this.duration,
     required this.isShowAnswer,
+    required this.questionsResult,
   });
 
   // init state
@@ -45,6 +48,7 @@ class PracticeTestState extends Equatable {
       focusQuestion: 1,
       duration: Duration(minutes: 120),
       isShowAnswer: false,
+      questionsResult: [],
     );
   }
 
@@ -62,6 +66,7 @@ class PracticeTestState extends Equatable {
     String? message,
     String? testId,
     bool? isShowAnswer,
+    List<QuestionResult>? questionsResult,
   }) {
     return PracticeTestState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -75,6 +80,7 @@ class PracticeTestState extends Equatable {
       duration: duration ?? this.duration,
       title: title ?? this.title,
       isShowAnswer: isShowAnswer ?? this.isShowAnswer,
+      questionsResult: questionsResult ?? this.questionsResult,
     );
   }
 
@@ -93,5 +99,6 @@ class PracticeTestState extends Equatable {
         message,
         testId,
         isShowAnswer,
+        questionsResult,
       ];
 }

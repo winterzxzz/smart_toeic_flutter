@@ -1,16 +1,23 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning_grid.dart';
 
-class StudyingFlashCardPage extends StatefulWidget {
-  const StudyingFlashCardPage({super.key});
+class SetFlashCardLearningPage extends StatefulWidget {
+  const SetFlashCardLearningPage({super.key});
 
   @override
-  State<StudyingFlashCardPage> createState() => _StudyingFlashCardPageState();
+  State<SetFlashCardLearningPage> createState() =>
+      _SetFlashCardLearningPageState();
 }
 
-class _StudyingFlashCardPageState extends State<StudyingFlashCardPage> {
+class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,58 +37,37 @@ class _StudyingFlashCardPageState extends State<StudyingFlashCardPage> {
                   FlashCardMyListItem(),
                 ],
               ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: 150,
-                      height: 45,
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      alignment: Alignment.center,
-                      child: Row(
-                        children: [
-                          Icon(Icons.add, color: Colors.white),
-                          Text(
-                            'Create Flashcard',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 32),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: 150,
-                      height: 45,
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Select Flashcard Set',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 32),
               Text(
                 'Flashcard Categories ',
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 16),
-              // SetFlashCardGrid(flashcards: state.flashCards),
+              BlocConsumer<FlashCardCubit, FlashCardState>(
+                listenWhen: (previous, current) =>
+                    previous.loadStatusLearning != current.loadStatusLearning ||
+                    previous.flashCardsLearning != current.flashCardsLearning,
+                buildWhen: (previous, current) =>
+                    previous.loadStatusLearning != current.loadStatusLearning ||
+                    previous.flashCardsLearning != current.flashCardsLearning,
+                listener: (context, state) {
+                  if (state.loadStatus == LoadStatus.failure) {
+                    AppNavigator(context: context).error(state.message);
+                  }
+                },
+                builder: (context, state) {
+                  if (state.loadStatus == LoadStatus.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state.loadStatusLearning == LoadStatus.success) {
+                    return SetFlashCardLearningGrid(
+                      flashcards: state.flashCardsLearning,
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
               const SizedBox(height: 32),
             ],
           ),

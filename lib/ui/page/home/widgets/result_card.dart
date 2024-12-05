@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:toeic_desktop/data/models/entities/result_test.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
+import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/score_tile.dart';
 
@@ -48,8 +50,7 @@ class ExamResultCard extends StatelessWidget {
               children: [
                 const Icon(Icons.access_time, size: 16, color: Colors.black54),
                 const SizedBox(width: 4),
-                Text(
-                    '${result.secondTime}s',
+                Text('${result.secondTime}s',
                     style: const TextStyle(color: Colors.black54)),
               ],
             ),
@@ -66,7 +67,7 @@ class ExamResultCard extends StatelessWidget {
                 ScoreTile(
                   icon: Icons.edit,
                   label: 'Attempted',
-                  score: result.testId.attempts.length,
+                  score: getCountAttempt(result),
                   color: Colors.blue,
                 ),
                 ScoreTile(
@@ -103,5 +104,13 @@ class ExamResultCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  int getCountAttempt(ResultTest result) {
+    final currentUserId = injector<UserCubit>().state.user?.id;
+    return result.testId.attempts
+        .firstWhere((e) => e.userId == currentUserId,
+            orElse: () => Attempt(userId: '', times: 0))
+        .times;
   }
 }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:toeic_desktop/data/models/entities/test.dart';
+import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 
 class DeThiOnlineState extends Equatable {

@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card_cubit.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_discover.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_my_list.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_studying.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_discover.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_my_list.dart';
 
-class FlashCardPage extends StatefulWidget {
-  const FlashCardPage({super.key});
+class SetFlashCardPage extends StatefulWidget {
+  const SetFlashCardPage({super.key});
 
   @override
-  State<FlashCardPage> createState() => _FlashCardPageState();
+  State<SetFlashCardPage> createState() => _SetFlashCardPageState();
 }
 
-class _FlashCardPageState extends State<FlashCardPage> {
+class _SetFlashCardPageState extends State<SetFlashCardPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -46,6 +46,13 @@ class Page extends StatelessWidget {
               indicatorColor: AppColors.primary,
               labelColor: AppColors.primary, // Replace AppColors.primary
               unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
+              onTap: (index) {
+                if (index == 1) {
+                  context.read<FlashCardCubit>().fetchFlashCardSetsLearning();
+                } else {
+                  context.read<FlashCardCubit>().fetchFlashCardSets();
+                }
+              },
               tabs: const [
                 Tab(
                   height: 35,
@@ -83,8 +90,8 @@ class Page extends StatelessWidget {
         ),
         body: TabBarView(
           children: const [
-            MyListFlashCardPage(),
-            StudyingFlashCardPage(),
+            SetFlashCardMyListPage(),
+            SetFlashCardLearningPage(),
             DiscoverFlashCardPage(),
           ],
         ),

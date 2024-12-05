@@ -19,13 +19,13 @@ class PracticeTestPage extends StatefulWidget {
     required this.parts,
     required this.duration,
     required this.testId,
-    this.questions,
+    this.resultId,
   });
 
   final List<PartEnum> parts;
   final Duration duration;
   final String testId;
-  final List<QuestionModel>? questions;
+  final String? resultId;
 
   @override
   State<PracticeTestPage> createState() => _PracticeTestPageState();
@@ -36,7 +36,8 @@ class _PracticeTestPageState extends State<PracticeTestPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<PracticeTestCubit>()
-        ..initPracticeTest(widget.parts, widget.duration, widget.testId),
+        ..initPracticeTest(
+            widget.parts, widget.duration, widget.testId, widget.resultId),
       child: Page(),
     );
   }

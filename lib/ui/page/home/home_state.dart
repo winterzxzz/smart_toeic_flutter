@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:toeic_desktop/data/models/entities/result_test.dart';
-import 'package:toeic_desktop/data/models/entities/test.dart';
+import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
+import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 
 class HomeState extends Equatable {

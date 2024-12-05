@@ -65,7 +65,6 @@ class Page extends StatelessWidget {
               children: [
                 // Slider background images
                 SliderSection(),
-                const SizedBox(height: 32),
                 // Toeic exam section
                 const SizedBox(height: 32),
                 ServiceSection(),

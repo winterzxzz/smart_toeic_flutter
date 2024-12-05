@@ -3,13 +3,14 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card_state.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
 
 class FlashCardCubit extends Cubit<FlashCardState> {
   final FlashCardRespository _flashCardRespository;
   FlashCardCubit(this._flashCardRespository) : super(FlashCardState.initial());
 
   Future<void> fetchFlashCardSets() async {
+    if (state.loadStatus == LoadStatus.success) return;
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final response = await _flashCardRespository.getSetFlashCards();
     response.fold(
@@ -20,6 +21,22 @@ class FlashCardCubit extends Cubit<FlashCardState> {
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
         flashCards: r,
+      )),
+    );
+  }
+
+  Future<void> fetchFlashCardSetsLearning() async {
+    if (state.loadStatusLearning == LoadStatus.success) return;
+    emit(state.copyWith(loadStatusLearning: LoadStatus.loading));
+    final response = await _flashCardRespository.getSetFlashCardsLearning();
+    response.fold(
+      (l) => emit(state.copyWith(
+        loadStatusLearning: LoadStatus.failure,
+        message: l.toString(),
+      )),
+      (r) => emit(state.copyWith(
+        loadStatusLearning: LoadStatus.success,
+        flashCardsLearning: r,
       )),
     );
   }
@@ -49,6 +66,23 @@ class FlashCardCubit extends Cubit<FlashCardState> {
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
         flashCards: state.flashCards.where((e) => e.id != id).toList(),
+      )),
+    );
+  }
+
+  Future<void> deleteFlashCardLearning(String learningSetId) async {
+    final response =
+        await _flashCardRespository.deleteFlashCardLearning(learningSetId);
+    response.fold(
+      (l) => emit(state.copyWith(
+        loadStatusLearning: LoadStatus.failure,
+        message: l.toString(),
+      )),
+      (r) => emit(state.copyWith(
+        loadStatusLearning: LoadStatus.success,
+        flashCardsLearning: state.flashCardsLearning
+            .where((e) => e.id != learningSetId)
+            .toList(),
       )),
     );
   }

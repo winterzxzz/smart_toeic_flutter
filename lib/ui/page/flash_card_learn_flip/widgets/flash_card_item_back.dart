@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class FlashcardBack extends StatelessWidget {

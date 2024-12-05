@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card_ai_gen.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card_quizz.dart';
-import 'package:toeic_desktop/data/models/entities/question.dart';
-import 'package:toeic_desktop/data/models/entities/result_test.dart';
-import 'package:toeic_desktop/data/models/entities/set_flash_card.dart';
-import 'package:toeic_desktop/data/models/entities/test.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
+import 'package:toeic_desktop/data/models/entities/test/question.dart';
+import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
+import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/test/result_test_submit.dart';
+import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/entities/user_entity.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
@@ -60,6 +63,14 @@ abstract class ApiClient {
   @GET('/user/set-flashcard/user')
   Future<List<SetFlashCard>> getFlashCardUser();
 
+  @GET('/user/learning-set/user')
+  Future<List<SetFlashCardLearning>> getFlashCardLearning();
+
+  @DELETE('/user/learning-set')
+  Future<void> deleteFlashCardLearning(
+    @Field("learningSetId") String learningSetId,
+  );
+
   @GET('/user/set-flashcard/public')
   Future<List<SetFlashCard>> getFlashCardPublic();
 
@@ -95,8 +106,18 @@ abstract class ApiClient {
   );
 
   @POST('/user/result/items')
-  Future<ResultTest> createResultItem(
+  Future<ResultTestSubmit> createResultItem(
     @Body() ResultTestRequest request,
+  );
+
+  @GET('/user/result-item/result?resultId={resultId}')
+  Future<ResultTest> getResultTest(
+    @Path("resultId") String resultId,
+  );
+
+  @GET('/user/result-item/result?resultId={resultId}')
+  Future<List<QuestionResult>> getResultTestByResultId(
+    @Path("resultId") String resultId,
   );
 
   @POST('/user/ai-chat/get-fc-infor/json')
@@ -107,11 +128,6 @@ abstract class ApiClient {
   @POST('/user/ai-chat/get-quizz/json')
   Future<List<FlashCardQuizz>> getFlashCardQuizz(
     @Body() FlashCardQuizRequest request,
-  );
-
-  @GET('/user/result-item/result?resultId={resultId}')
-  Future<ResultTest> getResultTest(
-    @Path("resultId") String resultId,
   );
 
   @GET('/user/result/user?limit={limit}')

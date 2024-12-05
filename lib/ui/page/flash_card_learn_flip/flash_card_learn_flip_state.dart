@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 
 class FlashCardLearnFlipState extends Equatable {
   final String title;

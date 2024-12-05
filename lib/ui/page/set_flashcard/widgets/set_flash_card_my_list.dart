@@ -5,24 +5,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card_cubit.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card_state.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/flash_card_my_list.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/form_set_flash_card_dia_log.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/set_flash_card_grid.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/form_set_flash_card_dia_log.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_grid.dart';
 
-class MyListFlashCardPage extends StatefulWidget {
-  const MyListFlashCardPage({super.key});
+class SetFlashCardMyListPage extends StatefulWidget {
+  const SetFlashCardMyListPage({super.key});
 
   @override
-  State<MyListFlashCardPage> createState() => _MyListFlashCardPageState();
+  State<SetFlashCardMyListPage> createState() => _SetFlashCardMyListPageState();
 }
 
-class _MyListFlashCardPageState extends State<MyListFlashCardPage> {
+class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<FlashCardCubit, FlashCardState>(
+        listenWhen: (previous, current) =>
+            previous.loadStatus != current.loadStatus ||
+            previous.flashCards != current.flashCards,
         listener: (context, state) {
           if (state.loadStatus == LoadStatus.failure) {
             AppNavigator(context: context).error(state.message);
@@ -79,6 +82,9 @@ class _MyListFlashCardPageState extends State<MyListFlashCardPage> {
                 ),
                 const SizedBox(height: 16),
                 BlocBuilder<FlashCardCubit, FlashCardState>(
+                  buildWhen: (previous, current) =>
+                      previous.loadStatus != current.loadStatus ||
+                      previous.flashCards != current.flashCards,
                   builder: (context, state) {
                     if (state.loadStatus == LoadStatus.loading) {
                       return const Center(

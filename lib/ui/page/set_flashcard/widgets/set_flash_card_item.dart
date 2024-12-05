@@ -3,99 +3,102 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/models/entities/set_flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_pop_over.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card_cubit.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/form_set_flash_card_dia_log.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/form_set_flash_card_dia_log.dart';
 
-class FlashcardItem extends StatefulWidget {
+class SetFlashCardItem extends StatefulWidget {
   final SetFlashCard flashcard;
 
-  const FlashcardItem({super.key, required this.flashcard});
+  const SetFlashCardItem({super.key, required this.flashcard});
 
   @override
-  State<FlashcardItem> createState() => _FlashcardItemState();
+  State<SetFlashCardItem> createState() => _SetFlashCardItemState();
 }
 
-class _FlashcardItemState extends State<FlashcardItem> {
+class _SetFlashCardItemState extends State<SetFlashCardItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-      ),
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  widget.flashcard.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+    return Card(
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 250),
+        width: 300,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.flashcard.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-              IconButton(
-                onPressed: _showMenuDialog,
-                icon: const Icon(Icons.more_vert),
-              ),
-            ],
-          ),
-          Text(
-            widget.flashcard.description,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.person_outline, color: AppColors.textGray),
-              const SizedBox(width: 8),
-              Text(
-                'winter',
-                style: TextStyle(color: AppColors.textGray),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.calendar_month_outlined, color: AppColors.textGray),
-              const SizedBox(width: 8),
-              Text(
-                'Created at ${DateFormat('dd/MM/yyyy').format(widget.flashcard.createdAt)}',
-                style: TextStyle(color: AppColors.textGray),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${widget.flashcard.numberOfFlashcards} flashcards',
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  GoRouter.of(context)
-                      .pushNamed(AppRouter.flashCardDetail, extra: {
-                    'title': widget.flashcard.title,
-                    'setId': widget.flashcard.id,
-                  });
-                },
-                child: Text('View'),
-              ),
-            ],
-          ),
-        ],
+                IconButton(
+                  onPressed: _showMenuDialog,
+                  icon: const Icon(Icons.more_vert),
+                ),
+              ],
+            ),
+            Text(
+              widget.flashcard.description,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                Icon(Icons.person_outline, color: AppColors.textGray),
+                const SizedBox(width: 8),
+                Text(
+                  'winter',
+                  style: TextStyle(color: AppColors.textGray),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(Icons.calendar_month_outlined, color: AppColors.textGray),
+                const SizedBox(width: 8),
+                Text(
+                  'Created at ${DateFormat('dd/MM/yyyy').format(widget.flashcard.createdAt)}',
+                  style: TextStyle(color: AppColors.textGray),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${widget.flashcard.numberOfFlashcards} flashcards',
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    GoRouter.of(context)
+                        .pushNamed(AppRouter.flashCardDetail, extra: {
+                      'title': widget.flashcard.title,
+                      'setId': widget.flashcard.id,
+                    });
+                  },
+                  child: Text('View'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

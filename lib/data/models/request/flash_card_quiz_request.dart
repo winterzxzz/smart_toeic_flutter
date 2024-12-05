@@ -5,7 +5,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 
 part 'flash_card_quiz_request.g.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
-import 'package:toeic_desktop/data/models/entities/test.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
@@ -11,7 +11,7 @@ import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_result.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card_page.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_page.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
@@ -121,7 +121,7 @@ class AppRouter {
             GoRoute(
               name: flashCards,
               path: flashCards,
-              builder: (context, state) => const FlashCardPage(),
+              builder: (context, state) => const SetFlashCardPage(),
             ),
             GoRoute(
               name: flashCardDetail,
@@ -221,8 +221,9 @@ class AppRouter {
         final parts = args['parts'] as List<PartEnum>;
         final duration = args['duration'] as Duration;
         final testId = args['testId'] as String;
+        final resultId = args['resultId'] as String?;
         return PracticeTestPage(
-            parts: parts, duration: duration, testId: testId);
+            parts: parts, duration: duration, testId: testId, resultId: resultId);
       },
     ),
     GoRoute(

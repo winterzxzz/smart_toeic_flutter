@@ -62,7 +62,6 @@ class Page extends StatelessWidget {
                       children: List.generate(state.tests.length, (index) {
                         // Number of tests (replace as needed)
                         return SizedBox(
-                          height: 200,
                           width: 300,
                           child: TestCard(
                             test: state.tests[index],

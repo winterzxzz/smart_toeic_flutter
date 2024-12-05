@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/data/models/entities/test.dart';
+import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/test_online/widgets/test_card.dart';
 
@@ -26,7 +26,7 @@ class TestSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: tests
                 .map((e) => Expanded(
-                    child: SizedBox(height: 210, child: TestCard(test: e))))
+                    child: TestCard(test: e)))
                 .toList(),
           )
         ],

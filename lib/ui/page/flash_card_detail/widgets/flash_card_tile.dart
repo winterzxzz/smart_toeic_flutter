@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:text_to_speech/text_to_speech.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_pop_over.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/form_flash_card_dia_log.dart';
-import 'package:toeic_desktop/ui/page/flashcard/widgets/set_flash_card_item.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_item.dart';
 
 class FlashcardTile extends StatefulWidget {
   final FlashCard flashcard;

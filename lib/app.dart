@@ -15,7 +15,7 @@ import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_cubit.dart';
-import 'package:toeic_desktop/ui/page/flashcard/flash_card_cubit.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';

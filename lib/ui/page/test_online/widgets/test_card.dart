@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/models/entities/test.dart';
+import 'package:toeic_desktop/common/utils/time_utils.dart';
+import 'package:toeic_desktop/data/models/entities/test/test.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class TestCard extends StatelessWidget {
   const TestCard({
@@ -13,12 +19,25 @@ class TestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final countAttempt = getCountAttempt(test);
+    log('countAttempt: $countAttempt');
+    final isAttempted = countAttempt > 0;
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
+      child: Container(
+        height: 280,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Opacity(
+              opacity: isAttempted ? 1 : 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.check_circle, color: AppColors.success),
+                ],
+              ),
+            ),
             Text(
               test.title,
               style: TextStyle(
@@ -27,29 +46,127 @@ class TestCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8),
-            Text(
-              "${test.duration} | 📄 ${test.attempts.length} attempts | ${test.type}",
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              direction: Axis.horizontal,
+              children: [
+                TagWidget(icon: Icons.timer, text: "${test.duration} minutes"),
+                TagWidget(
+                  icon: Icons.question_mark,
+                  text: "${test.numberOfQuestions} questions",
+                ),
+                TagWidget(
+                  icon: Icons.check_circle,
+                  text: "${test.attempts.length} attempts",
+                ),
+                TagWidget(
+                  icon: Icons.book,
+                  text: "${test.numberOfParts} parts",
+                ),
+              ],
             ),
             SizedBox(height: 8),
-            Text(
-              "${test.numberOfParts} parts | ${test.numberOfQuestions} questions",
-              style: TextStyle(color: Colors.grey[600]),
-            ),
+            Text('#${test.type}',
+                style: TextStyle(
+                    color: AppColors.textBlack, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
+            Container(
+              padding: EdgeInsets.all(8),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: isAttempted
+                    ? AppColors.success.withOpacity(0.2)
+                    : AppColors.gray1.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    isAttempted
+                        ? 'Have been $countAttempt attempts'
+                        : 'Manage your time effectively !',
+                    style: TextStyle(
+                      color:
+                          isAttempted ? AppColors.success : AppColors.textBlack,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  if (isAttempted)
+                    Row(
+                      children: [
+                        Icon(Icons.access_alarm,
+                            color: AppColors.success, size: 16),
+                        const SizedBox(width: 4),
+                        Text(
+                          TimeUtils.timeAgo(test.updatedAt ?? test.createdAt),
+                          style: TextStyle(
+                            color: AppColors.success,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
             Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isAttempted ? AppColors.success : AppColors.primary,
+                ),
                 onPressed: () {
                   GoRouter.of(context).pushNamed(AppRouter.modeTest, extra: {
                     'test': test,
                   });
                 },
-                child: Text("Details"),
+                child: Text(isAttempted ? "Retake Test" : "Take Test"),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  int getCountAttempt(Test test) {
+    final currentUserId = injector<UserCubit>().state.user?.id;
+    return test.attempts
+        .firstWhere((e) => e.userId == currentUserId,
+            orElse: () => Attempt(userId: '', times: 0))
+        .times;
+  }
+}
+
+class TagWidget extends StatelessWidget {
+  const TagWidget({
+    super.key,
+    required this.icon,
+    required this.text,
+  });
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.gray1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16),
+          const SizedBox(width: 4),
+          Text(text),
+        ],
       ),
     );
   }

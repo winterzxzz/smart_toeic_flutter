@@ -1,6 +1,5 @@
-import 'package:toeic_desktop/data/models/ui_models/question.dart';
-
 class ResultModel {
+  final String resultId;
   final String testName;
   final int totalQuestion;
   final int correctQuestion;
@@ -10,9 +9,9 @@ class ResultModel {
   final int listeningScore;
   final int readingScore;
   final Duration duration;
-  final List<QuestionModel> questions;
 
   ResultModel({
+    required this.resultId,
     required this.testName,
     required this.totalQuestion,
     required this.correctQuestion,
@@ -22,6 +21,5 @@ class ResultModel {
     required this.listeningScore,
     required this.readingScore,
     required this.duration,
-    required this.questions,
   });
 }

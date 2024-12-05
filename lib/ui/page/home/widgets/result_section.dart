@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/data/models/entities/result_test.dart';
+import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/result_card.dart';
 

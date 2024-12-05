@@ -69,7 +69,13 @@ class ResultTestPage extends StatelessWidget {
                             GoRouter.of(context)
                                 .pushReplacementNamed(AppRouter.practiceTest);
                           },
-                          child: Text('View Answer')),
+                          child: Row(
+                            children: [
+                              Icon(Icons.visibility),
+                              SizedBox(width: 8),
+                              Text('View Answer'),
+                            ],
+                          )),
                       SizedBox(width: 16),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -81,9 +87,16 @@ class ResultTestPage extends StatelessWidget {
                           onPressed: () {
                             GoRouter.of(context).pop();
                           },
-                          child: Text(
-                            'Back to test page',
-                            style: TextStyle(color: AppColors.textBlack),
+                          child: Row(
+                            children: [
+                              Icon(Icons.arrow_back,
+                                  color: AppColors.textBlack, size: 18),
+                              SizedBox(width: 8),
+                              Text(
+                                'Back to test page',
+                                style: TextStyle(color: AppColors.textBlack),
+                              ),
+                            ],
                           )),
                     ],
                   ),
@@ -95,8 +108,7 @@ class ResultTestPage extends StatelessWidget {
                           child: _buildScoreBox('Correct',
                               '${resultModel.correctQuestion}', Colors.green)),
                       Expanded(
-                          child:
-                              _buildScoreBox('Incorrect', '0', Colors.red)),
+                          child: _buildScoreBox('Incorrect', '0', Colors.red)),
                       Expanded(
                           child: _buildScoreBox('Skip',
                               '${resultModel.notAnswerQuestion}', Colors.grey)),
@@ -217,7 +229,9 @@ class ResultInfoItem extends StatelessWidget {
             child: Text(title),
           ),
           const Spacer(),
-          Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.success)),
+          Text(value,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: AppColors.success)),
         ],
       ),
     );

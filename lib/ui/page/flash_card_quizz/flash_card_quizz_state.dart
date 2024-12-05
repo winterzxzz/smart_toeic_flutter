@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card_quizz.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 
 class FlashCardQuizzState extends Equatable {

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_learn_flip_state.dart';
 
 class FlashCardLearnFlipCubit extends Cubit<FlashCardLearnFlipState> {
