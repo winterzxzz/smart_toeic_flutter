@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/service_card.dart';
 
 class ServiceSection extends StatelessWidget {
@@ -16,7 +14,6 @@ class ServiceSection extends StatelessWidget {
           Text(
             "Our TOEIC Preparation Services",
             style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  color: AppColors.textBlack,
                   fontWeightDelta: 2,
                 ),
           ),

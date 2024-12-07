@@ -18,8 +18,7 @@ class ServiceCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 24,
-                backgroundColor: Colors.black12,
-                child: Icon(item.icon, size: 28, color: Colors.black),
+                child: Icon(item.icon, size: 28),
               ),
               const SizedBox(height: 12),
               Text(
@@ -32,11 +31,10 @@ class ServiceCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 item.desciption,
-                maxLines: 1,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.black54,
                 ),
               ),
             ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
@@ -7,6 +9,8 @@ import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
+import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
+import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.dart';
@@ -39,8 +43,12 @@ class AppRouter {
           if (state.uri.path == deThiOnline || state.uri.path == flashCards) {
             return login;
           }
+          injector<AppSettingCubit>()
+              .addNavigationHistory(path: state.uri.path);
+
           return null;
         }
+        injector<AppSettingCubit>().addNavigationHistory(path: state.uri.path);
         return null;
       },
       initialLocation: splash);
@@ -59,12 +67,15 @@ class AppRouter {
   static const String blog = "/blog";
   static const String kichHoatTaiKhoan = "/kich-hoat-tai-khoan";
   static const String flashCardDetail = "/flash-card-detail";
+  static const String flashCardLearningDetail = "/flash-card-learning-detail";
   static const String flashCardPractive = "/flash-card-practive";
   static const String modeTest = "/mode-test";
   static const String practiceTest = "/practice-test";
   static const String flashCardQuizz = "/flash-card-quizz";
   static const String flashCardQuizzResult = "/flash-card-quizz-result";
   static const String resultTest = "/result-test";
+  static const String profile = "/profile";
+  static const String setting = "/setting";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -134,6 +145,19 @@ class AppRouter {
               },
             ),
             GoRoute(
+              name: flashCardLearningDetail,
+              path: flashCardLearningDetail,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final setId = args['setId'] as String;
+                final title = args['title'] as String;
+                return FlashCardDetailLearningPage(
+                  setId: setId,
+                  title: title,
+                );
+              },
+            ),
+            GoRoute(
               name: flashCardPractive,
               path: flashCardPractive,
               builder: (context, state) {
@@ -200,6 +224,11 @@ class AppRouter {
               builder: (context, state) => const LoginPage(),
             ),
             GoRoute(
+              name: profile,
+              path: profile,
+              builder: (context, state) => const ProfilePage(),
+            ),
+            GoRoute(
               name: register,
               path: register,
               builder: (context, state) => const RegisterPage(),
@@ -208,6 +237,17 @@ class AppRouter {
               name: resetPassword,
               path: resetPassword,
               builder: (context, state) => const ResetPasswordPage(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              name: setting,
+              path: setting,
+              builder: (context, state) => const Center(
+                child: Text('Settings'),
+              ),
             ),
           ],
         ),
@@ -223,7 +263,10 @@ class AppRouter {
         final testId = args['testId'] as String;
         final resultId = args['resultId'] as String?;
         return PracticeTestPage(
-            parts: parts, duration: duration, testId: testId, resultId: resultId);
+            parts: parts,
+            duration: duration,
+            testId: testId,
+            resultId: resultId);
       },
     ),
     GoRoute(

@@ -1,0 +1,244 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card_learning_detail/widgets/flash_card_learning_tile.dart';
+
+class FlashCardDetailLearningPage extends StatelessWidget {
+  const FlashCardDetailLearningPage(
+      {super.key, required this.setId, required this.title});
+
+  final String setId;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          injector<FlashCardDetailLearningCubit>()..fetchFlashCards(setId),
+      child: Page(title: title, setId: setId),
+    );
+  }
+}
+
+class Page extends StatefulWidget {
+  const Page({
+    super.key,
+    required this.title,
+    required this.setId,
+  });
+
+  final String title;
+  final String setId;
+
+  @override
+  State<Page> createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+        floatingActionButton: GestureDetector(
+          onTap: _showStatusInfo,
+          child: Container(
+            width: 150,
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.textWhite,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 1),
+                )
+              ],
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline),
+                SizedBox(width: 8),
+                Text(
+                  'Status Info',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+          ),
+        ),
+        appBar: AppBar(
+          title: BlocSelector<FlashCardDetailLearningCubit,
+              FlashCardDetailLearningState, List<FlashCardLearning>>(
+            selector: (state) {
+              return state.flashCards;
+            },
+            builder: (context, flashCards) {
+              return Text(
+                  'Flashcard: ${widget.title} (${flashCards.length} từ)');
+            },
+          ),
+        ),
+        body: BlocConsumer<FlashCardDetailLearningCubit,
+            FlashCardDetailLearningState>(listener: (context, state) {
+          if (state.loadStatus == LoadStatus.failure) {
+            AppNavigator(context: context).error(state.message);
+          }
+        }, builder: (context, state) {
+          if (state.loadStatus == LoadStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.loadStatus == LoadStatus.success) {
+            return SingleChildScrollView(
+              child: Container(
+                width: MediaQuery.sizeOf(context).width * 0.6,
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.sizeOf(context).width * 0.2),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              final flashCards = context
+                                  .read<FlashCardDetailLearningCubit>()
+                                  .state
+                                  .flashCards;
+                              GoRouter.of(context)
+                                  .pushNamed(AppRouter.flashCardQuizz, extra: {
+                                'title': widget.title,
+                                'flashCards': flashCards,
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.play_circle_outline_rounded),
+                                SizedBox(width: 8),
+                                Text('Luyện tập flashcards'),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.pause_circle_outline_rounded),
+                                SizedBox(width: 8),
+                                Text('Dừng học bộ này'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
+                      children: [
+                        ...state.flashCards.map((flashcard) =>
+                            FlashCardLearningTile(flashcard: flashcard)),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+          return const SizedBox();
+        }));
+  }
+
+  void _showStatusInfo() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Status Explanation',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.close),
+            )
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Mức độ ghi nhớ (Decay Score)',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Biểu thị khả năng ghi nhớ tại thời điểm hiện tại:',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 8),
+            _buildStatusRow(
+                '0.7 - 1.0',
+                'Vùng nhớ ổn định: Bạn vẫn ghi nhớ tốt từ vựng này.',
+                Colors.green),
+            _buildStatusRow(
+                '0.5-0.7',
+                'Vùng nhớ vừa: Bắt đầu quên, nhưng thông tin vẫn có thể phục hồi dễ dàng.',
+                Colors.orange),
+            _buildStatusRow(
+                '0-0.5',
+                'Vùng quên sâu: Đã quên nhiều, phải ôn tập ngay để tránh mất hoàn toàn kiến thức.',
+                Colors.red),
+            SizedBox(height: 16),
+            Text(
+              'Mức độ ghi nhớ (Retention Score)',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Biểu thị khả năng ghi nhớ tại thời điểm hiện tại:',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 8),
+            _buildStatusRow('4', 'Ghi nhớ tốt, quên khá chậm.', Colors.green),
+            _buildStatusRow(
+                '3-4', 'Ghi nhớ tốt, quên khá chậm.', Colors.orange),
+            _buildStatusRow(
+                '2-3', 'Ghi nhớ trung bình, quên chậm hơn.', Colors.orange),
+            _buildStatusRow('1-2',
+                'Ghi nhớ kém, thông tin bị lãng quên nhanh chóng.', Colors.red),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusRow(String range, String description, Color color) {
+    return Row(
+      children: [
+        Icon(Icons.circle, color: color, size: 12),
+        SizedBox(width: 8),
+        Text('($range) $description'),
+      ],
+    );
+  }
+}

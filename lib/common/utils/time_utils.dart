@@ -13,4 +13,11 @@ class TimeUtils {
       return '${diff.inDays}d ago';
     }
   }
+
+  static String getDiffDays(DateTime optimalTime) {
+    final now = DateTime.now();
+    // round to 1 decimal place
+    return (optimalTime.difference(now).inMilliseconds / (1000 * 60 * 60 * 24))
+        .toStringAsFixed(2);
+  }
 }

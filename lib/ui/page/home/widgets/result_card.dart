@@ -38,20 +38,24 @@ class ExamResultCard extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.calendar_today,
-                    size: 16, color: Colors.black54),
+                const Icon(
+                  Icons.calendar_today,
+                  size: 16,
+                ),
                 const SizedBox(width: 4),
-                Text(DateFormat('dd/MM/yyyy').format(result.createdAt),
-                    style: const TextStyle(color: Colors.black54)),
+                Text(
+                  DateFormat('dd/MM/yyyy').format(result.createdAt),
+                ),
               ],
             ),
             const SizedBox(height: 4),
             Row(
               children: [
-                const Icon(Icons.access_time, size: 16, color: Colors.black54),
+                const Icon(Icons.access_time, size: 16),
                 const SizedBox(width: 4),
-                Text('${result.secondTime}s',
-                    style: const TextStyle(color: Colors.black54)),
+                Text(
+                  '${result.secondTime}s',
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -84,7 +88,6 @@ class ExamResultCard extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // Button background color
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -95,7 +98,6 @@ class ExamResultCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textWhite,
                   ),
                 ),
               ),

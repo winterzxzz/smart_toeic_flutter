@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -46,10 +47,6 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                // IconButton(
-                //   onPressed: _showMenuDialog,
-                //   icon: const Icon(Icons.more_vert),
-                // ),
               ],
             ),
             Text(
@@ -92,11 +89,12 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
                         backgroundColor: AppColors.success,
                       ),
                       onPressed: () {
-                        // GoRouter.of(context)
-                        //     .pushNamed(AppRouter.flashCardDetail, extra: {
-                        //   'title': widget.flashcard.setFlashcardId.title,
-                        //   'setId': widget.flashcard.id,
-                        // });
+                        GoRouter.of(context).pushNamed(
+                            AppRouter.flashCardLearningDetail,
+                            extra: {
+                              'title': widget.flashcard.setFlashcardId.title,
+                              'setId': widget.flashcard.id,
+                            });
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

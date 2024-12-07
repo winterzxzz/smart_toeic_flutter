@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/blog/widgets/blog_vertical.dart';
 
 class BlogSection extends StatelessWidget {
@@ -15,7 +14,6 @@ class BlogSection extends StatelessWidget {
           Text(
             "Blog Knowledge",
             style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  color: AppColors.textBlack,
                   fontWeightDelta: 2,
                 ),
           ),

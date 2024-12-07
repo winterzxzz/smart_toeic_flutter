@@ -23,51 +23,46 @@ class _ModeTestpageState extends State<ModeTestpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: Text(widget.test.title),
-      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
         margin: EdgeInsets.symmetric(
           horizontal: 16,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 16),
-            ToggleButtons(
-              borderRadius: BorderRadius.circular(8),
-              fillColor: AppColors.primary.withOpacity(0.2),
-              selectedColor: Colors.black,
-              color: Colors.grey,
-              isSelected: [isPracticeMode, !isPracticeMode],
-              onPressed: (index) {
-                setState(() {
-                  isPracticeMode = index == 0;
-                });
-              },
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 32),
-                  child: Text('Practice'),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 32),
-                  child: Text('Test'),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: isPracticeMode
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              Text(
+                widget.test.title,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              SizedBox(height: 16),
+              ToggleButtons(
+                borderRadius: BorderRadius.circular(8),
+                isSelected: [isPracticeMode, !isPracticeMode],
+                onPressed: (index) {
+                  setState(() {
+                    isPracticeMode = index == 0;
+                  });
+                },
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Text('Practice'),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Text('Test'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              isPracticeMode
                   ? PracticeMode(testId: widget.test.id)
                   : FullTestMode(widget: widget),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -101,27 +96,21 @@ class FullTestMode extends StatelessWidget {
             ),
           ),
           SizedBox(height: 32),
-          InkWell(
-            onTap: () {
-              GoRouter.of(context)
-                  .pushReplacementNamed(AppRouter.practiceTest, extra: {
-                'testId': widget.test.id,
-                'parts': Constants.parts.map((part) => part.partEnum).toList(),
-                'duration': Duration(minutes: 120),
-              });
-            },
-            child: Container(
-              width: 150,
-              height: 45,
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              alignment: Alignment.center,
+          SizedBox(
+            width: 150,
+            height: 45,
+            child: ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context)
+                    .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                  'testId': widget.test.id,
+                  'parts':
+                      Constants.parts.map((part) => part.partEnum).toList(),
+                  'duration': Duration(minutes: 120),
+                });
+              },
               child: Text(
                 'Bắt đầu thi'.toUpperCase(),
-                style: TextStyle(color: Colors.white),
               ),
             ),
           ),
@@ -150,53 +139,55 @@ class _PracticeModeState extends State<PracticeMode> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.green.withOpacity(.3)),
-            child: Text(
-              'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
-              style: TextStyle(color: Colors.green),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.green.withOpacity(.3)),
+          child: Text(
+            'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+            style: TextStyle(color: Colors.green),
           ),
-          SizedBox(height: 32),
-          Text(
-            'Chọn phần thi bạn muốn làm',
-            style: TextStyle(fontSize: 16),
-          ),
-          ...Constants.parts.map((part) => QuestionPart(
-              part: part,
-              isSelected: selectedParts.contains(part.partEnum),
-              onChanged: (part) {
-                // exist in selectedParts
-                if (selectedParts.contains(part.partEnum)) {
-                  selectedParts.remove(part.partEnum);
-                } else {
-                  selectedParts.add(part.partEnum);
-                }
-                setState(() {});
-              })),
-          SizedBox(height: 32),
-          Text(
-            'Giới hạn thời gian (Để trống để làm bài không giới hạn)',
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height: 16),
-          CustomDropdownExample(
-            data: Constants.timeLimit,
-            onChanged: (value) {
-              duration = value;
+        ),
+        SizedBox(height: 32),
+        Text(
+          'Chọn phần thi bạn muốn làm',
+          style: TextStyle(fontSize: 16),
+        ),
+        ...Constants.parts.map((part) => QuestionPart(
+            part: part,
+            isSelected: selectedParts.contains(part.partEnum),
+            onChanged: (part) {
+              // exist in selectedParts
+              if (selectedParts.contains(part.partEnum)) {
+                selectedParts.remove(part.partEnum);
+              } else {
+                selectedParts.add(part.partEnum);
+              }
               setState(() {});
-            },
-          ),
-          SizedBox(height: 16),
-          InkWell(
-            onTap: selectedParts.isEmpty
+            })),
+        SizedBox(height: 32),
+        Text(
+          'Giới hạn thời gian (Để trống để làm bài không giới hạn)',
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(height: 16),
+        CustomDropdownExample(
+          data: Constants.timeLimit,
+          onChanged: (value) {
+            duration = value;
+            setState(() {});
+          },
+        ),
+        SizedBox(height: 16),
+        SizedBox(
+          width: 150,
+          height: 45,
+          child: ElevatedButton(
+            onPressed: selectedParts.isEmpty
                 ? null
                 : () {
                     final sortedParts = selectedParts.toList();
@@ -209,26 +200,13 @@ class _PracticeModeState extends State<PracticeMode> {
                           ConstantsExtension.getTimeLimit(duration ?? ''),
                     });
                   },
-            child: Container(
-              width: 150,
-              height: 45,
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: selectedParts.isEmpty
-                    ? Colors.grey[500]
-                    : AppColors.primary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                'Luyện tập'.toUpperCase(),
-                style: TextStyle(color: Colors.white),
-              ),
+            child: Text(
+              'Luyện tập'.toUpperCase(),
             ),
           ),
-          SizedBox(height: 32),
-        ],
-      ),
+        ),
+        SizedBox(height: 32),
+      ],
     );
   }
 }
@@ -258,6 +236,7 @@ class _QuestionPartState extends State<QuestionPart> {
         Row(
           children: [
             Checkbox(
+              shape: CircleBorder(),
               value: widget.isSelected,
               onChanged: (value) {
                 widget.onChanged(widget.part);
@@ -278,9 +257,8 @@ class _QuestionPartState extends State<QuestionPart> {
             widget.part.tags.length,
             (index) => Chip(
               label: Text(widget.part.tags[index]),
-              side: BorderSide(color: Colors.blue.withOpacity(0.2)),
-              backgroundColor: Colors.blue[50],
-              labelStyle: TextStyle(color: Colors.blue),
+              side: BorderSide(color: Colors.blue.withOpacity(0.1)),
+              backgroundColor: Colors.blue.withOpacity(0.1),
             ),
           ),
         ),

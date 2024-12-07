@@ -4,11 +4,16 @@ class AppColors {
   AppColors._();
 
   ///Background
-  static const Color backgroundLight = Color(0xFFF1F0F5);
+  ///sta
+  static const Color backgroundLight = Color(0xFFFFFFFF);
   static const Color backgroundDark = primary;
+  static const Color backgroundLightSub = Color(0xFFF0EEEF);
+  static const Color backgroundDarkSub = secondary;
   static const Color backgroundMessage = Color(0xFFF5FBF7);
   static Color backgroundBlur = const Color(0xFF081C2C).withOpacity(0.24);
   static Color backgroundOverlay = backgroundDark.withOpacity(0.55);
+
+  static const Color backgroundBottomTab = Color(0xFFff6b27);
 
   /// Appbar
   static const Color appBarLight = Colors.white;

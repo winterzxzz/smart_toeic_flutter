@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
@@ -64,7 +65,12 @@ abstract class ApiClient {
   Future<List<SetFlashCard>> getFlashCardUser();
 
   @GET('/user/learning-set/user')
-  Future<List<SetFlashCardLearning>> getFlashCardLearning();
+  Future<List<SetFlashCardLearning>> getFlashCardSetLearning();
+
+  @GET('/user/learning-flashcard/set?learningSetId={learningSetId}')
+  Future<List<FlashCardLearning>> getFlashCardLearning(
+    @Path("learningSetId") String learningSetId,
+  );
 
   @DELETE('/user/learning-set')
   Future<void> deleteFlashCardLearning(

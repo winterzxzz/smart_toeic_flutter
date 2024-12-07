@@ -10,6 +10,7 @@ import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
+import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';

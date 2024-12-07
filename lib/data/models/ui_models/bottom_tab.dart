@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 
 class BottomTabModel {
   final String title;
   final String route;
-  final IconData icon;
+  final String icon;
 
   BottomTabModel({
     required this.title,

@@ -70,10 +70,20 @@ class AppImages {
   static const icFileLock = 'assets/vectors/ic_file_lock.svg';
   static const icOcr = 'assets/vectors/ic_ocr.svg';
   static const icIe = 'assets/vectors/ic_ie.svg';
-  static const icUserAvatarDefault = 'assets/vectors/ic_user_avatar_default.svg';
+  static const icUserAvatarDefault =
+      'assets/vectors/ic_user_avatar_default.svg';
+
+  static const icIntro = 'assets/vectors/ic_intro.svg';
+  static const icTest = 'assets/vectors/ic_test.svg';
+  static const icFlashCard = 'assets/vectors/ic_flash_card.svg';
+  static const icBlog = 'assets/vectors/ic_blog.svg';
+  static const icPremium = 'assets/vectors/ic_premium.svg';
+  static const icSetting = 'assets/vectors/ic_setting.svg';
+  static const icDarkModeActive = 'assets/vectors/ic_dark_mode_active.svg';
+  static const icDarkModeInactive = 'assets/vectors/ic_dark_mode_inactive.svg';
+  static const icHome = 'assets/vectors/ic_home.svg';
 
   // animations
   static const splashAnimation = 'assets/animations/splash.json';
   static const scanning = 'assets/animations/scanning.json';
-  
 }

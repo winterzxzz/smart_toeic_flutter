@@ -16,12 +16,16 @@ class AppThemes {
   });
 
   Color get backgroundColor => brightness == Brightness.dark
+      ? AppColors.backgroundDarkSub
+      : AppColors.backgroundLightSub;
+
+  Color get cardColor => brightness == Brightness.dark
       ? AppColors.backgroundDark
       : AppColors.backgroundLight;
 
   Color get appbarColor => brightness == Brightness.dark
-      ? AppColors.appBarDark
-      : AppColors.appBarLight;
+      ? AppColors.backgroundDark
+      : AppColors.backgroundLight;
 
   Color get iconColor =>
       brightness == Brightness.dark ? AppColors.textWhite : AppColors.textBlack;
@@ -107,6 +111,7 @@ class AppThemes {
         bottomAppBarTheme: BottomAppBarTheme(
           color: appbarColor,
         ),
+        cardColor: cardColor,
         tabBarTheme: TabBarTheme(
           unselectedLabelColor: brightness == Brightness.dark
               ? AppColors.backgroundLight

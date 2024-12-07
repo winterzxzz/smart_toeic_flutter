@@ -5,123 +5,9 @@ import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
 import 'package:toeic_desktop/data/models/ui_models/bottom_tab.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 
 class Constants {
-  // static List<Flashcard> flashcards = [
-  //   Flashcard(
-  //       title: 'Cambridge Vocabulary for IELTS (20 units)',
-  //       wordCount: 1716,
-  //       learnerCount: 58182,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Từ vựng tiếng Anh văn phòng',
-  //       wordCount: 536,
-  //       learnerCount: 11805,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Từ vựng tiếng Anh giao tiếp nâng cao',
-  //       wordCount: 599,
-  //       learnerCount: 6438,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Từ vựng tiếng Anh giao tiếp trung cấp',
-  //       wordCount: 798,
-  //       learnerCount: 8040,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Từ vựng Tiếng Anh giao tiếp cơ bản',
-  //       wordCount: 993,
-  //       learnerCount: 21753,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: '900 từ TOEFL (có ảnh)',
-  //       wordCount: 899,
-  //       learnerCount: 3933,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: '900 từ IELTS (có ảnh)',
-  //       wordCount: 899,
-  //       learnerCount: 17292,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: '900 từ SAT (có ảnh)',
-  //       wordCount: 860,
-  //       learnerCount: 1614,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'GRE-GMAT Vocabulary List',
-  //       wordCount: 868,
-  //       learnerCount: 411,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Academic word list',
-  //       wordCount: 570,
-  //       learnerCount: 2019,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'New Academic Word List',
-  //       wordCount: 924,
-  //       learnerCount: 888,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Business Word List',
-  //       wordCount: 1665,
-  //       learnerCount: 1584,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'TOEFL Word List',
-  //       wordCount: 3193,
-  //       learnerCount: 3027,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'TOEIC Word List',
-  //       wordCount: 1194,
-  //       learnerCount: 28614,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Powerscore GRE 700 Repeat Offenders',
-  //       wordCount: 699,
-  //       learnerCount: 141,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  //   Flashcard(
-  //       title: 'Most common IELTS Listening words',
-  //       wordCount: 1124,
-  //       learnerCount: 8595,
-  //       imageUrl:
-  //           'https://i.vietgiaitri.com/2024/4/26/winter-aespa-viral-vi-len-high-note-qua-muot-thai-do-khiem-ton-lai-cang-duoc-khen-ngoi-b74-7149549.webp',
-  //       author: 'John Doe'),
-  // ];
-
   static List<BlogItem> blogs = [
     BlogItem(
         imageUrl:
@@ -185,16 +71,16 @@ class Constants {
   ];
 
   static List<String> timeLimit = [
-    '-- Chọn thời gian --',
-    '1 phút',
-    '10 phút',
-    '20 phút',
-    '30 phút',
-    '40 phút',
-    '50 phút',
-    '60 phút',
-    '120 phút',
-    'Không giới hạn',
+    '-- Select time --',
+    '1 minute',
+    '10 minutes',
+    '20 minutes',
+    '30 minutes',
+    '40 minutes',
+    '50 minutes',
+    '60 minutes',
+    '120 minutes',
+    'No limit',
   ];
 
   static List<PartModel> parts = [
@@ -202,106 +88,106 @@ class Constants {
       partEnum: PartEnum.part1,
       numberOfQuestions: 6,
       tags: [
-        "#[Part 1] Tranh tái người",
-        "#[Part 1] Tranh tái vật",
+        "#[Part 1] Human picture",
+        "#[Part 1] Object picture",
       ],
     ),
     PartModel(
       partEnum: PartEnum.part2,
       numberOfQuestions: 25,
       tags: [
-        "#[Part 2] Câu hỏi WHAT",
-        "#[Part 2] Câu hỏi WHO",
-        "#[Part 2] Câu hỏi WHERE",
-        "#[Part 2] Câu hỏi WHEN",
-        "#[Part 2] Câu hỏi HOW",
-        "#[Part 2] Câu hỏi YES/NO",
-        "#[Part 2] Câu hỏi đuôi",
-        "#[Part 2] Câu hỏi lựa chọn",
-        "#[Part 2] Câu yêu cầu, đề nghị",
-        "#[Part 2] Câu trần thuật",
+        "#[Part 2] WHAT question",
+        "#[Part 2] WHO question",
+        "#[Part 2] WHERE question",
+        "#[Part 2] WHEN question",
+        "#[Part 2] HOW question",
+        "#[Part 2] YES/NO question",
+        "#[Part 2] Tag question",
+        "#[Part 2] Choice question",
+        "#[Part 2] Request, suggestion",
+        "#[Part 2] Statement",
       ],
     ),
     PartModel(
       partEnum: PartEnum.part3,
       numberOfQuestions: 39,
       tags: [
-        "#[Part 3] Câu hỏi về chủ đề, mục đích",
-        "#[Part 3] Câu hỏi về danh tính người nói",
-        "#[Part 3] Câu hỏi về chi tiết cuộc hội thoại",
-        "#[Part 3] Câu hỏi kết hợp bảng biểu",
-        "#[Part 3] Chủ đề: Company - General Office Work",
-        "#[Part 3] Chủ đề: Company - Personnel",
-        "#[Part 3] Chủ đề: Company - Event, Project",
-        "#[Part 3] Chủ đề: Transportation",
-        "#[Part 3] Chủ đề: Shopping, Service",
-        "#[Part 3] Chủ đề: Order, delivery",
+        "#[Part 3] Topic, purpose question",
+        "#[Part 3] Speaker identity question",
+        "#[Part 3] Conversation detail question",
+        "#[Part 3] Combined chart question",
+        "#[Part 3] Topic: Company - General Office Work",
+        "#[Part 3] Topic: Company - Personnel",
+        "#[Part 3] Topic: Company - Event, Project",
+        "#[Part 3] Topic: Transportation",
+        "#[Part 3] Topic: Shopping, Service",
+        "#[Part 3] Topic: Order, delivery",
       ],
     ),
     PartModel(
       partEnum: PartEnum.part4,
       numberOfQuestions: 20,
       tags: [
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
-        "#[Part 4] Câu hỏi về chủ đề, mục đích",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
+        "#[Part 4] Topic, purpose question",
       ],
     ),
     PartModel(
       partEnum: PartEnum.part5,
       numberOfQuestions: 10,
       tags: [
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
-        "#[Part 5] Câu hỏi về chủ đề, mục đích",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
+        "#[Part 5] Topic, purpose question",
       ],
     ),
     PartModel(
       partEnum: PartEnum.part6,
       numberOfQuestions: 10,
       tags: [
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
-        "#[Part 6] Câu hỏi về chủ đề, mục đích",
+        "#[Part 6] Topic, purpose question",
+        "#[Part 6] Topic, purpose question",
+        "#[Part 6] Topic, purpose question",
+        "#[Part 6] Topic, purpose question",
+        "#[Part 6] Topic, purpose question",
+        "#[Part 6] Topic, purpose question",
+        "#[Part 6] Topic, purpose question",
+        "#[Part 6] Topic, purpose question",
       ],
     ),
     PartModel(
       partEnum: PartEnum.part7,
       numberOfQuestions: 10,
       tags: [
-        "#[Part 7] Câu hỏi về chủ đề, mục đích",
-        "#[Part 7] Câu hỏi về chủ đề, mục đích",
-        "#[Part 7] Câu hỏi về chủ đề, mục đích",
-        "#[Part 7] Câu hỏi về chủ đề, mục đích",
-        "#[Part 7] Câu hỏi về chủ đề, mục đích",
-        "#[Part 7] Câu hỏi về chủ đề, mục đích",
-        "#[Part 7] Câu hỏi về chủ đề, mục đích",
+        "#[Part 7] Topic, purpose question",
+        "#[Part 7] Topic, purpose question",
+        "#[Part 7] Topic, purpose question",
+        "#[Part 7] Topic, purpose question",
+        "#[Part 7] Topic, purpose question",
+        "#[Part 7] Topic, purpose question",
+        "#[Part 7] Topic, purpose question",
       ],
     ),
     // Add more parts as needed
@@ -309,29 +195,24 @@ class Constants {
 
   static List<BottomTabModel> bottomTabs = [
     BottomTabModel(
-      title: 'Giới thiệu',
+      title: 'Introduction',
       route: AppRouter.gioiThieu,
-      icon: Icons.info_outlined,
+      icon: AppImages.icIntro,
     ),
     BottomTabModel(
-      title: 'Đề thi online',
+      title: 'Online Test',
       route: AppRouter.deThiOnline,
-      icon: Icons.online_prediction_outlined,
+      icon: AppImages.icTest,
     ),
     BottomTabModel(
       title: 'FlashCards',
       route: AppRouter.flashCards,
-      icon: Icons.flash_on_outlined,
+      icon: AppImages.icFlashCard,
     ),
     BottomTabModel(
       title: 'Blog',
       route: AppRouter.blog,
-      icon: Icons.article_outlined,
-    ),
-    BottomTabModel(
-      title: 'Kích hoạt tài khoản',
-      route: AppRouter.kichHoatTaiKhoan,
-      icon: Icons.verified_user_outlined,
+      icon: AppImages.icBlog,
     ),
   ];
 }
@@ -339,23 +220,23 @@ class Constants {
 extension ConstantsExtension on Constants {
   static Duration getTimeLimit(String time) {
     switch (time) {
-      case '1 phút':
+      case '1 minute':
         return Duration(minutes: 1);
-      case '10 phút':
+      case '10 minutes':
         return Duration(minutes: 10);
-      case '20 phút':
+      case '20 minutes':
         return Duration(minutes: 20);
-      case '30 phút':
+      case '30 minutes':
         return Duration(minutes: 30);
-      case '40 phút':
+      case '40 minutes':
         return Duration(minutes: 40);
-      case '50 phút':
+      case '50 minutes':
         return Duration(minutes: 50);
-      case '60 phút':
+      case '60 minutes':
         return Duration(minutes: 60);
-      case '120 phút':
+      case '120 minutes':
         return Duration(minutes: 120);
-      case 'Không giới hạn':
+      case 'No limit':
         return Duration(minutes: 00);
       default:
         return Duration(minutes: 120);

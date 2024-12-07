@@ -114,16 +114,3 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
-  fonts:
-    - family: Satoshi
-      fonts:
-        - asset: assets/fonts/Satoshi-Black.ttf
-          weight: 900
-        - asset: assets/fonts/Satoshi-Bold.ttf
-          weight: 600
-        - asset: assets/fonts/Satoshi-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Satoshi-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Satoshi-Light.ttf
-          weight: 300

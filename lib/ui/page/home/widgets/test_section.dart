@@ -17,17 +17,14 @@ class TestSection extends StatelessWidget {
           Text(
             "TOEIC Exam",
             style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  color: AppColors.textBlack,
                   fontWeightDelta: 2,
                 ),
           ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: tests
-                .map((e) => Expanded(
-                    child: TestCard(test: e)))
-                .toList(),
+            children:
+                tests.map((e) => Expanded(child: TestCard(test: e))).toList(),
           )
         ],
       ),

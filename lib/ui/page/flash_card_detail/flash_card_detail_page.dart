@@ -47,166 +47,171 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: BlocSelector<FlashCardDetailCubit, FlashCardDetailState,
-            List<FlashCard>>(
-          selector: (state) {
-            return state.flashCards;
-          },
-          builder: (context, flashCards) {
-            return Text('Flashcard: ${widget.title} (${flashCards.length} từ)');
-          },
-        ),
-        actions: [
-          PopupMenuButton<int>(
-            icon: Icon(Icons.more_vert),
-            color: AppColors.textWhite,
-            surfaceTintColor: AppColors.textWhite,
-            offset: const Offset(0, 50),
-            onSelected: (value) {
-              if (value == 0) {
-              } else if (value == 1) {
-                showCreateFlashCardDialog(context, onSave: (flashCardRequest) {
-                  context.read<FlashCardDetailCubit>().createFlashCard(
-                        flashCardRequest.copyWith(setFlashcardId: widget.setId),
-                      );
-                });
-              } else if (value == 2) {}
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: BlocSelector<FlashCardDetailCubit, FlashCardDetailState,
+              List<FlashCard>>(
+            selector: (state) {
+              return state.flashCards;
             },
-            itemBuilder: (context) => [
-              PopupMenuItem<int>(
-                  value: 0,
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.edit),
-                    const SizedBox(width: 10),
-                    Text('Chỉnh sửa',
-                        style: const TextStyle(color: AppColors.actionMenuText))
-                  ])),
-              PopupMenuItem<int>(
-                  value: 1,
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.add),
-                    const SizedBox(width: 10),
-                    Text('Tạo từ mới',
-                        style: const TextStyle(color: AppColors.actionMenuText))
-                  ])),
-              PopupMenuItem<int>(
-                  value: 2,
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.add_circle_outline_rounded),
-                    const SizedBox(width: 10),
-                    Text('Tạo hàng loạt',
-                        style: const TextStyle(color: AppColors.actionMenuText))
-                  ])),
-            ],
-          )
-        ],
-      ),
-      body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
-                  listener: (context, state) {
-                if (state.loadStatus == LoadStatus.failure) {
-                  AppNavigator(context: context).error(state.message);
-                }
-              }, builder: (context, state) {
-                if (state.loadStatus == LoadStatus.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (state.loadStatus == LoadStatus.success) {
-                  return SingleChildScrollView(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 32),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 32),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                final flashCards = context
-                                    .read<FlashCardDetailCubit>()
-                                    .state
-                                    .flashCards;
-                                GoRouter.of(context).pushNamed(
-                                    AppRouter.flashCardQuizz,
-                                    extra: {
-                                      'title': widget.title,
-                                      'flashCards': flashCards,
-                                    });
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.play_circle_outline_rounded),
-                                  SizedBox(width: 8),
-                                  Text('Luyện tập flashcards'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    final flashCards = context
-                                        .read<FlashCardDetailCubit>()
-                                        .state
-                                        .flashCards;
-                                    GoRouter.of(context).pushNamed(
-                                        AppRouter.flashCardPractive,
-                                        extra: {
-                                          'title': widget.title,
-                                          'flashCards': flashCards,
-                                        });
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.shuffle),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        'Xem ngẫu nhiên',
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.pause_circle_outline_rounded),
-                                      SizedBox(width: 8),
-                                      Text('Dừng học bộ này'),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Column(
-                                children: [
-                                  ...state.flashCards.map((flashcard) =>
-                                      FlashcardTile(flashcard: flashcard)),
-                                ],
-                              )
-                        ],
+            builder: (context, flashCards) {
+              return Text(
+                  'Flashcard: ${widget.title} (${flashCards.length} từ)');
+            },
+          ),
+          actions: [
+            PopupMenuButton<int>(
+              icon: Icon(Icons.more_vert),
+              color: AppColors.textWhite,
+              surfaceTintColor: AppColors.textWhite,
+              offset: const Offset(0, 50),
+              onSelected: (value) {
+                if (value == 0) {
+                } else if (value == 1) {
+                  showCreateFlashCardDialog(context,
+                      onSave: (flashCardRequest) {
+                    context.read<FlashCardDetailCubit>().createFlashCard(
+                          flashCardRequest.copyWith(
+                              setFlashcardId: widget.setId),
+                        );
+                  });
+                } else if (value == 2) {}
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem<int>(
+                    value: 0,
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(Icons.edit),
+                      const SizedBox(width: 10),
+                      Text('Chỉnh sửa',
+                          style:
+                              const TextStyle(color: AppColors.actionMenuText))
+                    ])),
+                PopupMenuItem<int>(
+                    value: 1,
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(Icons.add),
+                      const SizedBox(width: 10),
+                      Text('Tạo từ mới',
+                          style:
+                              const TextStyle(color: AppColors.actionMenuText))
+                    ])),
+                PopupMenuItem<int>(
+                    value: 2,
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(Icons.add_circle_outline_rounded),
+                      const SizedBox(width: 10),
+                      Text('Tạo hàng loạt',
+                          style:
+                              const TextStyle(color: AppColors.actionMenuText))
+                    ])),
+              ],
+            )
+          ],
+        ),
+        body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
+            listener: (context, state) {
+          if (state.loadStatus == LoadStatus.failure) {
+            AppNavigator(context: context).error(state.message);
+          }
+        }, builder: (context, state) {
+          if (state.loadStatus == LoadStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.loadStatus == LoadStatus.success) {
+            return SingleChildScrollView(
+              child: Container(
+                width: MediaQuery.sizeOf(context).width * 0.6,
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.sizeOf(context).width * 0.2),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final flashCards = context
+                              .read<FlashCardDetailCubit>()
+                              .state
+                              .flashCards;
+                          GoRouter.of(context)
+                              .pushNamed(AppRouter.flashCardQuizz, extra: {
+                            'title': widget.title,
+                            'flashCards': flashCards,
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.play_circle_outline_rounded),
+                            SizedBox(width: 8),
+                            Text('Luyện tập flashcards'),
+                          ],
+                        ),
                       ),
                     ),
-                  );
-                }
-                return const SizedBox();
-              })
-    );
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              final flashCards = context
+                                  .read<FlashCardDetailCubit>()
+                                  .state
+                                  .flashCards;
+                              GoRouter.of(context).pushNamed(
+                                  AppRouter.flashCardPractive,
+                                  extra: {
+                                    'title': widget.title,
+                                    'flashCards': flashCards,
+                                  });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.shuffle),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Xem ngẫu nhiên',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.pause_circle_outline_rounded),
+                                SizedBox(width: 8),
+                                Text('Dừng học bộ này'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
+                      children: [
+                        ...state.flashCards.map(
+                            (flashcard) => FlashcardTile(flashcard: flashcard)),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+          return const SizedBox();
+        }));
   }
 }

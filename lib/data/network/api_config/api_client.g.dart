@@ -305,7 +305,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<List<SetFlashCardLearning>> getFlashCardLearning() async {
+  Future<List<SetFlashCardLearning>> getFlashCardSetLearning() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -332,6 +332,43 @@ class _ApiClient implements ApiClient {
       _value = _result.data!
           .map((dynamic i) =>
               SetFlashCardLearning.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<List<FlashCardLearning>> getFlashCardLearning(
+      String learningSetId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<FlashCardLearning>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/user/learning-flashcard/set?learningSetId=${learningSetId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<FlashCardLearning> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) =>
+              FlashCardLearning.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

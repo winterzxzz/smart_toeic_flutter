@@ -1,6 +1,7 @@
 import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
@@ -23,7 +24,10 @@ abstract class FlashCardRespository {
       String id, String word, String translation);
   Future<Either<Exception, void>> deleteFlashCard(String id);
 
-  Future<Either<Exception, List<SetFlashCardLearning>>> getSetFlashCardsLearning();
+  Future<Either<Exception, List<SetFlashCardLearning>>>
+      getSetFlashCardsLearning();
+  Future<Either<Exception, List<FlashCardLearning>>> getFlashCardsLearning(
+      String learningSetId);
   Future<Either<Exception, void>> deleteFlashCardLearning(String learningSetId);
 
   Future<Either<Exception, FlashCardAiGen>> getFlashCardInforByAI(
@@ -51,7 +55,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
   Future<Either<Exception, List<SetFlashCardLearning>>>
       getSetFlashCardsLearning() async {
     try {
-      final response = await _apiClient.getFlashCardLearning();
+      final response = await _apiClient.getFlashCardSetLearning();
       return Right(response);
     } on Exception catch (e) {
       return Left(e);
@@ -154,13 +158,24 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       return Left(e);
     }
   }
-  
+
   @override
   Future<Either<Exception, void>> deleteFlashCardLearning(
       String learningSetId) async {
     try {
       await _apiClient.deleteFlashCardLearning(learningSetId);
       return Right(null);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<FlashCardLearning>>> getFlashCardsLearning(
+      String learningSetId) async {
+    try {
+      final response = await _apiClient.getFlashCardLearning(learningSetId);
+      return Right(response);
     } on Exception catch (e) {
       return Left(e);
     }

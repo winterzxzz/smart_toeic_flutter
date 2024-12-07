@@ -35,6 +35,7 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: BlocSelector<FlashCardLearnFlipCubit, FlashCardLearnFlipState,
             String>(
           selector: (state) {

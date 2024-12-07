@@ -9,7 +9,6 @@ class ResetPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final navigator = ResetPasswordNavigator(context: context);
     return Scaffold(
-      appBar: AppBar(),
       body: SizedBox(
         width: double.infinity,
         child: Column(

@@ -23,16 +23,19 @@ class _CustomDropdownExampleState extends State<CustomDropdownExample> {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).brightness == Brightness.dark
+        ? AppColors.backgroundDark
+        : AppColors.backgroundLight;
     return CustomDropdown(
       items: widget.data,
       hintText: widget.data.first,
       decoration: CustomDropdownDecoration(
-        closedBorder: Border.all(color: AppColors.primary.withOpacity(0.1)),
+        closedFillColor: color,
+        expandedFillColor: color,
       ),
       hintBuilder: (context, hint, enabled) {
         return Text(
           hint,
-          style: const TextStyle(color: AppColors.textWhite),
         );
       },
       onChanged: (value) {

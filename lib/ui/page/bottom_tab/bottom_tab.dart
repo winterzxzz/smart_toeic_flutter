@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
@@ -47,39 +50,44 @@ class _BottomTabPageState extends State<BottomTabPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).cardColor,
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: Builder(builder: (context) {
         final isLogin = SharedPreferencesHelper().getCookies() != null;
         if (!isLogin) {
           return Container();
         }
-        return Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.primary,
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
           ),
-          child: IconButton(
-            onPressed: () {
-              setState(() {
-                _isChatVisible = !_isChatVisible;
-                if (_isChatVisible) {
-                  _animationController.forward();
-                } else {
-                  _animationController.reverse();
-                }
-              });
-            },
-            icon: _isChatVisible
-                ? Icon(
-                    Icons.close,
-                    color: AppColors.textWhite,
-                  )
-                : Icon(
-                    Icons.message,
-                    color: AppColors.textWhite,
-                  ),
+          child: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _isChatVisible = !_isChatVisible;
+                  if (_isChatVisible) {
+                    _animationController.forward();
+                  } else {
+                    _animationController.reverse();
+                  }
+                });
+              },
+              icon: _isChatVisible
+                  ? Icon(
+                      Icons.close,
+                    )
+                  : Icon(
+                      Icons.message,
+                    ),
+            ),
           ),
         );
       }),
@@ -87,231 +95,34 @@ class _BottomTabPageState extends State<BottomTabPage>
         children: [
           Row(
             children: [
-              Container(
-                width: 256,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                ),
-                child: Column(
-                  children: [
-                    // Left - Logo
-                    InkWell(
-                      onTap: () {
-                        GoRouter.of(context).go(AppRouter.home);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: const Text(
-                          'Toeic',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textWhite,
-                          ),
+              NavBar(widget: widget),
+              Expanded(
+                  child: Column(
+                children: [
+                  AppBar(),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                        ),
+                        border: Border.all(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.gray3
+                              : AppColors.inputBorder,
+                          width: 1,
                         ),
                       ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                        ),
+                        child: widget.navigationShell,
+                      ),
                     ),
-                    const Divider(
-                      height: 1,
-                      color: AppColors.gray1,
-                    ),
-                    const SizedBox(height: 16),
-                    // Center - Navigation
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: Constants.bottomTabs
-                          .map((item) => InkWell(
-                                onTap: () {
-                                  GoRouter.of(context).go(item.route);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 16,
-                                  ),
-                                  margin:
-                                      const EdgeInsets.only(bottom: 8, left: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(8),
-                                      bottomLeft: Radius.circular(8),
-                                    ),
-                                    color: widget
-                                                .navigationShell.currentIndex ==
-                                            Constants.bottomTabs.indexOf(item) +
-                                                1
-                                        ? Theme.of(context)
-                                            .scaffoldBackgroundColor
-                                        : Colors.transparent,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        item.icon,
-                                        color: widget.navigationShell
-                                                    .currentIndex ==
-                                                Constants.bottomTabs
-                                                        .indexOf(item) +
-                                                    1
-                                            ? AppColors.textBlack
-                                            : AppColors.textWhite,
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        item.title,
-                                        style: TextStyle(
-                                            color: widget.navigationShell
-                                                        .currentIndex ==
-                                                    Constants.bottomTabs
-                                                            .indexOf(item) +
-                                                        1
-                                                ? AppColors.textBlack
-                                                : AppColors.textWhite,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ))
-                          .toList(),
-                    ),
-
-                    const Spacer(),
-
-                    // Right - Login Button
-                    BlocBuilder<UserCubit, UserState>(
-                      builder: (context, state) {
-                        if (state.user != null) {
-                          return GestureDetector(
-                            onTap: () {
-                              // Show menu
-                              showMenu(
-                                context: context,
-                                position: RelativeRect.fromSize(
-                                  Rect.fromPoints(
-                                    Offset(
-                                      0,
-                                      MediaQuery.of(context).size.height,
-                                    ),
-                                    Offset(300,
-                                        MediaQuery.of(context).size.height),
-                                  ),
-                                  Size(500, 100),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                color: AppColors.textWhite,
-                                items: [
-                                  PopupMenuItem(
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.person),
-                                        const SizedBox(width: 8),
-                                        Text('Profile'),
-                                      ],
-                                    ),
-                                    onTap: () {},
-                                  ),
-                                  PopupMenuItem(
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.settings),
-                                        const SizedBox(width: 8),
-                                        Text('Setting'),
-                                      ],
-                                    ),
-                                    onTap: () {},
-                                  ),
-                                  PopupMenuItem(
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.logout),
-                                        const SizedBox(width: 8),
-                                        Text('Logout'),
-                                      ],
-                                    ),
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: Text('Logout'),
-                                          content: Text('Are you sure?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                injector<UserCubit>()
-                                                    .removeUser(context);
-                                              },
-                                              child: Text('Logout'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    AppImages.icUserAvatarDefault,
-                                    width: 32,
-                                    height: 32,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    state.user?.email ?? '',
-                                    style: TextStyle(
-                                      color: AppColors.textWhite,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                        return Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            onPressed: () {
-                              GoRouter.of(context).go(AppRouter.login);
-                            },
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(color: AppColors.textBlack),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                ),
-              ),
-              Expanded(child: widget.navigationShell),
+                  ),
+                ],
+              )),
             ],
           ),
           AnimatedPositioned(
@@ -331,71 +142,416 @@ class _BottomTabPageState extends State<BottomTabPage>
                       ),
                     )
                   : AlwaysStoppedAnimation(0.0),
-              child: Container(
-                height: 500,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(0, -2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Finch from Sendbird",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+              child: Card(
+                elevation: 10,
+                child: Container(
+                  height: 500,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Finch from Sendbird",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: () {
-                            setState(() {
-                              _isChatVisible = false;
-                            });
+                          IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              setState(() {
+                                _isChatVisible = false;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      Divider(),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _messages.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(_messages[index]),
+                            );
                           },
                         ),
-                      ],
-                    ),
-                    Divider(),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: _messages.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(_messages[index]),
-                          );
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: "Enter message",
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(Icons.send),
+                        ),
+                        onSubmitted: (text) {
+                          setState(() {
+                            _messages.add(text);
+                          });
                         },
                       ),
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: "Enter message",
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(Icons.send),
-                      ),
-                      onSubmitted: (text) {
-                        setState(() {
-                          _messages.add(text);
-                        });
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AppBar extends StatelessWidget {
+  const AppBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 16),
+      height: 50,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(width: 16),
+          BlocSelector<AppSettingCubit, AppSettingState, String>(
+            selector: (state) {
+              return state.currentPath;
+            },
+            builder: (context, currentPath) {
+              return Text(currentPath);
+            },
+          ),
+          const SizedBox(width: 32),
+          IconButton(
+            onPressed: () {
+              final navigationKey = AppRouter.navigationKey;
+              if (navigationKey.currentState != null &&
+                  navigationKey.currentState!.context.canPop()) {
+                injector<AppSettingCubit>().removeNavigationHistory();
+                GoRouter.of(navigationKey.currentState!.context).pop();
+              }
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 16),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+            ),
+          ),
+          Spacer(),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return ScaleTransition(scale: animation, child: child);
+            },
+            child: BlocSelector<AppSettingCubit, AppSettingState, ThemeMode>(
+              selector: (state) {
+                return state.themeMode;
+              },
+              builder: (context, themeMode) {
+                final isDarkMode = themeMode == ThemeMode.dark;
+                return InkWell(
+                  splashFactory: NoSplash.splashFactory,
+                  key: ValueKey<bool>(isDarkMode),
+                  onTap: () {
+                    injector<AppSettingCubit>().changeThemeMode(
+                      themeMode: isDarkMode ? ThemeMode.light : ThemeMode.dark,
+                    );
+                  },
+                  child: SvgPicture.asset(
+                    isDarkMode
+                        ? AppImages.icDarkModeActive
+                        : AppImages.icDarkModeInactive,
+                    width: 20,
+                    height: 20,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 32),
+          InkWell(
+            onTap: () {
+              GoRouter.of(context).go(AppRouter.kichHoatTaiKhoan);
+            },
+            child: SvgPicture.asset(
+              AppImages.icPremium,
+              width: 24,
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.textWhite
+                    : AppColors.textBlack,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          BlocBuilder<UserCubit, UserState>(
+            builder: (context, state) {
+              if (state.user != null) {
+                return GestureDetector(
+                  onTap: () {
+                    _showMenu(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: SvgPicture.asset(
+                      AppImages.icUserAvatarDefault,
+                      width: 24,
+                      height: 24,
+                    ),
+                  ),
+                );
+              }
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    GoRouter.of(context).go(AppRouter.login);
+                  },
+                  child: const Text(
+                    'Login',
+                  ),
+                ),
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  void _showMenu(BuildContext context) {
+    showMenu(
+      context: context,
+      // right and top
+      position: RelativeRect.fromLTRB(
+        MediaQuery.of(context).size.width - 100,
+        50,
+        MediaQuery.of(context).size.width,
+        100,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      items: [
+        PopupMenuItem(
+          child: Row(
+            children: [
+              Icon(Icons.person),
+              const SizedBox(width: 8),
+              Text('Profile'),
+            ],
+          ),
+          onTap: () {
+            GoRouter.of(context).go(AppRouter.profile);
+          },
+        ),
+        PopupMenuItem(
+          child: Row(
+            children: [
+              Icon(Icons.settings),
+              const SizedBox(width: 8),
+              Text('Setting'),
+            ],
+          ),
+          onTap: () {},
+        ),
+        PopupMenuItem(
+          child: Row(
+            children: [
+              Icon(Icons.logout),
+              const SizedBox(width: 8),
+              Text('Logout'),
+            ],
+          ),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Logout'),
+                content: Text('Are you sure?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      injector<UserCubit>().removeUser(context);
+                    },
+                    child: Text('Logout'),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class NavBar extends StatelessWidget {
+  const NavBar({
+    super.key,
+    required this.widget,
+  });
+
+  final BottomTabPage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        width: 60,
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Column(
+          children: [
+            InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () {
+                GoRouter.of(context).go(AppRouter.home);
+              },
+              child: Container(
+                height: 50,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: SvgPicture.asset(
+                  width: 24,
+                  height: 24,
+                  AppImages.icHome,
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.textWhite
+                        : AppColors.textBlack,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            ),
+
+            const Divider(
+              height: 1,
+            ),
+            const SizedBox(height: 16),
+            // Center - Navigation
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: Constants.bottomTabs
+                  .map(
+                    (item) => Column(
+                      children: [
+                        InkWell(
+                          borderRadius: BorderRadius.circular(8),
+                          onTap: () {
+                            GoRouter.of(context).go(item.route);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: widget.navigationShell.currentIndex ==
+                                      Constants.bottomTabs.indexOf(item) + 1
+                                  ? AppColors.backgroundBottomTab
+                                  : Colors.transparent,
+                            ),
+                            child: SvgPicture.asset(
+                              width: 24,
+                              height: 24,
+                              item.icon,
+                              colorFilter: ColorFilter.mode(
+                                widget.navigationShell.currentIndex ==
+                                        Constants.bottomTabs.indexOf(item) + 1
+                                    ? AppColors.textWhite
+                                    : Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? AppColors.textWhite
+                                        : AppColors.textBlack,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+
+            const Spacer(),
+
+            InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () {
+                GoRouter.of(context).go(AppRouter.setting);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: widget.navigationShell.currentIndex == 7
+                      ? AppColors.backgroundBottomTab
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: SvgPicture.asset(
+                  width: 24,
+                  height: 24,
+                  AppImages.icSetting,
+                  colorFilter: ColorFilter.mode(
+                    widget.navigationShell.currentIndex == 7
+                        ? AppColors.textWhite
+                        : Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.textWhite
+                            : AppColors.textBlack,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }

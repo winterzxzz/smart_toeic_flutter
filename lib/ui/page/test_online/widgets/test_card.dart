@@ -24,7 +24,7 @@ class TestCard extends StatelessWidget {
     final isAttempted = countAttempt > 0;
     return Card(
       child: Container(
-        height: 280,
+        height: 300,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,8 +68,7 @@ class TestCard extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text('#${test.type}',
-                style: TextStyle(
-                    color: AppColors.textBlack, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             Container(
               padding: EdgeInsets.all(8),
@@ -77,7 +76,7 @@ class TestCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isAttempted
                     ? AppColors.success.withOpacity(0.2)
-                    : AppColors.gray1.withOpacity(0.4),
+                    : Colors.grey[500],
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -89,7 +88,7 @@ class TestCard extends StatelessWidget {
                         : 'Manage your time effectively !',
                     style: TextStyle(
                       color:
-                          isAttempted ? AppColors.success : AppColors.textBlack,
+                          isAttempted ? AppColors.success : AppColors.textWhite,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
