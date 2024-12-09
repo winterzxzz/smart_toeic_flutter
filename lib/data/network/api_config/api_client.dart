@@ -5,6 +5,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
+import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
@@ -39,6 +40,11 @@ abstract class ApiClient {
   @GET('user/auth/getinfor')
   Future<UserEntity> getUser();
 
+  // PROFILE
+  @GET('/user/profile/analysis')
+  Future<ProfileAnalysis> getProfileAnalysis();
+
+  // FLASH CARD
   @GET('/user/flashcard/set?setFlashcardId={setFlashcardId}')
   Future<List<FlashCard>> getFlashCardSet(
     @Path("setFlashcardId") String setFlashcardId,
@@ -98,6 +104,7 @@ abstract class ApiClient {
     @Field("id") String id,
   );
 
+  // TEST
   @GET('/user/test?limit={limit}')
   Future<List<Test>> getTest(
     @Query("limit") int limit,

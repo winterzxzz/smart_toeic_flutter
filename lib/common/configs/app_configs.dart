@@ -3,7 +3,7 @@ import 'app_env_config.dart';
 
 class AppConfigs {
   AppConfigs._();
-  static const String appName = "IScanner";
+  static const String appName = "Toeic Desktop";
   static Environment env = Environment.dev;
 
   ///API Env

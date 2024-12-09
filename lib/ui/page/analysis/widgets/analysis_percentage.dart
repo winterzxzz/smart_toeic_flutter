@@ -1,17 +1,25 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class AnalysisPercentage extends StatelessWidget {
-  const AnalysisPercentage({super.key});
+  const AnalysisPercentage({
+    super.key,
+    required this.percentage,
+  });
+
+  final Map<String, String> percentage;
 
   @override
   Widget build(BuildContext context) {
+    log('percentage: ${percentage.entries}');
+
     return Card(
       child: Container(
         padding: const EdgeInsets.all(16),
         height: 300, // Add fixed height for the chart
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Độ chính xác theo Phần(%)',
@@ -21,7 +29,6 @@ class AnalysisPercentage extends StatelessWidget {
             Expanded(
               child: BarChart(
                 BarChartData(
-                  alignment: BarChartAlignment.spaceAround,
                   maxY: 100,
                   titlesData: FlTitlesData(
                     show: true,
@@ -39,7 +46,7 @@ class AnalysisPercentage extends StatelessWidget {
                             'Part 7',
                           ];
                           return Text(
-                            titles[value.toInt()],
+                            titles[value.toInt() - 1],
                             style: const TextStyle(fontSize: 12),
                           );
                         },
@@ -49,7 +56,7 @@ class AnalysisPercentage extends StatelessWidget {
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 30,
+                        reservedSize: 40,
                         interval: 20,
                       ),
                     ),
@@ -61,16 +68,11 @@ class AnalysisPercentage extends StatelessWidget {
                     ),
                   ),
                   borderData: FlBorderData(show: false),
-                  gridData: const FlGridData(show: false),
-                  barGroups: [
-                    _createBarData(0, 30), // Part 1
-                    _createBarData(1, 22), // Part 2
-                    _createBarData(2, 30), // Part 3
-                    _createBarData(3, 25), // Part 4
-                    _createBarData(4, 65), // Part 5
-                    _createBarData(5, 70), // Part 6
-                    _createBarData(6, 80), // Part 7
-                  ],
+                  gridData: const FlGridData(show: true),
+                  barGroups: percentage.entries
+                      .map((e) => _createBarData(
+                          int.parse(e.key), double.parse(e.value)))
+                      .toList(),
                 ),
               ),
             ),
@@ -86,7 +88,9 @@ class AnalysisPercentage extends StatelessWidget {
       barRods: [
         BarChartRodData(
           toY: y,
-          color: Colors.blue.shade300,
+          gradient: LinearGradient(
+            colors: [Colors.red.shade300, Colors.orange.shade100],
+          ),
           width: 25,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(6),

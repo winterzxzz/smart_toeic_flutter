@@ -64,7 +64,7 @@ class _PageState extends State<Page> {
         }
         if (LoadStatus.success == state.loadStatus) {
           navigator.success("Welcome back!");
-          GoRouter.of(context).go(AppRouter.home);
+          GoRouter.of(context).go(AppRouter.splash);
         }
       },
       child: Scaffold(

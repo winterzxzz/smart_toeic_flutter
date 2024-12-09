@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AnalysisScore extends StatelessWidget {
-  const AnalysisScore({super.key});
+  const AnalysisScore({
+    super.key,
+    required this.overallScore,
+    required this.listenScore,
+    required this.readScore,
+  });
+
+  final int overallScore;
+  final int listenScore;
+  final int readScore;
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +18,6 @@ class AnalysisScore extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Phân tích Điểm số',

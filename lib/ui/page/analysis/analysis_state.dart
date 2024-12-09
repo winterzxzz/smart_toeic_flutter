@@ -5,19 +5,19 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 class AnalysisState extends Equatable {
   final LoadStatus loadStatus;
   final String message;
-  final ProfileAnalysis? profileAnalysis;
+  final ProfileAnalysis profileAnalysis;
 
   const AnalysisState({
     required this.loadStatus,
     required this.message,
-    this.profileAnalysis,
+    required this.profileAnalysis,
   });
 
   // initial state
   factory AnalysisState.initial() => AnalysisState(
         loadStatus: LoadStatus.initial,
         message: '',
-        profileAnalysis: null,
+        profileAnalysis: ProfileAnalysis.initial(),
       );
 
   // copy with

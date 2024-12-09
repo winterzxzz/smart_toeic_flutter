@@ -18,6 +18,7 @@ void main() async {
     minimumSize: Size(1280, 1080),
     maximumSize: Size(1920, 1080),
     center: true,
+    title: 'Toeic Desktop',
   );
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
