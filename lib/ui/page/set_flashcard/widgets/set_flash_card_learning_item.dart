@@ -27,16 +27,31 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
     return Card(
       child: Container(
         width: 300,
-        constraints: const BoxConstraints(maxHeight: 250),
+        constraints: const BoxConstraints(maxHeight: 280),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (_getNumberOfQuestionsReview(widget.flashcard) > 0)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.error,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                        '${_getNumberOfQuestionsReview(widget.flashcard)} to reviews',
+                        style: TextStyle(color: AppColors.textWhite)),
+                  ),
+                ],
+              ),
             Row(
               children: [
                 Expanded(
@@ -150,6 +165,16 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
         ),
       ),
     );
+  }
+
+  int _getNumberOfQuestionsReview(SetFlashCardLearning flashcard) {
+    int count = 0;
+    for (var x in flashcard.learningFlashcards) {
+      if (x < 0.2) {
+        count++;
+      }
+    }
+    return count;
   }
 
   void _showMenuDialog() {

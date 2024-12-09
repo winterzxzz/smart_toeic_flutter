@@ -48,16 +48,16 @@ class Page extends StatelessWidget {
                 children: [
                   // Slider background images
                   SliderSection(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 48),
                   // Toeic exam section
                   TestSection(tests: state.tests),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 48),
                   ResultSection(results: state.resultTests),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 48),
                   ServiceSection(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 48),
                   BlogSection(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 48),
                 ],
               );
             }

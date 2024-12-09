@@ -62,8 +62,7 @@ class _PageState extends State<Page> {
           actions: [
             PopupMenuButton<int>(
               icon: Icon(Icons.more_vert),
-              color: AppColors.textWhite,
-              surfaceTintColor: AppColors.textWhite,
+              color: Theme.of(context).cardColor,
               offset: const Offset(0, 50),
               onSelected: (value) {
                 if (value == 0) {

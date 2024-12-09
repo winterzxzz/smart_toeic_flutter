@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/score_tile.dart';
 
 class ExamResultCard extends StatelessWidget {

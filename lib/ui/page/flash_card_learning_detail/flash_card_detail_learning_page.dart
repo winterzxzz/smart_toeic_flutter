@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_state.dart';
@@ -46,37 +46,8 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        floatingActionButton: GestureDetector(
-          onTap: _showStatusInfo,
-          child: Container(
-            width: 150,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.textWhite,
-              borderRadius: BorderRadius.circular(4),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0, 1),
-                )
-              ],
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.info_outline),
-                SizedBox(width: 8),
-                Text(
-                  'Status Info',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
-          ),
-        ),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: BlocSelector<FlashCardDetailLearningCubit,
               FlashCardDetailLearningState, List<FlashCardLearning>>(
             selector: (state) {
@@ -87,6 +58,11 @@ class _PageState extends State<Page> {
                   'Flashcard: ${widget.title} (${flashCards.length} từ)');
             },
           ),
+          actions: [
+            IconButton(
+                onPressed: _showStatusInfo,
+                icon: FaIcon(FontAwesomeIcons.circleInfo, size: 16)),
+          ],
         ),
         body: BlocConsumer<FlashCardDetailLearningCubit,
             FlashCardDetailLearningState>(listener: (context, state) {

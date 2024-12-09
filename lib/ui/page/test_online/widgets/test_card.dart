@@ -115,8 +115,7 @@ class TestCard extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      isAttempted ? AppColors.success : AppColors.primary,
+                  backgroundColor: isAttempted ? AppColors.success : null,
                 ),
                 onPressed: () {
                   GoRouter.of(context).pushNamed(AppRouter.modeTest, extra: {

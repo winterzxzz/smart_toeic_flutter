@@ -7,27 +7,24 @@ class ServiceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
-      child: Column(
-        children: [
-          Text(
-            "Our TOEIC Preparation Services",
-            style: Theme.of(context).textTheme.headlineMedium!.apply(
-                  fontWeightDelta: 2,
-                ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: Constants.services.map((service) {
-              return Expanded(
-                child: ServiceCard(item: service),
-              );
-            }).toList(),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          "Our TOEIC Preparation Services",
+          style: Theme.of(context).textTheme.headlineMedium!.apply(
+                fontWeightDelta: 2,
+              ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: Constants.services.map((service) {
+            return Expanded(
+              child: ServiceCard(item: service),
+            );
+          }).toList(),
+        )
+      ],
     );
   }
 }

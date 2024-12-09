@@ -39,39 +39,36 @@ class Page extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state.loadStatus == LoadStatus.success) {
             return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: 150,
-                      height: 45,
-                      child: CustomDropdownExample(
-                        data: ["All", "Short"],
-                        onChanged: (value) {},
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: 150,
+                    height: 45,
+                    child: CustomDropdownExample(
+                      data: ["All", "Short"],
+                      onChanged: (value) {},
                     ),
-                    const SizedBox(height: 16),
-                    Wrap(
-                      alignment: WrapAlignment.start,
-                      runAlignment: WrapAlignment.start,
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: List.generate(state.tests.length, (index) {
-                        // Number of tests (replace as needed)
-                        return SizedBox(
-                          width: 300,
-                          child: TestCard(
-                            test: state.tests[index],
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 32),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 16),
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    runAlignment: WrapAlignment.start,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: List.generate(state.tests.length, (index) {
+                      // Number of tests (replace as needed)
+                      return SizedBox(
+                        width: 300,
+                        child: TestCard(
+                          test: state.tests[index],
+                        ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 32),
+                ],
               ),
             );
           }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_discover.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning.dart';
@@ -43,8 +42,8 @@ class Page extends StatelessWidget {
               dividerHeight: 0,
               tabAlignment: TabAlignment.center,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: AppColors.primary,
-              labelColor: AppColors.primary, // Replace AppColors.primary
+              indicatorColor: Colors.deepOrangeAccent,
+              labelColor: Colors.deepOrangeAccent, // Replace AppColors.primary
               unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
               onTap: (index) {
                 if (index == 1) {

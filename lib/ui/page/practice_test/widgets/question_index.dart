@@ -55,8 +55,10 @@ class _QuestionIndexState extends State<QuestionIndex> {
         width: 300,
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.backgroundDark
+              : AppColors.backgroundLight,
         ),
         child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
           buildWhen: (previous, current) =>
@@ -75,46 +77,12 @@ class _QuestionIndexState extends State<QuestionIndex> {
                 const SizedBox(
                   height: 16,
                 ),
-                InkWell(
-                  onTap: () {
-                    // show dialog  confirm
-                    showDialog(
-                      context: context,
-                      builder: (dialogContext) => AlertDialog(
-                        title: Text('Nộp bài'),
-                        content: Text('Bạn có chắc chắn muốn nộp bài không?'),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                GoRouter.of(dialogContext).pop();
-                              },
-                              child: Text('Hủy')),
-                          TextButton(
-                              onPressed: () {
-                                context.read<PracticeTestCubit>().submitTest(
-                                    context, remainingTime);
-                              },
-                              child: Text(
-                                'Nộp bài',
-                                style: TextStyle(color: Colors.red),
-                              )),
-                        ],
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 45,
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Nộp bài'.toUpperCase(),
-                      style: TextStyle(color: Colors.white),
-                    ),
+                SizedBox(
+                  height: 45,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _showConfirmSubmitTestDialog,
+                    child: Text('Nộp bài'),
                   ),
                 ),
                 ...state.parts.map(
@@ -136,6 +104,33 @@ class _QuestionIndexState extends State<QuestionIndex> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  void _showConfirmSubmitTestDialog() {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text('Nộp bài'),
+        content: Text('Bạn có chắc chắn muốn nộp bài không?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                GoRouter.of(dialogContext).pop();
+              },
+              child: Text('Hủy')),
+          TextButton(
+              onPressed: () {
+                context
+                    .read<PracticeTestCubit>()
+                    .submitTest(context, remainingTime);
+              },
+              child: Text(
+                'Nộp bài',
+                style: TextStyle(color: Colors.red),
+              )),
+        ],
       ),
     );
   }

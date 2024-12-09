@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
-import 'package:toeic_desktop/data/models/entities/user_entity.dart';
+import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
 

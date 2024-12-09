@@ -7,6 +7,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
+import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
@@ -76,6 +77,7 @@ class AppRouter {
   static const String resultTest = "/result-test";
   static const String profile = "/profile";
   static const String setting = "/setting";
+  static const String analysis = "/analysis";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -237,6 +239,11 @@ class AppRouter {
               name: resetPassword,
               path: resetPassword,
               builder: (context, state) => const ResetPasswordPage(),
+            ),
+            GoRoute(
+              name: analysis,
+              path: analysis,
+              builder: (context, state) => const AnalysisPage(),
             ),
           ],
         ),

@@ -106,8 +106,10 @@ class SideQuestion extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.backgroundDark
+            : AppColors.backgroundLight,
       ),
       child: BlocSelector<PracticeTestCubit, PracticeTestState,
           List<QuestionModel>>(
@@ -144,9 +146,11 @@ class SideQuestion extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       color: part.numValue ==
                                               state.focusPart.numValue
-                                          ? AppColors.primary
-                                          : Colors.white,
-                                      border: Border.all(color: Colors.black),
+                                          ? Colors.deepOrangeAccent
+                                          : Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? AppColors.backgroundDarkSub
+                                              : AppColors.backgroundLightSub,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(part.name,
@@ -154,7 +158,11 @@ class SideQuestion extends StatelessWidget {
                                             color: part.numValue ==
                                                     state.focusPart.numValue
                                                 ? Colors.white
-                                                : Colors.black)),
+                                                : Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black)),
                                   ),
                                 ))
                             .toList(),

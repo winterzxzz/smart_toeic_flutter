@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
-import 'package:toeic_desktop/data/models/entities/user_entity.dart';
+import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 
 part 'user_state.dart';
 

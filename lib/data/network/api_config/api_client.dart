@@ -11,7 +11,7 @@ import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test_submit.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
-import 'package:toeic_desktop/data/models/entities/user_entity.dart';
+import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';

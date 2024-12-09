@@ -5,7 +5,6 @@ import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
 
 class ModeTestpage extends StatefulWidget {
@@ -24,9 +23,8 @@ class _ModeTestpageState extends State<ModeTestpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
         margin: EdgeInsets.symmetric(
-          horizontal: 16,
+          horizontal: 2,
         ),
         child: SingleChildScrollView(
           child: Column(

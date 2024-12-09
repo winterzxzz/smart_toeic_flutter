@@ -53,15 +53,15 @@ class PracticeTestPart extends StatelessWidget {
                   return Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isAnswered ? AppColors.primary : Colors.white,
-                      border: Border.all(color: Colors.black),
+                      color: isAnswered
+                          ? Colors.deepOrangeAccent
+                          : Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.backgroundDarkSub
+                              : AppColors.backgroundLightSub,
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Text(
                       '${questions[index].id}',
-                      style: TextStyle(
-                        color: isAnswered ? Colors.white : Colors.black,
-                      ),
                     ),
                   );
                 },

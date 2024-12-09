@@ -14,8 +14,8 @@ void main() async {
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(1280, 720),
-    minimumSize: Size(1280, 720),
+    size: Size(1280, 1080),
+    minimumSize: Size(1280, 1080),
     maximumSize: Size(1920, 1080),
     center: true,
   );
@@ -23,8 +23,6 @@ void main() async {
     await windowManager.show();
     await windowManager.focus();
   });
-
-  
 
   await SharedPreferencesHelper().initialize();
   await init();

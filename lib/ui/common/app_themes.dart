@@ -168,8 +168,8 @@ class TElevatedButtonTheme {
   static final darkElevatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       elevation: 0,
-      foregroundColor: AppColors.textWhite,
-      backgroundColor: AppColors.primary,
+      foregroundColor: AppColors.textBlack,
+      backgroundColor: AppColors.backgroundLight,
       disabledForegroundColor: AppColors.gray1,
       disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),

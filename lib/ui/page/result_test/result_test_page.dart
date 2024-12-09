@@ -26,7 +26,9 @@ class ResultTestPage extends StatelessWidget {
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: AppColors.textWhite,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.backgroundDark
+                    : AppColors.backgroundLight,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +81,6 @@ class ResultTestPage extends StatelessWidget {
                       SizedBox(width: 16),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.textWhite,
                             side: BorderSide(
                               color: AppColors.textBlack,
                             ),
@@ -89,12 +90,10 @@ class ResultTestPage extends StatelessWidget {
                           },
                           child: Row(
                             children: [
-                              Icon(Icons.arrow_back,
-                                  color: AppColors.textBlack, size: 18),
+                              Icon(Icons.arrow_back),
                               SizedBox(width: 8),
                               Text(
                                 'Back to test page',
-                                style: TextStyle(color: AppColors.textBlack),
                               ),
                             ],
                           )),
@@ -161,7 +160,6 @@ class ResultTestPage extends StatelessWidget {
         width: 120,
         padding: EdgeInsets.all(12),
         margin: EdgeInsets.symmetric(horizontal: 12),
-        color: AppColors.textWhite,
         child: Column(
           children: [
             Icon(

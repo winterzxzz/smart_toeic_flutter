@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -50,7 +48,6 @@ class _BottomTabPageState extends State<BottomTabPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).cardColor,
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: Builder(builder: (context) {
@@ -221,15 +218,6 @@ class AppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(width: 16),
-          BlocSelector<AppSettingCubit, AppSettingState, String>(
-            selector: (state) {
-              return state.currentPath;
-            },
-            builder: (context, currentPath) {
-              return Text(currentPath);
-            },
-          ),
-          const SizedBox(width: 32),
           IconButton(
             onPressed: () {
               final navigationKey = AppRouter.navigationKey;
@@ -251,6 +239,15 @@ class AppBar extends StatelessWidget {
               Icons.arrow_forward_ios,
               size: 20,
             ),
+          ),
+          const SizedBox(width: 32),
+          BlocSelector<AppSettingCubit, AppSettingState, String>(
+            selector: (state) {
+              return state.currentPath;
+            },
+            builder: (context, currentPath) {
+              return Text(currentPath);
+            },
           ),
           Spacer(),
           AnimatedSwitcher(
@@ -349,12 +346,14 @@ class AppBar extends StatelessWidget {
     showMenu(
       context: context,
       // right and top
+      color: Theme.of(context).cardColor,
       position: RelativeRect.fromLTRB(
         MediaQuery.of(context).size.width - 100,
         50,
         MediaQuery.of(context).size.width,
         100,
       ),
+      elevation: 10,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),

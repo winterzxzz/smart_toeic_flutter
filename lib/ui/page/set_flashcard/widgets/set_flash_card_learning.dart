@@ -22,55 +22,52 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 32),
-              Row(
-                children: [
-                  FlashCardMyListItem(),
-                  const SizedBox(width: 16),
-                  FlashCardMyListItem(),
-                  const SizedBox(width: 16),
-                  FlashCardMyListItem(),
-                ],
-              ),
-              const SizedBox(height: 32),
-              Text(
-                'Flashcard Categories ',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
-              BlocConsumer<FlashCardCubit, FlashCardState>(
-                listenWhen: (previous, current) =>
-                    previous.loadStatusLearning != current.loadStatusLearning ||
-                    previous.flashCardsLearning != current.flashCardsLearning,
-                buildWhen: (previous, current) =>
-                    previous.loadStatusLearning != current.loadStatusLearning ||
-                    previous.flashCardsLearning != current.flashCardsLearning,
-                listener: (context, state) {
-                  if (state.loadStatus == LoadStatus.failure) {
-                    AppNavigator(context: context).error(state.message);
-                  }
-                },
-                builder: (context, state) {
-                  if (state.loadStatus == LoadStatus.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state.loadStatusLearning == LoadStatus.success) {
-                    return SetFlashCardLearningGrid(
-                      flashcards: state.flashCardsLearning,
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-              const SizedBox(height: 32),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                FlashCardMyListItem(),
+                const SizedBox(width: 16),
+                FlashCardMyListItem(),
+                const SizedBox(width: 16),
+                FlashCardMyListItem(),
+              ],
+            ),
+            const SizedBox(height: 32),
+            Text(
+              'Flashcard Categories ',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 16),
+            BlocConsumer<FlashCardCubit, FlashCardState>(
+              listenWhen: (previous, current) =>
+                  previous.loadStatusLearning != current.loadStatusLearning ||
+                  previous.flashCardsLearning != current.flashCardsLearning,
+              buildWhen: (previous, current) =>
+                  previous.loadStatusLearning != current.loadStatusLearning ||
+                  previous.flashCardsLearning != current.flashCardsLearning,
+              listener: (context, state) {
+                if (state.loadStatus == LoadStatus.failure) {
+                  AppNavigator(context: context).error(state.message);
+                }
+              },
+              builder: (context, state) {
+                if (state.loadStatus == LoadStatus.loading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state.loadStatusLearning == LoadStatus.success) {
+                  return SetFlashCardLearningGrid(
+                    flashcards: state.flashCardsLearning,
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
+            const SizedBox(height: 32),
+          ],
         ),
       ),
     );
@@ -95,7 +92,6 @@ class FlashCardMyListItem extends StatelessWidget {
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.gray2),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

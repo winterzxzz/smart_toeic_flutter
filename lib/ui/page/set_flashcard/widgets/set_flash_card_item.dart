@@ -28,8 +28,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
         constraints: const BoxConstraints(maxHeight: 250),
         width: 300,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
