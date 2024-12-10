@@ -14,6 +14,8 @@ class QuestionModel {
   final String correctAnswer;
   final int part;
   final String? userAnswer;
+  final int timeSecond;
+  final List<String> questionCategory;
 
   QuestionModel({
     required this.id,
@@ -29,6 +31,8 @@ class QuestionModel {
     required this.correctAnswer,
     required this.part,
     this.userAnswer,
+    this.timeSecond = 0,
+    this.questionCategory = const [],
   });
 
   // copy with
@@ -46,6 +50,8 @@ class QuestionModel {
     String? correctAnswer,
     int? part,
     String? userAnswer,
+    int? timeSecond,
+    List<String>? questionCategory,
   }) {
     return QuestionModel(
       id: id ?? this.id,
@@ -61,6 +67,8 @@ class QuestionModel {
       correctAnswer: correctAnswer ?? this.correctAnswer,
       part: part ?? this.part,
       userAnswer: userAnswer ?? this.userAnswer,
+      timeSecond: timeSecond ?? this.timeSecond,
+      questionCategory: questionCategory ?? this.questionCategory,
     );
   }
 }

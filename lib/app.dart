@@ -9,6 +9,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:toeic_desktop/data/network/repositories/payment_repository.dart';
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_cubit.dart';
@@ -23,6 +24,7 @@ import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
 import 'package:toeic_desktop/ui/page/splash/splash_cubit.dart';
+import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_cubit.dart';
 import 'common/configs/app_configs.dart';
 import 'common/global_blocs/setting/app_setting_cubit.dart';
 import 'common/router/route_config.dart';
@@ -60,6 +62,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<ProfileRepository>(
           create: (context) => injector<ProfileRepository>(),
+        ),
+        RepositoryProvider<PaymentRepository>(
+          create: (context) => injector<PaymentRepository>(),
         ),
       ],
       child: MultiBlocProvider(

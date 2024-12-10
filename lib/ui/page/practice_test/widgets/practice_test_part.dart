@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
@@ -37,27 +38,38 @@ class PracticeTestPart extends StatelessWidget {
           ),
           itemCount: questions.length,
           itemBuilder: (context, index) {
+            final isAnswered = questions[index].userAnswer != null;
             return InkWell(
               onTap: () {
                 context
                     .read<PracticeTestCubit>()
                     .setFocusQuestion(questions[index]);
               },
-              child: BlocSelector<PracticeTestCubit, PracticeTestState,
-                  List<QuestionModel>>(
-                selector: (state) {
-                  return state.questionsOfPart;
-                },
-                builder: (context, questionsOfPart) {
-                  final isAnswered = questions[index].userAnswer != null;
+              child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
+                buildWhen: (previous, current) =>
+                    previous.questionsResult != current.questionsResult ||
+                    previous.testShow != current.testShow,
+                builder: (context, state) {
+                  Color color = Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.backgroundDarkSub
+                      : AppColors.backgroundLightSub;
+                  if (state.testShow == TestShow.test) {
+                    color = isAnswered ? Colors.deepOrangeAccent : color;
+                  } else {
+                    for (var questionResult in state.questionsResult) {
+                      if (questionResult.questionNum ==
+                          questions[index].id.toString()) {
+                        color = questionResult.correctanswer ==
+                                questionResult.useranswer
+                            ? Colors.green
+                            : Colors.red;
+                      }
+                    }
+                  }
                   return Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isAnswered
-                          ? Colors.deepOrangeAccent
-                          : Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.backgroundDarkSub
-                              : AppColors.backgroundLightSub,
+                      color: color,
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: Text(

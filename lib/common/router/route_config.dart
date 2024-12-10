@@ -6,6 +6,7 @@ import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
@@ -18,7 +19,7 @@ import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_result.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_page.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
-import 'package:toeic_desktop/ui/page/kich_hoat_tai_khoan/kich_hoat_tai_khoan.dart';
+import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_page.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_page.dart';
@@ -265,11 +266,13 @@ class AppRouter {
       path: practiceTest,
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
+        final testShow = args['testShow'] as TestShow;
         final parts = args['parts'] as List<PartEnum>;
         final duration = args['duration'] as Duration;
         final testId = args['testId'] as String;
         final resultId = args['resultId'] as String?;
         return PracticeTestPage(
+            testShow: testShow,
             parts: parts,
             duration: duration,
             testId: testId,

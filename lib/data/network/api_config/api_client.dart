@@ -5,6 +5,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
+import 'package:toeic_desktop/data/models/entities/payment/payment.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
@@ -147,4 +148,8 @@ abstract class ApiClient {
   Future<List<ResultTest>> getResultTestUser(
     @Query("limit") int limit,
   );
+
+  // Premium
+  @POST('/user/payment')
+  Future<Payment> getPayment();
 }

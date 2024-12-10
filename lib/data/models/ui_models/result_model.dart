@@ -1,5 +1,9 @@
+import 'package:toeic_desktop/data/models/enums/part.dart';
+
 class ResultModel {
+  final String testId;
   final String resultId;
+  final List<PartEnum> parts;
   final String testName;
   final int totalQuestion;
   final int correctQuestion;
@@ -11,7 +15,9 @@ class ResultModel {
   final Duration duration;
 
   ResultModel({
+    required this.testId,
     required this.resultId,
+    required this.parts,
     required this.testName,
     required this.totalQuestion,
     required this.correctQuestion,

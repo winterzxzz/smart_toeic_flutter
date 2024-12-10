@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
@@ -20,7 +19,6 @@ class TestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final countAttempt = getCountAttempt(test);
-    log('countAttempt: $countAttempt');
     final isAttempted = countAttempt > 0;
     return Card(
       child: Container(
@@ -34,7 +32,8 @@ class TestCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(Icons.check_circle, color: AppColors.success),
+                  FaIcon(FontAwesomeIcons.circleCheck,
+                      color: AppColors.success),
                 ],
               ),
             ),
@@ -51,17 +50,19 @@ class TestCard extends StatelessWidget {
               runSpacing: 8,
               direction: Axis.horizontal,
               children: [
-                TagWidget(icon: Icons.timer, text: "${test.duration} minutes"),
                 TagWidget(
-                  icon: Icons.question_mark,
+                    icon: FontAwesomeIcons.clock,
+                    text: "${test.duration} minutes"),
+                TagWidget(
+                  icon: FontAwesomeIcons.circleQuestion,
                   text: "${test.numberOfQuestions} questions",
                 ),
                 TagWidget(
-                  icon: Icons.check_circle,
+                  icon: FontAwesomeIcons.circleCheck,
                   text: "${test.attempts.length} attempts",
                 ),
                 TagWidget(
-                  icon: Icons.book,
+                  icon: FontAwesomeIcons.book,
                   text: "${test.numberOfParts} parts",
                 ),
               ],
@@ -161,7 +162,7 @@ class TagWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16),
+          FaIcon(icon, size: 16),
           const SizedBox(width: 4),
           Text(text),
         ],

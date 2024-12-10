@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
+import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
+import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
 
 class QuestionWidget extends StatelessWidget {
@@ -76,45 +82,181 @@ class QuestionInfoWidget extends StatelessWidget {
               if (question.question != null && question.part > 2)
                 Text(question.question ?? ''),
               Builder(builder: (context) {
-                return Column(children: [
-                  ...List.generate(
-                    question.options.length,
-                    (index) {
-                      final option = question.options[index];
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Radio<String>(
-                            value: option.id.name,
-                            groupValue:
-                                question.userAnswer, // Default selected value
-                            activeColor: Colors.red,
-                            onChanged: (value) {
-                              context
-                                  .read<PracticeTestCubit>()
-                                  .setUserAnswer(question, value!);
-                            },
-                          ),
-                          Text(
-                            '${option.id.name}. ',
-                          ),
-                          if (question.part > 2)
-                            Column(
+                return BlocBuilder<PracticeTestCubit, PracticeTestState>(
+                  buildWhen: (previous, current) =>
+                      previous.testShow != current.testShow ||
+                      previous.questionsResult != current.questionsResult,
+                  builder: (context, state) {
+                    if (state.testShow == TestShow.test) {
+                      return Column(children: [
+                        ...List.generate(
+                          question.options.length,
+                          (index) {
+                            final option = question.options[index];
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const SizedBox(width: 8),
-                                Text(option.content.toString()),
+                                Radio<String>(
+                                  value: option.id.name,
+                                  groupValue: question
+                                      .userAnswer, // Default selected value
+                                  activeColor: Colors.red,
+                                  onChanged: (value) {
+                                    context
+                                        .read<PracticeTestCubit>()
+                                        .setUserAnswer(question, value!);
+                                  },
+                                ),
+                                Text(
+                                  '${option.id.name}. ',
+                                ),
+                                if (question.part > 2)
+                                  Column(
+                                    children: [
+                                      const SizedBox(width: 8),
+                                      Text(option.content.toString()),
+                                    ],
+                                  )
                               ],
-                            )
-                        ],
-                      );
-                    },
-                  ),
-                ]);
+                            );
+                          },
+                        ),
+                      ]);
+                    } else {
+                      final questionResult =
+                          getQuestionResult(state.questionsResult);
+                      return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ...List.generate(
+                              question.options.length,
+                              (index) {
+                                final option = question.options[index];
+                                Color? color;
+                                if (questionResult?.useranswer ==
+                                    option.id.name) {
+                                  if (questionResult?.correctanswer ==
+                                      option.id.name) {
+                                    color = Colors.green.withOpacity(0.5);
+                                  } else {
+                                    color = Colors.red.withOpacity(0.5);
+                                  }
+                                }
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Radio<String>(
+                                      value: option.id.name,
+                                      groupValue: questionResult?.useranswer,
+                                      activeColor: Colors.red,
+                                      onChanged: null,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: color,
+                                      ),
+                                      child: Text(
+                                        '${option.id.name}. ',
+                                      ),
+                                    ),
+                                    if (question.part > 2)
+                                      Column(
+                                        children: [
+                                          const SizedBox(width: 8),
+                                          Text(option.content.toString()),
+                                        ],
+                                      )
+                                  ],
+                                );
+                              },
+                            ),
+                            if (questionResult?.correctanswer !=
+                                    questionResult?.useranswer ||
+                                questionResult == null)
+                              Column(
+                                children: [
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Correct answer: ${question.correctAnswer}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.success,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            const SizedBox(height: 8),
+                            Builder(builder: (context) {
+                              final user =
+                                  context.read<UserCubit>().state.user!;
+                              if (user.accountType == 'basic') {
+                                return Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        // Add upgrade logic here
+                                      },
+                                      child: const Text(
+                                        'Upgrade to use AI',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    // Add upgrade button
+                                    SizedBox(
+                                      width: 200,
+                                      height: 45,
+                                      child: ElevatedButton(
+                                        onPressed: null,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            const FaIcon(
+                                              FontAwesomeIcons.lock,
+                                              size: 14,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            const Text('Tạo lời giải bằng AI'),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Text(
+                                  'Your answer: ${questionResult?.useranswer}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.error,
+                                  ),
+                                );
+                              }
+                            })
+                          ]);
+                    }
+                  },
+                );
               })
             ],
           ),
         ),
       ],
     );
+  }
+
+  QuestionResult? getQuestionResult(List<QuestionResult> questionsResult) {
+    for (var questionResult in questionsResult) {
+      if (questionResult.questionNum == question.id.toString()) {
+        return questionResult;
+      }
+    }
+    return null;
   }
 }

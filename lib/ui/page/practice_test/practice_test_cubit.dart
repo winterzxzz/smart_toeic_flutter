@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +9,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
@@ -18,10 +22,23 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
 
   late ItemScrollController itemScrollController;
   late ItemPositionsListener itemPositionListener;
+  late Duration currentTime;
+  late Timer timer;
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   PracticeTestCubit(this._testRepository) : super(PracticeTestState.initial()) {
     itemScrollController = ItemScrollController();
     itemPositionListener = ItemPositionsListener.create();
+    currentTime = Duration.zero;
+    _startTimer();
+  }
+
+  void _startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (currentTime.inSeconds < state.duration.inSeconds) {
+        currentTime = currentTime + Duration(seconds: 1);
+      }
+    });
   }
 
   Future<void> _scrollToQuestion(int index) async {
@@ -32,17 +49,16 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     );
   }
 
-  final AudioPlayer audioPlayer = AudioPlayer();
-
   void setUrlAudio(String url) async {
     await audioPlayer.setSourceUrl(url).then((_) async {
       await audioPlayer.resume();
     });
   }
 
-  void initPracticeTest(List<PartEnum> parts, Duration duration, String testId,
-      String? resultId) async {
+  void initPracticeTest(TestShow testShow, List<PartEnum> parts,
+      Duration duration, String testId, String? resultId) async {
     emit(state.copyWith(
+        testShow: testShow,
         parts: parts,
         duration: duration,
         focusPart: parts.first,
@@ -64,9 +80,6 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       (questions) => emit(state.copyWith(
         questions: _setQuestionFollowPartSelected(questions, parts),
         loadStatus: LoadStatus.success,
-        questionsOfPart: _setQuestionFollowPartSelected(questions, parts)
-            .where((question) => question.part == state.focusPart.numValue)
-            .toList(),
       )),
     );
   }
@@ -91,12 +104,10 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     if (partOfQuestion == state.focusPart.numValue) {
       emit(state.copyWith(
         focusQuestion: question.id,
-        questionsOfPart: questionsOfPart,
       ));
     } else {
       emit(state.copyWith(
         focusQuestion: question.id,
-        questionsOfPart: questionsOfPart,
         focusPart: partOfQuestion.partValue,
       ));
     }
@@ -114,33 +125,47 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       emit(state.copyWith(
         focusPart: part,
         focusQuestion: questionsOfPart.first.id,
-        questionsOfPart: questionsOfPart,
       ));
     }
   }
 
+  int _getTotalTimeSecond() {
+    int totalTimeSecond = 0;
+    for (var answer in state.answers) {
+      totalTimeSecond += answer.timeSecond;
+    }
+    return totalTimeSecond;
+  }
+
   void setUserAnswer(QuestionModel question, String userAnswer) {
+    // time second is time of last time user answered to time user answeered this answerd
+    int timeSecond = 0;
+    if (state.answers.isNotEmpty) {
+      timeSecond = currentTime.inSeconds - _getTotalTimeSecond();
+    } else {
+      timeSecond = currentTime.inSeconds;
+    }
+    log('timeSecond: $timeSecond');
+    final newQuestion = question.copyWith(
+      userAnswer: userAnswer,
+      timeSecond: timeSecond,
+    );
     final newQuestions = state.questions.map((q) {
       if (q.id == question.id) {
-        return question.copyWith(userAnswer: userAnswer);
+        return newQuestion;
       }
       return q;
     }).toList();
-    final newQuestionsOfPart = newQuestions
-        .where((question) => question.part == state.focusPart.numValue)
-        .toList();
     emit(state.copyWith(
       questions: newQuestions,
-      questionsOfPart: newQuestionsOfPart,
+      answers: [...state.answers, newQuestion],
     ));
   }
 
   void submitTest(BuildContext context, Duration remainingTime) async {
     AppNavigator(context: context).showLoadingOverlay();
     final totalQuestions = state.questions.length;
-    final answerdQuestions = state.questions
-        .where((question) => question.userAnswer != null)
-        .toList();
+    final answerdQuestions = state.answers;
     final totalAnswerdQuestions = answerdQuestions.length;
     final totalCorrectQuestions = answerdQuestions
         .where((question) => question.correctAnswer == question.userAnswer)
@@ -159,14 +184,17 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         testId: state.testId,
         numberOfQuestions: totalQuestions,
         secondTime: totalDurationDoIt.inSeconds,
+        parts: state.parts.map((part) => part.numValue).toList(),
       ),
       rsis: answerdQuestions
           .map((question) => Rsi(
-                useranswer: question.userAnswer!,
-                correctanswer: question.correctAnswer,
-                questionNum: question.id.toString(),
-                rsiPart: question.part,
-              ))
+              useranswer: question.userAnswer!,
+              correctanswer: question.correctAnswer,
+              questionNum: question.id.toString(),
+              rsiPart: question.part,
+              isCorrect: question.correctAnswer == question.userAnswer,
+              timeSecond: question.timeSecond,
+              questionCategory: ['']))
           .toList(),
     );
 
@@ -181,6 +209,8 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         ));
         final resultModel = ResultModel(
           resultId: r.id,
+          testId: state.testId,
+          parts: state.parts,
           testName: state.title,
           totalQuestion: totalQuestions,
           correctQuestion: totalCorrectQuestions,
@@ -215,6 +245,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   @override
   Future<void> close() {
     audioPlayer.dispose();
+    timer.cancel();
     return super.close();
   }
 }

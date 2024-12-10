@@ -15,6 +15,8 @@ Future<void> init() async {
         () => FlashCardRespositoryImpl(injector()))
     ..registerLazySingleton<ProfileRepository>(
         () => ProfileRepositoryImpl(injector()))
+    ..registerLazySingleton<PaymentRepository>(
+        () => PaymentRepositoryImpl(injector()))
 
     ..registerLazySingleton<AppSettingCubit>(() => AppSettingCubit())
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
@@ -37,5 +39,7 @@ Future<void> init() async {
     ..registerFactory<FlashCardDetailLearningCubit>(
         () => FlashCardDetailLearningCubit(injector()))
 
-    ..registerFactory<AnalysisCubit>(() => AnalysisCubit(injector()));
+    ..registerFactory<AnalysisCubit>(() => AnalysisCubit(injector()))
+    ..registerFactory<UpgradeAccountCubit>(
+        () => UpgradeAccountCubit(injector()));
 }

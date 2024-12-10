@@ -2,14 +2,16 @@ import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 
 class PracticeTestState extends Equatable {
+  final TestShow testShow;
   final LoadStatus loadStatus;
   final String message;
   final String testId;
   final List<QuestionModel> questions;
-  final List<QuestionModel> questionsOfPart;
+  final List<QuestionModel> answers;
   final List<QuestionResult> questionsResult;
   final List<PartEnum> parts;
   final String title;
@@ -20,17 +22,18 @@ class PracticeTestState extends Equatable {
 
   const PracticeTestState({
     required this.loadStatus,
+    required this.testShow,
     required this.message,
     required this.testId,
     required this.questions,
-    required this.questionsOfPart,
     required this.parts,
     required this.title,
-    required this.focusPart,  
+    required this.focusPart,
     required this.focusQuestion,
     required this.duration,
     required this.isShowAnswer,
     required this.questionsResult,
+    required this.answers,
   });
 
   // init state
@@ -38,10 +41,10 @@ class PracticeTestState extends Equatable {
   factory PracticeTestState.initial() {
     return PracticeTestState(
       loadStatus: LoadStatus.initial,
+      testShow: TestShow.test,
       message: '',
       testId: '',
       questions: [],
-      questionsOfPart: [],
       parts: [],
       title: 'New Economy TOEIC Test 1',
       focusPart: PartEnum.part1,
@@ -49,6 +52,7 @@ class PracticeTestState extends Equatable {
       duration: Duration(minutes: 120),
       isShowAnswer: false,
       questionsResult: [],
+      answers: [],
     );
   }
 
@@ -56,8 +60,8 @@ class PracticeTestState extends Equatable {
 
   PracticeTestState copyWith({
     LoadStatus? loadStatus,
+    TestShow? testShow,
     List<QuestionModel>? questions,
-    List<QuestionModel>? questionsOfPart,
     List<PartEnum>? parts,
     PartEnum? focusPart,
     int? focusQuestion,
@@ -67,13 +71,14 @@ class PracticeTestState extends Equatable {
     String? testId,
     bool? isShowAnswer,
     List<QuestionResult>? questionsResult,
+    List<QuestionModel>? answers,
   }) {
     return PracticeTestState(
       loadStatus: loadStatus ?? this.loadStatus,
+      testShow: testShow ?? this.testShow,
       message: message ?? this.message,
       testId: testId ?? this.testId,
       questions: questions ?? this.questions,
-      questionsOfPart: questionsOfPart ?? this.questionsOfPart,
       parts: parts ?? this.parts,
       focusPart: focusPart ?? this.focusPart,
       focusQuestion: focusQuestion ?? this.focusQuestion,
@@ -81,6 +86,7 @@ class PracticeTestState extends Equatable {
       title: title ?? this.title,
       isShowAnswer: isShowAnswer ?? this.isShowAnswer,
       questionsResult: questionsResult ?? this.questionsResult,
+      answers: answers ?? this.answers,
     );
   }
 
@@ -88,9 +94,9 @@ class PracticeTestState extends Equatable {
   List<Object?> get props => [
         loadStatus,
         message,
+        testShow,
         testId,
         questions,
-        questionsOfPart,
         parts,
         focusPart,
         focusQuestion,
@@ -100,5 +106,6 @@ class PracticeTestState extends Equatable {
         testId,
         isShowAnswer,
         questionsResult,
+        answers,
       ];
 }

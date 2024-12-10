@@ -4,7 +4,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
-import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
@@ -16,12 +16,14 @@ import 'package:toeic_desktop/ui/page/practice_test/widgets/question_index.dart'
 class PracticeTestPage extends StatefulWidget {
   const PracticeTestPage({
     super.key,
+    required this.testShow,
     required this.parts,
     required this.duration,
     required this.testId,
     this.resultId,
   });
 
+  final TestShow testShow;
   final List<PartEnum> parts;
   final Duration duration;
   final String testId;
@@ -36,9 +38,9 @@ class _PracticeTestPageState extends State<PracticeTestPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<PracticeTestCubit>()
-        ..initPracticeTest(
-            widget.parts, widget.duration, widget.testId, widget.resultId),
-      child: Page(),
+        ..initPracticeTest(widget.testShow, widget.parts, widget.duration,
+            widget.testId, widget.resultId),
+      child: Page(testShow: widget.testShow),
     );
   }
 }
@@ -46,7 +48,10 @@ class _PracticeTestPageState extends State<PracticeTestPage> {
 class Page extends StatefulWidget {
   const Page({
     super.key,
+    required this.testShow,
   });
+
+  final TestShow testShow;
 
   @override
   State<Page> createState() => _PageState();
@@ -56,6 +61,8 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<PracticeTestCubit, PracticeTestState>(
+      listenWhen: (previous, current) =>
+          previous.loadStatus != current.loadStatus,
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.loading) {
           AppNavigator(context: context).showLoadingOverlay();
@@ -64,7 +71,7 @@ class _PageState extends State<Page> {
         }
       },
       child: PopScope(
-        canPop: false,
+        canPop: widget.testShow == TestShow.test ? false : true,
         child: Scaffold(
           body: Column(
             children: [
@@ -111,12 +118,14 @@ class SideQuestion extends StatelessWidget {
             ? AppColors.backgroundDark
             : AppColors.backgroundLight,
       ),
-      child: BlocSelector<PracticeTestCubit, PracticeTestState,
-          List<QuestionModel>>(
-        selector: (state) {
-          return state.questionsOfPart;
-        },
-        builder: (context, questions) {
+      child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
+        buildWhen: (previous, current) =>
+            previous.questions != current.questions ||
+            previous.focusPart != current.focusPart,
+        builder: (context, state) {
+          final questions = state.questions
+              .where((q) => q.part == state.focusPart.numValue)
+              .toList();
           return ScrollablePositionedList.builder(
             scrollDirection: Axis.vertical,
             itemScrollController:

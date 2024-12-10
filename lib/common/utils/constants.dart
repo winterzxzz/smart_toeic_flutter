@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
@@ -49,22 +50,22 @@ class Constants {
 
   static List<ServiceItem> services = [
     ServiceItem(
-        icon: Icons.smart_toy_outlined,
+        icon: FontAwesomeIcons.robot,
         title: 'AI Render',
         desciption:
             'Advanced AI-powered tools to enhance your TOEIC preparation experience.'),
     ServiceItem(
-        icon: Icons.library_books_outlined,
+        icon: FontAwesomeIcons.idCard,
         title: 'Flashcards',
         desciption:
             'Interactive flashcards to boost your vocabulary and language skills efficiently.'),
     ServiceItem(
-        icon: Icons.list_alt_outlined,
+        icon: FontAwesomeIcons.list,
         title: 'Practice Exams',
         desciption:
             'Realistic TOEIC practice exams to assess and improve your test-taking abilities.'),
     ServiceItem(
-        icon: Icons.analytics_outlined,
+        icon: FontAwesomeIcons.chartLine,
         title: 'Result Analysis',
         desciption:
             'Detailed analysis of your exam performance to identify strengths and areas for improvement.'),

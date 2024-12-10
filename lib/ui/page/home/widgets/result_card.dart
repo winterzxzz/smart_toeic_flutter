@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
+import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/score_tile.dart';
 
 class ExamResultCard extends StatelessWidget {
@@ -37,8 +42,8 @@ class ExamResultCard extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(
-                  Icons.calendar_today,
+                FaIcon(
+                  FontAwesomeIcons.calendarPlus,
                   size: 16,
                 ),
                 const SizedBox(width: 4),
@@ -50,7 +55,10 @@ class ExamResultCard extends StatelessWidget {
             const SizedBox(height: 4),
             Row(
               children: [
-                const Icon(Icons.access_time, size: 16),
+                FaIcon(
+                  FontAwesomeIcons.clock,
+                  size: 16,
+                ),
                 const SizedBox(width: 4),
                 Text(
                   '${result.secondTime}s',
@@ -62,19 +70,19 @@ class ExamResultCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ScoreTile(
-                  icon: Icons.check_circle,
+                  icon: FontAwesomeIcons.circleCheck,
                   label: 'Correct',
                   score: result.numberOfCorrectAnswers,
                   color: Colors.green,
                 ),
                 ScoreTile(
-                  icon: Icons.edit,
+                  icon: FontAwesomeIcons.penToSquare,
                   label: 'Attempted',
                   score: getCountAttempt(result),
                   color: Colors.blue,
                 ),
                 ScoreTile(
-                  icon: Icons.help,
+                  icon: FontAwesomeIcons.circleQuestion,
                   label: 'Total',
                   score: result.numberOfQuestions,
                   color: Colors.orange,
@@ -85,7 +93,17 @@ class ExamResultCard extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  GoRouter.of(context)
+                      .pushNamed(AppRouter.practiceTest, extra: {
+                    'testShow': TestShow.result,
+                    'resultId': result.id,
+                    'parts':
+                        result.parts.map((part) => part.partValue).toList(),
+                    'testId': result.testId.id,
+                    'duration': Duration(seconds: result.secondTime),
+                  });
+                },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(

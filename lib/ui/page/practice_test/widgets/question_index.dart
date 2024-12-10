@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
@@ -25,8 +26,11 @@ class _QuestionIndexState extends State<QuestionIndex> {
   @override
   void initState() {
     super.initState();
-    remainingTime = context.read<PracticeTestCubit>().state.duration;
-    startTimer();
+    final testShow = context.read<PracticeTestCubit>().state.testShow;
+    if (testShow == TestShow.test) {
+      remainingTime = context.read<PracticeTestCubit>().state.duration;
+      startTimer();
+    }
   }
 
   void startTimer() {
@@ -63,28 +67,36 @@ class _QuestionIndexState extends State<QuestionIndex> {
         child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
           buildWhen: (previous, current) =>
               previous.parts != current.parts ||
-              previous.questions != current.questions,
+              previous.questions != current.questions ||
+              previous.testShow != current.testShow,
           builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Thời gian còn lại:'),
-                Text(
-                  '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                SizedBox(
-                  height: 45,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _showConfirmSubmitTestDialog,
-                    child: Text('Nộp bài'),
+                if (state.testShow == TestShow.test)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Thời gian còn lại:'),
+                      Text(
+                        '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      SizedBox(
+                        height: 45,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _showConfirmSubmitTestDialog,
+                          child: Text('Nộp bài'),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
                 ...state.parts.map(
                   (part) => Column(
                     children: [
@@ -134,43 +146,4 @@ class _QuestionIndexState extends State<QuestionIndex> {
       ),
     );
   }
-
-  // void submitTest() async {
-  //   AppNavigator(context: context).showLoadingOverlay();
-  //   final cubit = context.read<PracticeTestCubit>();
-  //   final totalQuestions = cubit.state.questions.length;
-  //   final answerdQuestions = cubit.state.questions
-  //       .where((question) => question.userAnswer != null)
-  //       .toList();
-  //   final totalAnswerdQuestions = answerdQuestions.length;
-  //   final totalCorrectQuestions = answerdQuestions
-  //       .where((question) => question.correctAnswer == question.userAnswer)
-  //       .toList()
-  //       .length;
-  //   final incorrectQuestions = totalAnswerdQuestions - totalCorrectQuestions;
-  //   final notAnswerQuestions = totalQuestions - totalAnswerdQuestions;
-
-  //   final listeningScore = totalCorrectQuestions * 10;
-  //   final readingScore = totalCorrectQuestions * 10;
-  //   final overallScore = listeningScore + readingScore;
-  //   final totalDurationDoIt = cubit.state.duration - remainingTime;
-
-  //   final resultModel = ResultModel(
-  //     testName: cubit.state.title,
-  //     totalQuestion: totalQuestions,
-  //     correctQuestion: totalCorrectQuestions,
-  //     incorrectQuestion: incorrectQuestions,
-  //     notAnswerQuestion: notAnswerQuestions,
-  //     overallScore: overallScore,
-  //     listeningScore: listeningScore,
-  //     readingScore: readingScore,
-  //     duration: totalDurationDoIt,
-  //     questions: cubit.state.questions,
-  //   );
-  //   if (mounted) {
-  //     GoRouter.of(context).pushReplacementNamed(AppRouter.resultTest,
-  //         extra: {'resultModel': resultModel});
-  //     AppNavigator(context: context).hideLoadingOverlay();
-  //   }
-  // }
 }

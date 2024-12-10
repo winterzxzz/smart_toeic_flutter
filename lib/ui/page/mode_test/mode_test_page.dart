@@ -4,6 +4,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
 
@@ -101,6 +102,7 @@ class FullTestMode extends StatelessWidget {
               onPressed: () {
                 GoRouter.of(context)
                     .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                  'testShow': TestShow.test,
                   'testId': widget.test.id,
                   'parts':
                       Constants.parts.map((part) => part.partEnum).toList(),
@@ -192,6 +194,7 @@ class _PracticeModeState extends State<PracticeMode> {
                     sortedParts.sort((a, b) => a.index - b.index);
                     GoRouter.of(context)
                         .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                      'testShow': TestShow.test,
                       'testId': widget.testId,
                       'parts': sortedParts,
                       'duration':

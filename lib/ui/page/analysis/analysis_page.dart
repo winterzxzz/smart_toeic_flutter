@@ -83,20 +83,7 @@ class Page extends StatelessWidget {
                             state.profileAnalysis.timeSecondRecommend,
                       )),
                       const SizedBox(width: 16),
-                      Expanded(
-                          child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 48,
-                          ),
-                          AnalysisTime(
-                            averageTimeByPart:
-                                state.profileAnalysis.averageTimeByPart,
-                            timeSecondRecommend:
-                                state.profileAnalysis.timeSecondRecommend,
-                          ),
-                        ],
-                      )),
+                      Expanded(child: Container()),
                     ],
                   ),
                   const SizedBox(height: 16),

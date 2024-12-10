@@ -25,7 +25,7 @@ extension EnvironmentExt on Environment {
         return "http://stg";
       case Environment.prod:
         //TODO update when build prod
-        return "http://prod";
+        return "http://192.11.4.103:4000/api/";
     }
   }
 }

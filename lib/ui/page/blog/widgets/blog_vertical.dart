@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
 
 class BlogVerticalCard extends StatelessWidget {
@@ -60,14 +61,15 @@ class BlogVerticalCard extends StatelessWidget {
                   // Content
                   Row(
                     children: [
-                      _buildInfoItem(Icons.comment, blogItem.countComments),
+                      _buildInfoItem(
+                          FontAwesomeIcons.comment, blogItem.countComments),
                       const SizedBox(width: 16),
-                      _buildInfoItem(Icons.visibility, blogItem.countViews),
+                      _buildInfoItem(FontAwesomeIcons.eye, blogItem.countViews),
                       Spacer(),
                       Row(
                         children: [
-                          Icon(
-                            Icons.calendar_today,
+                          FaIcon(
+                            FontAwesomeIcons.calendarDays,
                             color: Colors.grey,
                             size: 16,
                           ),
@@ -94,7 +96,7 @@ class BlogVerticalCard extends StatelessWidget {
   Widget _buildInfoItem(IconData icon, int count) {
     return Row(
       children: [
-        Icon(
+        FaIcon(
           icon,
           color: Colors.grey,
           size: 16,

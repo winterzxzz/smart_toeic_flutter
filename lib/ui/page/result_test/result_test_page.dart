@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
@@ -34,21 +36,21 @@ class ResultTestPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ResultInfoItem(
-                    icon: Icons.check,
+                    icon: FontAwesomeIcons.circleCheck,
                     title: 'Test Result',
                     value:
                         '${resultModel.correctQuestion}/${resultModel.totalQuestion}',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(
-                    icon: Icons.check,
+                    icon: FontAwesomeIcons.percent,
                     title: 'Accuracy(#correct/#total)',
                     value:
                         '${((resultModel.correctQuestion / resultModel.totalQuestion) * 100).toStringAsFixed(2)}%',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(
-                    icon: Icons.timer,
+                    icon: FontAwesomeIcons.clock,
                     title: 'Time to finish',
                     value:
                         '${resultModel.duration.inMinutes}:${resultModel.duration.inSeconds % 60 < 10 ? '0' : ''}${resultModel.duration.inSeconds % 60}',
@@ -68,12 +70,19 @@ class ResultTestPage extends StatelessWidget {
                     children: [
                       ElevatedButton(
                           onPressed: () {
-                            GoRouter.of(context)
-                                .pushReplacementNamed(AppRouter.practiceTest);
+                            GoRouter.of(context).pushReplacementNamed(
+                                AppRouter.practiceTest,
+                                extra: {
+                                  'testShow': TestShow.result,
+                                  'resultId': resultModel.resultId,
+                                  'parts': resultModel.parts,
+                                  'testId': resultModel.testId,
+                                  'duration': resultModel.duration,
+                                });
                           },
                           child: Row(
                             children: [
-                              Icon(Icons.visibility),
+                              FaIcon(FontAwesomeIcons.eye),
                               SizedBox(width: 8),
                               Text('View Answer'),
                             ],
@@ -90,7 +99,7 @@ class ResultTestPage extends StatelessWidget {
                           },
                           child: Row(
                             children: [
-                              Icon(Icons.arrow_back),
+                              FaIcon(FontAwesomeIcons.arrowRotateLeft),
                               SizedBox(width: 8),
                               Text(
                                 'Back to test page',
@@ -162,14 +171,14 @@ class ResultTestPage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           children: [
-            Icon(
+            FaIcon(
               label == 'Correct'
-                  ? Icons.check_circle
+                  ? FontAwesomeIcons.circleCheck
                   : label == 'Incorrect'
-                      ? Icons.cancel
+                      ? FontAwesomeIcons.circleXmark
                       : label == 'Skip'
-                          ? Icons.remove_circle
-                          : Icons.flag,
+                          ? FontAwesomeIcons.circle
+                          : FontAwesomeIcons.flag,
               color: color,
             ),
             SizedBox(height: 4),
@@ -220,7 +229,7 @@ class ResultInfoItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Row(
         children: [
-          Icon(icon, size: 20),
+          FaIcon(icon, size: 20),
           SizedBox(width: 8),
           SizedBox(
             width: 120,
