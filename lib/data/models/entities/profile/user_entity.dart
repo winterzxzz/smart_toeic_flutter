@@ -48,6 +48,11 @@ class UserEntity {
     required this.id,
   });
 
+  bool isPremium() {
+    if (upgradeExpiredDate == null) return false;
+    return DateTime.parse(upgradeExpiredDate!).isAfter(DateTime.now());
+  }
+
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
       _$UserEntityFromJson(json);
 

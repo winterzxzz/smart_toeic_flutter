@@ -21,7 +21,7 @@ Future<void> init() async {
     ..registerLazySingleton<AppSettingCubit>(() => AppSettingCubit())
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
-    ..registerLazySingleton<UserCubit>(() => UserCubit())
+    ..registerLazySingleton<UserCubit>(() => UserCubit(injector()))
 
     ..registerFactory<HomeCubit>(() => HomeCubit(injector()))
 
@@ -41,5 +41,7 @@ Future<void> init() async {
 
     ..registerFactory<AnalysisCubit>(() => AnalysisCubit(injector()))
     ..registerFactory<UpgradeAccountCubit>(
-        () => UpgradeAccountCubit(injector()));
+        () => UpgradeAccountCubit(injector()))
+    ..registerFactory<CheckPaymentStatusCubit>(
+        () => CheckPaymentStatusCubit(injector()));
 }

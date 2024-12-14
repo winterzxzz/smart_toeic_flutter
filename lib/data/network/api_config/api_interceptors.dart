@@ -33,7 +33,7 @@ class ApiInterceptors extends QueuedInterceptorsWrapper {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final cookie = await SharedPreferencesHelper().getCookies();
+    final cookie = SharedPreferencesHelper().getCookies();
     options.headers['Accept'] = 'application/json';
     options.headers[HttpHeaders.cookieHeader] = cookie;
     if (cookie != null) {

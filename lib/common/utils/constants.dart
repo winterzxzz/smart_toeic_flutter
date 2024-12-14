@@ -197,12 +197,12 @@ class Constants {
   static List<BottomTabModel> bottomTabs = [
     BottomTabModel(
       title: 'Introduction',
-      route: AppRouter.gioiThieu,
+      route: AppRouter.introduction,
       icon: AppImages.icIntro,
     ),
     BottomTabModel(
       title: 'Online Test',
-      route: AppRouter.deThiOnline,
+      route: AppRouter.onlineTest,
       icon: AppImages.icTest,
     ),
     BottomTabModel(

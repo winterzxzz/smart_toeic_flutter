@@ -6,11 +6,13 @@ class AnalysisState extends Equatable {
   final LoadStatus loadStatus;
   final String message;
   final ProfileAnalysis profileAnalysis;
+  final String suggestForStudy;
 
   const AnalysisState({
     required this.loadStatus,
     required this.message,
     required this.profileAnalysis,
+    required this.suggestForStudy,
   });
 
   // initial state
@@ -18,6 +20,7 @@ class AnalysisState extends Equatable {
         loadStatus: LoadStatus.initial,
         message: '',
         profileAnalysis: ProfileAnalysis.initial(),
+        suggestForStudy: '',
       );
 
   // copy with
@@ -25,13 +28,15 @@ class AnalysisState extends Equatable {
     LoadStatus? loadStatus,
     String? message,
     ProfileAnalysis? profileAnalysis,
+    String? suggestForStudy,
   }) =>
       AnalysisState(
         loadStatus: loadStatus ?? this.loadStatus,
         message: message ?? this.message,
         profileAnalysis: profileAnalysis ?? this.profileAnalysis,
+        suggestForStudy: suggestForStudy ?? this.suggestForStudy,
       );
 
   @override
-  List<Object?> get props => [loadStatus, message, profileAnalysis];
+  List<Object?> get props => [loadStatus, message, profileAnalysis, suggestForStudy];
 }

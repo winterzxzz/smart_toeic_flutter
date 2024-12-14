@@ -119,7 +119,7 @@ class UpgradeAccountCard extends StatelessWidget {
           else
             BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {
-                final isPremium = state.user?.accountType != 'basic';
+                final isPremium = state.user!.isPremium();
                 if (isPremium) return const SizedBox.shrink();
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),

@@ -5,14 +5,27 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
 
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(const UserState());
+  final AuthRepository authRepository;
+  UserCubit(this.authRepository) : super(const UserState());
 
   Future<void> setUser(UserEntity user) async {
     emit(state.copyWith(user: user));
+  }
+
+  Future<void> getUser() async {
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    final result = await authRepository.getUser();
+    result.fold(
+      (l) => emit(
+          state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
+      (r) => emit(state.copyWith(loadStatus: LoadStatus.success, user: r)),
+    );
   }
 
   void updateUser(UserEntity user) {

@@ -2,10 +2,106 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
 
-class StackedBarChartPage extends StatelessWidget {
+class StackedBarChartPage extends StatefulWidget {
   const StackedBarChartPage({super.key, required this.categoryAccuracys});
 
   final Map<String, CategoryAccuracy> categoryAccuracys;
+
+  @override
+  State<StackedBarChartPage> createState() => _StackedBarChartPageState();
+}
+
+class _StackedBarChartPageState extends State<StackedBarChartPage> {
+  int? selectedPart;
+  late TooltipBehavior _tooltipBehavior;
+  final List<Color> colors = [
+    Colors.orange,
+    Colors.teal,
+    Colors.indigo,
+    Colors.yellow,
+    Colors.orangeAccent,
+    Colors.green,
+    Colors.blue,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tooltipBehavior = TooltipBehavior(
+      enable: true,
+      canShowMarker: true,
+      header: '',
+      textStyle: const TextStyle(color: Colors.white),
+      animationDuration: 150,
+      builder: (dynamic data, dynamic point, dynamic series, dynamic pointIndex,
+          dynamic seriesIndex) {
+        return Container(
+          height: 70,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 10,
+                width: 10,
+                color: colors[seriesIndex],
+              ),
+              const SizedBox(width: 10),
+              Wrap(
+                direction: Axis.vertical,
+                spacing: 10,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Category: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: colors[seriesIndex],
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' ${point.x}',
+                          style: TextStyle(
+                            color: colors[seriesIndex],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Value: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: colors[seriesIndex],
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${point.y}%',
+                          style: TextStyle(
+                            color: colors[seriesIndex],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,59 +109,129 @@ class StackedBarChartPage extends StatelessWidget {
       child: Container(
         height: 1000,
         padding: const EdgeInsets.all(16.0),
-        child: SfCartesianChart(
-          enableAxisAnimation: true,
-          enableMultiSelection: true,
-          title: ChartTitle(
-            text: 'Category Accuracy Chart',
-            textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          legend: Legend(isVisible: true, position: LegendPosition.bottom),
-          primaryXAxis: CategoryAxis(
-            title: AxisTitle(text: 'Question Types'),
-          ),
-          primaryYAxis: NumericAxis(
-            title: AxisTitle(text: 'Count'),
-            interval: 25,
-          ),
-          series: _buildSeries(),
+        child: Column(
+          children: [
+            // Dropdown filter
+            DropdownButton<int?>(
+              value: selectedPart,
+              hint: const Text('Filter by Part'),
+              items: [
+                const DropdownMenuItem<int?>(
+                  value: null,
+                  child: Text('All Parts'),
+                ),
+                ...List.generate(
+                  7,
+                  (index) => DropdownMenuItem<int?>(
+                    value: index + 1,
+                    child: Text('Part ${index + 1}'),
+                  ),
+                ),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  selectedPart = value;
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+            // Chart
+            Expanded(
+              child: SfCartesianChart(
+                enableSideBySideSeriesPlacement: true,
+                enableAxisAnimation: true,
+                enableMultiSelection: true,
+                title: ChartTitle(
+                  text: 'Category Accuracy Chart',
+                  textStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                legend:
+                    Legend(isVisible: true, position: LegendPosition.bottom),
+                primaryXAxis: CategoryAxis(
+                  title: AxisTitle(text: 'Question Types'),
+                ),
+                primaryYAxis: NumericAxis(
+                  title: AxisTitle(text: 'Count'),
+                  interval: 25,
+                ),
+                series: _buildSeries(),
+                tooltipBehavior: _tooltipBehavior,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   List<StackedBarSeries<ChartData, String>> _buildSeries() {
-    // Convert categoryAccuracys map to ChartData format
-    final List<ChartData> data = categoryAccuracys.entries.map((entry) {
-      List<double> values = List.filled(7, 0.0); // Create array of 7 zeros
-      // Set the accuracy value for the corresponding part
-      values[entry.value.categoryAccuracyPart - 1] =
-          double.parse(entry.value.accuracy);
-      return ChartData(entry.value.title, values);
-    }).toList();
+    // Group categories by part
+    Map<int, List<MapEntry<String, CategoryAccuracy>>> categoriesByPart = {};
+    for (var entry in widget.categoryAccuracys.entries) {
+      int part = entry.value.categoryAccuracyPart;
+      categoriesByPart.putIfAbsent(part, () => []).add(entry);
+    }
 
-    final List<Color> colors = [
-      Colors.orange,
-      Colors.teal,
-      Colors.indigo,
-      Colors.yellow,
-      Colors.orangeAccent,
-      Colors.green,
-      Colors.blue,
-    ];
+    if (selectedPart != null) {
+      // Show only selected part
+      List<ChartData> data = widget.categoryAccuracys.entries
+          .where((entry) => entry.value.categoryAccuracyPart == selectedPart)
+          .map((entry) {
+        return ChartData(
+          entry.value.title,
+          [double.parse(entry.value.accuracy)],
+        );
+      }).toList();
 
-    return List<StackedBarSeries<ChartData, String>>.generate(
-      7, // Number of parts
-      (index) => StackedBarSeries<ChartData, String>(
-        dataSource: data,
-        xValueMapper: (ChartData data, _) => data.label,
-        yValueMapper: (ChartData data, _) => data.values[index],
-        color: colors[index],
-        sortFieldValueMapper: (ChartData data, _) => data.label,
-        pointColorMapper: (ChartData data, _) => colors[index],
-        name: 'Part ${index + 1}',
-      ),
-    );
+      return [
+        StackedBarSeries<ChartData, String>(
+          dataSource: data,
+          xValueMapper: (ChartData data, _) => data.label,
+          yValueMapper: (ChartData data, _) => data.values[0],
+          color: Colors.orange,
+          name: 'Part $selectedPart',
+          enableTooltip: true,
+        )
+      ];
+    } else {
+      // Show all parts
+      List<ChartData> chartData = [];
+
+      // Create a map of category titles to their accuracies for each part
+      Map<String, List<double>> categoryValues = {};
+
+      // Initialize the lists with zeros for all parts (1-7)
+      for (var entry in widget.categoryAccuracys.entries) {
+        categoryValues[entry.value.title] = List.filled(7, 0.0);
+      }
+
+      // Fill in the actual values
+      for (var entry in widget.categoryAccuracys.entries) {
+        int partIndex = entry.value.categoryAccuracyPart - 1;
+        categoryValues[entry.value.title]![partIndex] =
+            double.parse(entry.value.accuracy);
+      }
+
+      // Convert to ChartData objects
+      chartData = categoryValues.entries
+          .map((entry) => ChartData(entry.key, entry.value))
+          .toList();
+
+      return List<StackedBarSeries<ChartData, String>>.generate(
+        7,
+        (index) => StackedBarSeries<ChartData, String>(
+          dataSource: chartData,
+          xValueMapper: (ChartData data, _) => data.label,
+          yValueMapper: (ChartData data, _) => data.values[index],
+          color: colors[index],
+          name: 'Part ${index + 1}',
+          enableTooltip: true,
+        ),
+      );
+    }
   }
 }
 

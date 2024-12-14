@@ -13,6 +13,7 @@ import 'package:toeic_desktop/data/network/repositories/payment_repository.dart'
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_cubit.dart';
+import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';

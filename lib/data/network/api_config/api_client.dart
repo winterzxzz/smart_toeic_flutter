@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
@@ -6,6 +8,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/payment/payment.dart';
+import 'package:toeic_desktop/data/models/entities/payment/payment_status.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
@@ -144,6 +147,9 @@ abstract class ApiClient {
     @Body() FlashCardQuizRequest request,
   );
 
+  @POST('/user/ai-chat/suggest-for-study')
+  Future<String> getSuggestForStudy();
+
   @GET('/user/result/user?limit={limit}')
   Future<List<ResultTest>> getResultTestUser(
     @Query("limit") int limit,
@@ -152,4 +158,9 @@ abstract class ApiClient {
   // Premium
   @POST('/user/payment')
   Future<Payment> getPayment();
+
+  @GET('/user/payment/status?transId={transId}')
+  Future<PaymentStatus> checkPaymentStatus(
+    @Path("transId") String transId,
+  );
 }

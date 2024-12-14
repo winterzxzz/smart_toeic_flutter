@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +11,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
+import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,6 +34,8 @@ class _BottomTabPageState extends State<BottomTabPage>
     "Did you know in-app messages boost engagement rates by 131%?",
     "Tell me which of the following interests you in enhancing customer communication :)"
   ];
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
 
   @override
   void initState() {
@@ -37,12 +44,38 @@ class _BottomTabPageState extends State<BottomTabPage>
       duration: Duration(milliseconds: 300),
       vsync: this,
     );
+    _appLinks = AppLinks();
+
+    initDeepLinks();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _linkSubscription?.cancel();
     super.dispose();
+  }
+
+  Future<void> initDeepLinks() async {
+    // Handle links
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      debugPrint('onAppLink: $uri');
+      final path = uri.pathSegments.first;
+      final params = uri.queryParameters;
+      final paymentReturn = PaymentReturn(
+        amount: params['amount'] ?? '',
+        appid: params['appid'] ?? '',
+        apptransid: params['apptransid'] ?? '',
+        bankcode: params['bankcode'] ?? '',
+        checksum: params['checksum'] ?? '',
+        discountamount: params['discountamount'] ?? '',
+        pmcid: params['pmcid'] ?? '',
+        status: params['status'] ?? '',
+      );
+      GoRouter.of(context).go('/$path', extra: {
+        'paymentReturn': paymentReturn,
+      });
+    });
   }
 
   @override
@@ -284,7 +317,7 @@ class AppBar extends StatelessWidget {
           const SizedBox(width: 32),
           InkWell(
             onTap: () {
-              GoRouter.of(context).go(AppRouter.kichHoatTaiKhoan);
+              GoRouter.of(context).go(AppRouter.upgradeAccount);
             },
             child: SvgPicture.asset(
               AppImages.icPremium,

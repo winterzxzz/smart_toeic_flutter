@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
@@ -7,6 +9,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
+import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
@@ -27,6 +30,7 @@ import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
 import 'package:toeic_desktop/ui/page/mode_test/mode_test_page.dart';
 import 'package:toeic_desktop/ui/page/result_test/result_test_page.dart';
+import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
 
 import '../../ui/page/splash/splash.dart';
 
@@ -42,7 +46,9 @@ class AppRouter {
       redirect: (context, state) {
         final isLogin = SharedPreferencesHelper().getCookies() != null;
         if (!isLogin) {
-          if (state.uri.path == deThiOnline || state.uri.path == flashCards) {
+          if (state.uri.path == onlineTest ||
+              state.uri.path == flashCards ||
+              state.uri.path == upgradeAccount) {
             return login;
           }
           injector<AppSettingCubit>()
@@ -63,11 +69,11 @@ class AppRouter {
   static const String resetPassword = "/reset-password";
   // App routes
   static const String home = "/home";
-  static const String gioiThieu = "/gioi-thieu";
-  static const String deThiOnline = "/de-thi-online";
+  static const String introduction = "/introduction";
+  static const String onlineTest = "/online-test";
   static const String flashCards = "/flash-cards";
   static const String blog = "/blog";
-  static const String kichHoatTaiKhoan = "/kich-hoat-tai-khoan";
+  static const String upgradeAccount = "/upgrade-account";
   static const String flashCardDetail = "/flash-card-detail";
   static const String flashCardLearningDetail = "/flash-card-learning-detail";
   static const String flashCardPractive = "/flash-card-practive";
@@ -79,6 +85,7 @@ class AppRouter {
   static const String profile = "/profile";
   static const String setting = "/setting";
   static const String analysis = "/analysis";
+  static const String upgradeAccountSuccess = "/upgrade-account-success";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -104,8 +111,8 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: gioiThieu,
-              path: gioiThieu,
+              name: introduction,
+              path: introduction,
               builder: (context, state) => const Center(
                 child: Text('Giới thiệu'),
               ),
@@ -115,8 +122,8 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: deThiOnline,
-              path: deThiOnline,
+              name: onlineTest,
+              path: onlineTest,
               builder: (context, state) => const SimulationTestScreen(),
             ),
             GoRoute(
@@ -213,9 +220,18 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: kichHoatTaiKhoan,
-              path: kichHoatTaiKhoan,
+              name: upgradeAccount,
+              path: upgradeAccount,
               builder: (context, state) => const PricingPlanScreen(),
+            ),
+            GoRoute(
+              name: upgradeAccountSuccess,
+              path: upgradeAccountSuccess,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final paymentReturn = args['paymentReturn'] as PaymentReturn;
+                return UpgradeAccountSuccessPage(paymentReturn: paymentReturn);
+              },
             ),
           ],
         ),
