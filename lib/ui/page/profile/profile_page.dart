@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
+import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/avatar_heading.dart';
-import 'package:toeic_desktop/ui/page/profile/widgets/custom_text_field.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/heading_container.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/profile_divider.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/text_field_heading.dart';
@@ -17,6 +20,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => injector<ProfileCubit>(),
+      child: Page(),
+    );
+  }
+}
+
+class Page extends StatefulWidget {
+  const Page({
+    super.key,
+  });
+
+  @override
+  State<Page> createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Container _buildImage() {
     return Container(
-      margin: const EdgeInsets.only(top: (258.5 - 70) / 2 + 10),
+      margin: const EdgeInsets.only(top: (258.5 - 70) / 2 + 15),
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
       ),
@@ -65,42 +87,51 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Row(
             children: [
-              ElevatedButton(
-                onPressed: () {},
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
-                    const SizedBox(width: 8),
-                    Text('See history test'),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: () {
-                  GoRouter.of(context).pushNamed(AppRouter.analysis);
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    FaIcon(FontAwesomeIcons.chartLine, size: 16),
-                    const SizedBox(width: 8),
-                    Text('Analyze Result'),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16),
-              ElevatedButton(
+              SizedBox(
+                height: 40,
+                child: ElevatedButton(
                   onPressed: () {},
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
+                      FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
                       const SizedBox(width: 8),
-                      Text('Save'),
+                      Text('See history test'),
                     ],
-                  )),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              SizedBox(
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () {
+                    GoRouter.of(context).pushNamed(AppRouter.analysis);
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      FaIcon(FontAwesomeIcons.chartLine, size: 16),
+                      const SizedBox(width: 8),
+                      Text('Analyze Result'),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              SizedBox(
+                height: 40,
+                child: ElevatedButton(
+                    onPressed: () {},
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
+                        const SizedBox(width: 8),
+                        Text('Save'),
+                      ],
+                    )),
+              ),
             ],
           )
         ],
@@ -108,125 +139,334 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Container _buildHeaderBody() {
-    return Container(
-      height: double.infinity,
-      margin: const EdgeInsets.only(top: 129),
-      padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-          color: Theme.of(context).cardColor),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AvatarHeading(),
-          const ProfileDivider(),
-          TextFieldHeading(
-            label: 'Profile Name',
-            description: 'Your name will be displayed to other users',
-            hintText: 'Enter your name',
-            controller: TextEditingController(),
-          ),
-          const ProfileDivider(),
-          TextFieldHeading(
-            label: 'Profile Email',
-            description: 'Your email will be displayed to other users',
-            hintText: 'Enter your email',
-            controller: TextEditingController(),
-          ),
-          const ProfileDivider(),
-          HeadingContainer(
-              title: 'Profile Tags',
-              description: 'Add tags to your profile to help others find you',
-              child: Column(
-                children: [
-                  CustomTextField(
-                    icon: Icons.location_on,
-                    tag: 'San Francisco, CA',
-                    hintText: 'Enter your location',
-                  ),
-                  const SizedBox(height: 20),
-                  CustomTextField(
-                    icon: Icons.calendar_month,
-                    tag: 'Joined September 2022',
-                    hintText: 'Enter your join date',
-                  ),
-                  const SizedBox(height: 20),
-                  CustomTextField(
-                    icon: Icons.link,
-                    tag: 'https://winter.com',
-                    hintText: 'Enter your link',
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(onPressed: () {}, child: Text('Add Tag')),
-                    ],
-                  ),
-                ],
-              )),
-          const SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-}
-
-class TagInfo extends StatelessWidget {
-  const TagInfo({
-    super.key,
-    required this.title,
-    required this.icon,
-    this.isLink = false,
-  });
-
-  final String title;
-  final IconData icon;
-  final bool isLink;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: isLink ? Colors.blue : null,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomRichText extends StatelessWidget {
-  final String info;
-  final String title;
-  const CustomRichText({super.key, required this.info, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-        text: TextSpan(
-            text: '$info ',
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
+  Widget _buildHeaderBody() {
+    return BlocBuilder<UserCubit, UserState>(
+      builder: (context, state) {
+        return Container(
+          height: double.infinity,
+          margin: const EdgeInsets.only(top: 129),
+          padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              color: Theme.of(context).cardColor),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          TextSpan(
-            text: title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w300,
+              const SizedBox(height: 32),
+              Builder(builder: (context) {
+                String avatar = state.user?.avatar ?? '';
+                if (avatar.isEmpty) {
+                  avatar =
+                      state.user?.name.characters.first.toUpperCase() ?? 'U';
+                }
+                return AvatarHeading(
+                  avatar: avatar,
+                );
+              }),
+              const ProfileDivider(),
+              TextFieldHeading(
+                label: 'Profile Name',
+                description: 'Your name will be displayed to other users',
+                hintText: 'Enter your name',
+                controller: TextEditingController(text: state.user?.name),
+              ),
+              const ProfileDivider(),
+              TextFieldHeading(
+                label: 'Profile Email',
+                description: 'Your email will be displayed to other users',
+                hintText: 'Enter your email',
+                controller: TextEditingController(text: state.user?.email),
+              ),
+              if (state.user?.targetScore != null) const ProfileDivider(),
+              HeadingContainer(
+                  title: 'Profile Target Score',
+                  description:
+                      'Your target score will be used to calculate your progress',
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Reading Target / Reading Current',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                              Text.rich(
+                                TextSpan(
+                                  text: '${state.user!.targetScore?.reading}',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: '/450',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          LinearProgressIndicator(
+                            backgroundColor: Colors.grey,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Theme.of(context).primaryColor,
+                            minHeight: 10,
+                            value: state.user!.targetScore?.reading != null
+                                ? state.user!.targetScore!.reading / 450
+                                : 0,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Listening Target / Listening Current',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                              Text.rich(
+                                TextSpan(
+                                  text: '${state.user!.targetScore?.listening}',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: '/450',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          LinearProgressIndicator(
+                            backgroundColor: Colors.grey,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Theme.of(context).primaryColor,
+                            minHeight: 10,
+                            value: state.user!.targetScore?.listening != null
+                                ? state.user!.targetScore!.listening / 450
+                                : 0,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              showUpdateTargetDialog(
+                                initialReadingScore:
+                                    state.user!.targetScore!.reading,
+                                initialListeningScore:
+                                    state.user!.targetScore!.listening,
+                              );
+                            },
+                            child: Text('Update Target Score')),
+                      ),
+                    ],
+                  )),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void showUpdateTargetDialog(
+      {int? initialReadingScore, int? initialListeningScore}) {
+    final readingController =
+        TextEditingController(text: initialReadingScore?.toString() ?? '0');
+    final listeningController =
+        TextEditingController(text: initialListeningScore?.toString() ?? '0');
+
+    showDialog(
+      context: context,
+      builder: (BuildContext diaglogContext) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            width: 400,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Cập nhật điểm mục tiêu',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        GoRouter.of(diaglogContext).pop();
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Text('Reading target score'),
+                const SizedBox(height: 8),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  controller: readingController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    suffixIcon: Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_drop_up),
+                          onPressed: () {
+                            final currentValue =
+                                int.tryParse(readingController.text) ?? 0;
+                            if (currentValue < 450) {
+                              // Max TOEIC score for listening
+                              readingController.text =
+                                  (currentValue + 5).toString();
+                            }
+                          },
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(minHeight: 20),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_drop_down),
+                          onPressed: () {
+                            final currentValue =
+                                int.tryParse(readingController.text) ?? 0;
+                            if (currentValue > 0) {
+                              readingController.text =
+                                  (currentValue - 5).toString();
+                            }
+                          },
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(minHeight: 20),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text('Listening target score'),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: listeningController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            suffixIcon: Column(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.arrow_drop_up),
+                                  onPressed: () {
+                                    final currentValue = int.tryParse(
+                                            listeningController.text) ??
+                                        0;
+                                    if (currentValue < 450) {
+                                      // Max TOEIC score for listening
+                                      listeningController.text =
+                                          (currentValue + 5).toString();
+                                    }
+                                  },
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(minHeight: 20),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.arrow_drop_down),
+                                  onPressed: () {
+                                    final currentValue = int.tryParse(
+                                            listeningController.text) ??
+                                        0;
+                                    if (currentValue > 0) {
+                                      listeningController.text =
+                                          (currentValue - 5).toString();
+                                    }
+                                  },
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(minHeight: 20),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Handle save changes with values from controllers
+                      final readingScore =
+                          int.tryParse(readingController.text) ?? 0;
+                      final listeningScore =
+                          int.tryParse(listeningController.text) ?? 0;
+
+                      context
+                          .read<ProfileCubit>()
+                          .updateTargetScore(readingScore, listeningScore)
+                          .then((_) {
+                        GoRouter.of(diaglogContext).pop();
+                      });
+                      // Do something with the scores
+                    },
+                    child: Text(
+                      'Update'.toUpperCase(),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          )
-        ]));
+          ),
+        );
+      },
+    );
   }
 }

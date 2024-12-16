@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -332,22 +330,31 @@ class AppBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          BlocBuilder<UserCubit, UserState>(
-            builder: (context, state) {
-              if (state.user != null) {
-                return GestureDetector(
+          Builder(
+            builder: (context) {
+              final cookies = SharedPreferencesHelper().getCookies();
+              if (cookies != null) {
+                return InkWell(
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
                   onTap: () {
                     _showMenu(context);
                   },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    child: SvgPicture.asset(
-                      AppImages.icUserAvatarDefault,
-                      width: 24,
-                      height: 24,
-                    ),
+                  child: BlocBuilder<UserCubit, UserState>(
+                    builder: (context, state) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Theme.of(context).cardColor,
+                          child: Text(
+                            state.user?.name.substring(0, 1) ?? 'U',
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 );
               }
@@ -436,8 +443,7 @@ class AppBar extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
-                      injector<UserCubit>().removeUser(context);
+                      injector<UserCubit>().removeUser(context).then((_) {});
                     },
                     child: Text('Logout'),
                   ),

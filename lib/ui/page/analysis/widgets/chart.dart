@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
+import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
 
 class StackedBarChartPage extends StatefulWidget {
   const StackedBarChartPage({super.key, required this.categoryAccuracys});
@@ -112,26 +113,24 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
         child: Column(
           children: [
             // Dropdown filter
-            DropdownButton<int?>(
-              value: selectedPart,
-              hint: const Text('Filter by Part'),
-              items: [
-                const DropdownMenuItem<int?>(
-                  value: null,
-                  child: Text('All Parts'),
-                ),
+            CustomDropdownExample(
+              data: [
+                'All parts',
                 ...List.generate(
                   7,
-                  (index) => DropdownMenuItem<int?>(
-                    value: index + 1,
-                    child: Text('Part ${index + 1}'),
-                  ),
+                  (index) => 'Part ${index + 1}',
                 ),
               ],
               onChanged: (value) {
-                setState(() {
-                  selectedPart = value;
-                });
+                if (value == 'All parts') {
+                  setState(() {
+                    selectedPart = null;
+                  });
+                } else {
+                  setState(() {
+                    selectedPart = int.parse(value.split(' ')[1]);
+                  });
+                }
               },
             ),
             const SizedBox(height: 16),

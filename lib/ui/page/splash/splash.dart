@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:lottie/lottie.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/splash/splash_cubit.dart';
 import 'package:toeic_desktop/ui/page/splash/splash_state.dart';
 
@@ -35,7 +36,7 @@ class Page extends StatelessWidget {
           GoRouter.of(context).goNamed(AppRouter.home);
         } else if (state.loadStatus == LoadStatus.failure) {
           GoRouter.of(context).goNamed(AppRouter.home);
-          AppNavigator(context: context).error(state.message);
+          showToast(title: state.message, type: ToastificationType.error);
         }
       },
       child: Scaffold(

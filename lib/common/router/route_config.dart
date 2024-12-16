@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
@@ -48,6 +46,8 @@ class AppRouter {
         if (!isLogin) {
           if (state.uri.path == onlineTest ||
               state.uri.path == flashCards ||
+              state.uri.path == modeTest ||
+              state.uri.path == profile ||
               state.uri.path == upgradeAccount) {
             return login;
           }

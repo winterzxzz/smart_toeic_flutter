@@ -2,11 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
+import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
+import 'package:toeic_desktop/ui/page/splash/splash_cubit.dart';
 
 part 'user_state.dart';
 
@@ -32,9 +36,11 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(user: user));
   }
 
-  void removeUser(BuildContext context) {
+  Future<void> removeUser(BuildContext context) async {
     SharedPreferencesHelper().removeCookies();
     emit(const UserState());
-    GoRouter.of(context).goNamed(AppRouter.splash);
+    await diReset().then((_) {
+      GoRouter.of(context).go('/');
+    });
   }
 }

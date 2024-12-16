@@ -37,10 +37,13 @@ class TextFieldHeading extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText,
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.gray1),
+                borderSide: BorderSide(color: Colors.grey),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.gray1),
+                borderSide: BorderSide(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? AppColors.primary
+                        : Colors.white),
               ),
             ),
           ),

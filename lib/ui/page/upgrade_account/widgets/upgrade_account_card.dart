@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class UpgradeAccountCard extends StatelessWidget {
@@ -11,6 +9,7 @@ class UpgradeAccountCard extends StatelessWidget {
     required this.features,
     required this.available,
     required this.isCurrentPlan,
+    required this.isPremium,
     this.onPressed,
   });
 
@@ -19,20 +18,39 @@ class UpgradeAccountCard extends StatelessWidget {
   final List<String> features;
   final List<bool> available;
   final bool isCurrentPlan;
+  final bool isPremium;
   final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final Color backgroundColor =
-        isCurrentPlan ? Colors.white : AppColors.primary;
-    final Color textColor = isCurrentPlan ? Colors.black : Colors.white;
+        Theme.of(context).brightness == Brightness.light
+            ? AppColors.backgroundLight
+            : AppColors.backgroundDark;
+    final Color textColor = Theme.of(context).brightness == Brightness.light
+        ? AppColors.textBlack
+        : AppColors.textWhite;
+    final inactiveBorderColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.grey[300]!
+        : Colors.grey[600]!;
+    final activeBorderColor = Theme.of(context).brightness == Brightness.light
+        ? AppColors.primary
+        : AppColors.backgroundLight;
     final Color borderColor =
-        isCurrentPlan ? Colors.grey.shade300 : Colors.black;
+        isCurrentPlan ? activeBorderColor : inactiveBorderColor;
+    BoxBorder border = isCurrentPlan
+        ? Border(
+            left: BorderSide(color: borderColor, width: 5), // Left border
+            top: BorderSide(color: borderColor, width: 1), // Top border
+            right: BorderSide(color: borderColor, width: 1), // Right border
+            bottom: BorderSide(color: borderColor, width: 1), // Bottom border
+          )
+        : Border.all(color: borderColor);
     return Container(
       width: MediaQuery.sizeOf(context).width * 0.3,
       decoration: BoxDecoration(
         color: backgroundColor,
-        border: Border.all(color: borderColor),
+        border: border,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -66,12 +84,13 @@ class UpgradeAccountCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
+                  backgroundColor: Colors.grey,
+                  color: textColor,
                   value: features
                           .where(
                               (element) => available[features.indexOf(element)])
                           .length /
                       features.length,
-                  backgroundColor: Colors.grey.shade300,
                 ),
               ],
             ),
@@ -104,36 +123,30 @@ class UpgradeAccountCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          if (isCurrentPlan)
+          if (!isCurrentPlan)
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: null,
-                style: ElevatedButton.styleFrom(
-                    side: BorderSide(color: Colors.grey.shade300),
-                    backgroundColor: AppColors.backgroundDark),
+                style: ElevatedButton.styleFrom(),
                 child: Text('Free'),
               ),
             )
           else
-            BlocBuilder<UserCubit, UserState>(
-              builder: (context, state) {
-                final isPremium = state.user!.isPremium();
-                if (isPremium) return const SizedBox.shrink();
-                return Container(
+            IgnorePointer(
+              ignoring: isPremium,
+              child: Opacity(
+                opacity: isPremium ? 0 : 1,
+                child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: onPressed,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: AppColors.primary,
-                    ),
                     child: Text('Nâng cấp ngay'),
                   ),
-                );
-              },
+                ),
+              ),
             ),
           const SizedBox(height: 16),
         ],

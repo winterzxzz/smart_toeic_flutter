@@ -17,19 +17,11 @@ Future<void> init() async {
         () => ProfileRepositoryImpl(injector()))
     ..registerLazySingleton<PaymentRepository>(
         () => PaymentRepositoryImpl(injector()))
-
-    ..registerLazySingleton<AppSettingCubit>(() => AppSettingCubit())
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
     ..registerLazySingleton<UserCubit>(() => UserCubit(injector()))
-
-    ..registerFactory<HomeCubit>(() => HomeCubit(injector()))
-
-    ..registerFactory<SplashCubit>(() => SplashCubit(injector()))
-
     ..registerFactory<DeThiOnlineCubit>(() => DeThiOnlineCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
-
     ..registerFactory<FlashCardCubit>(() => FlashCardCubit(injector()))
     ..registerFactory<FlashCardDetailCubit>(
         () => FlashCardDetailCubit(injector()))
@@ -38,10 +30,36 @@ Future<void> init() async {
         () => FlashCardQuizzCubit(injector()))
     ..registerFactory<FlashCardDetailLearningCubit>(
         () => FlashCardDetailLearningCubit(injector()))
-
     ..registerFactory<AnalysisCubit>(() => AnalysisCubit(injector()))
     ..registerFactory<UpgradeAccountCubit>(
         () => UpgradeAccountCubit(injector()))
     ..registerFactory<CheckPaymentStatusCubit>(
-        () => CheckPaymentStatusCubit(injector()));
+        () => CheckPaymentStatusCubit(injector()))
+    ..registerFactory<ProfileCubit>(() => ProfileCubit(injector()));
+
+  if (!injector.isRegistered<HomeCubit>()) {
+    injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
+  }
+
+  if (!injector.isRegistered<SplashCubit>()) {
+    injector.registerFactory<SplashCubit>(() => SplashCubit(injector()));
+  }
+
+  if (!injector.isRegistered<AppSettingCubit>()) {
+    injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
+  }
+}
+
+Future<void> diReset() async {
+  await injector<HomeCubit>().close();
+  await injector<DeThiOnlineCubit>().close();
+  await injector<PracticeTestCubit>().close();
+  await injector<FlashCardCubit>().close();
+  await injector<FlashCardDetailCubit>().close();
+  await injector<FlashCardLearnFlipCubit>().close();
+  await injector<FlashCardQuizzCubit>().close();
+  await injector<FlashCardDetailLearningCubit>().close();
+  await injector<AnalysisCubit>().close();
+  await injector<UpgradeAccountCubit>().close();
+  await injector<CheckPaymentStatusCubit>().close();
 }

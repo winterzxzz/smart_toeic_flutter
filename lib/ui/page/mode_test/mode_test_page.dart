@@ -6,6 +6,7 @@ import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
 
 class ModeTestpage extends StatefulWidget {
@@ -23,7 +24,11 @@ class _ModeTestpageState extends State<ModeTestpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? AppColors.backgroundLight
+          : AppColors.backgroundDark,
       body: Container(
+        padding: EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(
           horizontal: 2,
         ),
@@ -48,11 +53,23 @@ class _ModeTestpageState extends State<ModeTestpage> {
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Text('Practice'),
+                    child: Text(
+                      'Practice',
+                      style: TextStyle(
+                          color: isPracticeMode
+                              ? Theme.of(context).textTheme.bodyLarge!.color
+                              : AppColors.gray1),
+                    ),
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Text('Test'),
+                    child: Text(
+                      'Test',
+                      style: TextStyle(
+                          color: !isPracticeMode
+                              ? Theme.of(context).textTheme.bodyLarge!.color
+                              : AppColors.gray1),
+                    ),
                   ),
                 ],
               ),

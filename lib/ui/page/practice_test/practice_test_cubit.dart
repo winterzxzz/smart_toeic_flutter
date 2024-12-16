@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -15,6 +16,7 @@ import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
@@ -199,11 +201,13 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     );
 
     final response = await _testRepository.submitTest(request);
+
     response.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
       )),
-      (r) {
+      (r) async {
+        await injector<HomeCubit>().getData();
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
         ));
@@ -221,6 +225,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
           readingScore: readingScore,
           duration: totalDurationDoIt,
         );
+
         if (context.mounted) {
           AppNavigator(context: context).hideLoadingOverlay();
           AppNavigator(context: context).success('Submit test success');

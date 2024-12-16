@@ -45,7 +45,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return Left(ApiError.fromDioError(e));
     }
   }
-  
+
   @override
   Future<Either<ApiError, UserEntity>> getUser() async {
     try {

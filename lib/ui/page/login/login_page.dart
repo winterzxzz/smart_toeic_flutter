@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_navigator.dart';
 import 'package:toeic_desktop/ui/page/login/login_state.dart';
@@ -61,10 +63,11 @@ class _PageState extends State<Page> {
         }
         if (LoadStatus.failure == state.loadStatus) {
           navigator.error(state.errorMessage);
+          showToast(title: state.errorMessage, type: ToastificationType.error);
         }
         if (LoadStatus.success == state.loadStatus) {
-          navigator.success("Welcome back!");
-          GoRouter.of(context).go(AppRouter.splash);
+          showToast(title: 'Welcome back!', type: ToastificationType.success);
+          GoRouter.of(context).goNamed(AppRouter.home);
         }
       },
       child: Scaffold(

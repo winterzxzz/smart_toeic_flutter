@@ -14,6 +14,8 @@ String userEntityToJson(UserEntity data) => json.encode(data.toJson());
 
 @JsonSerializable()
 class UserEntity {
+  @JsonKey(name: "avatar")
+  String avatar;
   @JsonKey(name: "email")
   String email;
   @JsonKey(name: "name")
@@ -32,10 +34,15 @@ class UserEntity {
   String role;
   @JsonKey(name: "upgradeExpiredDate")
   String? upgradeExpiredDate;
+  @JsonKey(name: "targetScore")
+  TargetScore? targetScore;
+  @JsonKey(name: "bio")
+  String bio;
   @JsonKey(name: "id")
   String id;
 
   UserEntity({
+    required this.avatar,
     required this.email,
     required this.name,
     required this.status,
@@ -45,6 +52,8 @@ class UserEntity {
     this.googleId,
     required this.role,
     this.upgradeExpiredDate,
+    this.targetScore,
+    required this.bio,
     required this.id,
   });
 
@@ -52,9 +61,28 @@ class UserEntity {
     if (upgradeExpiredDate == null) return false;
     return DateTime.parse(upgradeExpiredDate!).isAfter(DateTime.now());
   }
+  
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
       _$UserEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);
+}
+
+@JsonSerializable()
+class TargetScore {
+  @JsonKey(name: "reading")
+  int reading;
+  @JsonKey(name: "listening")
+  int listening;
+
+  TargetScore({
+    required this.reading,
+    required this.listening,
+  });
+
+  factory TargetScore.fromJson(Map<String, dynamic> json) =>
+      _$TargetScoreFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TargetScoreToJson(this);
 }

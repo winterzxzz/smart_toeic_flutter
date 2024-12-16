@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
@@ -69,69 +70,78 @@ class Page extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 32),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    UpgradeAccountCard(
-                      title: 'Gói Miễn phí',
-                      price: '0 VND',
-                      features: [
-                        'Làm bài thi TOEIC',
-                        'Chấm điểm và lưu kết quả',
-                        'Tạo bộ flashcard',
-                        'Truy cập flashcards có sẵn',
-                        'Truy cập blog',
-                        'Điền tự động bằng AI',
-                        'Lời giải AI cho câu hỏi',
-                        'Phân tích chỉ số cá nhân',
-                        'Trắc nghiệm và nhắc nhở',
+                BlocBuilder<UserCubit, UserState>(
+                  builder: (context, state) {
+                    final isPremium = state.user?.isPremium() ?? false;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        UpgradeAccountCard(
+                          title: 'Gói Miễn phí',
+                          price: '0 VND',
+                          features: [
+                            'Làm bài thi TOEIC',
+                            'Chấm điểm và lưu kết quả',
+                            'Tạo bộ flashcard',
+                            'Truy cập flashcards có sẵn',
+                            'Truy cập blog',
+                            'Điền tự động bằng AI',
+                            'Lời giải AI cho câu hỏi',
+                            'Phân tích chỉ số cá nhân',
+                            'Trắc nghiệm và nhắc nhở',
+                          ],
+                          available: [
+                            true,
+                            true,
+                            true,
+                            true,
+                            true,
+                            false,
+                            false,
+                            false,
+                            false
+                          ],
+                          isPremium: isPremium,
+                          isCurrentPlan: isPremium == false,
+                          onPressed: null,
+                        ),
+                        const SizedBox(width: 16),
+                        UpgradeAccountCard(
+                          title: 'Gói Nâng cấp',
+                          price: '5.000 VND',
+                          features: [
+                            'Làm bài thi TOEIC',
+                            'Chấm điểm và lưu kết quả',
+                            'Tạo bộ flashcard',
+                            'Truy cập flashcards có sẵn',
+                            'Truy cập blog',
+                            'Điền tự động bằng AI',
+                            'Lời giải AI cho câu hỏi',
+                            'Phân tích chỉ số cá nhân',
+                            'Trắc nghiệm và nhắc nhở',
+                          ],
+                          available: [
+                            true,
+                            true,
+                            true,
+                            true,
+                            true,
+                            true,
+                            true,
+                            true,
+                            true
+                          ],
+                          isPremium: isPremium,
+                          isCurrentPlan: isPremium == true,
+                          onPressed: () {
+                            context
+                                .read<UpgradeAccountCubit>()
+                                .upgradeAccount();
+                          },
+                        ),
                       ],
-                      available: [
-                        true,
-                        true,
-                        true,
-                        true,
-                        true,
-                        false,
-                        false,
-                        false,
-                        false
-                      ],
-                      isCurrentPlan: true,
-                      onPressed: null,
-                    ),
-                    const SizedBox(width: 16),
-                    UpgradeAccountCard(
-                      title: 'Gói Nâng cấp',
-                      price: '5.000 VND',
-                      features: [
-                        'Làm bài thi TOEIC',
-                        'Chấm điểm và lưu kết quả',
-                        'Tạo bộ flashcard',
-                        'Truy cập flashcards có sẵn',
-                        'Truy cập blog',
-                        'Điền tự động bằng AI',
-                        'Lời giải AI cho câu hỏi',
-                        'Phân tích chỉ số cá nhân',
-                        'Trắc nghiệm và nhắc nhở',
-                      ],
-                      available: [
-                        true,
-                        true,
-                        true,
-                        true,
-                        true,
-                        true,
-                        true,
-                        true,
-                        true
-                      ],
-                      isCurrentPlan: false,
-                      onPressed: () {
-                        context.read<UpgradeAccountCubit>().upgradeAccount();
-                      },
-                    ),
-                  ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 32),
                 Center(

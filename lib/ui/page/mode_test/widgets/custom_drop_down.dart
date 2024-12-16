@@ -30,6 +30,7 @@ class _CustomDropdownExampleState extends State<CustomDropdownExample> {
       items: widget.data,
       hintText: widget.data.first,
       decoration: CustomDropdownDecoration(
+        closedBorder: Border.all(color: Colors.grey.shade300),
         closedFillColor: color,
         expandedFillColor: color,
       ),

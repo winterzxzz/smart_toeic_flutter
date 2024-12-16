@@ -30,7 +30,6 @@ class HeadingContainer extends StatelessWidget {
         Expanded(
           child: child,
         ),
-        const Expanded(child: SizedBox()),
       ],
     );
   }

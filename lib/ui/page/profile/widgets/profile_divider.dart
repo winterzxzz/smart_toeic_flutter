@@ -3,7 +3,7 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class ProfileDivider extends StatelessWidget {
   const ProfileDivider(
-      {super.key, this.height = 16, this.color = AppColors.gray1});
+      {super.key, this.height = 32, this.color = AppColors.gray1});
 
   final double height;
   final Color color;

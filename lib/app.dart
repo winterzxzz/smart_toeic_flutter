@@ -16,6 +16,7 @@ import 'package:toeic_desktop/ui/page/analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
+import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';

@@ -10,25 +10,34 @@ class HomeCubit extends Cubit<HomeState> {
 
   void init() async {
     final cookie = SharedPreferencesHelper().getCookies();
-    if (cookie == null) return;
     emit(state.copyWith(loadStatus: LoadStatus.loading));
-    await Future.wait([_getTests(), _getResultTests()]);
+    if (cookie == null) {
+      await _getPublicTests();
+      return;
+    }
+    await getData();
   }
 
-  Future<void> _getTests() async {
-    final response = await _testRepository.getTests();
+  Future<void> getData() async {
+    final response = await _testRepository.getTestByUser();
+    response.fold(
+        (l) => emit(state.copyWith(
+            loadStatus: LoadStatus.failure, message: l.toString())),
+        (r) => emit(state.copyWith(
+            tests: r.tests,
+            resultTests: r.results.take(3).toList(),
+            loadStatus: LoadStatus.success)));
+  }
+
+  Future<void> _getPublicTests() async {
+    final response = await _testRepository.getPublicTests();
     response.fold(
         (l) => emit(state.copyWith(
             loadStatus: LoadStatus.failure, message: l.toString())),
         (r) => emit(state.copyWith(tests: r, loadStatus: LoadStatus.success)));
   }
 
-  Future<void> _getResultTests() async {
-    final response = await _testRepository.getResultTests();
-    response.fold(
-        (l) => emit(state.copyWith(
-            loadStatus: LoadStatus.failure, message: l.toString())),
-        (r) => emit(state.copyWith(
-            resultTests: r.take(3).toList(), loadStatus: LoadStatus.success)));
+  void reset() {
+    emit(HomeState.initial());
   }
 }

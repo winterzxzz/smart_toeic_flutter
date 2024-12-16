@@ -50,9 +50,11 @@ class Page extends StatelessWidget {
                   SliderSection(),
                   const SizedBox(height: 48),
                   // Toeic exam section
-                  TestSection(tests: state.tests),
+                  if (state.tests.isNotEmpty) TestSection(tests: state.tests),
                   const SizedBox(height: 48),
-                  ResultSection(results: state.resultTests),
+                  // Result section
+                  if (state.resultTests.isNotEmpty)
+                    ResultSection(results: state.resultTests),
                   const SizedBox(height: 48),
                   ServiceSection(),
                   const SizedBox(height: 48),

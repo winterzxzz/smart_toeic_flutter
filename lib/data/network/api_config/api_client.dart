@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
@@ -162,5 +160,10 @@ abstract class ApiClient {
   @GET('/user/payment/status?transId={transId}')
   Future<PaymentStatus> checkPaymentStatus(
     @Path("transId") String transId,
+  );
+
+  @POST('/user/profile/update-target-score')
+  Future<UserEntity> updateTargetScore(
+    @Body() Map<String, dynamic> body,
   );
 }
