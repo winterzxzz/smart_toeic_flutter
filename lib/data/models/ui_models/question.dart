@@ -1,4 +1,6 @@
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
+import 'package:toeic_desktop/data/models/entities/test/question_explain.dart'
+    as x;
 
 class QuestionModel {
   final int id;
@@ -16,6 +18,7 @@ class QuestionModel {
   final String? userAnswer;
   final int timeSecond;
   final List<String> questionCategory;
+  final x.QuestionExplain? questionExplain;
 
   QuestionModel({
     required this.id,
@@ -33,7 +36,23 @@ class QuestionModel {
     this.userAnswer,
     this.timeSecond = 0,
     this.questionCategory = const [],
+    this.questionExplain,
   });
+
+  Correctanswer getCorrectAnswer() {
+    switch (correctAnswer) {
+      case 'A':
+        return Correctanswer.A;
+      case 'B':
+        return Correctanswer.B;
+      case 'C':
+        return Correctanswer.C;
+      case 'D':
+        return Correctanswer.D;
+      default:
+        return Correctanswer.A;
+    }
+  } 
 
   // copy with
   QuestionModel copyWith({
@@ -52,6 +71,7 @@ class QuestionModel {
     String? userAnswer,
     int? timeSecond,
     List<String>? questionCategory,
+    x.QuestionExplain? questionExplain,
   }) {
     return QuestionModel(
       id: id ?? this.id,
@@ -69,6 +89,7 @@ class QuestionModel {
       userAnswer: userAnswer ?? this.userAnswer,
       timeSecond: timeSecond ?? this.timeSecond,
       questionCategory: questionCategory ?? this.questionCategory,
+      questionExplain: questionExplain ?? this.questionExplain,
     );
   }
 }

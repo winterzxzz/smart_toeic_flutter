@@ -90,6 +90,7 @@ class AppThemes {
         fontFamily: _font,
         scaffoldBackgroundColor: backgroundColor,
         appBarTheme: AppBarTheme(
+          centerTitle: false,
           surfaceTintColor: Colors.transparent,
           color: appbarColor,
           iconTheme: IconThemeData(

@@ -8,9 +8,11 @@ import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
+import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
@@ -244,6 +246,37 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         loadStatus: LoadStatus.success,
         questionsResult: r,
       )),
+    );
+  }
+
+  Future<void> getExplainQuestion(QuestionModel q) async {
+    emit(state.copyWith(loadStatusExplain: LoadStatus.loading));
+    final promptQuestion = Question(
+        id: q.id,
+        number: q.id,
+        option1: q.option1,
+        option2: q.option2,
+        option3: q.option3,
+        option4: q.option4,
+        correctanswer: q.getCorrectAnswer(),
+        options: q.options);
+    final response = await _testRepository
+        .getExplainQuestion(QuestionExplainRequest(prompt: promptQuestion));
+    response.fold(
+      (l) => emit(state.copyWith(
+          loadStatus: LoadStatus.failure, message: l.toString())),
+      (r) {
+        final newListQuestion = state.questions.map((e) {
+          if (e.id == q.id) {
+            return e.copyWith(questionExplain: r);
+          }
+          return e;
+        }).toList();
+        emit(state.copyWith(
+          loadStatusExplain: LoadStatus.success,
+          questions: newListQuestion,
+        ));
+      },
     );
   }
 

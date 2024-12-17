@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
@@ -9,6 +11,7 @@ import 'package:toeic_desktop/data/models/entities/payment/payment.dart';
 import 'package:toeic_desktop/data/models/entities/payment/payment_status.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
+import 'package:toeic_desktop/data/models/entities/test/question_explain.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
@@ -17,6 +20,7 @@ import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
+import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 
 part 'api_client.g.dart';
@@ -165,5 +169,18 @@ abstract class ApiClient {
   @POST('/user/profile/update-target-score')
   Future<UserEntity> updateTargetScore(
     @Body() Map<String, dynamic> body,
+  );
+
+  @POST('/user/ai-chat/get-explanation')
+  Future<QuestionExplain> getExplanation(
+    @Body() QuestionExplainRequest request,
+  );
+
+  @POST('/user/profile/update-avatar')
+  Future<String> updateAvatar(
+    @Part(
+      name: "avatar",
+    )
+    File avatar,
   );
 }

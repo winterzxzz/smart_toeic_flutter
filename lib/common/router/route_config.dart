@@ -13,6 +13,7 @@ import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
+import 'package:toeic_desktop/ui/page/introduction/introduction_page.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
@@ -113,9 +114,7 @@ class AppRouter {
             GoRoute(
               name: introduction,
               path: introduction,
-              builder: (context, state) => const Center(
-                child: Text('Giới thiệu'),
-              ),
+              builder: (context, state) => IntroductionPage(),
             ),
           ],
         ),

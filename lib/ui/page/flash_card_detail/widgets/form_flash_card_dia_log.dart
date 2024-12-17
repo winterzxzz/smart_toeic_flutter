@@ -124,7 +124,10 @@ void showCreateFlashCardDialog(BuildContext widgetContext,
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: AppColors.textWhite,
+                                color: Theme.of(context).brightness !=
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                             ),
                             SizedBox(width: 10),

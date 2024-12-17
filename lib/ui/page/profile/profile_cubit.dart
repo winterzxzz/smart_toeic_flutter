@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
@@ -24,6 +26,24 @@ class ProfileCubit extends Cubit<ProfileState> {
         injector<UserCubit>().updateUser(r);
         showToast(
             title: 'Update target score success',
+            type: ToastificationType.success);
+      },
+    );
+  }
+
+  Future<void> updateProfileAvatar(File avatar) async {
+    final response = await profileRepository.updateProfileAvatar(avatar);
+    response.fold(
+      (l) => showToast(
+        title: l.message,
+        type: ToastificationType.error,
+      ),
+      (r) {
+        final currentUser = injector<UserCubit>().state.user!;
+        final updatedUser = currentUser.copyWith(avatar: r);
+        injector<UserCubit>().updateUser(updatedUser);
+        showToast(
+            title: 'Update prolfile avatar success',
             type: ToastificationType.success);
       },
     );

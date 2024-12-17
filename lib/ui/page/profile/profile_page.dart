@@ -66,74 +66,58 @@ class _PageState extends State<Page> {
 
   Container _buildImage() {
     return Container(
-      margin: const EdgeInsets.only(top: (258.5 - 70) / 2 + 15),
+      margin: const EdgeInsets.only(top: (258.5 - 70) / 2 + 50),
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: 80,
-            width: 80,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                  image: NetworkImage(
-                      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                  fit: BoxFit.cover),
+          SizedBox(
+            height: 40,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
+                  const SizedBox(width: 8),
+                  Text('See history test'),
+                ],
+              ),
             ),
           ),
-          Row(
-            children: [
-              SizedBox(
-                height: 40,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
-                      const SizedBox(width: 8),
-                      Text('See history test'),
-                    ],
-                  ),
-                ),
+          const SizedBox(width: 16),
+          SizedBox(
+            height: 40,
+            child: ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context).pushNamed(AppRouter.analysis);
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  FaIcon(FontAwesomeIcons.chartLine, size: 16),
+                  const SizedBox(width: 8),
+                  Text('Analyze Result'),
+                ],
               ),
-              const SizedBox(width: 16),
-              SizedBox(
-                height: 40,
-                child: ElevatedButton(
-                  onPressed: () {
-                    GoRouter.of(context).pushNamed(AppRouter.analysis);
-                  },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      FaIcon(FontAwesomeIcons.chartLine, size: 16),
-                      const SizedBox(width: 8),
-                      Text('Analyze Result'),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              SizedBox(
-                height: 40,
-                child: ElevatedButton(
-                    onPressed: () {},
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
-                        const SizedBox(width: 8),
-                        Text('Save'),
-                      ],
-                    )),
-              ),
-            ],
-          )
+            ),
+          ),
+          const SizedBox(width: 16),
+          SizedBox(
+            height: 40,
+            child: ElevatedButton(
+                onPressed: () {},
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
+                    const SizedBox(width: 8),
+                    Text('Save'),
+                  ],
+                )),
+          ),
         ],
       ),
     );
@@ -156,16 +140,10 @@ class _PageState extends State<Page> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 32),
-              Builder(builder: (context) {
-                String avatar = state.user?.avatar ?? '';
-                if (avatar.isEmpty) {
-                  avatar =
-                      state.user?.name.characters.first.toUpperCase() ?? 'U';
-                }
-                return AvatarHeading(
-                  avatar: avatar,
-                );
-              }),
+              if (state.user != null)
+                AvatarHeading(
+                  user: state.user!,
+                ),
               const ProfileDivider(),
               TextFieldHeading(
                 label: 'Profile Name',
@@ -201,7 +179,7 @@ class _PageState extends State<Page> {
                                   )),
                               Text.rich(
                                 TextSpan(
-                                  text: '${state.user!.targetScore?.reading}',
+                                  text: '${state.user?.targetScore?.reading}',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -273,7 +251,7 @@ class _PageState extends State<Page> {
                                     ? Colors.white
                                     : Theme.of(context).primaryColor,
                             minHeight: 10,
-                            value: state.user!.targetScore?.listening != null
+                            value: state.user?.targetScore?.listening != null
                                 ? state.user!.targetScore!.listening / 450
                                 : 0,
                           ),
@@ -287,9 +265,9 @@ class _PageState extends State<Page> {
                             onPressed: () {
                               showUpdateTargetDialog(
                                 initialReadingScore:
-                                    state.user!.targetScore!.reading,
+                                    state.user?.targetScore?.reading,
                                 initialListeningScore:
-                                    state.user!.targetScore!.listening,
+                                    state.user?.targetScore?.listening,
                               );
                             },
                             child: Text('Update Target Score')),

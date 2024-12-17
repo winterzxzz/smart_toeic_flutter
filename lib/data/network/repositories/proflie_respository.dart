@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
@@ -10,6 +12,7 @@ abstract class ProfileRepository {
   Future<Either<ApiError, ProfileAllAnalysis>> getProfileAllAnalysis();
   Future<Either<ApiError, UserEntity>> updateTargetScore(
       int reading, int listening);
+  Future<Either<ApiError, String>> updateProfileAvatar(File avatar);
 }
 
 class ProfileRepositoryImpl extends ProfileRepository {
@@ -42,6 +45,16 @@ class ProfileRepositoryImpl extends ProfileRepository {
         'reading': reading,
         'listening': listening,
       });
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+  
+  @override
+  Future<Either<ApiError, String>> updateProfileAvatar(File avatar) async{
+        try {
+      final result = await apiClient.updateAvatar(avatar);
       return Right(result);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));

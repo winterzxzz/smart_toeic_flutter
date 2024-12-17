@@ -11,6 +11,7 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
+import 'package:toeic_desktop/ui/page/practice_test/widgets/question_explain.dart';
 
 class QuestionWidget extends StatelessWidget {
   const QuestionWidget({
@@ -47,12 +48,19 @@ class QuestionWidget extends StatelessWidget {
   }
 }
 
-class QuestionInfoWidget extends StatelessWidget {
+class QuestionInfoWidget extends StatefulWidget {
   const QuestionInfoWidget({
     super.key,
     required this.question,
   });
   final QuestionModel question;
+
+  @override
+  State<QuestionInfoWidget> createState() => _QuestionInfoWidgetState();
+}
+
+class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +73,7 @@ class QuestionInfoWidget extends StatelessWidget {
             CircleAvatar(
               backgroundColor: Colors.blue.shade100,
               child: Text(
-                '${question.id}',
+                '${widget.question.id}',
                 style: const TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
@@ -81,8 +89,8 @@ class QuestionInfoWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (question.question != null && question.part > 2)
-                Text(question.question ?? ''),
+              if (widget.question.question != null && widget.question.part > 2)
+                Text(widget.question.question ?? ''),
               Builder(builder: (context) {
                 return BlocBuilder<PracticeTestCubit, PracticeTestState>(
                   buildWhen: (previous, current) =>
@@ -93,27 +101,27 @@ class QuestionInfoWidget extends StatelessWidget {
                     if (state.testShow == TestShow.test) {
                       return Column(children: [
                         ...List.generate(
-                          question.options.length,
+                          widget.question.options.length,
                           (index) {
-                            final option = question.options[index];
+                            final option = widget.question.options[index];
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Radio<String>(
                                   value: option.id.name,
-                                  groupValue: question
+                                  groupValue: widget.question
                                       .userAnswer, // Default selected value
                                   activeColor: Colors.red,
                                   onChanged: (value) {
                                     context
                                         .read<PracticeTestCubit>()
-                                        .setUserAnswer(question, value!);
+                                        .setUserAnswer(widget.question, value!);
                                   },
                                 ),
                                 Text(
                                   '${option.id.name}. ',
                                 ),
-                                if (question.part > 2)
+                                if (widget.question.part > 2)
                                   Column(
                                     children: [
                                       const SizedBox(width: 8),
@@ -132,9 +140,9 @@ class QuestionInfoWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ...List.generate(
-                              question.options.length,
+                              widget.question.options.length,
                               (index) {
-                                final option = question.options[index];
+                                final option = widget.question.options[index];
                                 Color? color;
                                 if (questionResult?.useranswer ==
                                     option.id.name) {
@@ -179,7 +187,7 @@ class QuestionInfoWidget extends StatelessWidget {
                                 children: [
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Correct answer: ${question.correctAnswer}',
+                                    'Correct answer: ${widget.question.correctAnswer}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.success,
@@ -239,26 +247,63 @@ class QuestionInfoWidget extends StatelessWidget {
                                     width: 200,
                                     height: 45,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: isLoading
+                                          ? null
+                                          : () async {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                              await context
+                                                  .read<PracticeTestCubit>()
+                                                  .getExplainQuestion(
+                                                      widget.question)
+                                                  .then((_) {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                              });
+                                            },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          const FaIcon(
-                                            FontAwesomeIcons.lock,
-                                            size: 14,
-                                          ),
+                                          if (isLoading)
+                                            SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: Theme.of(context)
+                                                            .brightness !=
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              ),
+                                            )
+                                          else
+                                            const FaIcon(
+                                              FontAwesomeIcons.lock,
+                                              size: 14,
+                                            ),
                                           const SizedBox(width: 8),
                                           const Text('Tạo lời giải bằng AI'),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
                                         ],
                                       ),
                                     ),
                                   );
                                 }
                               },
-                            )
+                            ),
+                            if (widget.question.questionExplain != null)
+                              ExplanationUI(
+                                questionExplain:
+                                    widget.question.questionExplain!,
+                              )
                           ]);
                     }
                   },
@@ -273,7 +318,7 @@ class QuestionInfoWidget extends StatelessWidget {
 
   QuestionResult? getQuestionResult(List<QuestionResult> questionsResult) {
     for (var questionResult in questionsResult) {
-      if (questionResult.questionNum == question.id.toString()) {
+      if (questionResult.questionNum == widget.question.id.toString()) {
         return questionResult;
       }
     }

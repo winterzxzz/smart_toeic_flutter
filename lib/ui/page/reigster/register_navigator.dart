@@ -10,6 +10,6 @@ class RegisterNavigator extends AppNavigator {
   }
 
   void navigateToResetPassword() {
-    GoRouter.of(context).pushReplacementNamed(AppRouter.resetPassword);
+    GoRouter.of(context).pushNamed(AppRouter.resetPassword);
   }
 }

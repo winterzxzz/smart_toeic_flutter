@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
@@ -343,17 +344,23 @@ class AppBar extends StatelessWidget {
                   child: BlocBuilder<UserCubit, UserState>(
                     builder: (context, state) {
                       return Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ),
-                        child: CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Theme.of(context).cardColor,
-                          child: Text(
-                            state.user?.name.substring(0, 1) ?? 'U',
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
                           ),
-                        ),
-                      );
+                          child: CircleAvatar(
+                              radius: 16,
+                              backgroundColor: Theme.of(context).cardColor,
+                              backgroundImage:
+                                  state.user?.avatar.isEmpty ?? true
+                                      ? null
+                                      : Image.network(
+                                          '${AppConfigs.baseUrl}/${state.user?.avatar}',
+                                        ).image,
+                              child: state.user?.avatar.isEmpty ?? true
+                                  ? Text(
+                                      state.user?.name.substring(0, 1) ?? 'U',
+                                    )
+                                  : null));
                     },
                   ),
                 );

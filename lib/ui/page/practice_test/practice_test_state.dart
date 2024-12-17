@@ -20,6 +20,8 @@ class PracticeTestState extends Equatable {
   final Duration duration;
   final bool isShowAnswer;
 
+  final LoadStatus loadStatusExplain;
+
   const PracticeTestState({
     required this.loadStatus,
     required this.testShow,
@@ -34,6 +36,7 @@ class PracticeTestState extends Equatable {
     required this.isShowAnswer,
     required this.questionsResult,
     required this.answers,
+    required this.loadStatusExplain,
   });
 
   // init state
@@ -53,6 +56,7 @@ class PracticeTestState extends Equatable {
       isShowAnswer: false,
       questionsResult: [],
       answers: [],
+      loadStatusExplain: LoadStatus.initial,
     );
   }
 
@@ -72,6 +76,7 @@ class PracticeTestState extends Equatable {
     bool? isShowAnswer,
     List<QuestionResult>? questionsResult,
     List<QuestionModel>? answers,
+    LoadStatus? loadStatusExplain,
   }) {
     return PracticeTestState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -87,6 +92,7 @@ class PracticeTestState extends Equatable {
       isShowAnswer: isShowAnswer ?? this.isShowAnswer,
       questionsResult: questionsResult ?? this.questionsResult,
       answers: answers ?? this.answers,
+      loadStatusExplain: loadStatusExplain ?? this.loadStatusExplain,
     );
   }
 
@@ -107,5 +113,6 @@ class PracticeTestState extends Equatable {
         isShowAnswer,
         questionsResult,
         answers,
+        loadStatusExplain,
       ];
 }

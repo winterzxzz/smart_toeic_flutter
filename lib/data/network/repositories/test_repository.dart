@@ -1,8 +1,10 @@
 import 'package:either_dart/either.dart';
+import 'package:toeic_desktop/data/models/entities/test/question_explain.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test_submit.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
+import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/home_data_by_user.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
@@ -19,6 +21,8 @@ abstract class TestRepository {
   Future<Either<Exception, List<ResultTest>>> getResultTests();
   Future<Either<Exception, List<QuestionResult>>> getResultTestByResultId(
       String resultId);
+  Future<Either<Exception, QuestionExplain>> getExplainQuestion(
+      QuestionExplainRequest request);
 }
 
 class TestRepositoryImpl extends TestRepository {
@@ -111,6 +115,16 @@ class TestRepositoryImpl extends TestRepository {
       String resultId) async {
     try {
       final response = await _apiClient.getResultTestByResultId(resultId);
+      return Right(response);
+    } on Exception catch (e) {
+      return Left(e);
+    }
+  }
+  
+  @override
+  Future<Either<Exception, QuestionExplain>> getExplainQuestion(QuestionExplainRequest request)async{
+    try {
+      final response = await _apiClient.getExplanation(request);
       return Right(response);
     } on Exception catch (e) {
       return Left(e);

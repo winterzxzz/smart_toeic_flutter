@@ -61,6 +61,39 @@ class UserEntity {
     if (upgradeExpiredDate == null) return false;
     return DateTime.parse(upgradeExpiredDate!).isAfter(DateTime.now());
   }
+
+  // copyWith
+  UserEntity copyWith({
+    String? avatar,
+    String? email,
+    String? name,
+    String? status,
+    String? accountType,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? googleId,
+    String? role,
+    String? upgradeExpiredDate,
+    TargetScore? targetScore,
+    String? bio,
+    String? id,
+  }) {
+    return UserEntity(
+      avatar: avatar ?? this.avatar,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      status: status ?? this.status,
+      accountType: accountType ?? this.accountType,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      googleId: googleId ?? this.googleId,
+      role: role ?? this.role,
+      upgradeExpiredDate: upgradeExpiredDate ?? this.upgradeExpiredDate,
+      targetScore: targetScore ?? this.targetScore,
+      bio: bio ?? this.bio,
+      id: id ?? this.id,
+    );
+  }
   
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
