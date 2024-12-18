@@ -2,15 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 
 class AvatarHeading extends StatefulWidget {
   const AvatarHeading({super.key, required this.user});
 
-  final UserEntity user;
+  final UserEntity? user;
 
   @override
   State<AvatarHeading> createState() => _AvatarHeadingState();
@@ -19,10 +22,6 @@ class AvatarHeading extends StatefulWidget {
 class _AvatarHeadingState extends State<AvatarHeading> {
   @override
   Widget build(BuildContext context) {
-    String avatar = widget.user.avatar;
-    if (avatar.isEmpty) {
-      avatar = widget.user.name.characters.first.toUpperCase();
-    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,20 +44,23 @@ class _AvatarHeadingState extends State<AvatarHeading> {
             child: CircleAvatar(
               radius: 50,
               backgroundColor: Theme.of(context).secondaryHeaderColor,
-              backgroundImage: widget.user.avatar.isEmpty
+              backgroundImage: widget.user?.avatar.isEmpty ?? true
                   ? null
-                  : Image.network('${AppConfigs.baseUrl}/${widget.user.avatar}')
+                  // remove first and last character from the string
+                  : Image.network('${Constants.hostUrl}${widget.user?.avatar}')
                       .image,
               child: Stack(
                 children: [
                   Column(
                     children: [
-                      if (widget.user.avatar.isNotEmpty)
+                      if (widget.user?.avatar.isNotEmpty ?? true)
                         Container(
                           color: Colors.transparent,
                         )
                       else
-                        Text(widget.user.name.characters.first.toUpperCase(),
+                        Text(
+                            widget.user?.name.characters.first.toUpperCase() ??
+                                'U',
                             style: TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600)),
                     ],
@@ -70,12 +72,16 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                         _pickImage();
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.camera_alt, color: Colors.white),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ),
@@ -84,7 +90,49 @@ class _AvatarHeadingState extends State<AvatarHeading> {
             ),
           ),
         ),
-        const Expanded(child: SizedBox()),
+        Expanded(
+          child: widget.user?.isPremium() ?? false
+              ? SizedBox(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Membership Level',
+                          style: TextStyle(fontWeight: FontWeight.w600)),
+                      SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.green[400],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              AppImages.icPremium,
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                AppColors.textWhite,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text('Premium',
+                                style: TextStyle(
+                                    color: AppColors.textWhite,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(),
+        )
       ],
     );
   }

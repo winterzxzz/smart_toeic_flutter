@@ -94,7 +94,9 @@ class _PageState extends State<Page> {
                               GoRouter.of(context)
                                   .pushNamed(AppRouter.flashCardQuizz, extra: {
                                 'title': widget.title,
-                                'flashCards': flashCards,
+                                'flashCards': flashCards
+                                    .map((e) => e.flashcardId)
+                                    .toList(),
                               });
                             },
                             child: Row(

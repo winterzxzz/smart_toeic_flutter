@@ -129,7 +129,7 @@ class SharedPreferencesHelper {
     return null;
   }
 
-  void removeCookies() async {
+  Future<void> removeCookies() async {
     await _prefs.remove(_cookie);
   }
 }

@@ -40,19 +40,19 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
             border: Border(
               left: BorderSide(
                   color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore),
+                      widget.flashcard.retentionScore ?? 0),
                   width: 5), // Left border
               top: BorderSide(
                   color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore),
+                      widget.flashcard.retentionScore ?? 0),
                   width: 1), // Top border
               right: BorderSide(
                   color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore),
+                      widget.flashcard.retentionScore ?? 0),
                   width: 1), // Right border
               bottom: BorderSide(
                   color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore),
+                      widget.flashcard.retentionScore ?? 0),
                   width: 1), // Bottom border
             )),
         child: Column(
@@ -61,7 +61,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
             Row(
               children: [
                 Text(
-                  widget.flashcard.flashcardId.word,
+                  widget.flashcard.flashcardId?.word ?? '',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                 // Add a button to play the pronunciation
                 InkWell(
                   onTap: () {
-                    _speak(widget.flashcard.flashcardId.word);
+                    _speak(widget.flashcard.flashcardId?.word ?? '');
                   },
                   borderRadius: BorderRadius.circular(16),
                   child: Container(
@@ -96,9 +96,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
-                    widget.flashcard.flashcardId.partOfSpeech
-                        .map((e) => e.name)
-                        .join(', '),
+                    widget.flashcard.flashcardId?.partOfSpeech.join(', ') ?? '',
                     style: TextStyle(
                         color: AppColors.textWhite,
                         fontWeight: FontWeight.w500),
@@ -117,12 +115,13 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                       Row(
                         children: [
                           _buildPronunciation(
-                              widget.flashcard.flashcardId.pronunciation, 'UK'),
+                              widget.flashcard.flashcardId?.pronunciation ?? '',
+                              'UK'),
                         ],
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Translate: ${widget.flashcard.flashcardId.translation}',
+                        'Translate: ${widget.flashcard.flashcardId?.translation ?? ''}',
                         style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(height: 8),
@@ -130,15 +129,14 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                         'Definition:',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        widget.flashcard.flashcardId.definition,
-                      ),
+                      Text(widget.flashcard.flashcardId?.definition ?? ''),
                       Text('Example Sentences:',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      if (widget.flashcard.flashcardId.exampleSentence
-                          .isNotEmpty) ...[
+                      if (widget.flashcard.flashcardId?.exampleSentence
+                              ?.isNotEmpty ??
+                          false) ...[
                         SizedBox(height: 8),
-                        ...widget.flashcard.flashcardId.exampleSentence
+                        ...(widget.flashcard.flashcardId?.exampleSentence ?? [])
                             .map((example) => Text(
                                   '- $example',
                                   style: TextStyle(color: Colors.grey[700]),
@@ -147,7 +145,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                       SizedBox(height: 8),
                       Text('Note:',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(widget.flashcard.flashcardId.note),
+                      Text(widget.flashcard.flashcardId?.note ?? ''),
                       if (widget.flashcard.optimalTime != null)
                         Column(
                           children: [
@@ -174,11 +172,11 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                                         horizontal: 12, vertical: 4),
                                     decoration: BoxDecoration(
                                       color: _getColorFromRetentionScore(
-                                          widget.flashcard.retentionScore),
+                                          widget.flashcard.retentionScore ?? 0),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Text(
-                                      'Retention: ${widget.flashcard.retentionScore.toStringAsFixed(2)}',
+                                      'Retention: ${widget.flashcard.retentionScore?.toStringAsFixed(2) ?? ''}',
                                       style: TextStyle(
                                         color: AppColors.textWhite,
                                         fontWeight: FontWeight.w500,

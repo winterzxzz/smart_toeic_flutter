@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -9,6 +8,8 @@ import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 
 class Constants {
+  static const hostUrl = 'http://localhost:4000';
+
   static List<BlogItem> blogs = [
     BlogItem(
         imageUrl:

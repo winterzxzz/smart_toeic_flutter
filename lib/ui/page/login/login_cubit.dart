@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/utils/app_validartor.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {

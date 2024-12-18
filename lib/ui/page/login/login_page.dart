@@ -51,23 +51,27 @@ class _PageState extends State<Page> {
     super.dispose();
   }
 
+  void _onLoginSuccess() {
+    AppRouter.clearAndNavigate(AppRouter.splash);
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigator = LoginNavigator(context: context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (LoadStatus.loading == state.loadStatus) {
+        if (state.loadStatus == LoadStatus.loading) {
           navigator.showLoadingOverlay();
         } else {
           navigator.hideLoadingOverlay();
         }
-        if (LoadStatus.failure == state.loadStatus) {
+        if (state.loadStatus == LoadStatus.failure) {
           navigator.error(state.errorMessage);
           showToast(title: state.errorMessage, type: ToastificationType.error);
         }
-        if (LoadStatus.success == state.loadStatus) {
+        if (state.loadStatus == LoadStatus.success) {
           showToast(title: 'Welcome back!', type: ToastificationType.success);
-          GoRouter.of(context).goNamed(AppRouter.home);
+          _onLoginSuccess();
         }
       },
       child: Scaffold(

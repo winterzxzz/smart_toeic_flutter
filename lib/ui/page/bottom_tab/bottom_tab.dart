@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
@@ -354,7 +353,7 @@ class AppBar extends StatelessWidget {
                                   state.user?.avatar.isEmpty ?? true
                                       ? null
                                       : Image.network(
-                                          '${AppConfigs.baseUrl}/${state.user?.avatar}',
+                                          '${Constants.hostUrl}${state.user!.avatar}',
                                         ).image,
                               child: state.user?.avatar.isEmpty ?? true
                                   ? Text(

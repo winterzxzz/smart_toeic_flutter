@@ -11,13 +11,32 @@ import 'package:toeic_desktop/ui/page/home/widgets/service_section.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/slider_section.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/test_section.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final HomeCubit _homeCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _homeCubit = injector<HomeCubit>()..init();
+  }
+
+  @override
+  void dispose() {
+    _homeCubit.reset();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => injector<HomeCubit>()..init(),
+    return BlocProvider.value(
+      value: _homeCubit,
       child: const Page(),
     );
   }

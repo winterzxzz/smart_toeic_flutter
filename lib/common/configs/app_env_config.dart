@@ -19,7 +19,7 @@ extension EnvironmentExt on Environment {
   String get baseUrl {
     switch (this) {
       case Environment.dev:
-        return "http://localhost:4000/api/";
+        return "http://localhost:4000/api";
       case Environment.stg:
         //TODO update when build stg
         return "http://stg";

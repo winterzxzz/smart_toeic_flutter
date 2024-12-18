@@ -49,17 +49,3 @@ Future<void> init() async {
     injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
   }
 }
-
-Future<void> diReset() async {
-  await injector<HomeCubit>().close();
-  await injector<DeThiOnlineCubit>().close();
-  await injector<PracticeTestCubit>().close();
-  await injector<FlashCardCubit>().close();
-  await injector<FlashCardDetailCubit>().close();
-  await injector<FlashCardLearnFlipCubit>().close();
-  await injector<FlashCardQuizzCubit>().close();
-  await injector<FlashCardDetailLearningCubit>().close();
-  await injector<AnalysisCubit>().close();
-  await injector<UpgradeAccountCubit>().close();
-  await injector<CheckPaymentStatusCubit>().close();
-}

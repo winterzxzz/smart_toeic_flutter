@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
+import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 
@@ -45,6 +46,21 @@ class ProfileCubit extends Cubit<ProfileState> {
         showToast(
             title: 'Update prolfile avatar success',
             type: ToastificationType.success);
+      },
+    );
+  }
+
+  Future<void> updateProfile(ProfileUpdateRequest request) async {
+    final response = await profileRepository.updateProfile(request);
+    response.fold(
+      (l) => showToast(title: l.message, type: ToastificationType.error),
+      (r) {
+        final currentUser = injector<UserCubit>().state.user!;
+        final updatedUser =
+            currentUser.copyWith(name: request.name, bio: request.bio);
+        injector<UserCubit>().updateUser(updatedUser);
+        showToast(
+            title: 'Update profile success', type: ToastificationType.success);
       },
     );
   }

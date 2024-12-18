@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/avatar_heading.dart';
@@ -39,6 +40,19 @@ class Page extends StatefulWidget {
 }
 
 class _PageState extends State<Page> {
+  late final TextEditingController emailController;
+  late final TextEditingController nameController;
+  late final TextEditingController bioController;
+
+  @override
+  void initState() {
+    super.initState();
+    final user = injector<UserCubit>().state.user;
+    emailController = TextEditingController(text: user?.email ?? '');
+    nameController = TextEditingController(text: user?.name ?? '');
+    bioController = TextEditingController(text: user?.bio ?? '');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +63,182 @@ class _PageState extends State<Page> {
                 fit: BoxFit.cover)),
         child: Stack(
           children: [
-            _buildHeaderBody(),
-            _buildBanner(),
+            BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                emailController.text = state.user?.email ?? '';
+                nameController.text = state.user?.name ?? '';
+                bioController.text = state.user?.bio ?? '';
+                return Container(
+                  height: double.infinity,
+                  margin: const EdgeInsets.only(top: 75),
+                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      color: Theme.of(context).cardColor),
+                  child: ListView(
+                    children: [
+                      const SizedBox(height: 32),
+                      AvatarHeading(
+                        user: state.user,
+                      ),
+                      const ProfileDivider(),
+                      TextFieldHeading(
+                        label: 'Profile Email',
+                        description:
+                            'Your email will be displayed to other users and cannot be changed',
+                        hintText: 'Enter your email',
+                        controller: emailController,
+                      ),
+                      const ProfileDivider(),
+                      TextFieldHeading(
+                        label: 'Profile Name',
+                        description:
+                            'Your name will be displayed to other users',
+                        hintText: 'Enter your name',
+                        controller: nameController,
+                      ),
+                      const ProfileDivider(),
+                      TextFieldHeading(
+                        label: 'Profile Bio',
+                        description:
+                            'Your bio will be displayed to other users',
+                        hintText: 'Enter your bio',
+                        controller: bioController,
+                      ),
+                      if (state.user?.targetScore != null)
+                        const ProfileDivider(),
+                      HeadingContainer(
+                          title: 'Profile Target Score',
+                          description:
+                              'Your target score will be used to calculate your progress',
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('Reading Target / Reading Current',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          )),
+                                      Text.rich(
+                                        TextSpan(
+                                          text:
+                                              '${state.user?.targetScore?.reading}',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: '/450',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  LinearProgressIndicator(
+                                    backgroundColor: Colors.grey,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Theme.of(context).primaryColor,
+                                    minHeight: 10,
+                                    value: state.user?.targetScore?.reading !=
+                                            null
+                                        ? state.user!.targetScore!.reading / 450
+                                        : 0,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 32),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          'Listening Target / Listening Current',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          )),
+                                      Text.rich(
+                                        TextSpan(
+                                          text:
+                                              '${state.user?.targetScore?.listening}',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: '/450',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  LinearProgressIndicator(
+                                    backgroundColor: Colors.grey,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Theme.of(context).primaryColor,
+                                    minHeight: 10,
+                                    value: state.user?.targetScore?.listening !=
+                                            null
+                                        ? state.user!.targetScore!.listening /
+                                            450
+                                        : 0,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 32),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 50,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      showUpdateTargetDialog(
+                                        initialReadingScore:
+                                            state.user?.targetScore?.reading,
+                                        initialListeningScore:
+                                            state.user?.targetScore?.listening,
+                                      );
+                                    },
+                                    child: Text('Update Target Score')),
+                              ),
+                            ],
+                          )),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
+              },
+            ),
             _buildImage(),
           ],
         ),
@@ -58,15 +246,9 @@ class _PageState extends State<Page> {
     );
   }
 
-  Widget _buildBanner() {
-    return Container(
-      height: 129,
-    );
-  }
-
   Container _buildImage() {
     return Container(
-      margin: const EdgeInsets.only(top: (258.5 - 70) / 2 + 50),
+      margin: const EdgeInsets.only(top: (158.5 - 70) / 2 + 50),
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
       ),
@@ -108,7 +290,11 @@ class _PageState extends State<Page> {
           SizedBox(
             height: 40,
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<ProfileCubit>().updateProfile(
+                      ProfileUpdateRequest(
+                          name: nameController.text, bio: bioController.text));
+                },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -123,172 +309,12 @@ class _PageState extends State<Page> {
     );
   }
 
-  Widget _buildHeaderBody() {
-    return BlocBuilder<UserCubit, UserState>(
-      builder: (context, state) {
-        return Container(
-          height: double.infinity,
-          margin: const EdgeInsets.only(top: 129),
-          padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              color: Theme.of(context).cardColor),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 32),
-              if (state.user != null)
-                AvatarHeading(
-                  user: state.user!,
-                ),
-              const ProfileDivider(),
-              TextFieldHeading(
-                label: 'Profile Name',
-                description: 'Your name will be displayed to other users',
-                hintText: 'Enter your name',
-                controller: TextEditingController(text: state.user?.name),
-              ),
-              const ProfileDivider(),
-              TextFieldHeading(
-                label: 'Profile Email',
-                description: 'Your email will be displayed to other users',
-                hintText: 'Enter your email',
-                controller: TextEditingController(text: state.user?.email),
-              ),
-              if (state.user?.targetScore != null) const ProfileDivider(),
-              HeadingContainer(
-                  title: 'Profile Target Score',
-                  description:
-                      'Your target score will be used to calculate your progress',
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Reading Target / Reading Current',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  )),
-                              Text.rich(
-                                TextSpan(
-                                  text: '${state.user?.targetScore?.reading}',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: '/450',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          LinearProgressIndicator(
-                            backgroundColor: Colors.grey,
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Theme.of(context).primaryColor,
-                            minHeight: 10,
-                            value: state.user!.targetScore?.reading != null
-                                ? state.user!.targetScore!.reading / 450
-                                : 0,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Listening Target / Listening Current',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  )),
-                              Text.rich(
-                                TextSpan(
-                                  text: '${state.user!.targetScore?.listening}',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: '/450',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          LinearProgressIndicator(
-                            backgroundColor: Colors.grey,
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Theme.of(context).primaryColor,
-                            minHeight: 10,
-                            value: state.user?.targetScore?.listening != null
-                                ? state.user!.targetScore!.listening / 450
-                                : 0,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              showUpdateTargetDialog(
-                                initialReadingScore:
-                                    state.user?.targetScore?.reading,
-                                initialListeningScore:
-                                    state.user?.targetScore?.listening,
-                              );
-                            },
-                            child: Text('Update Target Score')),
-                      ),
-                    ],
-                  )),
-              const SizedBox(height: 20),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   void showUpdateTargetDialog(
       {int? initialReadingScore, int? initialListeningScore}) {
     final readingController =
         TextEditingController(text: initialReadingScore?.toString() ?? '0');
     final listeningController =
         TextEditingController(text: initialListeningScore?.toString() ?? '0');
-
     showDialog(
       context: context,
       builder: (BuildContext diaglogContext) {

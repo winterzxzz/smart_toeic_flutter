@@ -304,4 +304,11 @@ class AppRouter {
       },
     ),
   ];
+
+  static void clearAndNavigate(String path) {
+    while (AppRouter.router.canPop() == true) {
+      AppRouter.router.pop();
+    }
+    AppRouter.router.pushReplacement(path);
+  }
 }

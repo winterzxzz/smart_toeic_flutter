@@ -20,6 +20,7 @@ import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
+import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 
@@ -43,7 +44,7 @@ abstract class ApiClient {
     @Field("password") String password,
   );
 
-  @GET('user/auth/getinfor')
+  @GET('/user/auth/getinfor')
   Future<UserEntity> getUser();
 
   // PROFILE
@@ -182,5 +183,10 @@ abstract class ApiClient {
       name: "avatar",
     )
     File avatar,
+  );
+
+  @POST('/user/profile/update-profile')
+  Future<UserEntity> updateProfile(
+    @Body() ProfileUpdateRequest request,
   );
 }

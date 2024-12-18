@@ -31,9 +31,12 @@ class TextFieldHeading extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(width: 16),
         Expanded(
           child: TextField(
             controller: controller,
+            enabled: label != 'Profile Email',
+            maxLines: label == 'Profile Bio' ? 3 : 1,
             decoration: InputDecoration(
               hintText: hintText,
               enabledBorder: OutlineInputBorder(
@@ -44,6 +47,9 @@ class TextFieldHeading extends StatelessWidget {
                     color: Theme.of(context).brightness == Brightness.light
                         ? AppColors.primary
                         : Colors.white),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
               ),
             ),
           ),

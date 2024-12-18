@@ -5,6 +5,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 
+import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+
 part 'flash_card_learning.g.dart';
 
 List<FlashCardLearning> flashCardLearningFromJson(String str) => List<FlashCardLearning>.from(json.decode(str).map((x) => FlashCardLearning.fromJson(x)));
@@ -14,114 +16,46 @@ String flashCardLearningToJson(List<FlashCardLearning> data) => json.encode(List
 @JsonSerializable()
 class FlashCardLearning {
     @JsonKey(name: "flashcardId")
-    FlashcardId flashcardId;
+    final FlashCard? flashcardId;
     @JsonKey(name: "retentionScore")
-    double retentionScore;
+    final double? retentionScore;
     @JsonKey(name: "decayScore")
-    double decayScore;
+    final double? decayScore;
     @JsonKey(name: "studyTime")
-    int studyTime;
+    final int? studyTime;
     @JsonKey(name: "EF")
-    double ef;
+    final double? ef;
     @JsonKey(name: "learningSetId")
-    String learningSetId;
+    final String? learningSetId;
     @JsonKey(name: "optimalTime")
-    DateTime? optimalTime;
+    final DateTime? optimalTime;
     @JsonKey(name: "interval")
-    int interval;
+    final int? interval;
     @JsonKey(name: "lastStudied")
-    DateTime lastStudied;
+    final DateTime? lastStudied;
     @JsonKey(name: "createdAt")
-    DateTime createdAt;
+    final DateTime? createdAt;
     @JsonKey(name: "updatedAt")
-    DateTime updatedAt;
+    final DateTime? updatedAt;
     @JsonKey(name: "id")
-    String id;
+    final String? id;
 
     FlashCardLearning({
-        required this.flashcardId,
-        required this.retentionScore,
-        required this.decayScore,
-        required this.studyTime,
-        required this.ef,
-        required this.learningSetId,
-        required this.optimalTime,
-        required this.interval,
-        required this.lastStudied,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.id,
+        this.flashcardId,
+        this.retentionScore,
+        this.decayScore,
+        this.studyTime,
+        this.ef,
+        this.learningSetId,
+        this.optimalTime,
+        this.interval,
+        this.lastStudied,
+        this.createdAt,
+        this.updatedAt,
+        this.id,
     });
 
     factory FlashCardLearning.fromJson(Map<String, dynamic> json) => _$FlashCardLearningFromJson(json);
 
     Map<String, dynamic> toJson() => _$FlashCardLearningToJson(this);
-}
-
-@JsonSerializable()
-class FlashcardId {
-    @JsonKey(name: "setFlashcardId")
-    String setFlashcardId;
-    @JsonKey(name: "word")
-    String word;
-    @JsonKey(name: "translation")
-    String translation;
-    @JsonKey(name: "definition")
-    String definition;
-    @JsonKey(name: "exampleSentence")
-    List<String> exampleSentence;
-    @JsonKey(name: "note")
-    String note;
-    @JsonKey(name: "partOfSpeech")
-    List<PartOfSpeech> partOfSpeech;
-    @JsonKey(name: "pronunciation")
-    String pronunciation;
-    @JsonKey(name: "createdAt")
-    DateTime createdAt;
-    @JsonKey(name: "updatedAt")
-    DateTime updatedAt;
-    @JsonKey(name: "id")
-    String id;
-
-    FlashcardId({
-        required this.setFlashcardId,
-        required this.word,
-        required this.translation,
-        required this.definition,
-        required this.exampleSentence,
-        required this.note,
-        required this.partOfSpeech,
-        required this.pronunciation,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.id,
-    });
-
-    factory FlashcardId.fromJson(Map<String, dynamic> json) => _$FlashcardIdFromJson(json);
-
-    Map<String, dynamic> toJson() => _$FlashcardIdToJson(this);
-}
-
-enum PartOfSpeech {
-    @JsonValue("noun")
-    NOUN,
-    @JsonValue("verb")
-    VERB
-}
-
-final partOfSpeechValues = EnumValues({
-    "noun": PartOfSpeech.NOUN,
-    "verb": PartOfSpeech.VERB
-});
-
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
-
-    EnumValues(this.map);
-
-    Map<T, String> get reverse {
-            reverseMap = map.map((k, v) => MapEntry(v, k));
-            return reverseMap;
-    }
 }
