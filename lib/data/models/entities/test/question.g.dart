@@ -7,8 +7,8 @@ part of 'question.dart';
 // **************************************************************************
 
 Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
-      id: (json['id'] as num).toInt(),
-      number: (json['number'] as num).toInt(),
+      id: (json['id'] as num?)?.toInt(),
+      number: (json['number'] as num?)?.toInt(),
       image: json['image'] as String?,
       audio: json['audio'] as String?,
       paragraph: json['paragraph'] as String?,
@@ -16,9 +16,10 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
       option2: json['option2'],
       option3: json['option3'],
       option4: json['option4'],
-      correctanswer: $enumDecode(_$CorrectanswerEnumMap, json['correctanswer']),
-      options: (json['options'] as List<dynamic>)
-          .map((e) => Option.fromJson(e as Map<String, dynamic>))
+      correctanswer:
+          $enumDecodeNullable(_$CorrectanswerEnumMap, json['correctanswer']),
+      options: (json['options'] as List<dynamic>?)
+          ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
           .toList(),
       question: json['question'] as String?,
     );
@@ -33,7 +34,7 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'option2': instance.option2,
       'option3': instance.option3,
       'option4': instance.option4,
-      'correctanswer': _$CorrectanswerEnumMap[instance.correctanswer]!,
+      'correctanswer': _$CorrectanswerEnumMap[instance.correctanswer],
       'options': instance.options,
       'question': instance.question,
     };
@@ -46,11 +47,11 @@ const _$CorrectanswerEnumMap = {
 };
 
 Option _$OptionFromJson(Map<String, dynamic> json) => Option(
-      id: $enumDecode(_$CorrectanswerEnumMap, json['id']),
+      id: $enumDecodeNullable(_$CorrectanswerEnumMap, json['id']),
       content: json['content'],
     );
 
 Map<String, dynamic> _$OptionToJson(Option instance) => <String, dynamic>{
-      'id': _$CorrectanswerEnumMap[instance.id]!,
+      'id': _$CorrectanswerEnumMap[instance.id],
       'content': instance.content,
     };

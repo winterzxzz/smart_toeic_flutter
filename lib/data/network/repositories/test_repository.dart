@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_explain.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
@@ -9,19 +12,20 @@ import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/home_data_by_user.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
+import 'package:toeic_desktop/data/network/error/api_error.dart';
 
 abstract class TestRepository {
-  Future<Either<Exception, HomeDataByUser>> getTestByUser();
-  Future<Either<Exception, List<Test>>> getTests();
-  Future<Either<Exception, List<Test>>> getPublicTests();
-  Future<Either<Exception, List<QuestionModel>>> getDetailTest(String testId);
-  Future<Either<Exception, ResultTestSubmit>> submitTest(
+  Future<Either<ApiError, HomeDataByUser>> getTestByUser();
+  Future<Either<ApiError, List<Test>>> getTests();
+  Future<Either<ApiError, List<Test>>> getPublicTests();
+  Future<Either<ApiError, List<QuestionModel>>> getDetailTest(String testId);
+  Future<Either<ApiError, ResultTestSubmit>> submitTest(
       ResultTestRequest request);
-  Future<Either<Exception, ResultTest>> getAnswerTest(String resultId);
-  Future<Either<Exception, List<ResultTest>>> getResultTests();
-  Future<Either<Exception, List<QuestionResult>>> getResultTestByResultId(
+  Future<Either<ApiError, ResultTest>> getAnswerTest(String resultId);
+  Future<Either<ApiError, List<ResultTest>>> getResultTests();
+  Future<Either<ApiError, List<QuestionResult>>> getResultTestByResultId(
       String resultId);
-  Future<Either<Exception, QuestionExplain>> getExplainQuestion(
+  Future<Either<ApiError, QuestionExplain>> getExplainQuestion(
       QuestionExplainRequest request);
 }
 
@@ -31,7 +35,7 @@ class TestRepositoryImpl extends TestRepository {
   TestRepositoryImpl(this._apiClient);
 
   @override
-  Future<Either<Exception, HomeDataByUser>> getTestByUser(
+  Future<Either<ApiError, HomeDataByUser>> getTestByUser(
       {int limit = 3}) async {
     try {
       final response = await Future.wait([
@@ -42,92 +46,93 @@ class TestRepositoryImpl extends TestRepository {
         tests: response[0] as List<Test>,
         results: response[1] as List<ResultTest>,
       ));
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
   @override
-  Future<Either<Exception, List<Test>>> getTests({int limit = 3}) async {
+  Future<Either<ApiError, List<Test>>> getTests({int limit = 3}) async {
     try {
       final response = await _apiClient.getTest(limit);
       return Right(response);
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
   @override
-  Future<Either<Exception, List<Test>>> getPublicTests() async {
+  Future<Either<ApiError, List<Test>>> getPublicTests() async {
     try {
       final response = await _apiClient.getTestPublic();
       return Right(response);
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
   @override
-  Future<Either<Exception, List<QuestionModel>>> getDetailTest(
+  Future<Either<ApiError, List<QuestionModel>>> getDetailTest(
       String testId) async {
     try {
       final response = await _apiClient.getDetailTest(testId);
       return Right(response.map((e) => e.toQuestionModel()).toList());
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
   @override
-  Future<Either<Exception, ResultTestSubmit>> submitTest(
+  Future<Either<ApiError, ResultTestSubmit>> submitTest(
       ResultTestRequest request) async {
     try {
       final response = await _apiClient.createResultItem(request);
       return Right(response);
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
   @override
-  Future<Either<Exception, ResultTest>> getAnswerTest(String resultId) async {
+  Future<Either<ApiError, ResultTest>> getAnswerTest(String resultId) async {
     try {
       final response = await _apiClient.getResultTest(resultId);
       return Right(response);
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
   @override
-  Future<Either<Exception, List<ResultTest>>> getResultTests(
+  Future<Either<ApiError, List<ResultTest>>> getResultTests(
       {int limit = 3}) async {
     try {
       final response = await _apiClient.getResultTestUser(limit);
       return Right(response);
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
   @override
-  Future<Either<Exception, List<QuestionResult>>> getResultTestByResultId(
+  Future<Either<ApiError, List<QuestionResult>>> getResultTestByResultId(
       String resultId) async {
     try {
       final response = await _apiClient.getResultTestByResultId(resultId);
       return Right(response);
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
-  
+
   @override
-  Future<Either<Exception, QuestionExplain>> getExplainQuestion(QuestionExplainRequest request)async{
+  Future<Either<ApiError, QuestionExplain>> getExplainQuestion(
+      QuestionExplainRequest request) async {
     try {
       final response = await _apiClient.getExplanation(request);
       return Right(response);
-    } on Exception catch (e) {
-      return Left(e);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 }

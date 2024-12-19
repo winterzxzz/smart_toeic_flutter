@@ -49,16 +49,20 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = AppNavigator(context: context);
     return Scaffold(
       body: SingleChildScrollView(
         child: BlocConsumer<HomeCubit, HomeState>(
           listener: (context, state) {
             if (state.loadStatus == LoadStatus.loading) {
-              AppNavigator(context: context).showLoadingOverlay(
+              navigator.showLoadingOverlay(
                 message: "Loading...",
               );
-            } else if (state.loadStatus == LoadStatus.failure) {
-              AppNavigator(context: context).error(state.message);
+            } else {
+              navigator.hideLoadingOverlay();
+              if (state.loadStatus == LoadStatus.failure) {
+                navigator.error(state.message);
+              }
             }
           },
           builder: (context, state) {

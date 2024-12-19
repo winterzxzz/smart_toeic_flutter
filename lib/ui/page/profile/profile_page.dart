@@ -110,129 +110,132 @@ class _PageState extends State<Page> {
                       ),
                       if (state.user?.targetScore != null)
                         const ProfileDivider(),
-                      HeadingContainer(
-                          title: 'Profile Target Score',
-                          description:
-                              'Your target score will be used to calculate your progress',
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('Reading Target / Reading Current',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                          )),
-                                      Text.rich(
-                                        TextSpan(
-                                          text:
-                                              '${state.user?.targetScore?.reading}',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
+                      if (state.user?.targetScore != null)
+                        HeadingContainer(
+                            title: 'Profile Target Score',
+                            description:
+                                'Your target score will be used to calculate your progress',
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Reading Target / Reading Current',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                        Text.rich(
+                                          TextSpan(
+                                            text:
+                                                '${state.user?.targetScore?.reading}',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '/450',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          children: [
-                                            TextSpan(
-                                              text: '/450',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 16),
-                                  LinearProgressIndicator(
-                                    backgroundColor: Colors.grey,
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? Colors.white
-                                        : Theme.of(context).primaryColor,
-                                    minHeight: 10,
-                                    value: state.user?.targetScore?.reading !=
-                                            null
-                                        ? state.user!.targetScore!.reading / 450
-                                        : 0,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 32),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          'Listening Target / Listening Current',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                          )),
-                                      Text.rich(
-                                        TextSpan(
-                                          text:
-                                              '${state.user?.targetScore?.listening}',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    LinearProgressIndicator(
+                                      backgroundColor: Colors.grey,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Theme.of(context).primaryColor,
+                                      minHeight: 10,
+                                      value: state.user?.targetScore?.reading !=
+                                              null
+                                          ? state.user!.targetScore!.reading /
+                                              450
+                                          : 0,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 32),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            'Listening Target / Listening Current',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                        Text.rich(
+                                          TextSpan(
+                                            text:
+                                                '${state.user?.targetScore?.listening}',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: '/450',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          children: [
-                                            TextSpan(
-                                              text: '/450',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 16),
-                                  LinearProgressIndicator(
-                                    backgroundColor: Colors.grey,
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? Colors.white
-                                        : Theme.of(context).primaryColor,
-                                    minHeight: 10,
-                                    value: state.user?.targetScore?.listening !=
-                                            null
-                                        ? state.user!.targetScore!.listening /
-                                            450
-                                        : 0,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 32),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 50,
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      showUpdateTargetDialog(
-                                        initialReadingScore:
-                                            state.user?.targetScore?.reading,
-                                        initialListeningScore:
-                                            state.user?.targetScore?.listening,
-                                      );
-                                    },
-                                    child: Text('Update Target Score')),
-                              ),
-                            ],
-                          )),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    LinearProgressIndicator(
+                                      backgroundColor: Colors.grey,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Theme.of(context).primaryColor,
+                                      minHeight: 10,
+                                      value: state.user?.targetScore
+                                                  ?.listening !=
+                                              null
+                                          ? state.user!.targetScore!.listening /
+                                              450
+                                          : 0,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 32),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        showUpdateTargetDialog(
+                                          initialReadingScore:
+                                              state.user?.targetScore?.reading,
+                                          initialListeningScore: state
+                                              .user?.targetScore?.listening,
+                                        );
+                                      },
+                                      child: Text('Update Target Score')),
+                                ),
+                              ],
+                            )),
                       const SizedBox(height: 20),
                     ],
                   ),

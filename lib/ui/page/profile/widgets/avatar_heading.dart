@@ -50,8 +50,10 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                   : Image.network('${Constants.hostUrl}${widget.user?.avatar}')
                       .image,
               child: Stack(
+                alignment: Alignment.center,
                 children: [
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (widget.user?.avatar.isNotEmpty ?? true)
                         Container(

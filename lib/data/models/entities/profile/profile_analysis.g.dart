@@ -8,18 +8,25 @@ part of 'profile_analysis.dart';
 
 ProfileAnalysis _$ProfileAnalysisFromJson(Map<String, dynamic> json) =>
     ProfileAnalysis(
-      accuracyByPart: Map<String, String>.from(json['accuracyByPart'] as Map),
+      accuracyByPart: (json['accuracyByPart'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
       averageTimeByPart:
-          Map<String, String>.from(json['averageTimeByPart'] as Map),
-      categoryAccuracy: (json['categoryAccuracy'] as Map<String, dynamic>).map(
+          (json['averageTimeByPart'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
+      categoryAccuracy:
+          (json['categoryAccuracy'] as Map<String, dynamic>?)?.map(
         (k, e) =>
             MapEntry(k, CategoryAccuracy.fromJson(e as Map<String, dynamic>)),
       ),
-      listenScore: (json['listenScore'] as num).toInt(),
-      readScore: (json['readScore'] as num).toInt(),
-      score: (json['score'] as num).toInt(),
+      listenScore: (json['listenScore'] as num?)?.toInt(),
+      readScore: (json['readScore'] as num?)?.toInt(),
+      score: (json['score'] as num?)?.toInt(),
       timeSecondRecommend:
-          Map<String, int>.from(json['timeSecondRecommend'] as Map),
+          (json['timeSecondRecommend'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, (e as num).toInt()),
+      ),
     );
 
 Map<String, dynamic> _$ProfileAnalysisToJson(ProfileAnalysis instance) =>
@@ -35,9 +42,9 @@ Map<String, dynamic> _$ProfileAnalysisToJson(ProfileAnalysis instance) =>
 
 CategoryAccuracy _$CategoryAccuracyFromJson(Map<String, dynamic> json) =>
     CategoryAccuracy(
-      categoryAccuracyPart: (json['part'] as num).toInt(),
-      title: json['title'] as String,
-      accuracy: json['accuracy'] as String,
+      categoryAccuracyPart: (json['part'] as num?)?.toInt(),
+      title: json['title'] as String?,
+      accuracy: json['accuracy'] as String?,
     );
 
 Map<String, dynamic> _$CategoryAccuracyToJson(CategoryAccuracy instance) =>

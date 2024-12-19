@@ -16,39 +16,39 @@ String profileAnalysisToJson(ProfileAnalysis data) =>
 @JsonSerializable()
 class ProfileAnalysis {
   @JsonKey(name: "accuracyByPart")
-  Map<String, String> accuracyByPart;
+  final Map<String, String>? accuracyByPart;
   @JsonKey(name: "averageTimeByPart")
-  Map<String, String> averageTimeByPart;
+  final Map<String, String>? averageTimeByPart;
   @JsonKey(name: "categoryAccuracy")
-  Map<String, CategoryAccuracy> categoryAccuracy;
+  final Map<String, CategoryAccuracy>? categoryAccuracy;
   @JsonKey(name: "listenScore")
-  int listenScore;
+  final int? listenScore;
   @JsonKey(name: "readScore")
-  int readScore;
+  final int? readScore;
   @JsonKey(name: "score")
-  int score;
+  final int? score;
   @JsonKey(name: "timeSecondRecommend")
-  Map<String, int> timeSecondRecommend;
+  final Map<String, int>? timeSecondRecommend;
 
   ProfileAnalysis({
-    required this.accuracyByPart,
-    required this.averageTimeByPart,
-    required this.categoryAccuracy,
-    required this.listenScore,
-    required this.readScore,
-    required this.score,
-    required this.timeSecondRecommend,
+    this.accuracyByPart,
+    this.averageTimeByPart,
+    this.categoryAccuracy,
+    this.listenScore,
+    this.readScore,
+    this.score,
+    this.timeSecondRecommend,
   });
 
   // initial state
   factory ProfileAnalysis.initial() => ProfileAnalysis(
-        accuracyByPart: {},
-        averageTimeByPart: {},
-        categoryAccuracy: {},
+        accuracyByPart: null,
+        averageTimeByPart: null,
+        categoryAccuracy: null,
         listenScore: 0,
         readScore: 0,
         score: 0,
-        timeSecondRecommend: {},
+        timeSecondRecommend: null,
       );
 
   factory ProfileAnalysis.fromJson(Map<String, dynamic> json) =>
@@ -60,16 +60,16 @@ class ProfileAnalysis {
 @JsonSerializable()
 class CategoryAccuracy {
   @JsonKey(name: "part")
-  int categoryAccuracyPart;
+  final int? categoryAccuracyPart;
   @JsonKey(name: "title")
-  String title;
+  final String? title;
   @JsonKey(name: "accuracy")
-  String accuracy;
+  final String? accuracy;
 
   CategoryAccuracy({
-    required this.categoryAccuracyPart,
-    required this.title,
-    required this.accuracy,
+    this.categoryAccuracyPart,
+    this.title,
+    this.accuracy,
   });
 
   factory CategoryAccuracy.fromJson(Map<String, dynamic> json) =>

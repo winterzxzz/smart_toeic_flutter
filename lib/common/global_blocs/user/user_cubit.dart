@@ -21,8 +21,9 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await authRepository.getUser();
     result.fold(
-      (l) => emit(
-          state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
+      (l) => emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.errors?.first.message ?? 'Unexpected error occurred')),
       (r) => emit(state.copyWith(loadStatus: LoadStatus.success, user: r)),
     );
   }

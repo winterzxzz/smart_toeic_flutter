@@ -20,7 +20,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         await profileRepository.updateTargetScore(reading, listening);
     response.fold(
       (l) => showToast(
-        title: l.message,
+        title: l.errors?.first.message ?? 'Unexpected error occurred',
         type: ToastificationType.error,
       ),
       (r) {
@@ -36,7 +36,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     final response = await profileRepository.updateProfileAvatar(avatar);
     response.fold(
       (l) => showToast(
-        title: l.message,
+        title: l.errors?.first.message ?? 'Unexpected error occurred',
         type: ToastificationType.error,
       ),
       (r) {
@@ -53,7 +53,9 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> updateProfile(ProfileUpdateRequest request) async {
     final response = await profileRepository.updateProfile(request);
     response.fold(
-      (l) => showToast(title: l.message, type: ToastificationType.error),
+      (l) => showToast(
+          title: l.errors?.first.message ?? 'Unexpected error occurred',
+          type: ToastificationType.error),
       (r) {
         final currentUser = injector<UserCubit>().state.user!;
         final updatedUser =

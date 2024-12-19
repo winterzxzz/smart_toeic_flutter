@@ -108,7 +108,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Radio<String>(
-                                  value: option.id.name,
+                                  value: option.id?.name ?? '',
                                   groupValue: widget.question
                                       .userAnswer, // Default selected value
                                   activeColor: Colors.red,
@@ -119,7 +119,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   },
                                 ),
                                 Text(
-                                  '${option.id.name}. ',
+                                  '${option.id?.name}. ',
                                 ),
                                 if (widget.question.part > 2)
                                   Column(
@@ -145,9 +145,9 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                 final option = widget.question.options[index];
                                 Color? color;
                                 if (questionResult?.useranswer ==
-                                    option.id.name) {
+                                    option.id?.name) {
                                   if (questionResult?.correctanswer ==
-                                      option.id.name) {
+                                      option.id?.name) {
                                     color = Colors.green.withOpacity(0.5);
                                   } else {
                                     color = Colors.red.withOpacity(0.5);
@@ -157,7 +157,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Radio<String>(
-                                      value: option.id.name,
+                                      value: option.id?.name ?? '',
                                       groupValue: questionResult?.useranswer,
                                       activeColor: Colors.red,
                                       onChanged: null,
@@ -167,7 +167,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                         color: color,
                                       ),
                                       child: Text(
-                                        '${option.id.name}. ',
+                                        '${option.id?.name}. ',
                                       ),
                                     ),
                                     Column(

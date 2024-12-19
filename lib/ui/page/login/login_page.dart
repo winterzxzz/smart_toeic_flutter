@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
+import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_navigator.dart';
 import 'package:toeic_desktop/ui/page/login/login_state.dart';
@@ -52,7 +52,8 @@ class _PageState extends State<Page> {
   }
 
   void _onLoginSuccess() {
-    AppRouter.clearAndNavigate(AppRouter.splash);
+    AppRouter.clearAndNavigate(AppRouter.home);
+    injector<HomeCubit>().init();
   }
 
   @override

@@ -189,4 +189,14 @@ abstract class ApiClient {
   Future<UserEntity> updateProfile(
     @Body() ProfileUpdateRequest request,
   );
+
+  @POST('/user/auth/otp/reset-password')
+  Future<void> resetPassword(
+    @Field("email") String email,
+  );
+
+  // @POST('/user/auth/request/reset-password')
+  // Future<void> requestResetPassword(
+  //   @Field("email") String email,
+  // );
 }

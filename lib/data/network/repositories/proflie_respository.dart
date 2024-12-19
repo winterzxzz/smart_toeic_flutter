@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -14,7 +15,8 @@ abstract class ProfileRepository {
   Future<Either<ApiError, UserEntity>> updateTargetScore(
       int reading, int listening);
   Future<Either<ApiError, String>> updateProfileAvatar(File avatar);
-  Future<Either<ApiError, UserEntity>> updateProfile(ProfileUpdateRequest request);
+  Future<Either<ApiError, UserEntity>> updateProfile(
+      ProfileUpdateRequest request);
 }
 
 class ProfileRepositoryImpl extends ProfileRepository {
@@ -35,7 +37,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
         result[1] as String, // Add explicit cast here
       ));
     } on DioException catch (e) {
-      return Left(ApiError.fromDioError(e));
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
@@ -49,27 +51,29 @@ class ProfileRepositoryImpl extends ProfileRepository {
       });
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromDioError(e));
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
-  
+
   @override
-  Future<Either<ApiError, String>> updateProfileAvatar(File avatar) async{
-        try {
+  Future<Either<ApiError, String>> updateProfileAvatar(File avatar) async {
+    try {
       final result = await apiClient.updateAvatar(avatar);
-      return Right(result);
+      // remove first and last character
+      return Right(result.substring(1, result.length - 1));
     } on DioException catch (e) {
-      return Left(ApiError.fromDioError(e));
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
-  
+
   @override
-  Future<Either<ApiError, UserEntity>> updateProfile(ProfileUpdateRequest request) async{
+  Future<Either<ApiError, UserEntity>> updateProfile(
+      ProfileUpdateRequest request) async {
     try {
       final result = await apiClient.updateProfile(request);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromDioError(e));
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 }

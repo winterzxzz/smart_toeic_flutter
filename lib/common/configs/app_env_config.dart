@@ -19,13 +19,13 @@ extension EnvironmentExt on Environment {
   String get baseUrl {
     switch (this) {
       case Environment.dev:
-        return "http://localhost:4000/api";
+        return "https://0533-42-113-220-24.ngrok-free.app/api";
       case Environment.stg:
         //TODO update when build stg
         return "http://stg";
       case Environment.prod:
         //TODO update when build prod
-        return "https://c8e0-1-55-211-216.ngrok-free.app/api/";
+        return "https://c8e0-1-55-211-216.ngrok-free.app/api";
     }
   }
 }

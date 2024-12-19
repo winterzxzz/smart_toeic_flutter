@@ -123,7 +123,7 @@ class UpgradeAccountCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          if (!isCurrentPlan)
+          if (onPressed == null)
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,

@@ -42,7 +42,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       result.fold(
           (error) => emit(state.copyWith(
               loadDataStatus: LoadStatus.failure,
-              message: error.message)), (response) {
+              message: error.errors?.first.message)), (response) {
         injector<UserCubit>().setUser(response!);
         emit(state.copyWith(loadDataStatus: LoadStatus.success));
       });

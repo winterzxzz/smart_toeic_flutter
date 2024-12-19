@@ -65,23 +65,29 @@ class Page extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: AnalysisScore(
-                                  overallScore: state.profileAnalysis.score,
+                                  overallScore:
+                                      state.profileAnalysis.score ?? 0,
                                   listenScore:
-                                      state.profileAnalysis.listenScore,
-                                  readScore: state.profileAnalysis.readScore,
+                                      state.profileAnalysis.listenScore ?? 0,
+                                  readScore:
+                                      state.profileAnalysis.readScore ?? 0,
                                 ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 32),
-                                    AnalysisPercentage(
-                                      percentage:
-                                          state.profileAnalysis.accuracyByPart,
-                                    ),
-                                  ],
-                                ),
+                                child:
+                                    state.profileAnalysis.accuracyByPart != null
+                                        ? Column(
+                                            children: [
+                                              const SizedBox(height: 32),
+                                              AnalysisPercentage(
+                                                percentage: state
+                                                    .profileAnalysis
+                                                    .accuracyByPart!,
+                                              ),
+                                            ],
+                                          )
+                                        : const SizedBox.shrink(),
                               ),
                             ],
                           ),
@@ -91,20 +97,29 @@ class Page extends StatelessWidget {
                             children: [
                               Expanded(
                                 flex: 1,
-                                child: AnalysisTime(
-                                  averageTimeByPart:
-                                      state.profileAnalysis.averageTimeByPart,
-                                  timeSecondRecommend:
-                                      state.profileAnalysis.timeSecondRecommend,
-                                ),
+                                child:
+                                    state.profileAnalysis.averageTimeByPart !=
+                                            null
+                                        ? AnalysisTime(
+                                            averageTimeByPart: state
+                                                .profileAnalysis
+                                                .averageTimeByPart!,
+                                            timeSecondRecommend: state
+                                                .profileAnalysis
+                                                .timeSecondRecommend!,
+                                          )
+                                        : const SizedBox.shrink(),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
                                 flex: 2,
-                                child: StackedBarChartPage(
-                                  categoryAccuracys:
-                                      state.profileAnalysis.categoryAccuracy,
-                                ),
+                                child: state.profileAnalysis.categoryAccuracy !=
+                                        null
+                                    ? StackedBarChartPage(
+                                        categoryAccuracys: state
+                                            .profileAnalysis.categoryAccuracy!,
+                                      )
+                                    : const SizedBox.shrink(),
                               ),
                             ],
                           ),

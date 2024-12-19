@@ -170,7 +170,7 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
     // Group categories by part
     Map<int, List<MapEntry<String, CategoryAccuracy>>> categoriesByPart = {};
     for (var entry in widget.categoryAccuracys.entries) {
-      int part = entry.value.categoryAccuracyPart;
+      int part = entry.value.categoryAccuracyPart ?? 0;
       categoriesByPart.putIfAbsent(part, () => []).add(entry);
     }
 
@@ -180,8 +180,8 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
           .where((entry) => entry.value.categoryAccuracyPart == selectedPart)
           .map((entry) {
         return ChartData(
-          entry.value.title,
-          [double.parse(entry.value.accuracy)],
+          entry.value.title ?? '',
+          [double.parse(entry.value.accuracy ?? '0')],
         );
       }).toList();
 
@@ -204,14 +204,14 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
 
       // Initialize the lists with zeros for all parts (1-7)
       for (var entry in widget.categoryAccuracys.entries) {
-        categoryValues[entry.value.title] = List.filled(7, 0.0);
+        categoryValues[entry.value.title ?? ''] = List.filled(7, 0.0);
       }
 
       // Fill in the actual values
       for (var entry in widget.categoryAccuracys.entries) {
-        int partIndex = entry.value.categoryAccuracyPart - 1;
-        categoryValues[entry.value.title]![partIndex] =
-            double.parse(entry.value.accuracy);
+        int partIndex = entry.value.categoryAccuracyPart! - 1;
+        categoryValues[entry.value.title ?? '']![partIndex] =
+            double.parse(entry.value.accuracy ?? '0');
       }
 
       // Convert to ChartData objects

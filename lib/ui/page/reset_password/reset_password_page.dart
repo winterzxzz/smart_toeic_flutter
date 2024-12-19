@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_navigator.dart';
 
-class ResetPasswordPage extends StatelessWidget {
+class ResetPasswordPage extends StatefulWidget {
   const ResetPasswordPage({super.key});
+
+  @override
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
+}
+
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
+  late final TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +53,7 @@ class ResetPasswordPage extends StatelessWidget {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           hintText: 'Enter your email',
@@ -59,7 +81,11 @@ class ResetPasswordPage extends StatelessWidget {
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            injector<AuthRepository>().resetPassword(
+                              _emailController.text,
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),

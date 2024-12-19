@@ -22,7 +22,8 @@ class SplashCubit extends Cubit<SplashState> {
     result.fold(
         (error) => emit(state.copyWith(
             loadStatus: LoadStatus.failure,
-            message: error.message)), (response) {
+            message: error.errors?.first.message ?? 'Unexpected error occurred')),
+        (response) {
       injector<UserCubit>().setUser(response);
       emit(state.copyWith(loadStatus: LoadStatus.success));
     });

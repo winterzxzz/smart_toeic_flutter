@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
@@ -14,6 +17,8 @@ abstract class AuthRepository {
   });
 
   Future<Either<ApiError, UserEntity>> getUser();
+
+  Future<Either<ApiError, void>> resetPassword(String email);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -28,7 +33,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.login(email, password);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromDioError(e));
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
@@ -42,7 +47,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.signUp(email, name, password);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromDioError(e));
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 
@@ -52,7 +57,17 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.getUser();
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromDioError(e));
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, void>> resetPassword(String email) async {
+    try {
+      final result = await apiClient.resetPassword(email);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
   }
 }
