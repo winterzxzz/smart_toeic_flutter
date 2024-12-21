@@ -15,6 +15,8 @@ import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
 import 'package:toeic_desktop/ui/page/introduction/introduction_page.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
+import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
+import 'package:toeic_desktop/ui/page/test_file_picker/test_file_picker.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.dart';
@@ -268,9 +270,7 @@ class AppRouter {
             GoRoute(
               name: setting,
               path: setting,
-              builder: (context, state) => const Center(
-                child: Text('Settings'),
-              ),
+              builder: (context, state) => const SettingPage(),
             ),
           ],
         ),

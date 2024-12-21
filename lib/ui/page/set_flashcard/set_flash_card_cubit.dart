@@ -51,7 +51,7 @@ class FlashCardCubit extends Cubit<FlashCardState> {
       )),
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
-        flashCards: List.from(state.flashCards)..add(r),
+        flashCards: [r, ...state.flashCards],
       )),
     );
   }

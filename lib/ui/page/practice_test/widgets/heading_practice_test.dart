@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
@@ -75,10 +74,9 @@ class HeadingPracticeTest extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      isShowResult ? 'Return to tests' : 'Thoát',
+                      'Thoát',
                       style: TextStyle(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.bold),
+                          color: AppColors.error, fontWeight: FontWeight.bold),
                     ),
                   );
                 },

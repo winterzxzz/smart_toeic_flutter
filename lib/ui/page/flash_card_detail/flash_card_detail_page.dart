@@ -118,6 +118,11 @@ class _PageState extends State<Page> {
             return const Center(child: CircularProgressIndicator());
           }
           if (state.loadStatus == LoadStatus.success) {
+            if (state.flashCards.isEmpty) {
+              return const Center(
+                child: Text('Không có từ nào trong bộ flashcard này'),
+              );
+            }
             return SingleChildScrollView(
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.6,
