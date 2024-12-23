@@ -5,7 +5,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/new_set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/payment/payment.dart';
 import 'package:toeic_desktop/data/models/entities/payment/payment_status.dart';
@@ -18,7 +18,6 @@ import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set
 import 'package:toeic_desktop/data/models/entities/test/result_test_submit.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
-import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
@@ -90,6 +89,11 @@ abstract class ApiClient {
     @Field("learningSetId") String learningSetId,
   );
 
+  @POST('/user/learning-set')
+  Future<NewSetFlashCardLearning> updateFlashCardLearning(
+    @Field("setFlashcardId") String learningSetId,
+  );
+
   @GET('/user/set-flashcard/public')
   Future<List<SetFlashCard>> getFlashCardPublic();
 
@@ -145,10 +149,10 @@ abstract class ApiClient {
     @Field("prompt") String prompt,
   );
 
-  @POST('/user/ai-chat/get-quizz/json')
-  Future<List<FlashCardQuizz>> getFlashCardQuizz(
-    @Body() FlashCardQuizRequest request,
-  );
+  // @POST('/user/ai-chat/get-quizz/json')
+  // Future<List<FlashCardQuizz>> getFlashCardQuizz(
+  //   @Body() FlashCardQuizRequest request,
+  // );
 
   @POST('/user/ai-chat/suggest-for-study')
   Future<String> getSuggestForStudy();

@@ -80,45 +80,45 @@ class _BottomTabPageState extends State<BottomTabPage>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: Builder(builder: (context) {
-        final isLogin = SharedPreferencesHelper().getCookies() != null;
-        if (!isLogin) {
-          return Container();
-        }
-        return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  _isChatVisible = !_isChatVisible;
-                  if (_isChatVisible) {
-                    _animationController.forward();
-                  } else {
-                    _animationController.reverse();
-                  }
-                });
-              },
-              icon: _isChatVisible
-                  ? Icon(
-                      Icons.close,
-                    )
-                  : Icon(
-                      Icons.message,
-                    ),
-            ),
-          ),
-        );
-      }),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      // floatingActionButton: Builder(builder: (context) {
+      //   final isLogin = SharedPreferencesHelper().getCookies() != null;
+      //   if (!isLogin) {
+      //     return Container();
+      //   }
+      //   return Card(
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(50),
+      //     ),
+      //     child: Container(
+      //       width: 50,
+      //       height: 50,
+      //       decoration: BoxDecoration(
+      //         color: Theme.of(context).cardColor,
+      //         shape: BoxShape.circle,
+      //       ),
+      //       child: IconButton(
+      //         onPressed: () {
+      //           setState(() {
+      //             _isChatVisible = !_isChatVisible;
+      //             if (_isChatVisible) {
+      //               _animationController.forward();
+      //             } else {
+      //               _animationController.reverse();
+      //             }
+      //           });
+      //         },
+      //         icon: _isChatVisible
+      //             ? Icon(
+      //                 Icons.close,
+      //               )
+      //             : Icon(
+      //                 Icons.message,
+      //               ),
+      //       ),
+      //     ),
+      //   );
+      // }),
       body: Stack(
         children: [
           Row(

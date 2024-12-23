@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/setting_card.dart';
 
@@ -12,8 +14,8 @@ class SettingPage extends StatelessWidget {
         title: const Text("Appearance Settings"),
       ),
       body: ListView(
-        padding: AppStyle.edgeInsetsA12,
         children: [
+          const SizedBox(height: 16),
           Padding(
             padding: AppStyle.edgeInsetsA12.copyWith(top: 0),
             child: Text(
@@ -21,42 +23,61 @@ class SettingPage extends StatelessWidget {
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
-          SettingsCard(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RadioListTile<int>(
-                  title: const Text(
-                    "Follow System",
-                  ),
-                  visualDensity: VisualDensity.compact,
-                  value: 0,
-                  contentPadding: AppStyle.edgeInsetsH12,
-                  groupValue: 0,
-                  onChanged: (e) {},
+          BlocSelector<AppSettingCubit, AppSettingState, ThemeMode>(
+            selector: (state) {
+              return state.themeMode;
+            },
+            builder: (context, themeMode) {
+              return SettingsCard(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile<int>(
+                      title: const Text(
+                        "Follow System",
+                      ),
+                      visualDensity: VisualDensity.compact,
+                      value: 0,
+                      contentPadding: AppStyle.edgeInsetsH12,
+                      groupValue: themeMode.index,
+                      onChanged: (e) {
+                        context.read<AppSettingCubit>().changeThemeMode(
+                              themeMode: ThemeMode.values[e as int],
+                            );
+                      },
+                    ),
+                    RadioListTile<int>(
+                      title: const Text(
+                        "Light Mode",
+                      ),
+                      visualDensity: VisualDensity.compact,
+                      value: 1,
+                      contentPadding: AppStyle.edgeInsetsH12,
+                      groupValue: themeMode.index,
+                      onChanged: (e) {
+                        context.read<AppSettingCubit>().changeThemeMode(
+                              themeMode: ThemeMode.values[e as int],
+                            );
+                      },
+                    ),
+                    RadioListTile<int>(
+                      title: const Text(
+                        "Dark Mode",
+                      ),
+                      visualDensity: VisualDensity.compact,
+                      value: 2,
+                      contentPadding: AppStyle.edgeInsetsH12,
+                      groupValue: themeMode.index,
+                      onChanged: (e) {
+                        context.read<AppSettingCubit>().changeThemeMode(
+                              themeMode: ThemeMode.values[e as int],
+                            );
+                      },
+                    ),
+                  ],
                 ),
-                RadioListTile<int>(
-                  title: const Text(
-                    "Light Mode",
-                  ),
-                  visualDensity: VisualDensity.compact,
-                  value: 1,
-                  contentPadding: AppStyle.edgeInsetsH12,
-                  groupValue: 1,
-                  onChanged: (e) {},
-                ),
-                RadioListTile<int>(
-                  title: const Text(
-                    "Dark Mode",
-                  ),
-                  visualDensity: VisualDensity.compact,
-                  value: 2,
-                  contentPadding: AppStyle.edgeInsetsH12,
-                  groupValue: 2,
-                  onChanged: (e) {},
-                ),
-              ],
-            ),
+              );
+            },
           ),
           AppStyle.vGap12,
           Padding(

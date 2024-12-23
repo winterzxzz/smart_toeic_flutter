@@ -5,10 +5,9 @@ import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_quizz.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/new_set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
-import 'package:toeic_desktop/data/models/request/flash_card_quiz_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
@@ -33,10 +32,8 @@ abstract class FlashCardRespository {
   Future<Either<ApiError, List<FlashCardLearning>>> getFlashCardsLearning(
       String learningSetId);
   Future<Either<ApiError, void>> deleteFlashCardLearning(String learningSetId);
-
+  Future<Either<ApiError, NewSetFlashCardLearning>> updateFlashCardLearning(String learningSetId);
   Future<Either<ApiError, FlashCardAiGen>> getFlashCardInforByAI(String prompt);
-  Future<Either<ApiError, List<FlashCardQuizz>>> getFlashCardQuizz(
-      FlashCardQuizRequest request);
 }
 
 class FlashCardRespositoryImpl extends FlashCardRespository {
@@ -152,17 +149,6 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
   }
 
   @override
-  Future<Either<ApiError, List<FlashCardQuizz>>> getFlashCardQuizz(
-      FlashCardQuizRequest request) async {
-    try {
-      final response = await _apiClient.getFlashCardQuizz(request);
-      return Right(response);
-    } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
-    }
-  }
-
-  @override
   Future<Either<ApiError, void>> deleteFlashCardLearning(
       String learningSetId) async {
     try {
@@ -178,6 +164,17 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       String learningSetId) async {
     try {
       final response = await _apiClient.getFlashCardLearning(learningSetId);
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, NewSetFlashCardLearning>> updateFlashCardLearning(
+      String learningSetId) async {
+    try {
+      final response = await _apiClient.updateFlashCardLearning(learningSetId);
       return Right(response);
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));

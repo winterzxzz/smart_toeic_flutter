@@ -37,11 +37,12 @@ class _ModeTestpageState extends State<ModeTestpage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              Text(
-                widget.test.title,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(height: 16),
+              if (widget.test.title != null)
+                Text(
+                  widget.test.title!,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              if (widget.test.title != null) SizedBox(height: 16),
               ToggleButtons(
                 borderRadius: BorderRadius.circular(8),
                 isSelected: [isPracticeMode, !isPracticeMode],
@@ -75,7 +76,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
               ),
               SizedBox(height: 16),
               isPracticeMode
-                  ? PracticeMode(testId: widget.test.id)
+                  ? PracticeMode(testId: widget.test.id!)
                   : FullTestMode(widget: widget),
             ],
           ),

@@ -7,73 +7,64 @@ import 'dart:convert';
 
 part 'test.g.dart';
 
-List<Test> testFromJson(String str) =>
-    List<Test>.from(json.decode(str).map((x) => Test.fromJson(x)));
+List<Test> testFromJson(String str) => List<Test>.from(json.decode(str).map((x) => Test.fromJson(x)));
 
-String testToJson(List<Test> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String testToJson(List<Test> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 @JsonSerializable()
 class Test {
-  @JsonKey(name: "title")
-  String title;
-  @JsonKey(name: "type")
-  String type;
-  @JsonKey(name: "attempts")
-  List<Attempt> attempts;
-  @JsonKey(name: "code")
-  String code;
-  @JsonKey(name: "numberOfQuestions")
-  int numberOfQuestions;
-  @JsonKey(name: "createdAt")
-  DateTime createdAt;
-  @JsonKey(name: "updatedAt")
-  DateTime? updatedAt;
-  @JsonKey(name: "duration")
-  int duration;
-  @JsonKey(name: "fileName")
-  String fileName;
-  @JsonKey(name: "parts")
-  List<int> parts;
-  @JsonKey(name: "numberOfParts")
-  int numberOfParts;
-  @JsonKey(name: "id")
-  String id;
+    @JsonKey(name: "title")
+    final String? title;
+    @JsonKey(name: "type")
+    final String? type;
+    @JsonKey(name: "code")
+    final String? code;
+    @JsonKey(name: "numberOfQuestions")
+    final int? numberOfQuestions;
+    @JsonKey(name: "createdAt")
+    final DateTime? createdAt;
+    @JsonKey(name: "updatedAt")
+    final DateTime? updatedAt;
+    @JsonKey(name: "duration")
+    final int? duration;
+    @JsonKey(name: "attemptCount")
+    final int? attemptCount;
+    @JsonKey(name: "userAttempt")
+    final UserAttempt? userAttempt;
+    @JsonKey(name: "id")
+    final String? id;
 
-  Test({
-    required this.title,
-    required this.type,
-    required this.attempts,
-    required this.code,
-    required this.numberOfQuestions,
-    required this.createdAt,
-    this.updatedAt,
-    required this.duration,
-    required this.fileName,
-    required this.parts,
-    required this.numberOfParts,
-    required this.id,
-  });
+    Test({
+        this.title,
+        this.type,
+        this.code,
+        this.numberOfQuestions,
+        this.createdAt,
+        this.updatedAt,
+        this.duration,
+        this.attemptCount,
+        this.userAttempt,
+        this.id,
+    });
 
-  factory Test.fromJson(Map<String, dynamic> json) => _$TestFromJson(json);
+    factory Test.fromJson(Map<String, dynamic> json) => _$TestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TestToJson(this);
+    Map<String, dynamic> toJson() => _$TestToJson(this);
 }
 
 @JsonSerializable()
-class Attempt {
-  @JsonKey(name: "userId")
-  String userId;
-  @JsonKey(name: "times")
-  int times;
+class UserAttempt {
+    @JsonKey(name: "count")
+    final int? count;
+    @JsonKey(name: "lastTime")
+    final dynamic lastTime;
 
-  Attempt({
-    required this.userId,
-    required this.times,
-  });
+    UserAttempt({
+        this.count,
+        this.lastTime,
+    });
 
-  factory Attempt.fromJson(Map<String, dynamic> json) =>
-      _$AttemptFromJson(json);
+    factory UserAttempt.fromJson(Map<String, dynamic> json) => _$UserAttemptFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AttemptToJson(this);
+    Map<String, dynamic> toJson() => _$UserAttemptToJson(this);
 }

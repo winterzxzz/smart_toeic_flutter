@@ -18,8 +18,8 @@ class TestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final countAttempt = getCountAttempt(test);
-    final isAttempted = countAttempt > 0;
+    final userAttempt = test.userAttempt;
+    final isAttempted = userAttempt!.count! > 0;
     return Card(
       child: Container(
         height: 300,
@@ -28,7 +28,7 @@ class TestCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Opacity(
-              opacity: isAttempted ? 1 : 0,
+              opacity: isAttempted == true ? 1 : 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -37,13 +37,14 @@ class TestCard extends StatelessWidget {
                 ],
               ),
             ),
-            Text(
-              test.title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            if (test.title != null)
+              Text(
+                test.title!,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
             SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -59,11 +60,7 @@ class TestCard extends StatelessWidget {
                 ),
                 TagWidget(
                   icon: FontAwesomeIcons.circleCheck,
-                  text: "${test.attempts.length} attempts",
-                ),
-                TagWidget(
-                  icon: FontAwesomeIcons.book,
-                  text: "${test.numberOfParts} parts",
+                  text: "${userAttempt.count!} attempts",
                 ),
               ],
             ),
@@ -75,7 +72,7 @@ class TestCard extends StatelessWidget {
               padding: EdgeInsets.all(8),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: isAttempted
+                color: isAttempted == true
                     ? AppColors.success.withOpacity(0.2)
                     : Colors.grey[500],
                 borderRadius: BorderRadius.circular(8),
@@ -85,7 +82,7 @@ class TestCard extends StatelessWidget {
                 children: [
                   Text(
                     isAttempted
-                        ? 'Have been $countAttempt attempts'
+                        ? 'Have been ${userAttempt.count!} attempts'
                         : 'Manage your time effectively !',
                     style: TextStyle(
                       color:
@@ -100,7 +97,7 @@ class TestCard extends StatelessWidget {
                             color: AppColors.success, size: 16),
                         const SizedBox(width: 4),
                         Text(
-                          TimeUtils.timeAgo(test.updatedAt ?? test.createdAt),
+                          TimeUtils.timeAgo(test.updatedAt ?? test.createdAt!),
                           style: TextStyle(
                             color: AppColors.success,
                             fontWeight: FontWeight.w500,
@@ -133,11 +130,7 @@ class TestCard extends StatelessWidget {
   }
 
   int getCountAttempt(Test test) {
-    final currentUserId = injector<UserCubit>().state.user?.id;
-    return test.attempts
-        .firstWhere((e) => e.userId == currentUserId,
-            orElse: () => Attempt(userId: '', times: 0))
-        .times;
+    return test.userAttempt?.count ?? 0;
   }
 }
 

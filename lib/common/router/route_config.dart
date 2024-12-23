@@ -16,7 +16,6 @@ import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_deta
 import 'package:toeic_desktop/ui/page/introduction/introduction_page.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
-import 'package:toeic_desktop/ui/page/test_file_picker/test_file_picker.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.dart';
@@ -186,11 +185,9 @@ class AppRouter {
               path: flashCardQuizz,
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
-                final title = args['title'] as String;
-                final flashCards = args['flashCards'] as List<FlashCard>;
+                final id = args['id'] as String;
                 return FlashCardQuizPage(
-                  title: title,
-                  flashCards: flashCards,
+                  id: id,
                 );
               },
             ),

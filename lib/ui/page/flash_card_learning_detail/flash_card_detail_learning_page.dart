@@ -87,16 +87,9 @@ class _PageState extends State<Page> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              final flashCards = context
-                                  .read<FlashCardDetailLearningCubit>()
-                                  .state
-                                  .flashCards;
                               GoRouter.of(context)
                                   .pushNamed(AppRouter.flashCardQuizz, extra: {
-                                'title': widget.title,
-                                'flashCards': flashCards
-                                    .map((e) => e.flashcardId)
-                                    .toList(),
+                                'id': widget.setId,
                               });
                             },
                             child: Row(

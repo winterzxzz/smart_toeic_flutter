@@ -135,14 +135,9 @@ class _PageState extends State<Page> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          final flashCards = context
-                              .read<FlashCardDetailCubit>()
-                              .state
-                              .flashCards;
                           GoRouter.of(context)
                               .pushNamed(AppRouter.flashCardQuizz, extra: {
-                            'title': widget.title,
-                            'flashCards': flashCards,
+                            'id': widget.setId,
                           });
                         },
                         child: Row(
