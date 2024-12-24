@@ -176,7 +176,7 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> body,
   );
 
-  @POST('/user/ai-chat/get-explanation')
+  @POST('/user/ai-chat/get-explanation/json')
   Future<QuestionExplain> getExplanation(
     @Body() QuestionExplainRequest request,
   );

@@ -26,7 +26,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
     return Card(
       child: Container(
         constraints: const BoxConstraints(maxHeight: 250),
-        width: 300,
+        width: (MediaQuery.sizeOf(context).width - 60) * 0.23,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
         ),

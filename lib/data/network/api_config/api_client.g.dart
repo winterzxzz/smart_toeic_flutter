@@ -1032,7 +1032,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/user/ai-chat/get-explanation',
+          '/user/ai-chat/get-explanation/json',
           queryParameters: queryParameters,
           data: _data,
         )

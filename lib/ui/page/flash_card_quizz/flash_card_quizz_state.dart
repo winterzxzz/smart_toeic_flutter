@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 
 class FlashCardQuizzState extends Equatable {
   final LoadStatus loadStatus;
@@ -8,6 +9,8 @@ class FlashCardQuizzState extends Equatable {
   final int currentIndex;
   final int typeQuizzIndex;
   final List<FlashCardLearning> flashCardLearning;
+  final List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest;
+
 
   const FlashCardQuizzState({
     required this.loadStatus,
@@ -15,13 +18,15 @@ class FlashCardQuizzState extends Equatable {
     required this.flashCardLearning,
     required this.currentIndex,
     required this.typeQuizzIndex,
+    required this.flashCardQuizzScoreRequest,
   });
 
   factory FlashCardQuizzState.initial() => FlashCardQuizzState(
         loadStatus: LoadStatus.initial,
         message: '',
         flashCardLearning: [],
-          currentIndex: 0,
+        flashCardQuizzScoreRequest: [],
+        currentIndex: 0,
         typeQuizzIndex: 0,
       );
 
@@ -31,11 +36,13 @@ class FlashCardQuizzState extends Equatable {
     List<FlashCardLearning>? flashCardLearning,
     int? currentIndex,
     int? typeQuizzIndex,
+    List<FlashCardQuizzScoreRequest>? flashCardQuizzScoreRequest,
   }) =>
       FlashCardQuizzState(
         loadStatus: loadStatus ?? this.loadStatus,
         message: message ?? this.message,
         flashCardLearning: flashCardLearning ?? this.flashCardLearning,
+        flashCardQuizzScoreRequest: flashCardQuizzScoreRequest ?? this.flashCardQuizzScoreRequest,
         currentIndex: currentIndex ?? this.currentIndex,
         typeQuizzIndex: typeQuizzIndex ?? this.typeQuizzIndex,
       );
@@ -45,6 +52,7 @@ class FlashCardQuizzState extends Equatable {
         loadStatus,
         message,
         flashCardLearning,
+        flashCardQuizzScoreRequest,
         currentIndex,
         typeQuizzIndex
       ];

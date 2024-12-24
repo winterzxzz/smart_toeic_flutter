@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 
@@ -11,6 +9,7 @@ class SelectTranslation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       key: key,
       children: [
         Text.rich(

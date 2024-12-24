@@ -1,18 +1,38 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
-class EnterWord extends StatelessWidget {
+class EnterWord extends StatefulWidget {
   const EnterWord({super.key, required this.fcLearning});
 
   final FlashCardLearning fcLearning;
 
   @override
+  State<EnterWord> createState() => _EnterWordState();
+}
+
+class _EnterWordState extends State<EnterWord> {
+  late final TextEditingController _controller;
+  bool isCorrect = false;
+  bool isShowAnswer = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-      return Column(
-      key: key,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      key: widget.key,
       children: [
         Text.rich(
           style: TextStyle(fontSize: 18),
@@ -20,7 +40,7 @@ class EnterWord extends StatelessWidget {
             children: [
               TextSpan(text: 'Nhập từ tiếng Việt có nghĩa là '),
               TextSpan(
-                text: "'${fcLearning.flashcardId!.word}'",
+                text: "'${widget.fcLearning.flashcardId!.word}'",
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: AppColors.error),
               ),
@@ -30,6 +50,7 @@ class EnterWord extends StatelessWidget {
         ),
         SizedBox(height: 32),
         TextField(
+          controller: _controller,
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             hintText: 'Nhập từ tiếng Việt',
@@ -42,7 +63,6 @@ class EnterWord extends StatelessWidget {
               borderSide: BorderSide(color: Colors.purple),
             ),
           ),
-          onChanged: (value) {},
         ),
         SizedBox(height: 32),
         Row(
@@ -51,7 +71,12 @@ class EnterWord extends StatelessWidget {
               child: SizedBox(
                 height: 40,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      isCorrect = _controller.text ==
+                          widget.fcLearning.flashcardId!.word;
+                    });
+                  },
                   child: Text('Kiểm tra'),
                 ),
               ),
@@ -61,13 +86,28 @@ class EnterWord extends StatelessWidget {
               child: SizedBox(
                 height: 40,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      isShowAnswer = true;
+                    });
+                  },
                   child: Text('Xem đáp án'),
                 ),
               ),
             ),
           ],
         ),
+        const SizedBox(height: 32),
+        if (isCorrect)
+          Text(
+            'Bạn đã trả lời đúng!',
+            style: TextStyle(fontSize: 18),
+          ),
+        if (isShowAnswer)
+          Text(
+            'Đáp án: ${widget.fcLearning.flashcardId!.word}',
+            style: TextStyle(fontSize: 18, color: AppColors.error),
+          ),
       ],
     );
   }

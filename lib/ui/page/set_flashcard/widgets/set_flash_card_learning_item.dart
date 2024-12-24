@@ -26,7 +26,7 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        width: 300,
+        width: (MediaQuery.sizeOf(context).width - 60) * 0.23,
         constraints: const BoxConstraints(maxHeight: 280),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
@@ -119,7 +119,7 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
                             Icons.play_arrow_outlined,
                             color: Colors.white,
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 4),
                           Text(
                             'Tracking',
                             style: TextStyle(color: Colors.white),
@@ -129,7 +129,7 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 8),
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -152,7 +152,7 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(Icons.delete_outline, color: AppColors.error),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 4),
                         Text('Remove',
                             style: TextStyle(color: AppColors.error)),
                       ],
