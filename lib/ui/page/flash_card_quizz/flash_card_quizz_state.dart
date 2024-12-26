@@ -11,7 +11,6 @@ class FlashCardQuizzState extends Equatable {
   final List<FlashCardLearning> flashCardLearning;
   final List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest;
 
-
   const FlashCardQuizzState({
     required this.loadStatus,
     required this.message,
@@ -42,7 +41,8 @@ class FlashCardQuizzState extends Equatable {
         loadStatus: loadStatus ?? this.loadStatus,
         message: message ?? this.message,
         flashCardLearning: flashCardLearning ?? this.flashCardLearning,
-        flashCardQuizzScoreRequest: flashCardQuizzScoreRequest ?? this.flashCardQuizzScoreRequest,
+        flashCardQuizzScoreRequest:
+            flashCardQuizzScoreRequest ?? this.flashCardQuizzScoreRequest,
         currentIndex: currentIndex ?? this.currentIndex,
         typeQuizzIndex: typeQuizzIndex ?? this.typeQuizzIndex,
       );
@@ -54,6 +54,6 @@ class FlashCardQuizzState extends Equatable {
         flashCardLearning,
         flashCardQuizzScoreRequest,
         currentIndex,
-        typeQuizzIndex
+        typeQuizzIndex,
       ];
 }

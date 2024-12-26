@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -14,6 +13,7 @@ import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/matching_word.dar
 import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/order_word_to_correct.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/select_description.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/select_translation.dart';
+import 'package:toeic_desktop/ui/page/profile/widgets/profile_divider.dart';
 
 class FlashCardQuizPage extends StatelessWidget {
   final String id;
@@ -98,12 +98,13 @@ class _PageState extends State<Page> {
                                           'matching-${state.currentIndex}'),
                                     );
                                   case 2:
-                                    return EnterWord(
+                                    return EnterTranslation(
                                       fcLearning: state.flashCardLearning[
                                           state.currentIndex],
                                       key: ValueKey(
-                                          'enter-word-${state.currentIndex}'),
+                                          'enter-translation-${state.currentIndex}'),
                                     );
+
                                   case 3:
                                     return OrderWordToCorrect(
                                       fcLearning: state.flashCardLearning[
@@ -126,11 +127,11 @@ class _PageState extends State<Page> {
                                           'select-translation-${state.currentIndex}'),
                                     );
                                   case 6:
-                                    return EnterTranslation(
+                                    return EnterWord(
                                       fcLearning: state.flashCardLearning[
                                           state.currentIndex],
                                       key: ValueKey(
-                                          'enter-translation-${state.currentIndex}'),
+                                          'enter-word-${state.currentIndex}'),
                                     );
                                   default:
                                     return const SizedBox.shrink();
@@ -139,73 +140,80 @@ class _PageState extends State<Page> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              child: ElevatedButton(
-                                onPressed: state.currentIndex == 0 &&
-                                        state.typeQuizzIndex == 0
-                                    ? null
-                                    : () {
-                                        context
-                                            .read<FlashCardQuizzCubit>()
-                                            .previous();
-                                      },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.chevron_left),
-                                    SizedBox(width: 8),
-                                    Text('Trước'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 40,
-                              child: ElevatedButton(
-                                onPressed: state.currentIndex ==
-                                            state.flashCardLearning.length -
-                                                1 &&
-                                        state.typeQuizzIndex == 6
-                                    ? null
-                                    : () {
-                                        context
-                                            .read<FlashCardQuizzCubit>()
-                                            .next();
-                                      },
-                                child: Row(
-                                  children: [
-                                    Text(state.typeQuizzIndex == 6 &&
-                                            state.currentIndex ==
-                                                state.flashCardLearning.length -
-                                                    1
-                                        ? 'Kết thúc'
-                                        : 'Tiếp theo'),
-                                    SizedBox(width: 8),
-                                    Icon(Icons.chevron_right),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 32),
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(FontAwesomeIcons.circleCheck),
-                                SizedBox(width: 8),
-                                Text('Kết thúc'),
-                              ],
-                            ),
-                          ),
+                        // const SizedBox(height: 16),
+                        //   Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       SizedBox(
+                        //         height: 40,
+                        //         child: ElevatedButton(
+                        //           onPressed: state.currentIndex ==
+                        //                       state.flashCardLearning.length -
+                        //                           1 &&
+                        //                   state.typeQuizzIndex == 6
+                        //               ? null
+                        //               : () {
+                        //                   context
+                        //                       .read<FlashCardQuizzCubit>()
+                        //                       .next();
+                        //                 },
+                        //           child: Row(
+                        //             children: [
+                        //               Text('Tiếp theo'),
+                        //               SizedBox(width: 8),
+                        //               Icon(Icons.chevron_right),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        Builder(
+                          builder: (context) {
+                            if (state.typeQuizzIndex == 1 ||
+                                state.typeQuizzIndex == 0) {
+                              return const SizedBox.shrink();
+                            } else {
+                              return Column(
+                                children: [
+                                  ProfileDivider(),
+                                  SizedBox(
+                                    height: 50,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SizedBox(
+                                          height: double.infinity,
+                                          width: 200,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<FlashCardQuizzCubit>()
+                                                  .next();
+                                            },
+                                            child: Text('Bỏ qua'),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 200,
+                                          height: double.infinity,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<FlashCardQuizzCubit>()
+                                                  .next();
+                                            },
+                                            child: Text('Kiểm tra'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),

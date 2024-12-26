@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
@@ -6,8 +8,29 @@ import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_state.da
 
 class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   final FlashCardRespository _flashCardRepository;
+  // this is time for do all quizz
+  late Timer _timerStartQuizz;
+  late Duration currentTime;
+  // this is time for next quizz
+  late Timer _timerNextQuizz;
   FlashCardQuizzCubit(this._flashCardRepository)
-      : super(FlashCardQuizzState.initial());
+      : super(FlashCardQuizzState.initial()) {
+    currentTime = Duration.zero;
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timerStartQuizz = Timer.periodic(Duration(seconds: 1), (timer) {
+      currentTime = currentTime + Duration(seconds: 1);
+    });
+  }
+
+  void resetNextTimer() {
+    _timerNextQuizz.cancel();
+    _timerNextQuizz = Timer(const Duration(seconds: 3), () {
+      next();
+    });
+  }
 
   void init(String newLearningSetId) async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
@@ -36,32 +59,9 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
     });
   }
 
-  void previousTypeQuizz() {
-    emit(state.copyWith(
-        typeQuizzIndex: state.typeQuizzIndex - 1,
-        currentIndex: state.flashCardLearning.length - 1));
-  }
-
   void nextTypeQuizz() {
     emit(state.copyWith(
         typeQuizzIndex: state.typeQuizzIndex + 1, currentIndex: 0));
-  }
-
-  void previous() {
-    if (state.typeQuizzIndex == 1) {
-      previousTypeQuizz();
-      return;
-    } else {
-      if (state.currentIndex == 0 && state.typeQuizzIndex == 0) {
-        return;
-      } else {
-        if (state.currentIndex > 0) {
-          emit(state.copyWith(currentIndex: state.currentIndex - 1));
-        } else {
-          previousTypeQuizz();
-        }
-      }
-    }
   }
 
   void next() {
@@ -91,5 +91,35 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
       }
       return e;
     }).toList()));
+    next();
+  }
+
+  void answer(String word, bool isCorrect) {
+    emit(state.copyWith(
+        flashCardQuizzScoreRequest: state.flashCardQuizzScoreRequest.map((e) {
+      if (e.word == word) {
+        final newPercentage = (isCorrect
+                ? e.accuracy! + (1 / e.numOfQuiz!)
+                : e.accuracy! - (1 / e.numOfQuiz!))
+            .toStringAsFixed(2);
+        if (isCorrect) {
+          return e.copyWith(accuracy: double.parse(newPercentage));
+        } else {
+          return e.copyWith(accuracy: double.parse(newPercentage));
+        }
+      }
+      return e;
+    }).toList()));
+  }
+
+  void finish() {
+    final numberOfQuiz = state.flashCardQuizzScoreRequest.length * 5 + 1;
+    final timeMinutes = currentTime.inMinutes / numberOfQuiz;
+    emit(state.copyWith(
+        flashCardQuizzScoreRequest: state.flashCardQuizzScoreRequest
+            .map((e) => e.copyWith(
+                  timeMinutes: timeMinutes,
+                ))
+            .toList()));
   }
 }

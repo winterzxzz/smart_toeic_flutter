@@ -11,11 +11,14 @@ class OrderWordToCorrect extends StatefulWidget {
   State<OrderWordToCorrect> createState() => _OrderWordToCorrectState();
 }
 
-class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
+class _OrderWordToCorrectState extends State<OrderWordToCorrect>
+    with TickerProviderStateMixin {
   List<String> shuffledWords = [];
   List<String> selectedWords = [];
-  bool isCorrect = false;
+  bool isCheck = false;
   bool isShowAnswer = false;
+
+  late AnimationController _timerController;
 
   @override
   void initState() {
@@ -24,6 +27,16 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
       ...widget.fcLearning.flashcardId!.exampleSentence.first.split(' ')
     ];
     shuffledWords.shuffle();
+    _timerController = AnimationController(
+      duration: const Duration(seconds: 5),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _timerController.dispose();
+    super.dispose();
   }
 
   @override
@@ -42,6 +55,13 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                 children: [
                   InkWell(
                     onTap: () {
+                      if (isCheck) {
+                        isCheck = false;
+                      }
+                      if (isShowAnswer) {
+                        isShowAnswer = false;
+                      }
+
                       setState(() {
                         selectedWords.add(word);
                         shuffledWords.remove(word);
@@ -88,6 +108,13 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
               return Center(
                 child: InkWell(
                   onTap: () {
+                    if (isCheck) {
+                      isCheck = false;
+                    }
+                    if (isShowAnswer) {
+                      isShowAnswer = false;
+                    }
+
                     setState(() {
                       shuffledWords.add(selectedWords[index]);
                       selectedWords.removeAt(index);
@@ -121,38 +148,59 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
               child: SizedBox(
                 height: 40,
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Kiểm tra'),
-                ),
-              ),
-            ),
-            SizedBox(width: 16),
-            Expanded(
-              child: SizedBox(
-                height: 40,
-                child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      isShowAnswer = true;
+                      isCheck = true;
                     });
                   },
-                  child: Text('Xem đáp án'),
+                  child: Text('Kiểm tra'),
                 ),
               ),
             ),
           ],
         ),
         SizedBox(height: 32),
-        if (isCorrect)
-          Text(
-            'Bạn đã trả lời đúng!',
-            style: TextStyle(fontSize: 18),
-          ),
-        if (isShowAnswer)
-          Text(
-            'Đáp án: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
-            style: TextStyle(fontSize: 18, color: AppColors.error),
-          ),
+        if (isCheck)
+          Builder(builder: (context) {
+            final isCorrect = selectedWords.join(' ').toLowerCase() ==
+                widget.fcLearning.flashcardId!.exampleSentence.first
+                    .toLowerCase();
+            return Column(
+              children: [
+                Text(
+                  isCorrect ? 'Bạn đã trả lời đúng!' : 'Bạn đã trả lời sai!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: isCorrect ? AppColors.success : AppColors.error,
+                  ),
+                ),
+                if (!isCorrect) ...[
+                  SizedBox(height: 8),
+                  Text(
+                    'Đáp án: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+                SizedBox(height: 16),
+                AnimatedBuilder(
+                  animation: _timerController,
+                  builder: (context, child) {
+                    return _timerController.value > 0
+                        ? SizedBox(
+                            width: 100,
+                            child: LinearProgressIndicator(
+                              value: 1 - _timerController.value,
+                              backgroundColor: Colors.grey[300],
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColors.primary),
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  },
+                ),
+              ],
+            );
+          }),
       ],
     );
   }
