@@ -98,19 +98,28 @@ class _QuestionIndexState extends State<QuestionIndex> {
                     ],
                   ),
                 ...state.parts.map(
-                  (part) => Column(
-                    children: [
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      PracticeTestPart(
-                        title: part.name,
-                        questions: state.questions
-                            .where((question) => question.part == part.numValue)
-                            .toList(),
-                      ),
-                    ],
-                  ),
+                  (part) {
+                    if (state.questions
+                        .where(
+                            (question) => question.part == part.numValue)
+                        .isNotEmpty) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                          height: 16,
+                        ),
+                        PracticeTestPart(
+                          title: part.name,
+                          questions: state.questions
+                              .where(
+                                  (question) => question.part == part.numValue)
+                              .toList(),
+                        ),
+                      ],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
               ],
             );

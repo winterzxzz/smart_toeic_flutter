@@ -121,6 +121,7 @@ class _MatchingWordState extends State<MatchingWord>
               availableWords
                   .removeWhere((e) => e.flashcardId!.word == selectedWord);
             }
+            context.read<FlashCardQuizzCubit>().answer(word, isCorrectMatch);
             matchedPairs.add(selectedWord!);
             selectedWord = null;
             isSelectingWord = null;
@@ -130,7 +131,9 @@ class _MatchingWordState extends State<MatchingWord>
               _confettiController.play();
               _timerController.forward();
               Future.delayed(const Duration(seconds: 3), () {
-                context.read<FlashCardQuizzCubit>().next();
+                if (mounted) {
+                  context.read<FlashCardQuizzCubit>().next();
+                }
               });
             }
           });

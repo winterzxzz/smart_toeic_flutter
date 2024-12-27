@@ -15,6 +15,7 @@ import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card_quizz/cubit/get_random_word_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
@@ -50,9 +51,6 @@ class MyApp extends StatelessWidget {
     ]);
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<TestRepository>(
-          create: (context) => injector<TestRepository>(),
-        ),
         RepositoryProvider<AuthRepository>(
           create: (context) => injector<AuthRepository>(),
         ),

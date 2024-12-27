@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
@@ -32,7 +31,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.login(email, password);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromJson(e.response?.data));
     }
   }
 
@@ -46,7 +45,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.signUp(email, name, password);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromJson(e.response?.data));
     }
   }
 
@@ -56,7 +55,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.getUser();
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromJson(e.response?.data));
     }
   }
 
@@ -66,7 +65,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.resetPassword(email);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromJson(e.response?.data));
     }
   }
 }

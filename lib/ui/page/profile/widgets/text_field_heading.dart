@@ -39,6 +39,7 @@ class TextFieldHeading extends StatelessWidget {
             maxLines: label == 'Profile Bio' ? 3 : 1,
             decoration: InputDecoration(
               hintText: hintText,
+              hintStyle: TextStyle(color: Colors.grey[500]),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),

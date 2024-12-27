@@ -29,6 +29,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>CFBundleURLTypes</key>
+	<!-- url: test://toeic.com -->
 <array>
     <dict>
         <key>CFBundleURLName</key>

@@ -83,9 +83,15 @@ class _EnterTranslationState extends State<EnterTranslation>
               setState(() {
                 isCheck = true;
               });
+              context.read<FlashCardQuizzCubit>().answer(
+                  widget.fcLearning.flashcardId!.word,
+                  _controller.text.toLowerCase() ==
+                      widget.fcLearning.flashcardId!.word.toLowerCase());
               _timerController.forward();
               Future.delayed(const Duration(seconds: 3), () {
-                context.read<FlashCardQuizzCubit>().next();
+                if (context.mounted) {
+                  context.read<FlashCardQuizzCubit>().next();
+                }
               });
             },
             child: Text('Kiểm tra'),

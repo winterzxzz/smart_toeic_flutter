@@ -35,8 +35,10 @@ Future<void> init() async {
         () => UpgradeAccountCubit(injector()))
     ..registerFactory<CheckPaymentStatusCubit>(
         () => CheckPaymentStatusCubit(injector()))
-    ..registerFactory<ProfileCubit>(() => ProfileCubit(injector()));
+    ..registerFactory<ProfileCubit>(() => ProfileCubit(injector()))
+    ..registerFactory<GetRandomWordCubit>(() => GetRandomWordCubit(injector()));
 
+    
   if (!injector.isRegistered<HomeCubit>()) {
     injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
   }

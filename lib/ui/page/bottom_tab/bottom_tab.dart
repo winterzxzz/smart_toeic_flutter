@@ -70,9 +70,11 @@ class _BottomTabPageState extends State<BottomTabPage>
         pmcid: params['pmcid'] ?? '',
         status: params['status'] ?? '',
       );
-      GoRouter.of(context).go('/$path', extra: {
-        'paymentReturn': paymentReturn,
-      });
+      if (mounted) {
+        GoRouter.of(context).go('/$path', extra: {
+          'paymentReturn': paymentReturn,
+        });
+      }
     });
   }
 
@@ -317,16 +319,23 @@ class AppBar extends StatelessWidget {
             onTap: () {
               GoRouter.of(context).go(AppRouter.upgradeAccount);
             },
-            child: SvgPicture.asset(
-              AppImages.icPremium,
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.textWhite
-                    : AppColors.textBlack,
-                BlendMode.srcIn,
-              ),
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                final isPremium = state.user?.isPremium() ?? false;
+                return SvgPicture.asset(
+                  AppImages.icPremium,
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(
+                    isPremium
+                        ? AppColors.error
+                        : Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.textWhite
+                            : AppColors.textBlack,
+                    BlendMode.srcIn,
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(width: 16),

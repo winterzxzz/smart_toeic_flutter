@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_state.dart';
@@ -38,23 +39,48 @@ class Page extends StatefulWidget {
   State<Page> createState() => _PageState();
 }
 
-class _PageState extends State<Page> {
+class _PageState extends State<Page> with TickerProviderStateMixin {
+  late AnimationController _timerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _timerController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _timerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final navigator = AppNavigator(context: context);
     return BlocConsumer<FlashCardQuizzCubit, FlashCardQuizzState>(
       listener: (context, state) {
-        if (state.loadStatus == LoadStatus.failure) {
-          showToast(title: state.message, type: ToastificationType.error);
+        if (state.loadStatus == LoadStatus.loading) {
+          navigator.showLoadingOverlay();
+        } else {
+          navigator.hideLoadingOverlay();
+          if (state.loadStatus == LoadStatus.failure) {
+            showToast(title: state.message, type: ToastificationType.error);
+          } else if (state.loadStatus == LoadStatus.success) {
+            if (state.message.isNotEmpty) {
+              showToast(title: state.message, type: ToastificationType.success);
+            }
+          }
         }
       },
       builder: (context, state) {
+        if (state.loadStatus != LoadStatus.success) {
+          return const SizedBox.shrink();
+        }
         return Scaffold(
           body: Builder(builder: (context) {
-            if (state.loadStatus == LoadStatus.loading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
             return SafeArea(
               child: Center(
                 child: Card(
@@ -140,6 +166,22 @@ class _PageState extends State<Page> {
                             ),
                           ),
                         ),
+                        if (state.typeQuizzIndex == 6 &&
+                            state.currentIndex ==
+                                state.flashCardQuizzScoreRequest.length -
+                                    1) ...[
+                          ProfileDivider(),
+                          SizedBox(
+                            height: 50,
+                            width: 200,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.read<FlashCardQuizzCubit>().finish();
+                              },
+                              child: Text('Kết thúc'),
+                            ),
+                          ),
+                        ]
                         // const SizedBox(height: 16),
                         //   Row(
                         //     mainAxisAlignment: MainAxisAlignment.center,
@@ -168,53 +210,78 @@ class _PageState extends State<Page> {
                         //       ),
                         //     ],
                         //   ),
-                        Builder(
-                          builder: (context) {
-                            if (state.typeQuizzIndex == 1 ||
-                                state.typeQuizzIndex == 0) {
-                              return const SizedBox.shrink();
-                            } else {
-                              return Column(
-                                children: [
-                                  ProfileDivider(),
-                                  SizedBox(
-                                    height: 50,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        SizedBox(
-                                          height: double.infinity,
-                                          width: 200,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              context
-                                                  .read<FlashCardQuizzCubit>()
-                                                  .next();
-                                            },
-                                            child: Text('Bỏ qua'),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 200,
-                                          height: double.infinity,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              context
-                                                  .read<FlashCardQuizzCubit>()
-                                                  .next();
-                                            },
-                                            child: Text('Kiểm tra'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }
-                          },
-                        ),
+                        // Builder(
+                        //   builder: (context) {
+                        //     if (state.typeQuizzIndex == 1 ||
+                        //         state.typeQuizzIndex == 0) {
+                        //       return const SizedBox.shrink();
+                        //     } else {
+                        //       return Column(
+                        //         children: [
+                        //           ProfileDivider(),
+                        //           AnimatedBuilder(
+                        //             animation: _timerController,
+                        //             builder: (context, child) {
+                        //               return Column(
+                        //                 children: [
+                        //                   if (_timerController.isAnimating)
+                        //                     LinearProgressIndicator(
+                        //                       value: 1 -
+                        //                           _timerController.value,
+                        //                       backgroundColor: Colors.grey[300],
+                        //                       valueColor: AlwaysStoppedAnimation<
+                        //                           Color>(AppColors.primary),
+                        //                     ),
+                        //                   SizedBox(
+                        //                     height: 50,
+                        //                     child: Row(
+                        //                       mainAxisAlignment:
+                        //                           MainAxisAlignment.spaceAround,
+                        //                       children: [
+                        //                         SizedBox(
+                        //                           height: double.infinity,
+                        //                           width: 200,
+                        //                           child: ElevatedButton(
+                        //                             onPressed:
+                        //                                 _timerController.isAnimating
+                        //                                     ? null
+                        //                                     : () {
+                        //                                         context
+                        //                                             .read<
+                        //                                                 FlashCardQuizzCubit>()
+                        //                                             .next();
+                        //                                       },
+                        //                             child: Text('Bỏ qua'),
+                        //                           ),
+                        //                         ),
+                        //                         SizedBox(
+                        //                           width: 200,
+                        //                           height: double.infinity,
+                        //                           child: ElevatedButton(
+                        //                             onPressed:
+                        //                                 _timerController.isAnimating
+                        //                                     ? null
+                        //                                     : () {
+                        //                                         context
+                        //                                             .read<
+                        //                                                 FlashCardQuizzCubit>()
+                        //                                             .next();
+                        //                                       },
+                        //                             child: Text('Kiểm tra'),
+                        //                           ),
+                        //                         ),
+                        //                       ],
+                        //                     ),
+                        //                   ),
+                        //                 ],
+                        //               );
+                        //             },
+                        //           ),
+                        //         ],
+                        //       );
+                        //     }
+                        //   },
+                        // ),
                       ],
                     ),
                   ),

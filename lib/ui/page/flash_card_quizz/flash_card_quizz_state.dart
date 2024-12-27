@@ -10,6 +10,7 @@ class FlashCardQuizzState extends Equatable {
   final int typeQuizzIndex;
   final List<FlashCardLearning> flashCardLearning;
   final List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest;
+  
 
   const FlashCardQuizzState({
     required this.loadStatus,

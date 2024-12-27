@@ -19,12 +19,15 @@ class ConfidenceLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (fcLearning.flashcardId == null) {
+      return const SizedBox.shrink();
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       key: key,
       children: [
         Text(
-          fcLearning.flashcardId!.word,
+          fcLearning.flashcardId?.word ?? '',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -43,8 +46,9 @@ class ConfidenceLevel extends StatelessWidget {
               const SizedBox(height: 32),
               InkWell(
                 onTap: () {
-                  context.read<FlashCardQuizzCubit>().updateConfidenceLevel(
-                      level.key, fcLearning.flashcardId!.id);
+                  context
+                      .read<FlashCardQuizzCubit>()
+                      .updateConfidenceLevel(level.key, fcLearning.id!);
                 },
                 child: Container(
                   width: double.infinity,
@@ -71,7 +75,7 @@ class ConfidenceLevel extends StatelessWidget {
                               context
                                   .read<FlashCardQuizzCubit>()
                                   .updateConfidenceLevel(
-                                      value!, fcLearning.flashcardId!.id);
+                                      value!, fcLearning.id!);
                             },
                           ),
                           SizedBox(width: 8),
@@ -93,7 +97,7 @@ class ConfidenceLevel extends StatelessWidget {
       List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest) {
     FlashCardQuizzScoreRequest? scoreRequest;
     for (var score in flashCardQuizzScoreRequest) {
-      if (score.id == fcLearning.flashcardId!.id) {
+      if (score.id == fcLearning.id) {
         scoreRequest = score;
       }
     }

@@ -8,6 +8,8 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/new_set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/word/word_random.dart';
+import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
@@ -32,8 +34,14 @@ abstract class FlashCardRespository {
   Future<Either<ApiError, List<FlashCardLearning>>> getFlashCardsLearning(
       String learningSetId);
   Future<Either<ApiError, void>> deleteFlashCardLearning(String learningSetId);
-  Future<Either<ApiError, NewSetFlashCardLearning>> updateFlashCardLearning(String learningSetId);
+  Future<Either<ApiError, NewSetFlashCardLearning>> updateFlashCardLearning(
+      String learningSetId);
   Future<Either<ApiError, FlashCardAiGen>> getFlashCardInforByAI(String prompt);
+
+  Future<Either<ApiError, void>> updateSessionScore(
+      List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest);
+
+  Future<Either<ApiError, List<WordRandom>>> getRandom4Words();
 }
 
 class FlashCardRespositoryImpl extends FlashCardRespository {
@@ -175,6 +183,28 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       String learningSetId) async {
     try {
       final response = await _apiClient.updateFlashCardLearning(learningSetId);
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(e.response?.data));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, void>> updateSessionScore(
+      List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest) async {
+    try {
+      final response =
+          await _apiClient.updateSessionScore(flashCardQuizzScoreRequest);
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(e.response?.data));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, List<WordRandom>>> getRandom4Words() async {
+    try {
+      final response = await _apiClient.getRandom4Words();
       return Right(response);
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));

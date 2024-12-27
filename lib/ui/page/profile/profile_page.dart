@@ -71,7 +71,7 @@ class _PageState extends State<Page> {
                 return Container(
                   height: double.infinity,
                   margin: const EdgeInsets.only(top: 75),
-                  padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 70, 0, 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
@@ -79,6 +79,7 @@ class _PageState extends State<Page> {
                       ),
                       color: Theme.of(context).cardColor),
                   child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
                       const SizedBox(height: 32),
                       AvatarHeading(
@@ -108,9 +109,8 @@ class _PageState extends State<Page> {
                         hintText: 'Enter your bio',
                         controller: bioController,
                       ),
-                      if (state.user?.targetScore != null)
+                        ...[
                         const ProfileDivider(),
-                      if (state.user?.targetScore != null)
                         HeadingContainer(
                             title: 'Profile Target Score',
                             description:
@@ -133,7 +133,7 @@ class _PageState extends State<Page> {
                                         Text.rich(
                                           TextSpan(
                                             text:
-                                                '${state.user?.targetScore?.reading}',
+                                                '${state.user?.targetScore?.reading ?? 0}',
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -184,7 +184,7 @@ class _PageState extends State<Page> {
                                         Text.rich(
                                           TextSpan(
                                             text:
-                                                '${state.user?.targetScore?.listening}',
+                                                '${state.user?.targetScore?.listening ?? 0}',
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -235,7 +235,7 @@ class _PageState extends State<Page> {
                                       child: Text('Update Target Score')),
                                 ),
                               ],
-                            )),
+                            ))],
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -460,7 +460,9 @@ class _PageState extends State<Page> {
                           .read<ProfileCubit>()
                           .updateTargetScore(readingScore, listeningScore)
                           .then((_) {
-                        GoRouter.of(diaglogContext).pop();
+                        if (diaglogContext.mounted) {
+                          GoRouter.of(diaglogContext).pop();
+                        }
                       });
                       // Do something with the scores
                     },

@@ -9,10 +9,7 @@ import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_state.da
 class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   final FlashCardRespository _flashCardRepository;
   // this is time for do all quizz
-  late Timer _timerStartQuizz;
   late Duration currentTime;
-  // this is time for next quizz
-  late Timer _timerNextQuizz;
   FlashCardQuizzCubit(this._flashCardRepository)
       : super(FlashCardQuizzState.initial()) {
     currentTime = Duration.zero;
@@ -20,15 +17,8 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   }
 
   void _startTimer() {
-    _timerStartQuizz = Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(seconds: 1), (timer) {
       currentTime = currentTime + Duration(seconds: 1);
-    });
-  }
-
-  void resetNextTimer() {
-    _timerNextQuizz.cancel();
-    _timerNextQuizz = Timer(const Duration(seconds: 3), () {
-      next();
     });
   }
 
@@ -50,9 +40,9 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
               flashCardLearning: r2,
               flashCardQuizzScoreRequest: r2
                   .map((e) => FlashCardQuizzScoreRequest(
-                        id: e.flashcardId?.id,
+                        id: e.id,
                         word: e.flashcardId?.word,
-                        numOfQuiz: 6,
+                        numOfQuiz: 0,
                         isChangeDifficulty: true,
                       ))
                   .toList())));
@@ -98,28 +88,44 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
     emit(state.copyWith(
         flashCardQuizzScoreRequest: state.flashCardQuizzScoreRequest.map((e) {
       if (e.word == word) {
+        final newNumOfQuiz = e.numOfQuiz! + 1;
         final newPercentage = (isCorrect
-                ? e.accuracy! + (1 / e.numOfQuiz!)
-                : e.accuracy! - (1 / e.numOfQuiz!))
+                ? (e.accuracy ?? 0) + (1 / newNumOfQuiz)
+                : (e.accuracy ?? 0) - (1 / newNumOfQuiz))
             .toStringAsFixed(2);
-        if (isCorrect) {
-          return e.copyWith(accuracy: double.parse(newPercentage));
-        } else {
-          return e.copyWith(accuracy: double.parse(newPercentage));
-        }
+        return e.copyWith(
+          accuracy: double.parse(newPercentage),
+          numOfQuiz: newNumOfQuiz,
+        );
       }
       return e;
     }).toList()));
   }
 
-  void finish() {
-    final numberOfQuiz = state.flashCardQuizzScoreRequest.length * 5 + 1;
+  void finish() async {
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    final numberOfQuiz = state.flashCardQuizzScoreRequest
+            .map((e) => e.numOfQuiz)
+            .reduce((a, b) => a! + b!) ??
+        1;
     final timeMinutes = currentTime.inMinutes / numberOfQuiz;
-    emit(state.copyWith(
-        flashCardQuizzScoreRequest: state.flashCardQuizzScoreRequest
-            .map((e) => e.copyWith(
-                  timeMinutes: timeMinutes,
-                ))
-            .toList()));
+    final newFlashCardQuizzScoreRequest = state.flashCardQuizzScoreRequest
+        .map((e) => e.copyWith(
+              timeMinutes: timeMinutes,
+            ))
+        .toList();
+    final rs = await _flashCardRepository
+        .updateSessionScore(newFlashCardQuizzScoreRequest);
+    rs.fold(
+        (l) => emit(state.copyWith(
+            loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
+        (r) => emit(state.copyWith(
+            loadStatus: LoadStatus.success, message: 'Kết thúc bài kiểm tra')));
+  }
+
+  void checkAnswer(String word, bool isCorrect) {
+    if (isCorrect) {
+      answer(word, isCorrect);
+    }
   }
 }

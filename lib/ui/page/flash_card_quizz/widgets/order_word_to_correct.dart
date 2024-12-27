@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 class OrderWordToCorrect extends StatefulWidget {
   const OrderWordToCorrect({super.key, required this.fcLearning});
@@ -28,7 +30,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect>
     ];
     shuffledWords.shuffle();
     _timerController = AnimationController(
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 3),
       vsync: this,
     );
   }
@@ -151,6 +153,17 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect>
                   onPressed: () {
                     setState(() {
                       isCheck = true;
+                    });
+                    context.read<FlashCardQuizzCubit>().answer(
+                        widget.fcLearning.flashcardId!.word,
+                        selectedWords.join(' ').toLowerCase() ==
+                            widget.fcLearning.flashcardId!.exampleSentence
+                                .first.toLowerCase());
+                    _timerController.forward();
+                    Future.delayed(const Duration(seconds: 3), () {
+                      if (context.mounted) {
+                        context.read<FlashCardQuizzCubit>().next();
+                      }
                     });
                   },
                   child: Text('Kiểm tra'),

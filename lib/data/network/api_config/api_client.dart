@@ -7,6 +7,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/new_set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/word/word_random.dart';
 import 'package:toeic_desktop/data/models/entities/payment/payment.dart';
 import 'package:toeic_desktop/data/models/entities/payment/payment_status.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
@@ -18,6 +19,8 @@ import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set
 import 'package:toeic_desktop/data/models/entities/test/result_test_submit.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
+import 'package:toeic_desktop/data/models/entities/transcript/transcript_test.dart';
+import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
@@ -116,7 +119,7 @@ abstract class ApiClient {
   );
 
   // TEST
-  @GET('/user/test?limit={limit}')
+  @GET('/user/test')
   Future<List<Test>> getTest(
     @Query("limit") int limit,
   );
@@ -203,4 +206,15 @@ abstract class ApiClient {
   // Future<void> requestResetPassword(
   //   @Field("email") String email,
   // );
+
+  @POST('/user/learning-flashcard/update-session-score')
+  Future<void> updateSessionScore(
+    @Body() List<FlashCardQuizzScoreRequest> body,
+  );
+
+  @GET('/pub/transcript-test')
+  Future<List<TranscriptTest>> getTranscriptTest();
+
+  @GET('/pub/word/4-random')
+  Future<List<WordRandom>> getRandom4Words();
 }

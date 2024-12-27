@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -105,37 +108,61 @@ void showCreateFlashCardDialog(BuildContext widgetContext,
                 previous.loadStatusAiGen != current.loadStatusAiGen,
             builder: (context, state) {
               final isLoading = state.loadStatusAiGen == LoadStatus.loading;
-              return SizedBox(
-                height: 50,
-                width: 150,
-                child: ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () async {
-                          widgetContext
-                              .read<FlashCardDetailCubit>()
-                              .getFlashCardInforByAI(titleController.text);
-                        },
-                  child: isLoading
-                      ? Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Theme.of(context).brightness !=
-                                        Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Text('AI đang điền'),
-                          ],
-                        )
-                      : const Text('Điền bằng AI'),
-                ),
+              return BlocSelector<UserCubit, UserState, UserEntity?>(
+                selector: (state) {
+                  return state.user;
+                },
+                builder: (context, user) {
+                  final isPremium = user?.isPremium();
+                  return SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: isPremium == true
+                          ? isLoading
+                              ? null
+                              : () async {
+                                  widgetContext
+                                  .read<FlashCardDetailCubit>()
+                                  .getFlashCardInforByAI(titleController.text);
+                            }
+                          : null,
+                      child: isLoading
+                          ? Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Theme.of(context).brightness !=
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                                
+                                SizedBox(width: 10),
+                                Text('AI đang điền'),
+                              ],
+                            )
+                          : Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (isPremium == false) ...[
+                                  FaIcon(FontAwesomeIcons.lock),
+                                const SizedBox(width: 8),
+                              ] 
+                              else ...[
+                                FaIcon(FontAwesomeIcons.robot),
+                                const SizedBox(width: 8),
+                              ],
+                              const Text('Điền bằng AI'),
+                            ],
+                          ),
+                    ),
+                  );
+                },
               );
             },
           ),

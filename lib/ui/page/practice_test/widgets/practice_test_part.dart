@@ -29,6 +29,7 @@ class PracticeTestPart extends StatelessWidget {
           height: 16,
         ),
         GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 5, // 5 items per row

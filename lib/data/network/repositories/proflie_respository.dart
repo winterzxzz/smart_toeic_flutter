@@ -12,6 +12,8 @@ import 'package:toeic_desktop/data/network/error/api_error.dart';
 
 abstract class ProfileRepository {
   Future<Either<ApiError, ProfileAllAnalysis>> getProfileAllAnalysis();
+  Future<Either<ApiError, ProfileAnalysis>> getProfileAnalysis();
+  Future<Either<ApiError, String>> getSuggestForStudy();
   Future<Either<ApiError, UserEntity>> updateTargetScore(
       int reading, int listening);
   Future<Either<ApiError, String>> updateProfileAvatar(File avatar);
@@ -36,6 +38,26 @@ class ProfileRepositoryImpl extends ProfileRepository {
         result[0] as ProfileAnalysis, // Add explicit cast here
         result[1] as String, // Add explicit cast here
       ));
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, ProfileAnalysis>> getProfileAnalysis() async {
+    try {
+      final result = await apiClient.getProfileAnalysis();
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, String>> getSuggestForStudy() async {
+    try {
+      final result = await apiClient.getSuggestForStudy();
+      return Right(result);
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
