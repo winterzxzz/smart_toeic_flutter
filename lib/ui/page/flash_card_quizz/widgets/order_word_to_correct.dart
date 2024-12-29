@@ -13,14 +13,11 @@ class OrderWordToCorrect extends StatefulWidget {
   State<OrderWordToCorrect> createState() => _OrderWordToCorrectState();
 }
 
-class _OrderWordToCorrectState extends State<OrderWordToCorrect>
-    with TickerProviderStateMixin {
+class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
   List<String> shuffledWords = [];
   List<String> selectedWords = [];
   bool isCheck = false;
   bool isShowAnswer = false;
-
-  late AnimationController _timerController;
 
   @override
   void initState() {
@@ -29,15 +26,10 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect>
       ...widget.fcLearning.flashcardId!.exampleSentence.first.split(' ')
     ];
     shuffledWords.shuffle();
-    _timerController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
   }
 
   @override
   void dispose() {
-    _timerController.dispose();
     super.dispose();
   }
 
@@ -157,14 +149,8 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect>
                     context.read<FlashCardQuizzCubit>().answer(
                         widget.fcLearning.flashcardId!.word,
                         selectedWords.join(' ').toLowerCase() ==
-                            widget.fcLearning.flashcardId!.exampleSentence
-                                .first.toLowerCase());
-                    _timerController.forward();
-                    Future.delayed(const Duration(seconds: 3), () {
-                      if (context.mounted) {
-                        context.read<FlashCardQuizzCubit>().next();
-                      }
-                    });
+                            widget.fcLearning.flashcardId!.exampleSentence.first
+                                .toLowerCase());
                   },
                   child: Text('Kiểm tra'),
                 ),
@@ -175,41 +161,12 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect>
         SizedBox(height: 32),
         if (isCheck)
           Builder(builder: (context) {
-            final isCorrect = selectedWords.join(' ').toLowerCase() ==
-                widget.fcLearning.flashcardId!.exampleSentence.first
-                    .toLowerCase();
             return Column(
               children: [
+                SizedBox(height: 8),
                 Text(
-                  isCorrect ? 'Bạn đã trả lời đúng!' : 'Bạn đã trả lời sai!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: isCorrect ? AppColors.success : AppColors.error,
-                  ),
-                ),
-                if (!isCorrect) ...[
-                  SizedBox(height: 8),
-                  Text(
-                    'Đáp án: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-                SizedBox(height: 16),
-                AnimatedBuilder(
-                  animation: _timerController,
-                  builder: (context, child) {
-                    return _timerController.value > 0
-                        ? SizedBox(
-                            width: 100,
-                            child: LinearProgressIndicator(
-                              value: 1 - _timerController.value,
-                              backgroundColor: Colors.grey[300],
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppColors.primary),
-                            ),
-                          )
-                        : const SizedBox.shrink();
-                  },
+                  'Đáp án: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
+                  style: TextStyle(fontSize: 18),
                 ),
               ],
             );

@@ -7,6 +7,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
+import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
@@ -196,11 +197,10 @@ class AppRouter {
               path: flashCardQuizzResult,
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
-                final correctAnswers = args['correctAnswers'] as int;
-                final totalQuestions = args['totalQuestions'] as int;
+                final flashCardQuizzScoreRequest =
+                    args['flashCardQuizzScoreRequest'] as List<FlashCardQuizzScoreRequest>;
                 return FlashCardQuizResultPage(
-                  correctAnswers: correctAnswers,
-                  totalQuestions: totalQuestions,
+                  flashCardQuizzScoreRequest: flashCardQuizzScoreRequest,
                 );
               },
             ),

@@ -51,16 +51,20 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
 
   void nextTypeQuizz() {
     emit(state.copyWith(
-        typeQuizzIndex: state.typeQuizzIndex + 1, currentIndex: 0));
+      typeQuizzIndex: state.typeQuizzIndex + 1,
+      currentIndex: 0,
+    ));
   }
 
   void next() {
+    emit(state.copyWith(isAnimating: false, isCorrect: false));
     if (state.typeQuizzIndex == 1) {
       nextTypeQuizz();
       return;
     } else {
       if (state.currentIndex == state.flashCardLearning.length - 1 &&
           state.typeQuizzIndex == 6) {
+        finish();
         return;
       } else {
         if (state.currentIndex < state.flashCardLearning.length - 1 &&
@@ -81,25 +85,23 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
       }
       return e;
     }).toList()));
-    next();
+    triggerAnimation(true);
   }
 
-  void answer(String word, bool isCorrect) {
+  void answer(String word, bool isCorrect, {bool isTrigger = true}) {
     emit(state.copyWith(
         flashCardQuizzScoreRequest: state.flashCardQuizzScoreRequest.map((e) {
       if (e.word == word) {
-        final newNumOfQuiz = e.numOfQuiz! + 1;
-        final newPercentage = (isCorrect
-                ? (e.accuracy ?? 0) + (1 / newNumOfQuiz)
-                : (e.accuracy ?? 0) - (1 / newNumOfQuiz))
-            .toStringAsFixed(2);
         return e.copyWith(
-          accuracy: double.parse(newPercentage),
-          numOfQuiz: newNumOfQuiz,
+          numOfCorrect: isCorrect ? (e.numOfCorrect ?? 0) + 1 : e.numOfCorrect,
+          numOfQuiz: (e.numOfQuiz ?? 0) + 1,
         );
       }
       return e;
     }).toList()));
+    if (isTrigger) {
+      triggerAnimation(isCorrect);
+    }
   }
 
   void finish() async {
@@ -111,7 +113,10 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
     final timeMinutes = currentTime.inMinutes / numberOfQuiz;
     final newFlashCardQuizzScoreRequest = state.flashCardQuizzScoreRequest
         .map((e) => e.copyWith(
-              timeMinutes: timeMinutes,
+              timeMinutes: double.parse(timeMinutes.toStringAsFixed(2)),
+              accuracy: double.parse(
+                  ((e.numOfCorrect ?? 0) / (e.numOfQuiz ?? 1))
+                      .toStringAsFixed(2)),
             ))
         .toList();
     final rs = await _flashCardRepository
@@ -120,12 +125,20 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
         (l) => emit(state.copyWith(
             loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
         (r) => emit(state.copyWith(
-            loadStatus: LoadStatus.success, message: 'Kết thúc bài kiểm tra')));
+              isFinish: true,
+              flashCardQuizzScoreRequest: newFlashCardQuizzScoreRequest,
+              loadStatus: LoadStatus.success,
+              message: 'Kết thúc bài kiểm tra',
+            )));
   }
 
-  void checkAnswer(String word, bool isCorrect) {
-    if (isCorrect) {
-      answer(word, isCorrect);
-    }
+  void triggerAnimation(bool isCorrect) {
+    emit(state.copyWith(isAnimating: true, isCorrect: isCorrect));
+    // Reset animation flag after a short delay
+    Future.delayed(const Duration(seconds: 3), () {
+      if (state.isAnimating) {
+        next();
+      }
+    });
   }
 }

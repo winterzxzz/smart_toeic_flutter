@@ -13,26 +13,20 @@ class EnterWord extends StatefulWidget {
   State<EnterWord> createState() => _EnterWordState();
 }
 
-class _EnterWordState extends State<EnterWord> with TickerProviderStateMixin {
+class _EnterWordState extends State<EnterWord> {
   late final TextEditingController _controller;
   bool isCheck = false;
 
-  late AnimationController _timerController;
-
+  @override
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _timerController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _timerController.dispose();
     super.dispose();
   }
 
@@ -85,13 +79,7 @@ class _EnterWordState extends State<EnterWord> with TickerProviderStateMixin {
               context.read<FlashCardQuizzCubit>().answer(
                   widget.fcLearning.flashcardId!.word,
                   _controller.text.toLowerCase() ==
-                      widget.fcLearning.flashcardId!.word.toLowerCase());
-              _timerController.forward();
-              Future.delayed(const Duration(seconds: 3), () {
-                if (context.mounted) {
-                  context.read<FlashCardQuizzCubit>().next();
-                }
-              });
+                      widget.fcLearning.flashcardId!.translation.toLowerCase());
             },
             child: Text('Kiểm tra'),
           ),
@@ -99,38 +87,12 @@ class _EnterWordState extends State<EnterWord> with TickerProviderStateMixin {
         const SizedBox(height: 32),
         if (isCheck)
           Builder(builder: (context) {
-            final isCorrect = _controller.text.toLowerCase() ==
-                widget.fcLearning.flashcardId!.translation.toLowerCase();
             return Column(
               children: [
-                Text(
-                  isCorrect ? 'Bạn đã trả lời đúng!' : 'Bạn đã trả lời sai!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: isCorrect ? AppColors.success : AppColors.error,
-                  ),
-                ),
                 SizedBox(height: 8),
                 Text(
                   'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
                   style: TextStyle(fontSize: 18),
-                ),
-                SizedBox(height: 16),
-                AnimatedBuilder(
-                  animation: _timerController,
-                  builder: (context, child) {
-                    return _timerController.value > 0
-                        ? SizedBox(
-                            width: 100,
-                            child: LinearProgressIndicator(
-                              value: 1 - _timerController.value,
-                              backgroundColor: Colors.grey[300],
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppColors.primary),
-                            ),
-                          )
-                        : const SizedBox.shrink();
-                  },
                 ),
               ],
             );

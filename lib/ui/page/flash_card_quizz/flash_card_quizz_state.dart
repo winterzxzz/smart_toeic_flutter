@@ -10,8 +10,9 @@ class FlashCardQuizzState extends Equatable {
   final int typeQuizzIndex;
   final List<FlashCardLearning> flashCardLearning;
   final List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest;
-  
-
+  final bool isAnimating;
+  final bool isCorrect;
+  final bool isFinish;
   const FlashCardQuizzState({
     required this.loadStatus,
     required this.message,
@@ -19,6 +20,9 @@ class FlashCardQuizzState extends Equatable {
     required this.currentIndex,
     required this.typeQuizzIndex,
     required this.flashCardQuizzScoreRequest,
+    required this.isAnimating,
+    required this.isCorrect,
+    required this.isFinish,
   });
 
   factory FlashCardQuizzState.initial() => FlashCardQuizzState(
@@ -28,6 +32,9 @@ class FlashCardQuizzState extends Equatable {
         flashCardQuizzScoreRequest: [],
         currentIndex: 0,
         typeQuizzIndex: 0,
+        isAnimating: false,
+        isCorrect: false,
+        isFinish: false,
       );
 
   FlashCardQuizzState copyWith({
@@ -37,6 +44,9 @@ class FlashCardQuizzState extends Equatable {
     int? currentIndex,
     int? typeQuizzIndex,
     List<FlashCardQuizzScoreRequest>? flashCardQuizzScoreRequest,
+    bool? isAnimating,
+    bool? isCorrect,
+    bool? isFinish,
   }) =>
       FlashCardQuizzState(
         loadStatus: loadStatus ?? this.loadStatus,
@@ -46,6 +56,9 @@ class FlashCardQuizzState extends Equatable {
             flashCardQuizzScoreRequest ?? this.flashCardQuizzScoreRequest,
         currentIndex: currentIndex ?? this.currentIndex,
         typeQuizzIndex: typeQuizzIndex ?? this.typeQuizzIndex,
+        isAnimating: isAnimating ?? this.isAnimating,
+        isCorrect: isCorrect ?? this.isCorrect,
+        isFinish: isFinish ?? this.isFinish,
       );
 
   @override
@@ -56,5 +69,8 @@ class FlashCardQuizzState extends Equatable {
         flashCardQuizzScoreRequest,
         currentIndex,
         typeQuizzIndex,
+        isAnimating,
+        isCorrect,
+        isFinish,
       ];
 }

@@ -13,27 +13,19 @@ class EnterTranslation extends StatefulWidget {
   State<EnterTranslation> createState() => _EnterTranslationState();
 }
 
-class _EnterTranslationState extends State<EnterTranslation>
-    with TickerProviderStateMixin {
+class _EnterTranslationState extends State<EnterTranslation> {
   late final TextEditingController _controller;
   bool isCheck = false;
-
-  late AnimationController _timerController;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _timerController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _timerController.dispose();
     super.dispose();
   }
 
@@ -87,12 +79,6 @@ class _EnterTranslationState extends State<EnterTranslation>
                   widget.fcLearning.flashcardId!.word,
                   _controller.text.toLowerCase() ==
                       widget.fcLearning.flashcardId!.word.toLowerCase());
-              _timerController.forward();
-              Future.delayed(const Duration(seconds: 3), () {
-                if (context.mounted) {
-                  context.read<FlashCardQuizzCubit>().next();
-                }
-              });
             },
             child: Text('Kiểm tra'),
           ),
@@ -104,13 +90,6 @@ class _EnterTranslationState extends State<EnterTranslation>
                 widget.fcLearning.flashcardId!.word.toLowerCase();
             return Column(
               children: [
-                Text(
-                  isCorrect ? 'Bạn đã trả lời đúng!' : 'Bạn đã trả lời sai!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: isCorrect ? AppColors.success : AppColors.error,
-                  ),
-                ),
                 if (!isCorrect) ...[
                   SizedBox(height: 8),
                   Text(
@@ -118,23 +97,6 @@ class _EnterTranslationState extends State<EnterTranslation>
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
-                SizedBox(height: 16),
-                AnimatedBuilder(
-                  animation: _timerController,
-                  builder: (context, child) {
-                    return _timerController.value > 0
-                        ? SizedBox(
-                            width: 100,
-                            child: LinearProgressIndicator(
-                              value: 1 - _timerController.value,
-                              backgroundColor: Colors.grey[300],
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppColors.primary),
-                            ),
-                          )
-                        : const SizedBox.shrink();
-                  },
-                ),
               ],
             );
           }),

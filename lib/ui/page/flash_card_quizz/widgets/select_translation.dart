@@ -4,7 +4,6 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/cubit/get_random_word_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/cubit/get_random_word_state.dart';
@@ -76,26 +75,9 @@ class SectionQuestion extends StatefulWidget {
   State<SectionQuestion> createState() => _SectionQuestionState();
 }
 
-class _SectionQuestionState extends State<SectionQuestion>
-    with TickerProviderStateMixin {
+class _SectionQuestionState extends State<SectionQuestion> {
   String? selectedAnswer;
   bool isCheck = false;
-  late AnimationController _timerController;
-
-  @override
-  void initState() {
-    super.initState();
-    _timerController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
-  }
-
-  @override
-  void dispose() {
-    _timerController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,12 +114,6 @@ class _SectionQuestionState extends State<SectionQuestion>
                       level.toLowerCase() ==
                           widget.fcLearning.flashcardId!.translation
                               .toLowerCase());
-                  _timerController.forward();
-                  Future.delayed(const Duration(seconds: 3), () {
-                    if (context.mounted) {
-                      context.read<FlashCardQuizzCubit>().next();
-                    }
-                  });
                 },
                 child: Container(
                   width: double.infinity,
@@ -162,12 +138,6 @@ class _SectionQuestionState extends State<SectionQuestion>
                               level.toLowerCase() ==
                                   widget.fcLearning.flashcardId!.translation
                                       .toLowerCase());
-                          _timerController.forward();
-                          Future.delayed(const Duration(seconds: 3), () {
-                            if (context.mounted) {
-                              context.read<FlashCardQuizzCubit>().next();
-                            }
-                          });
                         },
                       ),
                       SizedBox(width: 8),
@@ -182,40 +152,12 @@ class _SectionQuestionState extends State<SectionQuestion>
         const SizedBox(height: 32),
         if (isCheck)
           Builder(builder: (context) {
-            final isCorrect = selectedAnswer!.toLowerCase() ==
-                widget.fcLearning.flashcardId!.translation.toLowerCase();
             return Column(
               children: [
+                SizedBox(height: 8),
                 Text(
-                  isCorrect ? 'Bạn đã trả lời đúng!' : 'Bạn đã trả lời sai!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: isCorrect ? AppColors.success : AppColors.error,
-                  ),
-                ),
-                if (!isCorrect) ...[
-                  SizedBox(height: 8),
-                  Text(
-                    'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-                SizedBox(height: 16),
-                AnimatedBuilder(
-                  animation: _timerController,
-                  builder: (context, child) {
-                    return _timerController.value > 0
-                        ? SizedBox(
-                            width: 100,
-                            child: LinearProgressIndicator(
-                              value: 1 - _timerController.value,
-                              backgroundColor: Colors.grey[300],
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppColors.primary),
-                            ),
-                          )
-                        : const SizedBox.shrink();
-                  },
+                  'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
+                  style: TextStyle(fontSize: 18),
                 ),
               ],
             );

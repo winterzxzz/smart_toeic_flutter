@@ -46,7 +46,7 @@ class ResultTestPage extends StatelessWidget {
                     icon: FontAwesomeIcons.percent,
                     title: 'Accuracy(#correct/#total)',
                     value:
-                        '${((resultModel.correctQuestion / resultModel.totalQuestion) * 100).toStringAsFixed(2)}%',
+                        '${((resultModel.correctQuestion / (resultModel.totalQuestion == 0 ? 1 : resultModel.totalQuestion)) * 100).toStringAsFixed(2)}%',
                   ),
                   SizedBox(height: 16),
                   ResultInfoItem(

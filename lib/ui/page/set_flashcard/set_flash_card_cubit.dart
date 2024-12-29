@@ -10,7 +10,6 @@ class FlashCardCubit extends Cubit<FlashCardState> {
   FlashCardCubit(this._flashCardRespository) : super(FlashCardState.initial());
 
   Future<void> fetchFlashCardSets() async {
-    if (state.loadStatus == LoadStatus.success) return;
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final response = await _flashCardRespository.getSetFlashCards();
     response.fold(
@@ -26,7 +25,6 @@ class FlashCardCubit extends Cubit<FlashCardState> {
   }
 
   Future<void> fetchFlashCardSetsLearning() async {
-    if (state.loadStatusLearning == LoadStatus.success) return;
     emit(state.copyWith(loadStatusLearning: LoadStatus.loading));
     final response = await _flashCardRespository.getSetFlashCardsLearning();
     response.fold(

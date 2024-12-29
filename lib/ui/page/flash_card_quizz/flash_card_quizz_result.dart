@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 
 class FlashCardQuizResultPage extends StatelessWidget {
-  final int correctAnswers;
-  final int totalQuestions;
+  final List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest;
 
-  const FlashCardQuizResultPage({super.key, required this.correctAnswers, required this.totalQuestions});
+  const FlashCardQuizResultPage({
+    super.key,
+    required this.flashCardQuizzScoreRequest,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Result'),
+        automaticallyImplyLeading: false,
+        title: Text('Kết quả bài kiểm tra'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Your Score',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: ListView.builder(
+        itemCount: flashCardQuizzScoreRequest.length,
+        itemBuilder: (context, index) {
+          final item = flashCardQuizzScoreRequest[index];
+          return Card(
+            child: ListTile(
+              title: Text(
+                item.word!,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Tỉ lệ khó: ${item.difficultRate}'),
+                  Text('Thời gian: ${item.timeMinutes ?? 0} phút'),
+                  Text('Số câu hỏi: ${item.numOfQuiz ?? 0}'),
+                  Text('Số câu đúng: ${item.numOfCorrect ?? 0}'),
+                  Text(
+                      'Số câu sai: ${(item.numOfQuiz ?? 0) - (item.numOfCorrect ?? 0)}'),
+                  Text('Tỉ lệ đúng: ${item.accuracy}'),
+                ],
+              ),
             ),
-            SizedBox(height: 20),
-            Text(
-              '$correctAnswers / $totalQuestions',
-              style: TextStyle(fontSize: 48, color: Colors.blueAccent),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Add functionality to restart the quiz or go back to home
-                GoRouter.of(context).pop();
-              },
-              child: Text('Back'),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

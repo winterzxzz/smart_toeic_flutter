@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
@@ -18,8 +19,10 @@ import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
+import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final TestRepository _testRepository;
@@ -210,6 +213,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       )),
       (r) async {
         await injector<HomeCubit>().getData();
+        await injector<DeThiOnlineCubit>().fetchTests();
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
         ));
@@ -230,7 +234,8 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
 
         if (context.mounted) {
           AppNavigator(context: context).hideLoadingOverlay();
-          AppNavigator(context: context).success('Submit test success');
+          showToast(
+              title: 'Submit test success', type: ToastificationType.success);
           GoRouter.of(context).pushReplacementNamed(AppRouter.resultTest,
               extra: {'resultModel': resultModel});
         }

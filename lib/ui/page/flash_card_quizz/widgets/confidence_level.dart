@@ -1,9 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
-import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_cubit.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_state.dart';
 
 Map<double, String> diffLevels = {
   0: 'Khó nhớ',
@@ -12,22 +12,29 @@ Map<double, String> diffLevels = {
   1: 'Rất dễ nhớ',
 };
 
-class ConfidenceLevel extends StatelessWidget {
+class ConfidenceLevel extends StatefulWidget {
   const ConfidenceLevel({super.key, required this.fcLearning});
 
   final FlashCardLearning fcLearning;
 
   @override
+  State<ConfidenceLevel> createState() => _ConfidenceLevelState();
+}
+
+class _ConfidenceLevelState extends State<ConfidenceLevel> {
+  double? confidenceLevel;
+
+  @override
   Widget build(BuildContext context) {
-    if (fcLearning.flashcardId == null) {
+    if (widget.fcLearning.flashcardId == null) {
       return const SizedBox.shrink();
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      key: key,
+      key: widget.key,
       children: [
         Text(
-          fcLearning.flashcardId?.word ?? '',
+          widget.fcLearning.flashcardId?.word ?? '',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -41,14 +48,18 @@ class ConfidenceLevel extends StatelessWidget {
         ),
         SizedBox(height: 32),
         ...diffLevels.entries.map((level) {
+          log('confidenceLevel: ${level.key}');
           return Column(
             children: [
               const SizedBox(height: 32),
               InkWell(
                 onTap: () {
+                  setState(() {
+                    confidenceLevel = level.key;
+                  });
                   context
                       .read<FlashCardQuizzCubit>()
-                      .updateConfidenceLevel(level.key, fcLearning.id!);
+                      .updateConfidenceLevel(level.key, widget.fcLearning.id!);
                 },
                 child: Container(
                   width: double.infinity,
@@ -58,31 +69,24 @@ class ConfidenceLevel extends StatelessWidget {
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: BlocSelector<FlashCardQuizzCubit, FlashCardQuizzState,
-                      List<FlashCardQuizzScoreRequest>>(
-                    selector: (state) {
-                      return state.flashCardQuizzScoreRequest;
-                    },
-                    builder: (context, flashCardQuizzScoreRequest) {
-                      final scoreRequest =
-                          getScoreRequest(flashCardQuizzScoreRequest);
-                      return Row(
-                        children: [
-                          Radio<double>(
-                            value: level.key,
-                            groupValue: scoreRequest.difficultRate,
-                            onChanged: (value) {
-                              context
-                                  .read<FlashCardQuizzCubit>()
-                                  .updateConfidenceLevel(
-                                      value!, fcLearning.id!);
-                            },
-                          ),
-                          SizedBox(width: 8),
-                          Text(level.value),
-                        ],
-                      );
-                    },
+                  child: Row(
+                    children: [
+                      Radio<double>(
+                        value: level.key,
+                        groupValue: confidenceLevel,
+                        onChanged: (value) {
+                          setState(() {
+                            confidenceLevel = value;
+                          });
+                          context
+                              .read<FlashCardQuizzCubit>()
+                              .updateConfidenceLevel(
+                                  value!, widget.fcLearning.id!);
+                        },
+                      ),
+                      SizedBox(width: 8),
+                      Text(level.value),
+                    ],
                   ),
                 ),
               ),
@@ -91,16 +95,5 @@ class ConfidenceLevel extends StatelessWidget {
         }),
       ],
     );
-  }
-
-  FlashCardQuizzScoreRequest getScoreRequest(
-      List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest) {
-    FlashCardQuizzScoreRequest? scoreRequest;
-    for (var score in flashCardQuizzScoreRequest) {
-      if (score.id == fcLearning.id) {
-        scoreRequest = score;
-      }
-    }
-    return scoreRequest!;
   }
 }

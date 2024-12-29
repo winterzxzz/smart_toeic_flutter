@@ -9,6 +9,7 @@ part of 'flash_card_quizz_score_request.dart';
 FlashCardQuizzScoreRequest _$FlashCardQuizzScoreRequestFromJson(
         Map<String, dynamic> json) =>
     FlashCardQuizzScoreRequest(
+      numOfCorrect: (json['num_of_correct'] as num?)?.toInt(),
       accuracy: (json['accuracy'] as num?)?.toDouble(),
       difficultRate: (json['difficult_rate'] as num?)?.toDouble(),
       id: json['id'] as String?,
@@ -21,6 +22,7 @@ FlashCardQuizzScoreRequest _$FlashCardQuizzScoreRequestFromJson(
 Map<String, dynamic> _$FlashCardQuizzScoreRequestToJson(
         FlashCardQuizzScoreRequest instance) =>
     <String, dynamic>{
+      'num_of_correct': instance.numOfCorrect,
       'accuracy': instance.accuracy,
       'difficult_rate': instance.difficultRate,
       'id': instance.id,

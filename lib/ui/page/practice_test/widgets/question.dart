@@ -28,6 +28,19 @@ class QuestionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (question.audio != null) AudioSection(audioUrl: question.audio!),
+          if (question.paragraph != null)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.backgroundDarkSub
+                    : AppColors.backgroundLightSub,
+              ),
+              child: Text(
+                question.paragraph!,
+              ),
+            ),
           if (question.image != null)
             Container(
               constraints: BoxConstraints(maxWidth: 500),

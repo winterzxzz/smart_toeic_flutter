@@ -42,7 +42,12 @@ class _ModeTestpageState extends State<ModeTestpage> {
                   widget.test.title!,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-              if (widget.test.title != null) SizedBox(height: 16),
+              SizedBox(height: 16),
+              Text(
+                '${widget.test.attemptCount} luợt làm bài',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              SizedBox(height: 16),
               ToggleButtons(
                 borderRadius: BorderRadius.circular(8),
                 isSelected: [isPracticeMode, !isPracticeMode],

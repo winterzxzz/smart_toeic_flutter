@@ -32,7 +32,6 @@ class _MatchingWordState extends State<MatchingWord>
   final Map<String, AnimationController> _fadeControllers = {};
   late ConfettiController _confettiController;
   final Map<String, List<Offset>> _pieces = {};
-  late AnimationController _timerController;
 
   @override
   void initState() {
@@ -47,12 +46,6 @@ class _MatchingWordState extends State<MatchingWord>
     );
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 2));
-
-    // Initialize timer controller
-    _timerController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
   }
 
   @override
@@ -62,7 +55,6 @@ class _MatchingWordState extends State<MatchingWord>
       controller.dispose();
     }
     _confettiController.dispose();
-    _timerController.dispose();
     super.dispose();
   }
 
@@ -121,7 +113,12 @@ class _MatchingWordState extends State<MatchingWord>
               availableWords
                   .removeWhere((e) => e.flashcardId!.word == selectedWord);
             }
-            context.read<FlashCardQuizzCubit>().answer(word, isCorrectMatch);
+            if (availableWords.isEmpty && availableTranslations.isEmpty) {
+              context.read<FlashCardQuizzCubit>().answer(word, isCorrectMatch);
+            } else {
+              context.read<FlashCardQuizzCubit>().answer(word, isCorrectMatch,
+                  isTrigger: false);
+            }
             matchedPairs.add(selectedWord!);
             selectedWord = null;
             isSelectingWord = null;
@@ -129,12 +126,6 @@ class _MatchingWordState extends State<MatchingWord>
             // Check if all pairs are matched
             if (availableWords.isEmpty && availableTranslations.isEmpty) {
               _confettiController.play();
-              _timerController.forward();
-              Future.delayed(const Duration(seconds: 3), () {
-                if (mounted) {
-                  context.read<FlashCardQuizzCubit>().next();
-                }
-              });
             }
           });
         });
@@ -285,23 +276,6 @@ class _MatchingWordState extends State<MatchingWord>
                 children: [
                   Text(
                       'Bạn đã ghép đúng tất cả các từ, tiếp tục với những dạng khác nhé!'),
-                  SizedBox(height: 16),
-                  AnimatedBuilder(
-                    animation: _timerController,
-                    builder: (context, child) {
-                      return _timerController.value > 0
-                          ? SizedBox(
-                              width: 100,
-                              child: LinearProgressIndicator(
-                                value: 1 - _timerController.value,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppColors.primary),
-                              ),
-                            )
-                          : const SizedBox.shrink();
-                    },
-                  ),
                 ],
               ),
           ],

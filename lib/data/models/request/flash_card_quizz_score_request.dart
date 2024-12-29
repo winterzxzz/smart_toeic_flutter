@@ -18,6 +18,8 @@ String flashCardQuizzScoreRequestToJson(
 
 @JsonSerializable()
 class FlashCardQuizzScoreRequest {
+  @JsonKey(name: "num_of_correct")
+  final int? numOfCorrect;
   @JsonKey(name: "accuracy")
   final double? accuracy;
   @JsonKey(name: "difficult_rate")
@@ -34,6 +36,7 @@ class FlashCardQuizzScoreRequest {
   final bool? isChangeDifficulty;
 
   FlashCardQuizzScoreRequest({
+    this.numOfCorrect,
     this.accuracy,
     this.difficultRate,
     this.id,
@@ -44,6 +47,7 @@ class FlashCardQuizzScoreRequest {
   });
 
   FlashCardQuizzScoreRequest copyWith({
+    int? numOfCorrect,
     double? accuracy,
     double? difficultRate,
     String? id,
@@ -53,6 +57,7 @@ class FlashCardQuizzScoreRequest {
     bool? isChangeDifficulty,
   }) =>
       FlashCardQuizzScoreRequest(
+        numOfCorrect: numOfCorrect ?? this.numOfCorrect,
         accuracy: accuracy ?? this.accuracy,
         difficultRate: difficultRate ?? this.difficultRate,
         id: id ?? this.id,
