@@ -125,9 +125,8 @@ class _PageState extends State<Page> {
             }
             return SingleChildScrollView(
               child: Container(
-                width: MediaQuery.sizeOf(context).width * 0.6,
                 margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.sizeOf(context).width * 0.2),
+                    horizontal: MediaQuery.sizeOf(context).width * 0.1),
                 child: Column(
                   children: [
                     const SizedBox(height: 32),

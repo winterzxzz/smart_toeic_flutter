@@ -7,9 +7,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_pop_over.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/widgets/form_set_flash_card_dia_log.dart';
 
 class SetFlashCardLearningItem extends StatefulWidget {
   final SetFlashCardLearning flashcard;
@@ -175,47 +173,6 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
       }
     }
     return count;
-  }
-
-  void _showMenuDialog() {
-    showPopMenuOver(
-      context,
-      ListItems(
-        popupMenus: [
-          PopupMenu(
-            title: 'Update',
-            icon: Icons.update,
-            onPressed: () async {
-              GoRouter.of(context).pop();
-              await Future.delayed(Duration(milliseconds: 100));
-              if (mounted) {
-                showCreateSetFlashCardDialog(context,
-                    title: widget.flashcard.setFlashcardId.title,
-                    description: widget.flashcard.setFlashcardId.description,
-                    onSave: (title, description) {
-                  context.read<FlashCardCubit>().updateFlashCardSet(
-                      widget.flashcard.id, title, description);
-                });
-              }
-            },
-          ),
-          PopupMenu(
-            title: 'Delete',
-            icon: Icons.delete,
-            onPressed: () {
-              GoRouter.of(context).pop();
-              showConfirmDialog(context, 'Bạn có chắc chắn muốn xóa không?',
-                  'Hành động này không thể hoàn tác. Điều này sẽ xóa vĩnh viễn dữ liệu của bạn.',
-                  () {
-                context
-                    .read<FlashCardCubit>()
-                    .deleteFlashCardSet(widget.flashcard.id);
-              });
-            },
-          ),
-        ],
-      ),
-    );
   }
 }
 

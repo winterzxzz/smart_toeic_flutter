@@ -15,6 +15,19 @@ class AppThemes {
     this.secondaryColor = AppColors.secondary,
   });
 
+  // copy with
+  AppThemes copyWith({
+    Brightness? brightness,
+    Color? primaryColor,
+    Color? secondaryColor,
+  }) {
+    return AppThemes(
+      brightness: brightness ?? this.brightness,
+      primaryColor: primaryColor ?? this.primaryColor,
+      secondaryColor: secondaryColor ?? this.secondaryColor,
+    );
+  }
+
   Color get backgroundColor => brightness == Brightness.dark
       ? AppColors.backgroundDarkSub
       : AppColors.backgroundLightSub;
@@ -88,6 +101,10 @@ class AppThemes {
         brightness: brightness,
         primaryColor: primaryColor,
         fontFamily: _font,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: primaryColor,
+          brightness: brightness,
+        ),
         scaffoldBackgroundColor: backgroundColor,
         appBarTheme: AppBarTheme(
           centerTitle: false,

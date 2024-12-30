@@ -65,4 +65,12 @@ class AppSettingCubit extends Cubit<AppSettingState> {
   void setCurrentPath({required String path}) {
     emit(state.copyWith(currentPath: path));
   }
+
+  void changePrimanyColor({required Color color}) {
+    emit(state.copyWith(primaryColor: color));
+  }
+
+  void changeDynamicColor({required bool isDynamicColor}) {
+    emit(state.copyWith(isDynamicColor: isDynamicColor));
+  }
 }

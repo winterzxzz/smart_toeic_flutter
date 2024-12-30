@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,11 +13,13 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:toeic_desktop/data/network/repositories/payment_repository.dart';
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
+import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/cubit/get_random_word_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
+import 'package:toeic_desktop/ui/page/listen_copy/listen_copy_cubit.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
@@ -76,13 +79,18 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: BlocBuilder<AppSettingCubit, AppSettingState>(
+          buildWhen: (previous, current) {
+            return previous.themeMode != current.themeMode ||
+                previous.primaryColor != current.primaryColor ||
+                previous.isDynamicColor != current.isDynamicColor ||
+                previous.language != current.language;
+          },
           builder: (context, state) {
             return GestureDetector(
               onTap: () {
                 _hideKeyboard(context);
               },
               child: GlobalLoaderOverlay(
-                useDefaultLoading: false,
                 overlayWidgetBuilder: (_) {
                   return Center(
                     child: Container(
@@ -107,6 +115,8 @@ class MyApp extends StatelessWidget {
                 child: _buildMaterialApp(
                   locale: state.language.local,
                   theme: state.themeMode,
+                  primaryColor: state.primaryColor,
+                  isDynamicColor: state.isDynamicColor,
                 ),
               ),
             );
@@ -119,26 +129,51 @@ class MyApp extends StatelessWidget {
   Widget _buildMaterialApp({
     required Locale locale,
     required ThemeMode theme,
+    required Color primaryColor,
+    required bool isDynamicColor,
   }) {
-    return ToastificationWrapper(
-      child: MaterialApp.router(
-        title: AppConfigs.appName,
-        debugShowCheckedModeBanner: false,
-        theme: AppThemes(
-          brightness:
-              theme == ThemeMode.dark ? Brightness.dark : Brightness.light,
-        ).theme,
-        routerConfig: AppRouter.router,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          S.delegate,
-        ],
-        locale: locale,
-        supportedLocales: S.delegate.supportedLocales,
-      ),
-    );
+    return DynamicColorBuilder(
+        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+      ColorScheme? lightColorScheme;
+      ColorScheme? darkColorScheme;
+      if (lightDynamic != null && darkDynamic != null && isDynamicColor) {
+        lightColorScheme = lightDynamic;
+        darkColorScheme = darkDynamic;
+      } else {
+        lightColorScheme = ColorScheme.fromSeed(
+          seedColor: primaryColor,
+          brightness: Brightness.light,
+        );
+        darkColorScheme = ColorScheme.fromSeed(
+            seedColor: primaryColor, brightness: Brightness.dark);
+      }
+      return ToastificationWrapper(
+        child: MaterialApp.router(
+          title: AppConfigs.appName,
+          debugShowCheckedModeBanner: false,
+          theme: AppThemes(
+            brightness:
+                theme == ThemeMode.dark ? Brightness.dark : Brightness.light,
+            primaryColor: theme == ThemeMode.dark
+                ? darkColorScheme.primary
+                : lightColorScheme.primary,
+          ).theme.copyWith(
+                colorScheme: theme == ThemeMode.dark
+                    ? darkColorScheme
+                    : lightColorScheme,
+              ),
+          routerConfig: AppRouter.router,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            S.delegate,
+          ],
+          locale: locale,
+          supportedLocales: S.delegate.supportedLocales,
+        ),
+      );
+    });
   }
 
   void _hideKeyboard(BuildContext context) {

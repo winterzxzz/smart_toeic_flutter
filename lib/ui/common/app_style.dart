@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AppColors {
+class AppStyleColor {
   static ColorScheme lightColorScheme = ColorScheme.fromSeed(
     // primarySwatch: Colors.blue,
     seedColor: const Color(0xff3498db),
@@ -19,7 +19,7 @@ class AppColors {
 
 class AppStyle {
   static ThemeData lightTheme = ThemeData(
-    colorScheme: AppColors.lightColorScheme,
+    colorScheme: AppStyleColor.lightColorScheme,
     useMaterial3: true,
     fontFamily: Platform.isWindows ? "Microsoft YaHei" : null,
     visualDensity: VisualDensity.standard,
@@ -28,22 +28,22 @@ class AppStyle {
       centerTitle: true,
       titleTextStyle: const TextStyle(
         fontSize: 16,
-        color: AppColors.black333,
+        color: AppStyleColor.black333,
       ),
-      foregroundColor: AppColors.black333,
+      foregroundColor: AppStyleColor.black333,
       systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
         systemNavigationBarColor: Colors.transparent,
       ),
     ),
 
     // radioTheme: RadioThemeData(
-    //   fillColor: MaterialStateProperty.all(AppColors.lightColorScheme.primary),
+    //   fillColor: MaterialStateProperty.all(AppStyleColor.lightColorScheme.primary),
     // ),
     // checkboxTheme: CheckboxThemeData(
-    //   fillColor: MaterialStateProperty.all(AppColors.lightColorScheme.primary),
+    //   fillColor: MaterialStateProperty.all(AppStyleColor.lightColorScheme.primary),
     // ),
     // tabBarTheme: TabBarTheme(
-    //   labelColor: AppColors.lightColorScheme.primary,
+    //   labelColor: AppStyleColor.lightColorScheme.primary,
     //   unselectedLabelColor: Colors.white70,
     //   indicatorSize: TabBarIndicatorSize.tab,
     //   indicator: RectangularIndicator(
@@ -59,7 +59,7 @@ class AppStyle {
   );
 
   static ThemeData darkTheme = ThemeData.dark().copyWith(
-    colorScheme: AppColors.darkColorScheme,
+    colorScheme: AppStyleColor.darkColorScheme,
     visualDensity: VisualDensity.standard,
     textTheme: ThemeData.dark().textTheme.apply(
           fontFamily: Platform.isWindows ? "Microsoft YaHei" : null,
@@ -81,13 +81,13 @@ class AppStyle {
       ),
     ),
     // radioTheme: RadioThemeData(
-    //   fillColor: MaterialStateProperty.all(AppColors.darkColorScheme.primary),
+    //   fillColor: MaterialStateProperty.all(AppStyleColor.darkColorScheme.primary),
     // ),
     // checkboxTheme: CheckboxThemeData(
-    //   fillColor: MaterialStateProperty.all(AppColors.darkColorScheme.primary),
+    //   fillColor: MaterialStateProperty.all(AppStyleColor.darkColorScheme.primary),
     // ),
     // tabBarTheme: TabBarTheme(
-    //   labelColor: AppColors.darkColorScheme.primary,
+    //   labelColor: AppStyleColor.darkColorScheme.primary,
     //   unselectedLabelColor: Colors.white70,
     //   indicator: RectangularIndicator(
     //     color: Colors.white.withOpacity(.2),

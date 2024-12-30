@@ -82,6 +82,7 @@ class AppImages {
   static const icDarkModeActive = 'assets/vectors/ic_dark_mode_active.svg';
   static const icDarkModeInactive = 'assets/vectors/ic_dark_mode_inactive.svg';
   static const icHome = 'assets/vectors/ic_home.svg';
+  static const icListenCopy = 'assets/vectors/ic_listen_copy.svg';
 
   // animations
   static const splashAnimation = 'assets/animations/splash.json';

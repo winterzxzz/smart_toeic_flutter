@@ -133,7 +133,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                       Text('Example Sentences:',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       if (widget.flashcard.flashcardId?.exampleSentence
-                              ?.isNotEmpty ??
+                              .isNotEmpty ??
                           false) ...[
                         SizedBox(height: 8),
                         ...(widget.flashcard.flashcardId?.exampleSentence ?? [])
@@ -226,14 +226,14 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
     return AppColors.primary;
   }
 
-  Color _getColorFromDecayScore(double decayScore) {
-    if (decayScore >= 0.7 && decayScore < 1) {
-      return Colors.green;
-    } else if (decayScore >= 0.5 && decayScore < 0.7) {
-      return Colors.yellow;
-    } else if (decayScore > 0 && decayScore < 0.5) {
-      return Colors.red;
-    }
-    return AppColors.primary;
-  }
+  // Color _getColorFromDecayScore(double decayScore) {
+  //   if (decayScore >= 0.7 && decayScore < 1) {
+  //     return Colors.green;
+  //   } else if (decayScore >= 0.5 && decayScore < 0.7) {
+  //     return Colors.yellow;
+  //   } else if (decayScore > 0 && decayScore < 0.5) {
+  //     return Colors.red;
+  //   }
+  //   return AppColors.primary;
+  // }
 }

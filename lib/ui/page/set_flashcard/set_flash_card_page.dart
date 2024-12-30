@@ -42,8 +42,9 @@ class Page extends StatelessWidget {
               dividerHeight: 0,
               tabAlignment: TabAlignment.center,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: Colors.deepOrangeAccent,
-              labelColor: Colors.deepOrangeAccent, // Replace AppColors.primary
+              indicatorColor: Theme.of(context).primaryColor,
+              labelColor:
+                  Theme.of(context).primaryColor, // Replace AppColors.primary
               unselectedLabelColor: Colors.grey, // Replace AppColors.textGray
               onTap: (index) {
                 if (index == 1) {

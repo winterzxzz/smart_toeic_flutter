@@ -81,6 +81,7 @@ dependencies:
   excel: ^4.0.6
   file_picker: ^8.1.6
   confetti: ^0.8.0
+  dynamic_color: ^1.7.0
 
 dev_dependencies:
   flutter_test:

@@ -15,6 +15,7 @@ import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
 import 'package:toeic_desktop/ui/page/introduction/introduction_page.dart';
+import 'package:toeic_desktop/ui/page/listen_copy/listen_copy_page.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
@@ -89,6 +90,7 @@ class AppRouter {
   static const String setting = "/setting";
   static const String analysis = "/analysis";
   static const String upgradeAccountSuccess = "/upgrade-account-success";
+  static const String listenCopy = "/listen-copy";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -198,11 +200,21 @@ class AppRouter {
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
                 final flashCardQuizzScoreRequest =
-                    args['flashCardQuizzScoreRequest'] as List<FlashCardQuizzScoreRequest>;
+                    args['flashCardQuizzScoreRequest']
+                        as List<FlashCardQuizzScoreRequest>;
                 return FlashCardQuizResultPage(
                   flashCardQuizzScoreRequest: flashCardQuizzScoreRequest,
                 );
               },
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              name: listenCopy,
+              path: listenCopy,
+              builder: (context, state) => const ListenCopyPage(),
             ),
           ],
         ),

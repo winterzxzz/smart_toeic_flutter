@@ -39,7 +39,7 @@ class _FlashcardTileState extends State<FlashcardTile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.sizeOf(context).width * 0.6,
+      width: MediaQuery.sizeOf(context).width * 0.8,
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 8),
         child: Padding(

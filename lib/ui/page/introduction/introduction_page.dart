@@ -86,7 +86,7 @@ class IntroductionPage extends StatelessWidget {
             child: Row(
               children: [
                 IntroCard(
-                  icon: FontAwesomeIcons.fileAlt,
+                  icon: FontAwesomeIcons.fileLines,
                   title: 'Phân tích kết quả chi tiết',
                   message:
                       'Hiển thị điểm số và phân tích sâu hiệu suất từng phần, giúp bạn hiểu rõ điểm mạnh và điểm cần cải thiện.',
@@ -213,7 +213,6 @@ class IntroCard extends StatelessWidget {
       child: Card(
         child: LayoutBuilder(builder: (context, constraints) {
           final isMaxWidth = constraints.maxWidth > (1280 / 3 + 16);
-          log('isMaxWidgth: ${constraints.maxWidth}');
           return Container(
             height: isMaxWidth ? 150 : 180,
             padding: EdgeInsets.all(16),

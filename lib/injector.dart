@@ -36,18 +36,22 @@ Future<void> init() async {
     ..registerFactory<CheckPaymentStatusCubit>(
         () => CheckPaymentStatusCubit(injector()))
     ..registerFactory<ProfileCubit>(() => ProfileCubit(injector()))
-    ..registerFactory<GetRandomWordCubit>(() => GetRandomWordCubit(injector()));
+    ..registerFactory<GetRandomWordCubit>(() => GetRandomWordCubit(injector()))
+    ..registerLazySingleton<TranscriptTestRepository>(
+        () => TranscriptTestRepositoryImpl(injector()))
+    ..registerFactory<ListenCopyCubit>(() => ListenCopyCubit(injector()));
 
-    
   if (!injector.isRegistered<HomeCubit>()) {
-    injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
-  }
+    if (!injector.isRegistered<HomeCubit>()) {
+      injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
+    }
 
-  if (!injector.isRegistered<SplashCubit>()) {
-    injector.registerFactory<SplashCubit>(() => SplashCubit(injector()));
-  }
+    if (!injector.isRegistered<SplashCubit>()) {
+      injector.registerFactory<SplashCubit>(() => SplashCubit(injector()));
+    }
 
-  if (!injector.isRegistered<AppSettingCubit>()) {
-    injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
+    if (!injector.isRegistered<AppSettingCubit>()) {
+      injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
+    }
   }
 }

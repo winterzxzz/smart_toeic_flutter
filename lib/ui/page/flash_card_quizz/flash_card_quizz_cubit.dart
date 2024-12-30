@@ -10,10 +10,16 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   final FlashCardRespository _flashCardRepository;
   // this is time for do all quizz
   late Duration currentTime;
+  Timer? _animationTimer;
+  // Add field to track question times
+  final Map<String, Duration> _questionTimes = {};
+  DateTime? _questionStartTime;
+
   FlashCardQuizzCubit(this._flashCardRepository)
       : super(FlashCardQuizzState.initial()) {
     currentTime = Duration.zero;
     _startTimer();
+    _questionStartTime = DateTime.now();
   }
 
   void _startTimer() {
@@ -57,7 +63,12 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   }
 
   void next() {
+    _animationTimer?.cancel();
     emit(state.copyWith(isAnimating: false, isCorrect: false));
+
+    // Record start time for the next question
+    _questionStartTime = DateTime.now();
+
     if (state.typeQuizzIndex == 1) {
       nextTypeQuizz();
       return;
@@ -89,16 +100,28 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   }
 
   void answer(String word, bool isCorrect, {bool isTrigger = true}) {
+    // Calculate time spent on this question
+    if (_questionStartTime != null) {
+      final timeSpent = DateTime.now().difference(_questionStartTime!);
+      _questionTimes[word] =
+          (_questionTimes[word] ?? Duration.zero) + timeSpent;
+    }
+
+    // Get the time spent in minutes for this word
+    final timeSpentMinutes = _questionTimes[word]?.inSeconds ?? 0 / 60.0;
+
     emit(state.copyWith(
         flashCardQuizzScoreRequest: state.flashCardQuizzScoreRequest.map((e) {
       if (e.word == word) {
         return e.copyWith(
           numOfCorrect: isCorrect ? (e.numOfCorrect ?? 0) + 1 : e.numOfCorrect,
           numOfQuiz: (e.numOfQuiz ?? 0) + 1,
+          timeMinutes: double.parse(timeSpentMinutes.toStringAsFixed(4)),
         );
       }
       return e;
     }).toList()));
+
     if (isTrigger) {
       triggerAnimation(isCorrect);
     }
@@ -134,11 +157,24 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
 
   void triggerAnimation(bool isCorrect) {
     emit(state.copyWith(isAnimating: true, isCorrect: isCorrect));
-    // Reset animation flag after a short delay
-    Future.delayed(const Duration(seconds: 3), () {
+    _animationTimer?.cancel();
+    _animationTimer = Timer(const Duration(seconds: 3), () {
       if (state.isAnimating) {
         next();
       }
     });
+  }
+
+  // Add method to get time spent for a specific word
+  Duration getTimeSpentForWord(String word) {
+    return _questionTimes[word] ?? Duration.zero;
+  }
+
+  // Add method to get formatted time for display
+  String getFormattedTimeForWord(String word) {
+    final duration = getTimeSpentForWord(word);
+    final minutes = duration.inMinutes;
+    final seconds = duration.inSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 }

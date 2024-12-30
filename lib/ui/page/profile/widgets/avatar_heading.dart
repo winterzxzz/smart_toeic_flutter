@@ -102,9 +102,9 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                           style: TextStyle(fontWeight: FontWeight.w600)),
                       SizedBox(height: 8),
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.green[400],
+                          color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(

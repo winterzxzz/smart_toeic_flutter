@@ -7,6 +7,8 @@ class AppSettingState extends Equatable {
   final Size windowSize;
   final List<String> navigationHistory;
   final String currentPath;
+    final Color primaryColor;
+  final bool isDynamicColor;
 
   const AppSettingState({
     this.language = AppConfigs.defaultLanguage,
@@ -15,6 +17,8 @@ class AppSettingState extends Equatable {
     this.windowSize = const Size(1280, 720),
     this.navigationHistory = const [],
     this.currentPath = '',
+    this.primaryColor = const Color(0xffEF5350),
+    this.isDynamicColor = false,
   });
 
   @override
@@ -25,6 +29,8 @@ class AppSettingState extends Equatable {
         windowSize,
         navigationHistory,
         currentPath,
+        primaryColor,
+        isDynamicColor,
       ];
 
   AppSettingState copyWith({
@@ -34,6 +40,8 @@ class AppSettingState extends Equatable {
     Size? windowSize,
     List<String>? navigationHistory,
     String? currentPath,
+    Color? primaryColor,
+    bool? isDynamicColor,
   }) {
     return AppSettingState(
       themeMode: themeMode ?? this.themeMode,
@@ -42,6 +50,8 @@ class AppSettingState extends Equatable {
       windowSize: windowSize ?? this.windowSize,
       navigationHistory: navigationHistory ?? this.navigationHistory,
       currentPath: currentPath ?? this.currentPath,
+      primaryColor: primaryColor ?? this.primaryColor,
+      isDynamicColor: isDynamicColor ?? this.isDynamicColor,
     );
   }
 }

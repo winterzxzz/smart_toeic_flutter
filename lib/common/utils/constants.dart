@@ -212,6 +212,11 @@ class Constants {
       icon: AppImages.icFlashCard,
     ),
     BottomTabModel(
+      title: 'Listen && Copy',
+      route: AppRouter.listenCopy,
+      icon: AppImages.icListenCopy,
+    ),
+    BottomTabModel(
       title: 'Blog',
       route: AppRouter.blog,
       icon: AppImages.icBlog,
