@@ -28,7 +28,12 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This app uses speech recognition to help you practice listening and speaking.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app uses microphone to help you practice listening and speaking.</string>
 	<key>CFBundleURLTypes</key>
+	
 	<!-- url: test://toeic.com -->
 <array>
     <dict>
