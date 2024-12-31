@@ -13,62 +13,42 @@ String transcriptTestToJson(List<TranscriptTest> data) => json.encode(List<dynam
 
 @JsonSerializable()
 class TranscriptTest {
-    @JsonKey(name: "title")
-    String? title;
-    @JsonKey(name: "url")
-    String? url;
-    @JsonKey(name: "attempts")
-    List<dynamic>? attempts;
-    @JsonKey(name: "code")
-    String? code;
-    @JsonKey(name: "description")
-    String? description;
+    @JsonKey(name: "transcriptTestId")
+    String? transcriptTestId;
+    @JsonKey(name: "audioUrl")
+    String? audioUrl;
+    @JsonKey(name: "transcript")
+    String? transcript;
     @JsonKey(name: "createdAt")
     DateTime? createdAt;
     @JsonKey(name: "updatedAt")
     DateTime? updatedAt;
-    @JsonKey(name: "image")
-    String? image;
-    @JsonKey(name: "part")
-    dynamic transcriptTestPart;
     @JsonKey(name: "id")
     String? id;
 
     TranscriptTest({
-        this.title,
-        this.url,
-        this.attempts,
-        this.code,
-        this.description,
+        this.transcriptTestId,
+        this.audioUrl,
+        this.transcript,
         this.createdAt,
         this.updatedAt,
-        this.image,
-        this.transcriptTestPart,
         this.id,
     });
 
     TranscriptTest copyWith({
-        String? title,
-        String? url,
-        List<dynamic>? attempts,
-        String? code,
-        String? description,
+        String? transcriptTestId,
+        String? audioUrl,
+        String? transcript,
         DateTime? createdAt,
         DateTime? updatedAt,
-        String? image,
-        dynamic transcriptTestPart,
         String? id,
     }) => 
         TranscriptTest(
-            title: title ?? this.title,
-            url: url ?? this.url,
-            attempts: attempts ?? this.attempts,
-            code: code ?? this.code,
-            description: description ?? this.description,
+            transcriptTestId: transcriptTestId ?? this.transcriptTestId,
+            audioUrl: audioUrl ?? this.audioUrl,
+            transcript: transcript ?? this.transcript,
             createdAt: createdAt ?? this.createdAt,
             updatedAt: updatedAt ?? this.updatedAt,
-            image: image ?? this.image,
-            transcriptTestPart: transcriptTestPart ?? this.transcriptTestPart,
             id: id ?? this.id,
         );
 

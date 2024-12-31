@@ -39,7 +39,12 @@ Future<void> init() async {
     ..registerFactory<GetRandomWordCubit>(() => GetRandomWordCubit(injector()))
     ..registerLazySingleton<TranscriptTestRepository>(
         () => TranscriptTestRepositoryImpl(injector()))
-    ..registerFactory<ListenCopyCubit>(() => ListenCopyCubit(injector()));
+    ..registerFactory<ListenCopyCubit>(() => ListenCopyCubit(injector()))
+    ..registerFactory<TranscriptTestDetailCubit>(
+        () => TranscriptTestDetailCubit(injector()))
+    ..registerLazySingleton<BlogRepository>(
+        () => BlogRepositoryImpl(injector()))
+    ..registerFactory<BlogCubit>(() => BlogCubit(injector()));  
 
   if (!injector.isRegistered<HomeCubit>()) {
     if (!injector.isRegistered<HomeCubit>()) {

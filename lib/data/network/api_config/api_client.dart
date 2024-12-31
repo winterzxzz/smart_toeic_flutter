@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
+import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
@@ -20,6 +21,7 @@ import 'package:toeic_desktop/data/models/entities/test/result_test_submit.dart'
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test.dart';
+import 'package:toeic_desktop/data/models/entities/transcript/transcript_test_set.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
@@ -213,8 +215,16 @@ abstract class ApiClient {
   );
 
   @GET('/pub/transcript-test')
-  Future<List<TranscriptTest>> getTranscriptTest();
+  Future<List<TranscriptTestSet>> getTranscriptTest();
 
   @GET('/pub/word/4-random')
   Future<List<WordRandom>> getRandom4Words();
+
+  @GET('/pub/transcript-test-item/transcript-test-id?transcriptTestId={transcriptTestId}')
+  Future<List<TranscriptTest>> getTranscriptTestDetail(
+    @Path("transcriptTestId") String transcriptTestId,
+  );
+
+  @GET('/pub/blog')
+  Future<List<Blog>> getBlog();
 }

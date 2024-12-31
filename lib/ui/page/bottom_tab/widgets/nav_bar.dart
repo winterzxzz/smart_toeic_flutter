@@ -117,7 +117,7 @@ class NavBar extends StatelessWidget {
                   horizontal: 16,
                 ),
                 decoration: BoxDecoration(
-                  color: widget.navigationShell.currentIndex == 7
+                  color: widget.navigationShell.currentIndex == 8
                       ? Theme.of(context).colorScheme.primary
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
@@ -127,7 +127,7 @@ class NavBar extends StatelessWidget {
                   height: 24,
                   AppImages.icSetting,
                   colorFilter: ColorFilter.mode(
-                    widget.navigationShell.currentIndex == 7
+                    widget.navigationShell.currentIndex == 8
                         ? AppColors.textWhite
                         : Theme.of(context).brightness == Brightness.dark
                             ? AppColors.textWhite

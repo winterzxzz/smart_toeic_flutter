@@ -15,7 +15,8 @@ import 'package:toeic_desktop/ui/page/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
 import 'package:toeic_desktop/ui/page/introduction/introduction_page.dart';
-import 'package:toeic_desktop/ui/page/listen_copy/listen_copy_page.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_page.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_page.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
@@ -90,8 +91,8 @@ class AppRouter {
   static const String setting = "/setting";
   static const String analysis = "/analysis";
   static const String upgradeAccountSuccess = "/upgrade-account-success";
-  static const String listenCopy = "/listen-copy";
-
+  static const String transcriptTest = "/transcript-test";
+  static const String transcriptTestDetail = "/transcript-test-detail";
   // GoRouter configuration
   static final _routes = <RouteBase>[
     GoRoute(
@@ -212,9 +213,18 @@ class AppRouter {
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: listenCopy,
-              path: listenCopy,
+              name: transcriptTest,
+              path: transcriptTest,
               builder: (context, state) => const ListenCopyPage(),
+            ),
+            GoRoute(
+              name: transcriptTestDetail,
+              path: transcriptTestDetail,
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>;
+                final transcriptTestId = args['transcriptTestId'] as String;
+                return TranscriptTestDetailPage(transcriptTestId: transcriptTestId);
+              },
             ),
           ],
         ),

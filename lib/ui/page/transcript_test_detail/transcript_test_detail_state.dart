@@ -1,40 +1,47 @@
+
+
 import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 
-class ListenCopyState extends Equatable {
+class TranscriptTestDetailState extends Equatable {
   final LoadStatus loadStatus;
   final String message;
   final List<TranscriptTest> transcriptTests;
+  final int currentIndex;
 
-  const ListenCopyState({
+  const TranscriptTestDetailState({
     required this.loadStatus,
     required this.message,
     required this.transcriptTests,
+    required this.currentIndex,
   });
 
-  // init state
-  factory ListenCopyState.initial() {
-    return const ListenCopyState(
+  // initstate
+  factory TranscriptTestDetailState.initial() {
+    return const TranscriptTestDetailState(
       loadStatus: LoadStatus.initial,
       message: '',
       transcriptTests: [],
+      currentIndex: 0,
     );
   }
 
-  // copy with
-  ListenCopyState copyWith({
+  // copyWith 
+  TranscriptTestDetailState copyWith({
     LoadStatus? loadStatus,
     String? message,
     List<TranscriptTest>? transcriptTests,
+    int? currentIndex,
   }) {
-    return ListenCopyState(
+    return TranscriptTestDetailState(
       loadStatus: loadStatus ?? this.loadStatus,
       message: message ?? this.message,
       transcriptTests: transcriptTests ?? this.transcriptTests,
+      currentIndex: currentIndex ?? this.currentIndex,
     );
   }
 
   @override
-  List<Object?> get props => [loadStatus, message, transcriptTests];
+  List<Object?> get props => [loadStatus, message, transcriptTests, currentIndex];
 }

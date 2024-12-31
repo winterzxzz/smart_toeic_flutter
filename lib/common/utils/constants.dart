@@ -213,7 +213,7 @@ class Constants {
     ),
     BottomTabModel(
       title: 'Listen && Copy',
-      route: AppRouter.listenCopy,
+      route: AppRouter.transcriptTest,
       icon: AppImages.icListenCopy,
     ),
     BottomTabModel(
