@@ -8,15 +8,15 @@ class AnalysisCubit extends Cubit<AnalysisState> {
   AnalysisCubit(this.profileRepository) : super(AnalysisState.initial());
 
   Future<void> fetchProfileAnalysis() async {
-    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    await Future.microtask(
+        () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
     final result = await profileRepository.getProfileAnalysis();
     result.fold(
         (l) => emit(state.copyWith(
             loadStatus: LoadStatus.failure,
             message: l.errors?.first.message ?? 'Unexpected error occurred')),
         (r) => emit(state.copyWith(
-            loadStatus: LoadStatus.success,
-            profileAnalysis: r)));
+            loadStatus: LoadStatus.success, profileAnalysis: r)));
   }
 
   Future<void> fetchSuggestForStudy() async {

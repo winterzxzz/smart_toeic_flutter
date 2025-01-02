@@ -32,7 +32,7 @@ class TranscriptTestItem extends StatelessWidget {
                   color: Color(0xFFE7F0FF),
                 ),
                 child: Image.network(
-                  '${Constants.hostUrl}${test.image}',
+                  '${Constants.hostUrl}/uploads${test.image}',
                   errorBuilder: (context, error, stackTrace) =>
                       const SizedBox(),
                   fit: BoxFit.contain,

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 class Utils {
-
   /// Checks if string is email.
   static bool isEmail(String input) {
     // Regular expression pattern to match email addresses
@@ -69,5 +68,10 @@ class Utils {
     String colorString = color.toString(); // Color(0x12345678)
     String valueString = colorString.split('(0x')[1].split(')')[0];
     return valueString;
+  }
+
+  // compare two string ignore case
+  static bool compareStringIgnoreCase(String a, String b) {
+    return a.toLowerCase().trim() == b.toLowerCase().trim();
   }
 }

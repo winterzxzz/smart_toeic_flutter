@@ -30,12 +30,11 @@ class QuestionWidget extends StatelessWidget {
           if (question.audio != null) AudioSection(audioUrl: question.audio!),
           if (question.paragraph != null)
             Container(
+              margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.backgroundDarkSub
-                    : AppColors.backgroundLightSub,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               ),
               child: Text(
                 question.paragraph!,

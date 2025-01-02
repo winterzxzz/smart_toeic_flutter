@@ -82,6 +82,8 @@ dependencies:
   file_picker: ^8.1.6
   confetti: ^0.8.0
   dynamic_color: ^1.7.0
+  flutter_widget_from_html_core: ^0.15.2
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:

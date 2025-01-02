@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_state.dart';
@@ -28,16 +27,10 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigator = AppNavigator(context: context);
     return BlocConsumer<ListenCopyCubit, ListenCopyState>(
       listener: (context, state) {
-        if (state.loadStatus == LoadStatus.loading) {
-          navigator.showLoadingOverlay();
-        } else {
-          navigator.hideLoadingOverlay();
-          if (state.loadStatus == LoadStatus.failure) {
-            showToast(title: state.message, type: ToastificationType.error);
-          }
+        if (state.loadStatus == LoadStatus.failure) {
+          showToast(title: state.message, type: ToastificationType.error);
         }
       },
       builder: (context, state) {
@@ -63,7 +56,8 @@ class Page extends StatelessWidget {
                             const SizedBox(width: 16),
                             Text(
                               'Bộ lọc',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
                             AnimatedRotation(
@@ -84,17 +78,22 @@ class Page extends StatelessWidget {
                           children: [
                             const Divider(),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Column(
                                 children: List.generate(
                                   7,
                                   (index) => CheckboxListTile(
                                     title: Text('Part ${index + 1}'),
-                                    value: state.filterParts.contains('${index + 1}'),
+                                    value: state.filterParts
+                                        .contains('${index + 1}'),
                                     onChanged: (value) {
-                                      context.read<ListenCopyCubit>().setFilterPart('${index + 1}');
+                                      context
+                                          .read<ListenCopyCubit>()
+                                          .setFilterPart('${index + 1}');
                                     },
-                                    controlAffinity: ListTileControlAffinity.leading,
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
                                     contentPadding: EdgeInsets.zero,
                                   ),
                                 ),
@@ -108,22 +107,33 @@ class Page extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 24,
-                      mainAxisSpacing: 24,
-                      childAspectRatio: 0.85,
-                    ),
-                    itemCount: state.filteredTranscriptTestSets.length,
-                    itemBuilder: (context, index) {
-                      final test = state.filteredTranscriptTestSets[index];
-                      return TranscriptTestItem(test: test);
-                    },
-                  ),
-                ),
+                child: state.loadStatus == LoadStatus.loading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : state.filteredTranscriptTestSets.isEmpty
+                        ? const Center(
+                            child: Text('Không có bài tập nào'),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 24,
+                                mainAxisSpacing: 24,
+                                childAspectRatio: 0.85,
+                              ),
+                              itemCount:
+                                  state.filteredTranscriptTestSets.length,
+                              itemBuilder: (context, index) {
+                                final test =
+                                    state.filteredTranscriptTestSets[index];
+                                return TranscriptTestItem(test: test);
+                              },
+                            ),
+                          ),
               ),
             ],
           ),
@@ -132,4 +142,3 @@ class Page extends StatelessWidget {
     );
   }
 }
-

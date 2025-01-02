@@ -157,9 +157,6 @@ class MyApp extends StatelessWidget {
           theme: AppThemes(
             brightness:
                 theme == ThemeMode.dark ? Brightness.dark : Brightness.light,
-            primaryColor: theme == ThemeMode.dark
-                ? darkColorScheme.primary
-                : lightColorScheme.primary,
           ).theme.copyWith(
                 colorScheme: theme == ThemeMode.dark
                     ? darkColorScheme

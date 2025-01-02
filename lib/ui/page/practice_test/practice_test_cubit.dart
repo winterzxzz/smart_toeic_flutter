@@ -75,7 +75,8 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
 
   Future<void> getPracticeTestDetail(
       String testId, List<PartEnum> parts, String? resultId) async {
-    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    await Future.microtask(
+        () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
     final res1 = await _testRepository.getDetailTest(testId);
     if (resultId != null) {
       await getResultTestByResultId(resultId);

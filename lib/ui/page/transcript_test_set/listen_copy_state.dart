@@ -26,7 +26,7 @@ class ListenCopyState extends Equatable {
       message: '',
       transcriptTestSets: [],
       filteredTranscriptTestSets: [],
-      isFilterOpen: false,
+      isFilterOpen: true,
       filterParts: [],
     );
   }
@@ -44,12 +44,20 @@ class ListenCopyState extends Equatable {
       loadStatus: loadStatus ?? this.loadStatus,
       message: message ?? this.message,
       transcriptTestSets: transcriptTestSets ?? this.transcriptTestSets,
-      filteredTranscriptTestSets: filteredTranscriptTestSets ?? this.filteredTranscriptTestSets,
+      filteredTranscriptTestSets:
+          filteredTranscriptTestSets ?? this.filteredTranscriptTestSets,
       isFilterOpen: isFilterOpen ?? this.isFilterOpen,
       filterParts: filterParts ?? this.filterParts,
     );
   }
 
   @override
-  List<Object?> get props => [loadStatus, message, transcriptTestSets, filteredTranscriptTestSets, isFilterOpen, filterParts];
+  List<Object?> get props => [
+        loadStatus,
+        message,
+        transcriptTestSets,
+        filteredTranscriptTestSets,
+        isFilterOpen,
+        filterParts
+      ];
 }

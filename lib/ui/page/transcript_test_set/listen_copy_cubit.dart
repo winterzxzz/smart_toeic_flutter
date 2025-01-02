@@ -11,14 +11,18 @@ class ListenCopyCubit extends Cubit<ListenCopyState> {
 
   Future<void> getTranscriptTests() async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
-    final transcriptTests = await _transcriptTestRepository.getTranscriptTestSets();
+
+    final transcriptTests =
+        await _transcriptTestRepository.getTranscriptTestSets();
     transcriptTests.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
         message: l.errors?.first.message,
       )),
-      (r) => emit(
-          state.copyWith(loadStatus: LoadStatus.success, transcriptTestSets: r, filteredTranscriptTestSets: r)),
+      (r) => emit(state.copyWith(
+          loadStatus: LoadStatus.success,
+          transcriptTestSets: r,
+          filteredTranscriptTestSets: r)),
     );
   }
 
@@ -27,12 +31,21 @@ class ListenCopyCubit extends Cubit<ListenCopyState> {
   }
 
   void setFilterPart(String part) {
-    final newFilterParts = state.filterParts.contains(part) ? state.filterParts.where((p) => p != part).toList() : [...state.filterParts, part];
-    if(newFilterParts.isEmpty) {
-      emit(state.copyWith(filteredTranscriptTestSets: state.transcriptTestSets, filterParts: newFilterParts));
+    final newFilterParts = state.filterParts.contains(part)
+        ? state.filterParts.where((p) => p != part).toList()
+        : [...state.filterParts, part];
+    if (newFilterParts.isEmpty) {
+      emit(state.copyWith(
+          filteredTranscriptTestSets: state.transcriptTestSets,
+          filterParts: newFilterParts));
     } else {
-      final newTranscriptTestSets = state.transcriptTestSets.where((test) => newFilterParts.contains(test.transcriptTestSetPart.toString())).toList();
-      emit(state.copyWith(filteredTranscriptTestSets: newTranscriptTestSets, filterParts: newFilterParts));
+      final newTranscriptTestSets = state.transcriptTestSets
+          .where((test) =>
+              newFilterParts.contains(test.transcriptTestSetPart.toString()))
+          .toList();
+      emit(state.copyWith(
+          filteredTranscriptTestSets: newTranscriptTestSets,
+          filterParts: newFilterParts));
     }
   }
 }

@@ -11,7 +11,8 @@ class HomeCubit extends Cubit<HomeState> {
   void init() async {
     final cookie = SharedPreferencesHelper().getCookies();
     if (isClosed) return;
-    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    await Future.microtask(
+        () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
     if (cookie == null) {
       await _getPublicTests();
       return;

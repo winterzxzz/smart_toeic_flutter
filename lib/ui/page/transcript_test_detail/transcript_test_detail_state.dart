@@ -1,5 +1,3 @@
-
-
 import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -27,7 +25,7 @@ class TranscriptTestDetailState extends Equatable {
     );
   }
 
-  // copyWith 
+  // copyWith
   TranscriptTestDetailState copyWith({
     LoadStatus? loadStatus,
     String? message,
@@ -43,5 +41,6 @@ class TranscriptTestDetailState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [loadStatus, message, transcriptTests, currentIndex];
+  List<Object?> get props =>
+      [loadStatus, message, transcriptTests, currentIndex];
 }
