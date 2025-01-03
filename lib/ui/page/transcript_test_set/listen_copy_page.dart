@@ -39,7 +39,7 @@ class Page extends StatelessWidget {
           body: Row(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
+                width: (MediaQuery.of(context).size.width - 60) * 0.3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -115,25 +115,23 @@ class Page extends StatelessWidget {
                         ? const Center(
                             child: Text('Không có bài tập nào'),
                           )
-                        : Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 24,
-                                mainAxisSpacing: 24,
-                                childAspectRatio: 0.85,
-                              ),
-                              itemCount:
-                                  state.filteredTranscriptTestSets.length,
-                              itemBuilder: (context, index) {
-                                final test =
-                                    state.filteredTranscriptTestSets[index];
-                                return TranscriptTestItem(test: test);
-                              },
-                            ),
+                        : GridView.builder(
+                        padding: const EdgeInsets.all(24.0),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 24,
+                            mainAxisSpacing: 24,
+                            childAspectRatio: 0.8,
                           ),
+                          itemCount:
+                              state.filteredTranscriptTestSets.length,
+                          itemBuilder: (context, index) {
+                            final test =
+                                state.filteredTranscriptTestSets[index];
+                            return TranscriptTestItem(test: test);
+                          },
+                        ),
               ),
             ],
           ),

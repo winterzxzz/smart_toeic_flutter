@@ -36,8 +36,10 @@ class QuestionWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
               ),
-              child: Text(
-                question.paragraph!,
+              child: SelectionArea(
+                child: Text(
+                  question.paragraph!,
+                ),
               ),
             ),
           if (question.image != null)
@@ -123,7 +125,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   value: option.id?.name ?? '',
                                   groupValue: widget.question
                                       .userAnswer, // Default selected value
-                                  activeColor: Colors.red,
+                                  activeColor: Theme.of(context).colorScheme.primary,
                                   onChanged: (value) {
                                     context
                                         .read<PracticeTestCubit>()

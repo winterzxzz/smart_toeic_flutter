@@ -155,7 +155,7 @@ class SideQuestion extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       color: part.numValue ==
                                               state.focusPart.numValue
-                                          ? Colors.deepOrangeAccent
+                                          ? Theme.of(context).colorScheme.primary
                                           : Theme.of(context).brightness ==
                                                   Brightness.dark
                                               ? AppColors.backgroundDarkSub

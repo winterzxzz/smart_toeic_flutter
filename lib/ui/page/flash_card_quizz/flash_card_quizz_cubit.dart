@@ -116,7 +116,7 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
         return e.copyWith(
           numOfCorrect: isCorrect ? (e.numOfCorrect ?? 0) + 1 : e.numOfCorrect,
           numOfQuiz: (e.numOfQuiz ?? 0) + 1,
-          timeMinutes: double.parse(timeSpentMinutes.toStringAsFixed(4)),
+          timeMinutes: double.parse(timeSpentMinutes.toStringAsFixed(6)),
         );
       }
       return e;

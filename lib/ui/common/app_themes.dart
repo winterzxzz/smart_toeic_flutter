@@ -107,7 +107,6 @@ class AppThemes {
         ),
         scaffoldBackgroundColor: backgroundColor,
         appBarTheme: AppBarTheme(
-          centerTitle: false,
           surfaceTintColor: Colors.transparent,
           color: appbarColor,
           iconTheme: IconThemeData(

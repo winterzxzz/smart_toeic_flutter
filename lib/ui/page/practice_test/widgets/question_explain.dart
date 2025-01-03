@@ -61,22 +61,24 @@ class ExplanationCard extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+      child: SelectionArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            description,
-            style: TextStyle(fontSize: 14),
-          ),
-        ],
+            SizedBox(height: 4),
+            Text(
+              description,
+              style: TextStyle(fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -61,10 +61,16 @@ class FlashCardCubit extends Cubit<FlashCardState> {
         loadStatus: LoadStatus.failure,
         message: l.toString(),
       )),
-      (r) => emit(state.copyWith(
-        loadStatus: LoadStatus.success,
-        flashCards: state.flashCards.where((e) => e.id != id).toList(),
-      )),
+      (r) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.success,
+          flashCards: state.flashCards.where((e) => e.id != id).toList(),
+        ));
+        showToast(
+          title: "Xóa thành công",
+          type: ToastificationType.success,
+        );
+      },
     );
   }
 
@@ -76,12 +82,18 @@ class FlashCardCubit extends Cubit<FlashCardState> {
         loadStatusLearning: LoadStatus.failure,
         message: l.toString(),
       )),
-      (r) => emit(state.copyWith(
-        loadStatusLearning: LoadStatus.success,
-        flashCardsLearning: state.flashCardsLearning
-            .where((e) => e.id != learningSetId)
-            .toList(),
-      )),
+      (r) {
+        emit(state.copyWith(
+          loadStatusLearning: LoadStatus.success,
+          flashCardsLearning: state.flashCardsLearning
+              .where((e) => e.id != learningSetId)
+              .toList(),
+        ));
+        showToast(
+          title: "Xóa thành công",
+          type: ToastificationType.success,
+        );
+      },
     );
   }
 

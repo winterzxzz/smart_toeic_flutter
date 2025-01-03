@@ -27,26 +27,28 @@ class BlogDetail extends StatelessWidget {
             if (blog == null) {
               return const SizedBox.shrink();
             }
-            return HtmlWidget(
-              blog.content ?? '',
-              onTapUrl: (url) {
-                _launchUrl(url);
-                return true;
-              },
-              enableCaching: true,
-              customWidgetBuilder: (ele) {
-                if (ele.localName == 'img') {
-                  final src = ele.attributes['src'];
-                  return Image.network(
-                    src ?? '',
-                    fit: BoxFit.cover,
-                  );
-                }
-                return null;
-              },
-              onErrorBuilder: (context, element, error) {
-                return const SizedBox.shrink();
-              },
+            return SelectionArea(
+              child: HtmlWidget(
+                blog.content ?? '',
+                onTapUrl: (url) {
+                  _launchUrl(url);
+                  return true;
+                },
+                enableCaching: true,
+                customWidgetBuilder: (ele) {
+                  if (ele.localName == 'img') {
+                    final src = ele.attributes['src'];
+                    return Image.network(
+                      src ?? '',
+                      fit: BoxFit.cover,
+                    );
+                  }
+                  return null;
+                },
+                onErrorBuilder: (context, element, error) {
+                  return const SizedBox.shrink();
+                },
+              ),
             );
           },
         ),

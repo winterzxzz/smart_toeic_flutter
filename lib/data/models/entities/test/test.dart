@@ -14,38 +14,83 @@ String testToJson(List<Test> data) => json.encode(List<dynamic>.from(data.map((x
 @JsonSerializable()
 class Test {
     @JsonKey(name: "title")
-    final String? title;
+    String? title;
     @JsonKey(name: "type")
-    final String? type;
+    String? type;
+    @JsonKey(name: "numberOfParts")
+    int? numberOfParts;
     @JsonKey(name: "code")
-    final String? code;
+    String? code;
     @JsonKey(name: "numberOfQuestions")
-    final int? numberOfQuestions;
+    int? numberOfQuestions;
     @JsonKey(name: "createdAt")
-    final DateTime? createdAt;
+    DateTime? createdAt;
     @JsonKey(name: "updatedAt")
-    final DateTime? updatedAt;
+    DateTime? updatedAt;
     @JsonKey(name: "duration")
-    final int? duration;
+    int? duration;
+    @JsonKey(name: "parts")
+    List<int>? parts;
+    @JsonKey(name: "isPublished")
+    bool? isPublished;
+    @JsonKey(name: "difficulty")
+    String? difficulty;
     @JsonKey(name: "attemptCount")
-    final int? attemptCount;
+    int? attemptCount;
     @JsonKey(name: "userAttempt")
-    final UserAttempt? userAttempt;
+    UserAttempt? userAttempt;
     @JsonKey(name: "id")
-    final String? id;
+    String? id;
 
     Test({
         this.title,
         this.type,
+        this.numberOfParts,
         this.code,
         this.numberOfQuestions,
         this.createdAt,
         this.updatedAt,
         this.duration,
+        this.parts,
+        this.isPublished,
+        this.difficulty,
         this.attemptCount,
         this.userAttempt,
         this.id,
     });
+
+    Test copyWith({
+        String? title,
+        String? type,
+        int? numberOfParts,
+        String? code,
+        int? numberOfQuestions,
+        DateTime? createdAt,
+        DateTime? updatedAt,
+        int? duration,
+        List<int>? parts,
+        bool? isPublished,
+        String? difficulty,
+        int? attemptCount,
+        UserAttempt? userAttempt,
+        String? id,
+    }) => 
+        Test(
+            title: title ?? this.title,
+            type: type ?? this.type,
+            numberOfParts: numberOfParts ?? this.numberOfParts,
+            code: code ?? this.code,
+            numberOfQuestions: numberOfQuestions ?? this.numberOfQuestions,
+            createdAt: createdAt ?? this.createdAt,
+            updatedAt: updatedAt ?? this.updatedAt,
+            duration: duration ?? this.duration,
+            parts: parts ?? this.parts,
+            isPublished: isPublished ?? this.isPublished,
+            difficulty: difficulty ?? this.difficulty,
+            attemptCount: attemptCount ?? this.attemptCount,
+            userAttempt: userAttempt ?? this.userAttempt,
+            id: id ?? this.id,
+        );
 
     factory Test.fromJson(Map<String, dynamic> json) => _$TestFromJson(json);
 
@@ -55,14 +100,23 @@ class Test {
 @JsonSerializable()
 class UserAttempt {
     @JsonKey(name: "count")
-    final int? count;
+    int? count;
     @JsonKey(name: "lastTime")
-    final dynamic lastTime;
+    DateTime? lastTime;
 
     UserAttempt({
         this.count,
         this.lastTime,
     });
+
+    UserAttempt copyWith({
+        int? count,
+        DateTime? lastTime,
+    }) => 
+        UserAttempt(
+            count: count ?? this.count,
+            lastTime: lastTime ?? this.lastTime,
+        );
 
     factory UserAttempt.fromJson(Map<String, dynamic> json) => _$UserAttemptFromJson(json);
 

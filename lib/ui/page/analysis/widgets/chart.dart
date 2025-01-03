@@ -113,8 +113,15 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
         child: Column(
           children: [
             // Dropdown filter
-            CustomDropdownExample(
+            CustomDropdownExample<String>(
               data: [
+                'All parts',
+                ...List.generate(
+                  7,
+                  (index) => 'Part ${index + 1}',
+                ),
+              ],
+              dataString: [
                 'All parts',
                 ...List.generate(
                   7,

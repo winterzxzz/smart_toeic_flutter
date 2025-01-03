@@ -8,6 +8,7 @@ import 'package:toeic_desktop/data/network/error/api_error.dart';
 
 abstract class BlogRepository {
   Future<Either<ApiError, List<Blog>>> getBlog();
+  Future<Either<ApiError, List<Blog>>> searchBlog(String keyword);
 }
 
 class BlogRepositoryImpl extends BlogRepository {
@@ -24,4 +25,14 @@ class BlogRepositoryImpl extends BlogRepository {
       return Left(ApiError.fromJson(e.response?.data));
     }
   }
-} 
+
+  @override
+  Future<Either<ApiError, List<Blog>>> searchBlog(String keyword) async {
+    try {
+      final result = await apiClient.searchBlog(keyword);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromJson(e.response?.data));
+    }
+  }
+}

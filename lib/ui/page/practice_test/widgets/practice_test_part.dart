@@ -55,7 +55,7 @@ class PracticeTestPart extends StatelessWidget {
                       ? AppColors.backgroundDarkSub
                       : AppColors.backgroundLightSub;
                   if (state.testShow == TestShow.test) {
-                    color = isAnswered ? Colors.deepOrangeAccent : color;
+                    color = isAnswered ? Theme.of(context).colorScheme.primary : color;
                   } else {
                     for (var questionResult in state.questionsResult) {
                       if (questionResult.questionNum ==

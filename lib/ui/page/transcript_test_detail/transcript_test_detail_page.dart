@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
@@ -12,6 +15,7 @@ import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/speech_test.dart';
+import 'package:translator/translator.dart';
 
 class TranscriptTestDetailPage extends StatelessWidget {
   const TranscriptTestDetailPage({super.key, required this.transcriptTestId});
@@ -40,11 +44,14 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   late TextEditingController _transcriptController;
   bool isCheck = false;
+  late GoogleTranslator _translator;
+  String? _translatedText;
 
   @override
   void initState() {
     super.initState();
     _transcriptController = TextEditingController();
+    _translator = GoogleTranslator();
   }
 
   @override
@@ -206,7 +213,21 @@ class _PageState extends State<Page> {
                                   const SizedBox(width: 8),
                                   Text('Bỏ qua'),
                                 ],
-                              ))),
+                              )))
+                    else
+                      SizedBox(
+                          height: 45,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                GoRouter.of(context).pop();
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.skip_next),
+                                  const SizedBox(width: 8),
+                                  Text('Kết thúc  '),
+                                ],
+                              )))
                   ],
                 ),
                 if (isCheck) ...[
@@ -241,25 +262,29 @@ class _PageState extends State<Page> {
                                 .split(' ')
                                 .map((e) => Row(
                                       children: [
-                                        InkWell(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) => Dialog(
-                                                        child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(e),
-                                                    )));
+                                        PopupMenuButton(
+                                          onOpened: () async {
+                                            final translatedText =
+                                                await _translator.translate(e,
+                                                    from: 'en', to: 'vi');
+                                            _translatedText =
+                                                translatedText.text;
+                                            log('translatedText: $_translatedText');
+                                            setState(() {});
                                           },
-                                          child: Text(
-                                            e,
-                                            style: const TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
+                                          child: Text(e,
+                                              style: const TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              )),
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              child: Center(
+                                                  child: _translatedText != null
+                                                      ? Text(_translatedText!)
+                                                      : const CircularProgressIndicator()),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                         const SizedBox(width: 8),
                                       ],

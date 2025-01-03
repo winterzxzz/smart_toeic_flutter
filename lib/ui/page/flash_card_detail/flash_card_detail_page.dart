@@ -47,73 +47,13 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: BlocSelector<FlashCardDetailCubit, FlashCardDetailState,
-              List<FlashCard>>(
-            selector: (state) {
-              return state.flashCards;
-            },
-            builder: (context, flashCards) {
-              return Text(
-                  'Flashcard: ${widget.title} (${flashCards.length} từ)');
-            },
-          ),
-          actions: [
-            PopupMenuButton<int>(
-              icon: Icon(Icons.more_vert),
-              color: Theme.of(context).cardColor,
-              offset: const Offset(0, 50),
-              onSelected: (value) {
-                if (value == 0) {
-                } else if (value == 1) {
-                  showCreateFlashCardDialog(context,
-                      onSave: (flashCardRequest) {
-                    context.read<FlashCardDetailCubit>().createFlashCard(
-                          flashCardRequest.copyWith(
-                              setFlashcardId: widget.setId),
-                        );
-                  });
-                } else if (value == 2) {}
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem<int>(
-                    value: 0,
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.edit),
-                      const SizedBox(width: 10),
-                      Text('Chỉnh sửa',
-                          style:
-                              const TextStyle(color: AppColors.actionMenuText))
-                    ])),
-                PopupMenuItem<int>(
-                    value: 1,
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.add),
-                      const SizedBox(width: 10),
-                      Text('Tạo từ mới',
-                          style:
-                              const TextStyle(color: AppColors.actionMenuText))
-                    ])),
-                PopupMenuItem<int>(
-                    value: 2,
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.add_circle_outline_rounded),
-                      const SizedBox(width: 10),
-                      Text('Tạo hàng loạt',
-                          style:
-                              const TextStyle(color: AppColors.actionMenuText))
-                    ])),
-              ],
-            )
-          ],
-        ),
-        body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
-            listener: (context, state) {
+      body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
+        listener: (context, state) {
           if (state.loadStatus == LoadStatus.failure) {
             AppNavigator(context: context).error(state.message);
           }
-        }, builder: (context, state) {
+        },
+        builder: (context, state) {
           if (state.loadStatus == LoadStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -123,93 +63,161 @@ class _PageState extends State<Page> {
                 child: Text('Không có từ nào trong bộ flashcard này'),
               );
             }
-            return SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.sizeOf(context).width * 0.1),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 32),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          GoRouter.of(context)
-                              .pushNamed(AppRouter.flashCardQuizz, extra: {
-                            'id': widget.setId,
+            return CustomScrollView(
+              slivers: [
+                // App Bar
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  floating: true,
+                snap: true,
+                  title: BlocSelector<FlashCardDetailCubit, FlashCardDetailState,
+                      List<FlashCard>>(
+                    selector: (state) => state.flashCards,
+                    builder: (context, flashCards) {
+                      return Text(
+                          'Flashcard: ${widget.title} (${flashCards.length} từ)');
+                    },
+                  ),
+                  actions: [
+                    PopupMenuButton<int>(
+                      icon: Icon(Icons.more_vert),
+                      color: Theme.of(context).cardColor,
+                      offset: const Offset(0, 50),
+                      onSelected: (value) {
+                        if (value == 0) {
+                        } else if (value == 1) {
+                          showCreateFlashCardDialog(context,
+                              onSave: (flashCardRequest) {
+                            context.read<FlashCardDetailCubit>().createFlashCard(
+                                  flashCardRequest.copyWith(
+                                      setFlashcardId: widget.setId),
+                                );
                           });
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.play_circle_outline_rounded),
-                            SizedBox(width: 8),
-                            Text('Luyện tập flashcards'),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              final flashCards = context
-                                  .read<FlashCardDetailCubit>()
-                                  .state
-                                  .flashCards;
-                              GoRouter.of(context).pushNamed(
-                                  AppRouter.flashCardPractive,
-                                  extra: {
-                                    'title': widget.title,
-                                    'flashCards': flashCards,
-                                  });
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(Icons.shuffle),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Xem ngẫu nhiên',
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(Icons.pause_circle_outline_rounded),
-                                SizedBox(width: 8),
-                                Text('Dừng học bộ này'),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Column(
-                      children: [
-                        ...state.flashCards.map(
-                            (flashcard) => FlashcardTile(flashcard: flashcard)),
+                        } else if (value == 2) {}
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem<int>(
+                            value: 0,
+                            child: Row(mainAxisSize: MainAxisSize.min, children: [
+                              Icon(Icons.edit),
+                              const SizedBox(width: 10),
+                              Text('Chỉnh sửa',
+                                  style:
+                                      const TextStyle(color: AppColors.actionMenuText))
+                            ])),
+                        PopupMenuItem<int>(
+                            value: 1,
+                            child: Row(mainAxisSize: MainAxisSize.min, children: [
+                              Icon(Icons.add),
+                              const SizedBox(width: 10),
+                              Text('Tạo từ mới',
+                                  style:
+                                      const TextStyle(color: AppColors.actionMenuText))
+                            ])),
+                        PopupMenuItem<int>(
+                            value: 2,
+                            child: Row(mainAxisSize: MainAxisSize.min, children: [
+                              Icon(Icons.add_circle_outline_rounded),
+                              const SizedBox(width: 10),
+                              Text('Tạo hàng loạt',
+                                  style:
+                                      const TextStyle(color: AppColors.actionMenuText))
+                            ])),
                       ],
                     )
                   ],
                 ),
-              ),
+                
+                // Content
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.sizeOf(context).width * 0.1,
+                  ),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate([
+                      const SizedBox(height: 32),
+                      // Practice Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            GoRouter.of(context).pushReplacementNamed(
+                              AppRouter.flashCardQuizz,
+                              extra: {'id': widget.setId},
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.play_circle_outline_rounded),
+                              SizedBox(width: 8),
+                              Text('Luyện tập flashcards'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Random and Pause buttons row
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                final flashCards = context
+                                    .read<FlashCardDetailCubit>()
+                                    .state
+                                    .flashCards;
+                                GoRouter.of(context).pushNamed(
+                                    AppRouter.flashCardPractive,
+                                    extra: {
+                                      'title': widget.title,
+                                      'flashCards': flashCards,
+                                    });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.shuffle),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Xem ngẫu nhiên',
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.pause_circle_outline_rounded),
+                                  SizedBox(width: 8),
+                                  Text('Dừng học bộ này'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      // Flashcard tiles
+                      ...state.flashCards.map(
+                        (flashcard) => FlashcardTile(flashcard: flashcard),
+                      ),
+                    ]),
+                  ),
+                ),
+              ],
             );
           }
           return const SizedBox();
-        }));
+        },
+      ),
+    );
   }
 }

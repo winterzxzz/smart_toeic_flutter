@@ -59,7 +59,6 @@ class _FlashcardTileState extends State<FlashcardTile> {
                   const SizedBox(
                     width: 16,
                   ),
-
                   // Add a button to play the pronunciation
                   InkWell(
                     onTap: () {

@@ -53,6 +53,9 @@ class TestCard extends StatelessWidget {
                     icon: FontAwesomeIcons.clock,
                     text: "${test.duration} minutes"),
                 TagWidget(
+                    icon: FontAwesomeIcons.levelUpAlt,
+                    text: "level: ${test.difficulty}"),
+                TagWidget(
                   icon: FontAwesomeIcons.circleQuestion,
                   text: "${test.numberOfQuestions} questions",
                 ),

@@ -27,9 +27,11 @@ class BlogItemCard extends StatelessWidget {
                 : Colors.transparent
             : Colors.transparent;
         return Card(
-          elevation: 4,
+          elevation: 2,
+          surfaceTintColor: Colors.transparent,
+          clipBehavior: Clip.hardEdge,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: InkWell(
             onTap: () {
@@ -39,7 +41,6 @@ class BlogItemCard extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,35 +66,57 @@ class BlogItemCard extends StatelessWidget {
                       children: [
                         Text(blog.title ?? '',
                             style: Theme.of(context).textTheme.titleSmall),
+                        const SizedBox(height: 8),
                         Text(
                           blog.description ?? '',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          maxLines: 2,
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
                         Row(
                           children: [
                             Row(
                               children: [
                                 Icon(Icons.person,
-                                    size: 16, color: AppColors.gray3),
+                                    size: 12, color: AppColors.textGray),
                                 const SizedBox(width: 4),
                                 Text(blog.author ?? '',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.textGray,
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(width: 16),
+                            // views
+                            Row(
+                              children: [
+                                Icon(Icons.remove_red_eye, size: 12, color: AppColors.textGray),
+                                const SizedBox(width: 4),
+                                Text(
+                                  (blog.view ?? 0).toString(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textGray,
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(width: 16),
                             Row(
                               children: [
-                                Icon(Icons.calendar_month, size: 16),
+                                Icon(Icons.calendar_month,
+                                    size: 12, color: AppColors.textGray),
                                 const SizedBox(width: 4),
                                 Text(
                                   DateFormat('dd/MM/yyyy').format(
                                     blog.createdAt ?? DateTime.now(),
                                   ),
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.textGray,
+                                  ),
                                 ),
                               ],
                             )

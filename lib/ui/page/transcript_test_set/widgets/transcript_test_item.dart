@@ -64,7 +64,6 @@ class TranscriptTestItem extends StatelessWidget {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1F4C6B),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

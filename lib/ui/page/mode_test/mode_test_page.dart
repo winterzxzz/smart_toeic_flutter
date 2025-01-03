@@ -24,69 +24,80 @@ class _ModeTestpageState extends State<ModeTestpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text(widget.test.title!),
+            automaticallyImplyLeading: false,
+            floating: true,
+          ),
+          SliverPadding(
+            padding: EdgeInsets.all(16),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16),
+                  SizedBox(
+                    width: 200,
+                    child: CustomDropdownExample<String>(
+                        data: ['Practice', 'Test'],
+                        dataString: ['Practice', 'Test'],
+                        onChanged: (value) {
+                          setState(() {
+                            isPracticeMode = value == 'Practice';
+                          });
+                        }),
+                  ),
+                  // ToggleButtons(
+                  //   borderRadius: BorderRadius.circular(8),
+                  //   isSelected: [isPracticeMode, !isPracticeMode],
+                  //   onPressed: (index) {
+                  //     setState(() {
+                  //       isPracticeMode = index == 0;
+                  //     });
+                  //   },
+                  //   children: [
+                  //     Container(
+                  //       padding: EdgeInsets.symmetric(horizontal: 32),
+                  //       child: Text(
+                  //         'Practice',
+                  //         style: TextStyle(
+                  //             color: isPracticeMode
+                  //                 ? Theme.of(context).textTheme.bodyLarge!.color
+                  //                 : AppColors.gray1),
+                  //       ),
+                  //     ),
+                  //     Container(
+                  //       padding: EdgeInsets.symmetric(horizontal: 32),
+                  //       child: Text(
+                  //         'Test',
+                  //         style: TextStyle(
+                  //             color: !isPracticeMode
+                  //                 ? Theme.of(context).textTheme.bodyLarge!.color
+                  //                 : AppColors.gray1),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  SizedBox(height: 16),
+                  Text(
+                    '${widget.test.attemptCount} luợt làm bài',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  SizedBox(height: 16),
+                  isPracticeMode
+                      ? PracticeMode(testId: widget.test.id!)
+                      : FullTestMode(widget: widget),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
       backgroundColor: Theme.of(context).brightness == Brightness.light
           ? AppColors.backgroundLight
           : AppColors.backgroundDark,
-      body: Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.symmetric(
-          horizontal: 2,
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              if (widget.test.title != null)
-                Text(
-                  widget.test.title!,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              SizedBox(height: 16),
-              Text(
-                '${widget.test.attemptCount} luợt làm bài',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              SizedBox(height: 16),
-              ToggleButtons(
-                borderRadius: BorderRadius.circular(8),
-                isSelected: [isPracticeMode, !isPracticeMode],
-                onPressed: (index) {
-                  setState(() {
-                    isPracticeMode = index == 0;
-                  });
-                },
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      'Practice',
-                      style: TextStyle(
-                          color: isPracticeMode
-                              ? Theme.of(context).textTheme.bodyLarge!.color
-                              : AppColors.gray1),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      'Test',
-                      style: TextStyle(
-                          color: !isPracticeMode
-                              ? Theme.of(context).textTheme.bodyLarge!.color
-                              : AppColors.gray1),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              isPracticeMode
-                  ? PracticeMode(testId: widget.test.id!)
-                  : FullTestMode(widget: widget),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -198,8 +209,9 @@ class _PracticeModeState extends State<PracticeMode> {
           style: TextStyle(fontSize: 16),
         ),
         SizedBox(height: 16),
-        CustomDropdownExample(
+        CustomDropdownExample<String>(
           data: Constants.timeLimit,
+          dataString: Constants.timeLimit,
           onChanged: (value) {
             duration = value;
             setState(() {});

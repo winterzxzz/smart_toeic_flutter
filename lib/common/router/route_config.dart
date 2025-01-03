@@ -4,6 +4,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
@@ -163,11 +164,9 @@ class AppRouter {
               path: flashCardLearningDetail,
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
-                final setId = args['setId'] as String;
-                final title = args['title'] as String;
+                final setFlashCardLearning = args['setFlashCardLearning'] as SetFlashCardLearning;
                 return FlashCardDetailLearningPage(
-                  setId: setId,
-                  title: title,
+                  setFlashCardLearning: setFlashCardLearning,
                 );
               },
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
 import 'package:toeic_desktop/ui/page/test_online/test_online_state.dart';
@@ -44,11 +45,14 @@ class Page extends StatelessWidget {
                 children: [
                   const SizedBox(height: 16),
                   SizedBox(
-                    width: 150,
+                    width: 200,
                     height: 45,
-                    child: CustomDropdownExample(
-                      data: ["All", "Short"],
-                      onChanged: (value) {},
+                    child: CustomDropdownExample<String>(
+                      data: TestType.values.map((e) => e.name).toList(),
+                      dataString: TestType.values.map((e) => e.name).toList(),
+                      onChanged: (value) {
+                        context.read<DeThiOnlineCubit>().filterTests(value);
+                      },
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -57,10 +61,10 @@ class Page extends StatelessWidget {
                     runAlignment: WrapAlignment.start,
                     spacing: 8,
                     runSpacing: 8,
-                    children: List.generate(state.tests.length, (index) {
+                    children: List.generate(state.filteredTests.length, (index) {
                       // Number of tests (replace as needed)
                       return SizedBox(
-                        width: 300,
+                        width: (MediaQuery.of(context).size.width - 60)* 0.32,
                         child: TestCard(
                           test: state.tests[index],
                         ),

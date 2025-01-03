@@ -50,9 +50,11 @@ class Page extends StatelessWidget {
         },
         builder: (context, state) {
           return CustomScrollView(
+            controller: context.read<AnalysisCubit>().scrollController,
             slivers: [
               const SliverAppBar(
                 automaticallyImplyLeading: false,
+                centerTitle: true,
                 title: Text('TOEIC Performance Dashboard'),
                 floating: true,
                 snap: true,
@@ -72,20 +74,22 @@ class Page extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: AnalysisScore(
-                                overallScore: state.profileAnalysis.score ?? 0,
-                                listenScore:
-                                    state.profileAnalysis.listenScore ?? 0,
-                                readScore: state.profileAnalysis.readScore ?? 0,
-                              ),
+                              child: state.profileAnalysis.score != null
+                                  ? AnalysisScore(
+                                      overallScore: state.profileAnalysis.score!,
+                                      listenScore:
+                                          state.profileAnalysis.listenScore!,
+                                      readScore:
+                                          state.profileAnalysis.readScore!,
+                                    )
+                                  : const SizedBox.shrink(),
                             ),
                             const SizedBox(width: 16),
                             Expanded(
-                              child:
-                                  state.profileAnalysis.accuracyByPart != null
-                                      ? Column(
-                                          children: [
-                                            const SizedBox(height: 32),
+                              child: state.profileAnalysis.accuracyByPart != null && state.profileAnalysis.accuracyByPart!.isNotEmpty
+                                  ? Column(
+                                      children: [
+                                        const SizedBox(height: 32),
                                             AnalysisPercentage(
                                               percentage: state.profileAnalysis
                                                   .accuracyByPart!,
@@ -103,7 +107,7 @@ class Page extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: state.profileAnalysis.averageTimeByPart !=
-                                      null
+                                      null && state.profileAnalysis.averageTimeByPart!.isNotEmpty
                                   ? AnalysisTime(
                                       averageTimeByPart: state
                                           .profileAnalysis.averageTimeByPart!,
@@ -115,13 +119,12 @@ class Page extends StatelessWidget {
                             const SizedBox(width: 16),
                             Expanded(
                               flex: 2,
-                              child:
-                                  state.profileAnalysis.categoryAccuracy != null
-                                      ? StackedBarChartPage(
-                                          categoryAccuracys: state
-                                              .profileAnalysis
-                                              .categoryAccuracy!,
-                                        )
+                              child: state.profileAnalysis.categoryAccuracy != null && state.profileAnalysis.categoryAccuracy!.isNotEmpty
+                                  ? StackedBarChartPage(
+                                      categoryAccuracys: state
+                                          .profileAnalysis
+                                          .categoryAccuracy!,
+                                    )
                                       : const SizedBox.shrink(),
                             ),
                           ],

@@ -6,7 +6,7 @@ void showPopMenuOver(
   Widget body, {
   double width = 200,
   double height = 120,
-  PopoverDirection direction = PopoverDirection.right,
+  PopoverDirection direction = PopoverDirection.top,
   Color backgroundColor = Colors.white,
 }) {
   showPopover(

@@ -10,6 +10,7 @@ import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
+import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({
@@ -61,7 +62,9 @@ class AppBarWidget extends StatelessWidget {
               builder: (context, themeMode) {
                 final isDarkMode = themeMode == ThemeMode.dark;
                 return InkWell(
-                  splashFactory: NoSplash.splashFactory,
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   key: ValueKey<bool>(isDarkMode),
                   onTap: () {
                     injector<AppSettingCubit>().changeThemeMode(
@@ -74,6 +77,14 @@ class AppBarWidget extends StatelessWidget {
                         : AppImages.icDarkModeInactive,
                     width: 20,
                     height: 20,
+                    colorFilter: ColorFilter.mode(
+                      isDarkMode
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.textWhite
+                              : AppColors.textBlack,
+                      BlendMode.srcIn,
+                    ),
                     fit: BoxFit.cover,
                   ),
                 );
@@ -82,6 +93,9 @@ class AppBarWidget extends StatelessWidget {
           ),
           const SizedBox(width: 32),
           InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             onTap: () {
               GoRouter.of(context).go(AppRouter.upgradeAccount);
             },
@@ -94,7 +108,7 @@ class AppBarWidget extends StatelessWidget {
                   height: 24,
                   colorFilter: ColorFilter.mode(
                     isPremium
-                        ? AppColors.error
+                        ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).brightness == Brightness.dark
                             ? AppColors.textWhite
                             : AppColors.textBlack,
@@ -199,7 +213,9 @@ class AppBarWidget extends StatelessWidget {
               Text('Setting'),
             ],
           ),
-          onTap: () {},
+          onTap: () {
+            GoRouter.of(context).go(AppRouter.setting);
+          },
         ),
         PopupMenuItem(
           child: Row(
@@ -210,26 +226,13 @@ class AppBarWidget extends StatelessWidget {
             ],
           ),
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Logout'),
-                content: Text('Are you sure?'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      injector<UserCubit>().removeUser(context).then((_) {});
-                    },
-                    child: Text('Logout'),
-                  ),
-                ],
-              ),
+            showConfirmDialog(
+              context,
+              'Logout',
+              'Are you sure?',
+              () {
+                injector<UserCubit>().removeUser(context).then((_) {});
+              },
             );
           },
         ),

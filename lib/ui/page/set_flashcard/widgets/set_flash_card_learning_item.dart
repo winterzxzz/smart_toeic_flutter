@@ -105,8 +105,7 @@ class _SetFlashCardLearningItemState extends State<SetFlashCardLearningItem> {
                         GoRouter.of(context).pushNamed(
                             AppRouter.flashCardLearningDetail,
                             extra: {
-                              'title': widget.flashcard.setFlashcardId.title,
-                              'setId': widget.flashcard.id,
+                              'setFlashCardLearning': widget.flashcard,
                             });
                       },
                       child: Row(

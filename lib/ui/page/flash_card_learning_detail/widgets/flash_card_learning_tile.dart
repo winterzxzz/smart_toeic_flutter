@@ -39,20 +39,20 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
             borderRadius: BorderRadius.circular(8),
             border: Border(
               left: BorderSide(
-                  color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore ?? 0),
+                  color: _getColorFromDecayScore(
+                      widget.flashcard.decayScore ?? 0),
                   width: 5), // Left border
               top: BorderSide(
-                  color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore ?? 0),
+                  color: _getColorFromDecayScore(
+                      widget.flashcard.decayScore ?? 0),
                   width: 1), // Top border
               right: BorderSide(
-                  color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore ?? 0),
+                  color: _getColorFromDecayScore(
+                      widget.flashcard.decayScore ?? 0),
                   width: 1), // Right border
               bottom: BorderSide(
-                  color: _getColorFromRetentionScore(
-                      widget.flashcard.retentionScore ?? 0),
+                  color: _getColorFromDecayScore(
+                      widget.flashcard.decayScore ?? 0),
                   width: 1), // Bottom border
             )),
         child: Column(
@@ -226,14 +226,14 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
     return AppColors.primary;
   }
 
-  // Color _getColorFromDecayScore(double decayScore) {
-  //   if (decayScore >= 0.7 && decayScore < 1) {
-  //     return Colors.green;
-  //   } else if (decayScore >= 0.5 && decayScore < 0.7) {
-  //     return Colors.yellow;
-  //   } else if (decayScore > 0 && decayScore < 0.5) {
-  //     return Colors.red;
-  //   }
-  //   return AppColors.primary;
-  // }
+  Color _getColorFromDecayScore(double decayScore) {
+    if (decayScore >= 0.7 && decayScore < 1) {
+      return Colors.green;
+    } else if (decayScore >= 0.5 && decayScore < 0.7) {
+      return Colors.yellow;
+    } else if (decayScore > 0 && decayScore < 0.5) {
+      return Colors.red;
+    }
+    return AppColors.primary;
+  }
 }

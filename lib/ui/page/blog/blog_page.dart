@@ -43,8 +43,11 @@ class Page extends StatelessWidget {
         body: Row(
           children: [
             ListViewBlog(),
-            const VerticalDivider(
-              color: AppColors.gray1,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: const VerticalDivider(
+                color: AppColors.gray1,
+              ),
             ),
             Expanded(
               child: const BlogDetail(),

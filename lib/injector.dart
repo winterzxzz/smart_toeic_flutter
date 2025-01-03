@@ -20,7 +20,6 @@ Future<void> init() async {
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
     ..registerLazySingleton<UserCubit>(() => UserCubit(injector()))
-    ..registerFactory<DeThiOnlineCubit>(() => DeThiOnlineCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
     ..registerFactory<FlashCardCubit>(() => FlashCardCubit(injector()))
     ..registerFactory<FlashCardDetailCubit>(
@@ -47,9 +46,12 @@ Future<void> init() async {
     ..registerFactory<BlogCubit>(() => BlogCubit(injector()));  
 
   if (!injector.isRegistered<HomeCubit>()) {
-    if (!injector.isRegistered<HomeCubit>()) {
-      injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
-    }
+    injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
+  }
+
+    if (!injector.isRegistered<DeThiOnlineCubit>()) {
+    injector.registerLazySingleton<DeThiOnlineCubit>(() => DeThiOnlineCubit(injector()));
+  }
 
     if (!injector.isRegistered<SplashCubit>()) {
       injector.registerFactory<SplashCubit>(() => SplashCubit(injector()));
@@ -58,5 +60,4 @@ Future<void> init() async {
     if (!injector.isRegistered<AppSettingCubit>()) {
       injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
     }
-  }
 }

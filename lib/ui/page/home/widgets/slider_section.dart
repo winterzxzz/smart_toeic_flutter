@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class SliderSection extends StatefulWidget {
@@ -125,7 +127,9 @@ class _SliderSectionState extends State<SliderSection> {
                         children: [
                           // Button
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              GoRouter.of(context).go(AppRouter.onlineTest);
+                            },
                             child: const Text(
                               "Start Free Trial",
                             ),
@@ -133,7 +137,9 @@ class _SliderSectionState extends State<SliderSection> {
                           const SizedBox(width: 10),
                           // Button
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              GoRouter.of(context).go(AppRouter.introduction);
+                            },
                             child: const Text(
                               "Learn More",
                             ),

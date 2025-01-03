@@ -26,12 +26,24 @@ class BlogCubit extends Cubit<BlogState> {
   }
 
   // search
-  void searchBlog(String keyword) {
-    final searchBlogs = state.blogs
-        .where((blog) => blog.title?.contains(keyword) ?? false)
-        .toList();
-    emit(
-        state.copyWith(searchBlogs: searchBlogs, focusBlog: searchBlogs.first));
+  void searchBlog(String keyword) async {
+    if (keyword.isEmpty) {
+      emit(state.copyWith(searchBlogs: state.blogs, focusBlog: state.blogs.first));
+      return;
+    }
+    await Future.microtask(
+        () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
+    final searchBlogs = await blogRepository.searchBlog(keyword);
+    searchBlogs.fold(
+      (l) => emit(state.copyWith(
+          loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
+      (r) {
+        emit(state.copyWith(
+            loadStatus: LoadStatus.success,
+            searchBlogs: r,
+            focusBlog: r.isEmpty ? null : r.first));
+      },
+    );
   }
 
   void setFocusBlog(Blog blog) {

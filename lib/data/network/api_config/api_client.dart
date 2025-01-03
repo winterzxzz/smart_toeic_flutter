@@ -224,7 +224,12 @@ abstract class ApiClient {
   Future<List<TranscriptTest>> getTranscriptTestDetail(
     @Path("transcriptTestId") String transcriptTestId,
   );
-
+  
   @GET('/pub/blog')
   Future<List<Blog>> getBlog();
+
+  @GET('/pub/blog/search?search={search}')
+  Future<List<Blog>> searchBlog(
+    @Path("search") String search,
+  );
 }

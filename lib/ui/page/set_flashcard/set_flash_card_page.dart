@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_discover.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_my_list.dart';
 
@@ -31,8 +30,8 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      animationDuration: const Duration(milliseconds: 500),
-      length: 3,
+      animationDuration: const Duration(milliseconds: 200),
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: false,
@@ -74,16 +73,6 @@ class Page extends StatelessWidget {
                     ],
                   ),
                 ),
-                Tab(
-                  height: 35,
-                  child: Row(
-                    children: [
-                      Icon(Icons.explore),
-                      SizedBox(width: 4),
-                      Text('Discover'),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -92,7 +81,6 @@ class Page extends StatelessWidget {
           children: const [
             SetFlashCardMyListPage(),
             SetFlashCardLearningPage(),
-            DiscoverFlashCardPage(),
           ],
         ),
       ),

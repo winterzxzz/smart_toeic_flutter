@@ -51,6 +51,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                 ),
               ],
             ),
+            if (widget.flashcard.description.isNotEmpty)
             Text(
               widget.flashcard.description,
               maxLines: 3,
