@@ -1,6 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/utils/app_validartor.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_state.dart';
 
@@ -43,8 +41,9 @@ class RegisterCubit extends Cubit<RegisterState> {
           (error) => emit(state.copyWith(
               loadDataStatus: LoadStatus.failure,
               message: error.errors?.first.message)), (response) {
-        injector<UserCubit>().setUser(response!);
-        emit(state.copyWith(loadDataStatus: LoadStatus.success));
+        emit(state.copyWith(
+            loadDataStatus: LoadStatus.success,
+            message: 'Register success! Login to continue'));
       });
     } catch (e) {
       emit(state.copyWith(

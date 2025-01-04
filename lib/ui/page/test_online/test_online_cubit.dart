@@ -10,7 +10,7 @@ class DeThiOnlineCubit extends Cubit<DeThiOnlineState> {
 
   Future<void> fetchTests() async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
-    final response = await _testRepository.getTests();
+    final response = await _testRepository.getTests(limit: 10);
     response.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
@@ -25,21 +25,20 @@ class DeThiOnlineCubit extends Cubit<DeThiOnlineState> {
   }
 
   void filterTests(String testType) {
+    if (isClosed) return;
     if (testType == TestType.all.name) {
       emit(state.copyWith(
         filteredTests: state.tests,
       ));
     } else if (testType == TestType.exam.name) {
       emit(state.copyWith(
-        filteredTests: state.tests
-            .where((test) => test.type == "exam")
-            .toList(),
+        filteredTests:
+            state.tests.where((test) => test.type == "exam").toList(),
       ));
     } else if (testType == TestType.miniExam.name) {
       emit(state.copyWith(
-        filteredTests: state.tests
-            .where((test) => test.type == 'miniexam')
-            .toList(),
+        filteredTests:
+            state.tests.where((test) => test.type == 'miniexam').toList(),
       ));
     }
   }

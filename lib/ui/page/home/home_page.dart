@@ -80,8 +80,10 @@ class Page extends StatelessWidget {
                     ResultSection(results: state.resultTests),
                   const SizedBox(height: 48),
                   ServiceSection(),
-                  const SizedBox(height: 48),
-                  BlogSection(),
+                  if (state.blogs.isNotEmpty) ...[
+                    const SizedBox(height: 48),
+                    BlogSection(blogs: state.blogs),
+                  ],
                   const SizedBox(height: 48),
                 ],
               );
@@ -93,8 +95,10 @@ class Page extends StatelessWidget {
                 // Toeic exam section
                 const SizedBox(height: 32),
                 ServiceSection(),
-                const SizedBox(height: 32),
-                BlogSection(),
+                if (state.blogs.isNotEmpty) ...[
+                  const SizedBox(height: 32),
+                  BlogSection(blogs: state.blogs),
+                ],
                 const SizedBox(height: 32),
               ],
             );

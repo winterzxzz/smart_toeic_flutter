@@ -43,7 +43,7 @@ class Page extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 16), 
                   SizedBox(
                     width: 200,
                     height: 45,
@@ -61,12 +61,13 @@ class Page extends StatelessWidget {
                     runAlignment: WrapAlignment.start,
                     spacing: 8,
                     runSpacing: 8,
-                    children: List.generate(state.filteredTests.length, (index) {
+                    children:
+                        List.generate(state.filteredTests.length, (index) {
                       // Number of tests (replace as needed)
                       return SizedBox(
-                        width: (MediaQuery.of(context).size.width - 60)* 0.32,
+                        width: (MediaQuery.of(context).size.width - 60) * 0.32,
                         child: TestCard(
-                          test: state.tests[index],
+                          test: state.filteredTests[index],
                         ),
                       );
                     }),

@@ -25,16 +25,16 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 32),
-            Row(
-              children: [
-                FlashCardMyListItem(),
-                const SizedBox(width: 16),
-                FlashCardMyListItem(),
-                const SizedBox(width: 16),
-                FlashCardMyListItem(),
-              ],
-            ),
+            // const SizedBox(height: 32),
+            // Row(
+            //   children: [
+            //     FlashCardMyListItem(),
+            //     const SizedBox(width: 16),
+            //     FlashCardMyListItem(),
+            //     const SizedBox(width: 16),
+            //     FlashCardMyListItem(),
+            //   ],
+            // ),
             const SizedBox(height: 32),
             Text(
               'Flashcard Categories ',

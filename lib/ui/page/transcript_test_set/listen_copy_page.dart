@@ -82,7 +82,7 @@ class Page extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: Column(
                                 children: List.generate(
-                                  7,
+                                  4,
                                   (index) => CheckboxListTile(
                                     title: Text('Part ${index + 1}'),
                                     value: state.filterParts
@@ -116,22 +116,21 @@ class Page extends StatelessWidget {
                             child: Text('Không có bài tập nào'),
                           )
                         : GridView.builder(
-                        padding: const EdgeInsets.all(24.0),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 24,
-                            mainAxisSpacing: 24,
-                            childAspectRatio: 0.8,
+                            padding: const EdgeInsets.all(24.0),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 24,
+                              mainAxisSpacing: 24,
+                              childAspectRatio: 0.8,
+                            ),
+                            itemCount: state.filteredTranscriptTestSets.length,
+                            itemBuilder: (context, index) {
+                              final test =
+                                  state.filteredTranscriptTestSets[index];
+                              return TranscriptTestItem(test: test);
+                            },
                           ),
-                          itemCount:
-                              state.filteredTranscriptTestSets.length,
-                          itemBuilder: (context, index) {
-                            final test =
-                                state.filteredTranscriptTestSets[index];
-                            return TranscriptTestItem(test: test);
-                          },
-                        ),
               ),
             ],
           ),

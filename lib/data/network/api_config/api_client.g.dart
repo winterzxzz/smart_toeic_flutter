@@ -1127,7 +1127,40 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<void> resetPassword(String email) async {
+  Future<ResetPasswordResponse> resetPassword(String email) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'email': email};
+    final _options = _setStreamType<ResetPasswordResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/user/auth/otp/reset-password',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ResetPasswordResponse _value;
+    try {
+      _value = ResetPasswordResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<void> requestResetPassword(String email) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1139,7 +1172,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/user/auth/otp/reset-password',
+          '/user/auth/request/reset-password',
           queryParameters: queryParameters,
           data: _data,
         )

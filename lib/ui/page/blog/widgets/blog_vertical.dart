@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 
 class BlogVerticalCard extends StatelessWidget {
-  final BlogItem blogItem;
-
+  final Blog blog;
   const BlogVerticalCard({
     super.key,
-    required this.blogItem,
+    required this.blog,
   });
 
   @override
@@ -16,7 +18,9 @@ class BlogVerticalCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          // Handle the tap event
+          GoRouter.of(context).pushNamed(AppRouter.blog, extra: {
+            'blogId': blog.id,
+          });
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +31,7 @@ class BlogVerticalCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(
-                  blogItem.imageUrl,
+                  blog.image ?? '',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -39,7 +43,7 @@ class BlogVerticalCard extends StatelessWidget {
                 children: [
                   // Title
                   Text(
-                    blogItem.title,
+                    blog.title ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -49,7 +53,7 @@ class BlogVerticalCard extends StatelessWidget {
                   ),
                   // Author
                   Text(
-                    blogItem.description,
+                    blog.description ?? '',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -61,10 +65,7 @@ class BlogVerticalCard extends StatelessWidget {
                   // Content
                   Row(
                     children: [
-                      _buildInfoItem(
-                          FontAwesomeIcons.comment, blogItem.countComments),
-                      const SizedBox(width: 16),
-                      _buildInfoItem(FontAwesomeIcons.eye, blogItem.countViews),
+                      _buildInfoItem(FontAwesomeIcons.eye, blog.view ?? 0),
                       Spacer(),
                       Row(
                         children: [
@@ -75,7 +76,9 @@ class BlogVerticalCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            blogItem.date,
+                            DateFormat('dd/MM/yyyy').format(
+                              blog.createdAt ?? DateTime.now(),
+                            ),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),

@@ -116,8 +116,9 @@ class _MatchingWordState extends State<MatchingWord>
             if (availableWords.isEmpty && availableTranslations.isEmpty) {
               context.read<FlashCardQuizzCubit>().answer(word, isCorrectMatch);
             } else {
-              context.read<FlashCardQuizzCubit>().answer(word, isCorrectMatch,
-                  isTrigger: false);
+              context
+                  .read<FlashCardQuizzCubit>()
+                  .answer(word, isCorrectMatch, isTrigger: false);
             }
             matchedPairs.add(selectedWord!);
             selectedWord = null;
@@ -221,6 +222,7 @@ class _MatchingWordState extends State<MatchingWord>
       children: [
         Column(
           children: [
+            const SizedBox(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

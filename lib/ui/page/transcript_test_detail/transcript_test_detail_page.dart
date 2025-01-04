@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
-import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -15,7 +12,6 @@ import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/speech_test.dart';
-import 'package:translator/translator.dart';
 
 class TranscriptTestDetailPage extends StatelessWidget {
   const TranscriptTestDetailPage({super.key, required this.transcriptTestId});
@@ -41,23 +37,171 @@ class Page extends StatefulWidget {
   State<Page> createState() => _PageState();
 }
 
+class CheckResult {
+  final String word;
+  final String status; // "correct", "incorrect", "next"
+
+  CheckResult({required this.word, required this.status});
+}
+
 class _PageState extends State<Page> {
   late TextEditingController _transcriptController;
   bool isCheck = false;
-  late GoogleTranslator _translator;
-  String? _translatedText;
+  List<CheckResult> _checkResult = [];
+  bool _isCorrect = false;
 
   @override
   void initState() {
     super.initState();
     _transcriptController = TextEditingController();
-    _translator = GoogleTranslator();
   }
 
   @override
   void dispose() {
     _transcriptController.dispose();
     super.dispose();
+  }
+
+  List<String> _splitAndLowercase(String text) {
+    return text
+        .toLowerCase()
+        .replaceAll(RegExp(r'[.,!?]'), '')
+        .split(RegExp(r'\s+'))
+      ..removeWhere((word) => word.isEmpty);
+  }
+
+  List<Map<String, dynamic>> _splitAndIndexWords(String text) {
+    List<Map<String, dynamic>> result = [];
+    int currentIndex = 0;
+
+    final cleanText = text.replaceAll(RegExp(r'[.,!?]'), '');
+    final words = cleanText.split(RegExp(r'\s+'))
+      ..removeWhere((word) => word.isEmpty);
+
+    for (String word in words) {
+      result.add({
+        'word': word.toLowerCase(),
+        'index': currentIndex,
+      });
+      currentIndex += word.length + 1; // +1 for the space
+    }
+    return result;
+  }
+
+  void _checkTranscription(String correctTranscript) {
+    final userWords = _splitAndLowercase(_transcriptController.text);
+    final correctWords = _splitAndIndexWords(correctTranscript);
+
+    bool allCorrect = false;
+    int index = 0;
+    List<CheckResult> result = [];
+    int numWord = -1;
+    bool isFalsePart = false;
+
+    for (int i = 0; i < userWords.length; i++) {
+      if (i > correctWords.length - 1) break;
+
+      if (userWords[i] == correctWords[i]['word']) {
+        numWord = i;
+        int preIndex = index;
+
+        if (i == correctWords.length - 1) {
+          result.add(CheckResult(
+            word: correctTranscript.substring(index),
+            status: 'correct',
+          ));
+          allCorrect = true;
+          break;
+        }
+
+        index = correctWords[i + 1]['index'];
+        result.add(CheckResult(
+          word: correctTranscript.substring(preIndex, index),
+          status: 'correct',
+        ));
+      } else {
+        numWord = i;
+        isFalsePart = true;
+        int preIndex = index;
+        allCorrect = false;
+
+        if (i == correctWords.length - 1) {
+          result.add(CheckResult(
+            word: correctTranscript.substring(index),
+            status: 'incorrect',
+          ));
+          break;
+        }
+
+        index = correctWords[i + 1]['index'];
+        result.add(CheckResult(
+          word: correctTranscript.substring(preIndex, index),
+          status: 'incorrect',
+        ));
+        break;
+      }
+    }
+
+    if (!isFalsePart && !allCorrect) {
+      if (numWord < correctWords.length) {
+        if (numWord + 2 < correctWords.length) {
+          result.add(CheckResult(
+            word: correctTranscript.substring(
+              index,
+              correctWords[numWord + 2]['index'],
+            ),
+            status: 'next',
+          ));
+        } else {
+          result.add(CheckResult(
+            word: correctTranscript.substring(index),
+            status: 'next',
+          ));
+        }
+      }
+    }
+
+    setState(() {
+      _checkResult = result;
+      _isCorrect = allCorrect;
+      isCheck = true;
+    });
+  }
+
+  Widget _buildCheckResultDisplay(String transcript) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Text('Kết quả: ', style: Theme.of(context).textTheme.bodyLarge),
+          Expanded(
+            child: Wrap(
+              children: _checkResult.map((result) {
+                final color = switch (result.status) {
+                  'correct' => Colors.green,
+                  'incorrect' => Colors.red,
+                  'next' => Colors.grey,
+                  _ => Colors.black,
+                };
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(
+                    result.word,
+                    style: TextStyle(color: color),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -165,9 +309,9 @@ class _PageState extends State<Page> {
                         height: 45,
                         child: ElevatedButton(
                             onPressed: () {
-                              setState(() {
-                                isCheck = true;
-                              });
+                              _checkTranscription(state
+                                  .transcriptTests[state.currentIndex]
+                                  .transcript!);
                             },
                             child: Text('Kiểm tra'))),
                     const SizedBox(width: 32),
@@ -240,66 +384,15 @@ class _PageState extends State<Page> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                        'Nội dung bạn nhập: ${_transcriptController.text}',
-                        style: Theme.of(context).textTheme.bodyLarge),
+                      'Nội dung bạn nhập: ${_transcriptController.text}',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  Stack(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            Text('Kết quả: ',
-                                style: Theme.of(context).textTheme.bodyLarge),
-                            ...state
-                                .transcriptTests[state.currentIndex].transcript!
-                                .split(' ')
-                                .map((e) => Row(
-                                      children: [
-                                        PopupMenuButton(
-                                          onOpened: () async {
-                                            final translatedText =
-                                                await _translator.translate(e,
-                                                    from: 'en', to: 'vi');
-                                            _translatedText =
-                                                translatedText.text;
-                                            log('translatedText: $_translatedText');
-                                            setState(() {});
-                                          },
-                                          child: Text(e,
-                                              style: const TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                              )),
-                                          itemBuilder: (context) => [
-                                            PopupMenuItem(
-                                              child: Center(
-                                                  child: _translatedText != null
-                                                      ? Text(_translatedText!)
-                                                      : const CircularProgressIndicator()),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(width: 8),
-                                      ],
-                                    )),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  _buildCheckResultDisplay(
+                      state.transcriptTests[state.currentIndex].transcript!),
                   const SizedBox(height: 16),
-                  if (Utils.compareStringIgnoreCase(
-                          _transcriptController.text.trim().toLowerCase(),
-                          state.transcriptTests[state.currentIndex]
-                              .transcript!) ==
-                      true)
+                  if (_isCorrect)
                     Column(
                       children: [
                         Row(

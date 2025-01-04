@@ -72,6 +72,9 @@ class Utils {
 
   // compare two string ignore case
   static bool compareStringIgnoreCase(String a, String b) {
-    return a.toLowerCase().trim() == b.toLowerCase().trim();
+    // remove all whitespace, dot and comma
+    a = a.replaceAll(' ', '').replaceAll('.', '').replaceAll(',', '');
+    b = b.replaceAll(' ', '').replaceAll('.', '').replaceAll(',', '');
+    return a.toLowerCase() == b.toLowerCase();
   }
 }

@@ -14,29 +14,33 @@ class HomeCubit extends Cubit<HomeState> {
     await Future.microtask(
         () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
     if (cookie == null) {
-      await _getPublicTests();
+      await _getPublicData();
       return;
     }
     await getData();
   }
 
   Future<void> getData() async {
-    final response = await _testRepository.getTestByUser();
+    final response = await _testRepository.getHomeDataByUser();
     response.fold(
         (l) => emit(state.copyWith(
             loadStatus: LoadStatus.failure, message: l.toString())),
         (r) => emit(state.copyWith(
-            tests: r.tests,
+            tests: r.tests.take(4).toList(),
             resultTests: r.results.take(3).toList(),
+            blogs: r.blogs.take(4).toList(),
             loadStatus: LoadStatus.success)));
   }
 
-  Future<void> _getPublicTests() async {
-    final response = await _testRepository.getPublicTests();
+  Future<void> _getPublicData() async {
+    final response = await _testRepository.getHomeDataPublic();
     response.fold(
         (l) => emit(state.copyWith(
             loadStatus: LoadStatus.failure, message: l.toString())),
-        (r) => emit(state.copyWith(tests: r, loadStatus: LoadStatus.success)));
+        (r) => emit(state.copyWith(
+            tests: r.tests.take(4).toList(),
+            blogs: r.blogs.take(4).toList(),
+            loadStatus: LoadStatus.success)));
   }
 
   void reset() {

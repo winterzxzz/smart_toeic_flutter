@@ -32,7 +32,7 @@ class ServiceCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 item.desciption,
-                maxLines: 3,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 12,

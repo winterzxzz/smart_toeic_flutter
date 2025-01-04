@@ -13,12 +13,14 @@ import 'package:toeic_desktop/ui/page/blog/widgets/blog_detail.dart';
 import 'package:toeic_desktop/ui/page/blog/widgets/list_view_blog_side.dart';
 
 class BlogPage extends StatelessWidget {
-  const BlogPage({super.key});
+  const BlogPage({super.key, this.blogId});
+
+  final String? blogId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => injector<BlogCubit>()..getBlog(),
+      create: (context) => injector<BlogCubit>()..getBlog(blogId),
       child: Page(),
     );
   }

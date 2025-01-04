@@ -25,7 +25,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        constraints: const BoxConstraints(maxHeight: 250),
+        constraints: const BoxConstraints(maxHeight: 200),
         width: (MediaQuery.sizeOf(context).width - 60) * 0.23,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
@@ -52,11 +52,11 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
               ],
             ),
             if (widget.flashcard.description.isNotEmpty)
-            Text(
-              widget.flashcard.description,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
+              Text(
+                widget.flashcard.description,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
             const SizedBox(height: 6),
             Row(
               children: [

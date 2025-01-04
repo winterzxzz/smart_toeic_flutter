@@ -90,21 +90,24 @@ class _PageState extends State<Page> {
                         const ProfileDivider(),
                         TextFieldHeading(
                           label: 'Profile Email',
-                          description: 'Your email will be displayed to other users and cannot be changed',
+                          description:
+                              'Your email will be displayed to other users and cannot be changed',
                           hintText: 'Enter your email',
                           controller: emailController,
                         ),
                         const ProfileDivider(),
                         TextFieldHeading(
                           label: 'Profile Name',
-                          description: 'Your name will be displayed to other users',
+                          description:
+                              'Your name will be displayed to other users',
                           hintText: 'Enter your name',
                           controller: nameController,
                         ),
                         const ProfileDivider(),
                         TextFieldHeading(
                           label: 'Profile Bio',
-                          description: 'Your bio will be displayed to other users',
+                          description:
+                              'Your bio will be displayed to other users',
                           hintText: 'Enter your bio',
                           controller: bioController,
                         ),
@@ -112,7 +115,8 @@ class _PageState extends State<Page> {
                           const ProfileDivider(),
                           HeadingContainer(
                             title: 'Profile Target Score',
-                            description: 'Your target score will be used to calculate your progress',
+                            description:
+                                'Your target score will be used to calculate your progress',
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -120,17 +124,27 @@ class _PageState extends State<Page> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Reading Target / Reading Current', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                                        Text('Reading Target / Reading Current',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600)),
                                         Text.rich(
                                           TextSpan(
-                                            text: '${state.user?.targetScore?.reading ?? 0}',
-                                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                            text:
+                                                '${state.user?.targetScore?.reading ?? 0}',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
                                             children: [
                                               TextSpan(
                                                 text: '/450',
-                                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w300),
                                               )
                                             ],
                                           ),
@@ -140,9 +154,16 @@ class _PageState extends State<Page> {
                                     const SizedBox(height: 16),
                                     LinearProgressIndicator(
                                       backgroundColor: Colors.grey,
-                                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Theme.of(context).primaryColor,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Theme.of(context).primaryColor,
                                       minHeight: 10,
-                                      value: state.user?.targetScore?.reading != null ? state.user!.targetScore!.reading / 450 : 0,
+                                      value: state.user?.targetScore?.reading !=
+                                              null
+                                          ? state.user!.targetScore!.reading /
+                                              450
+                                          : 0,
                                     ),
                                   ],
                                 ),
@@ -151,17 +172,28 @@ class _PageState extends State<Page> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Listening Target / Listening Current', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                                        Text(
+                                            'Listening Target / Listening Current',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600)),
                                         Text.rich(
                                           TextSpan(
-                                            text: '${state.user?.targetScore?.listening ?? 0}',
-                                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                            text:
+                                                '${state.user?.targetScore?.listening ?? 0}',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
                                             children: [
                                               TextSpan(
                                                 text: '/450',
-                                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w300),
                                               )
                                             ],
                                           ),
@@ -171,9 +203,17 @@ class _PageState extends State<Page> {
                                     const SizedBox(height: 16),
                                     LinearProgressIndicator(
                                       backgroundColor: Colors.grey,
-                                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Theme.of(context).primaryColor,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Theme.of(context).primaryColor,
                                       minHeight: 10,
-                                      value: state.user?.targetScore?.listening != null ? state.user!.targetScore!.listening / 450 : 0,
+                                      value: state.user?.targetScore
+                                                  ?.listening !=
+                                              null
+                                          ? state.user!.targetScore!.listening /
+                                              450
+                                          : 0,
                                     ),
                                   ],
                                 ),
@@ -184,8 +224,10 @@ class _PageState extends State<Page> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       showUpdateTargetDialog(
-                                        initialReadingScore: state.user?.targetScore?.reading,
-                                        initialListeningScore: state.user?.targetScore?.listening,
+                                        initialReadingScore:
+                                            state.user?.targetScore?.reading,
+                                        initialListeningScore:
+                                            state.user?.targetScore?.listening,
                                       );
                                     },
                                     child: Text('Update Target Score'),
@@ -215,7 +257,9 @@ class _PageState extends State<Page> {
         SizedBox(
           height: 40,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              GoRouter.of(context).pushNamed(AppRouter.historyTest);
+            },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -248,9 +292,8 @@ class _PageState extends State<Page> {
           height: 40,
           child: ElevatedButton(
             onPressed: () {
-              context.read<ProfileCubit>().updateProfile(
-                  ProfileUpdateRequest(
-                      name: nameController.text, bio: bioController.text));
+              context.read<ProfileCubit>().updateProfile(ProfileUpdateRequest(
+                  name: nameController.text, bio: bioController.text));
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

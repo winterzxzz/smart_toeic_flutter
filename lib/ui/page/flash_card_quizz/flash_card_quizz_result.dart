@@ -35,7 +35,7 @@ class FlashCardQuizResultPage extends StatelessWidget {
                   Text('Số câu đúng: ${item.numOfCorrect ?? 0}'),
                   Text(
                       'Số câu sai: ${(item.numOfQuiz ?? 0) - (item.numOfCorrect ?? 0)}'),
-                  Text('Tỉ lệ đúng: ${item.accuracy}'),
+                  Text('Tỉ lệ đúng: ${(item.accuracy ?? 0) * 100}%'),
                 ],
               ),
             ),

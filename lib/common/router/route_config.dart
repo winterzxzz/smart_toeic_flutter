@@ -15,6 +15,7 @@ import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog/blog_page.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
+import 'package:toeic_desktop/ui/page/history_test/history_test_page.dart';
 import 'package:toeic_desktop/ui/page/introduction/introduction_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_page.dart';
@@ -94,6 +95,8 @@ class AppRouter {
   static const String upgradeAccountSuccess = "/upgrade-account-success";
   static const String transcriptTest = "/transcript-test";
   static const String transcriptTestDetail = "/transcript-test-detail";
+  static const String historyTest = "/history-test";
+
   // GoRouter configuration
   static final _routes = <RouteBase>[
     GoRoute(
@@ -164,7 +167,8 @@ class AppRouter {
               path: flashCardLearningDetail,
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
-                final setFlashCardLearning = args['setFlashCardLearning'] as SetFlashCardLearning;
+                final setFlashCardLearning =
+                    args['setFlashCardLearning'] as SetFlashCardLearning;
                 return FlashCardDetailLearningPage(
                   setFlashCardLearning: setFlashCardLearning,
                 );
@@ -222,7 +226,8 @@ class AppRouter {
               builder: (context, state) {
                 final args = state.extra as Map<String, dynamic>;
                 final transcriptTestId = args['transcriptTestId'] as String;
-                return TranscriptTestDetailPage(transcriptTestId: transcriptTestId);
+                return TranscriptTestDetailPage(
+                    transcriptTestId: transcriptTestId);
               },
             ),
           ],
@@ -232,7 +237,11 @@ class AppRouter {
             GoRoute(
               name: blog,
               path: blog,
-              builder: (context, state) => const BlogPage(),
+              builder: (context, state) {
+                final args = state.extra as Map<String, dynamic>?;
+                final blogId = args?['blogId'] as String?;
+                return BlogPage(blogId: blogId);
+              },
             ),
           ],
         ),
@@ -280,6 +289,11 @@ class AppRouter {
               name: analysis,
               path: analysis,
               builder: (context, state) => const AnalysisPage(),
+            ),
+            GoRoute(
+              name: historyTest,
+              path: historyTest,
+              builder: (context, state) => const HistoryTestPage(),
             ),
           ],
         ),

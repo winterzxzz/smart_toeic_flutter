@@ -85,6 +85,7 @@ dependencies:
   flutter_widget_from_html_core: ^0.15.2
   speech_to_text: ^7.0.0
   translator: ^1.0.3+1
+  pinput: ^5.0.0
 
 dev_dependencies:
   flutter_test:

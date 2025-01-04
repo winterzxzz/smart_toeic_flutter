@@ -116,7 +116,13 @@ class ResultTestPage extends StatelessWidget {
                           child: _buildScoreBox('Correct',
                               '${resultModel.correctQuestion}', Colors.green)),
                       Expanded(
-                          child: _buildScoreBox('Incorrect', '0', Colors.red)),
+                          child: _buildScoreBox('Incorrect',
+                              '${resultModel.incorrectQuestion}', Colors.red)),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
                       Expanded(
                           child: _buildScoreBox('Skip',
                               '${resultModel.notAnswerQuestion}', Colors.grey)),
@@ -126,34 +132,34 @@ class ResultTestPage extends StatelessWidget {
                     ],
                   ),
 
-                  SizedBox(height: 50),
+                  // SizedBox(height: 50),
 
-                  // Bottom section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: _buildProgressSection(
-                              'Listening',
-                              '${resultModel.listeningScore}/495',
-                              '${resultModel.correctQuestion}/100')),
-                      Expanded(
-                          child: _buildProgressSection(
-                              'Reading',
-                              '${resultModel.readingScore}/495',
-                              '${resultModel.correctQuestion}/100')),
-                    ],
-                  ),
+                  // // Bottom section
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     Expanded(
+                  //         child: _buildProgressSection(
+                  //             'Listening',
+                  //             '${resultModel.listeningScore}/495',
+                  //             '${resultModel.correctQuestion}/100')),
+                  //     Expanded(
+                  //         child: _buildProgressSection(
+                  //             'Reading',
+                  //             '${resultModel.readingScore}/495',
+                  //             '${resultModel.correctQuestion}/100')),
+                  //   ],
+                  // ),
 
-                  SizedBox(height: 20),
-                  SizedBox(
-                      width: double.infinity,
-                      child: _buildProgressSection(
-                          'Overall',
-                          '${resultModel.overallScore}/990',
-                          '${resultModel.correctQuestion}/200')),
+                  // SizedBox(height: 20),
+                  // SizedBox(
+                  //     width: double.infinity,
+                  //     child: _buildProgressSection(
+                  //         'Overall',
+                  //         '${resultModel.overallScore}/990',
+                  //         '${resultModel.correctQuestion}/200')),
 
-                  SizedBox(height: 50),
+                  // SizedBox(height: 50),
                 ],
               ),
             ),

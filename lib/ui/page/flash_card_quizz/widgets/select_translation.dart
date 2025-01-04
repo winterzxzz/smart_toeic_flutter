@@ -49,7 +49,6 @@ class Page extends StatelessWidget {
             fcLearning.flashcardId!.translation,
             ...state.random4Words.take(3).map((e) => e.translation!)
           ];
-          list.shuffle();
           return SectionQuestion(
               widgetKey: widgetKey, fcLearning: fcLearning, list: list);
         }
@@ -78,6 +77,13 @@ class SectionQuestion extends StatefulWidget {
 class _SectionQuestionState extends State<SectionQuestion> {
   String? selectedAnswer;
   bool isCheck = false;
+  late List<String> shuffledList;
+
+  @override
+  void initState() {
+    super.initState();
+    shuffledList = List.from(widget.list)..shuffle();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +105,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
           ),
         ),
         SizedBox(height: 32),
-        ...widget.list.map((level) {
+        ...shuffledList.map((level) {
           return Column(
             children: [
               const SizedBox(height: 32),

@@ -39,7 +39,7 @@
     <dict>
         <key>CFBundleURLName</key>
         <!-- abstract name for this URL type (you can leave it blank) -->
-        <string>toeic.com</string>
+        <string>winter-toeic.com</string>
         <key>CFBundleURLSchemes</key>
         <array>
             <!-- your schemes -->

@@ -43,21 +43,24 @@ Future<void> init() async {
         () => TranscriptTestDetailCubit(injector()))
     ..registerLazySingleton<BlogRepository>(
         () => BlogRepositoryImpl(injector()))
-    ..registerFactory<BlogCubit>(() => BlogCubit(injector()));  
+    ..registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(injector()))
+    ..registerFactory<BlogCubit>(() => BlogCubit(injector()))
+    ..registerFactory<HistoryTestCubit>(() => HistoryTestCubit(injector()));
 
   if (!injector.isRegistered<HomeCubit>()) {
     injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
   }
 
-    if (!injector.isRegistered<DeThiOnlineCubit>()) {
-    injector.registerLazySingleton<DeThiOnlineCubit>(() => DeThiOnlineCubit(injector()));
+  if (!injector.isRegistered<DeThiOnlineCubit>()) {
+    injector.registerLazySingleton<DeThiOnlineCubit>(
+        () => DeThiOnlineCubit(injector()));
   }
 
-    if (!injector.isRegistered<SplashCubit>()) {
-      injector.registerFactory<SplashCubit>(() => SplashCubit(injector()));
-    }
+  if (!injector.isRegistered<SplashCubit>()) {
+    injector.registerFactory<SplashCubit>(() => SplashCubit(injector()));
+  }
 
-    if (!injector.isRegistered<AppSettingCubit>()) {
-      injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
-    }
+  if (!injector.isRegistered<AppSettingCubit>()) {
+    injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
+  }
 }

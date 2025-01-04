@@ -89,4 +89,9 @@ class AppImages {
   static const scanning = 'assets/animations/scanning.json';
 
   static const profileBackground = 'assets/images/profile_background.png';
+
+  static const banner = 'assets/images/banner.png';
+  static const banner1 = 'assets/images/banner1.png';
+  static const banner2 = 'assets/images/banner2.png';
+  static const banner3 = 'assets/images/banner3.png';
 }

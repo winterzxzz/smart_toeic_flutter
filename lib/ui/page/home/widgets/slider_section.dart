@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 
 class SliderSection extends StatefulWidget {
   const SliderSection({super.key});
@@ -16,9 +16,10 @@ class _SliderSectionState extends State<SliderSection> {
   late CarouselSliderController _carouselController;
   int currentIndex = 0;
   List<String> images = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCFwiOk1DeEmRzq_PDSV0TFlMynCWTm4iFcg&s",
-    "https://i.ytimg.com/vi/7wqBQ4cdrhw/maxresdefault.jpg",
-    "https://dbkpop.com/wp-content/uploads/2022/07/aespa_Girls_Winter_6.jpg",
+    AppImages.banner,
+    AppImages.banner1,
+    AppImages.banner2,
+    AppImages.banner3,
   ];
 
   @override
@@ -52,8 +53,8 @@ class _SliderSectionState extends State<SliderSection> {
                 builder: (BuildContext context) {
                   return SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: CachedNetworkImage(
-                      imageUrl: i,
+                    child: Image.asset(
+                      i,
                       fit: BoxFit.cover,
                     ),
                   );

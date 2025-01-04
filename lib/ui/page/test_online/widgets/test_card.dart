@@ -20,7 +20,7 @@ class TestCard extends StatelessWidget {
     final isAttempted = userAttempt!.count! > 0;
     return Card(
       child: Container(
-        height: 300,
+        height: 280,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,11 +63,12 @@ class TestCard extends StatelessWidget {
                   icon: FontAwesomeIcons.circleCheck,
                   text: "${userAttempt.count!} attempts",
                 ),
+                TagWidget(
+                  icon: FontAwesomeIcons.fileLines,
+                  text: "Type: ${test.type}",
+                ),
               ],
             ),
-            SizedBox(height: 8),
-            Text('#${test.type}',
-                style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             Container(
               padding: EdgeInsets.all(8),

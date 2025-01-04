@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -8,7 +10,8 @@ class BlogCubit extends Cubit<BlogState> {
   final BlogRepository blogRepository;
   BlogCubit(this.blogRepository) : super(BlogState.initial());
 
-  Future<void> getBlog() async {
+  Future<void> getBlog(String? blogId) async {
+    log('getBlog: $blogId');
     // Ensure loading state is emitted
     await Future.microtask(
         () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
@@ -17,18 +20,31 @@ class BlogCubit extends Cubit<BlogState> {
     result.fold(
       (l) => emit(state.copyWith(
           loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
-      (r) => emit(state.copyWith(
-          loadStatus: LoadStatus.success,
-          blogs: r,
-          searchBlogs: r,
-          focusBlog: r.first)),
+      (r) {
+        if (blogId != null) {
+          final blog = r.firstWhere((element) => element.id == blogId,
+              orElse: () => r.first);
+          emit(state.copyWith(
+              loadStatus: LoadStatus.success,
+              blogs: r,
+              searchBlogs: r,
+              focusBlog: blog));
+        } else {
+          emit(state.copyWith(
+              loadStatus: LoadStatus.success,
+              blogs: r,
+              searchBlogs: r,
+              focusBlog: r.first));
+        }
+      },
     );
   }
 
   // search
   void searchBlog(String keyword) async {
     if (keyword.isEmpty) {
-      emit(state.copyWith(searchBlogs: state.blogs, focusBlog: state.blogs.first));
+      emit(state.copyWith(
+          searchBlogs: state.blogs, focusBlog: state.blogs.first));
       return;
     }
     await Future.microtask(

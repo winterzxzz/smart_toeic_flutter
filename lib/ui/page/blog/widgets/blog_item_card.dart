@@ -92,7 +92,8 @@ class BlogItemCard extends StatelessWidget {
                             // views
                             Row(
                               children: [
-                                Icon(Icons.remove_red_eye, size: 12, color: AppColors.textGray),
+                                Icon(Icons.remove_red_eye,
+                                    size: 12, color: AppColors.textGray),
                                 const SizedBox(width: 4),
                                 Text(
                                   (blog.view ?? 0).toString(),
@@ -103,6 +104,7 @@ class BlogItemCard extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            
                             const SizedBox(width: 16),
                             Row(
                               children: [

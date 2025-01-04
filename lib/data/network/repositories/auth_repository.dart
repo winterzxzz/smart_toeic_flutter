@@ -1,7 +1,7 @@
-
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
+import 'package:toeic_desktop/data/models/response/reset_password_response.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
 
@@ -16,7 +16,7 @@ abstract class AuthRepository {
 
   Future<Either<ApiError, UserEntity>> getUser();
 
-  Future<Either<ApiError, void>> resetPassword(String email);
+  Future<Either<ApiError, ResetPasswordResponse>> resetPassword(String email);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -60,7 +60,8 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<ApiError, void>> resetPassword(String email) async {
+  Future<Either<ApiError, ResetPasswordResponse>> resetPassword(
+      String email) async {
     try {
       final result = await apiClient.resetPassword(email);
       return Right(result);

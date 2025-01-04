@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_navigator.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_state.dart';
@@ -53,11 +51,6 @@ class _PageState extends State<Page> {
     super.dispose();
   }
 
-  void _onLoginSuccess() {
-    AppRouter.clearAndNavigate(AppRouter.home);
-    injector<HomeCubit>().init();
-  }
-
   @override
   Widget build(BuildContext context) {
     final navigator = RegisterNavigator(context: context);
@@ -69,13 +62,11 @@ class _PageState extends State<Page> {
           navigator.hideLoadingOverlay();
         }
         if (LoadStatus.failure == state.loadDataStatus) {
-          navigator.error(state.message);
+          showToast(title: state.message, type: ToastificationType.error);
         }
         if (LoadStatus.success == state.loadDataStatus) {
-          showToast(
-              title: 'Welcome to TOEIC Prep!',
-              type: ToastificationType.success);
-          _onLoginSuccess();
+          showToast(title: state.message, type: ToastificationType.success);
+          navigator.navigateToLogin();
         }
       },
       child: Scaffold(

@@ -49,7 +49,6 @@ class Page extends StatelessWidget {
             fcLearning.flashcardId!.definition,
             ...state.random4Words.take(3).map((e) => e.description!)
           ];
-          list.shuffle();
           return SectionQuestion(
               widgetKey: widgetKey, fcLearning: fcLearning, list: list);
         }
@@ -79,13 +78,14 @@ class _SectionQuestionState extends State<SectionQuestion>
     with TickerProviderStateMixin {
   String? selectedAnswer;
   bool isCheck = false;
+  late List<String> shuffledList;
 
   @override
   void initState() {
     super.initState();
+    shuffledList = List.from(widget.list)..shuffle();
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -106,7 +106,7 @@ class _SectionQuestionState extends State<SectionQuestion>
           ),
         ),
         SizedBox(height: 32),
-        ...widget.list.map((level) {
+        ...shuffledList.map((level) {
           return Column(
             children: [
               const SizedBox(height: 32),
@@ -163,7 +163,7 @@ class _SectionQuestionState extends State<SectionQuestion>
               children: [
                 SizedBox(height: 8),
                 Text(
-                  'Đáp án: ${widget.fcLearning.flashcardId!.word}',
+                  'Đáp án: ${widget.fcLearning.flashcardId!.definition}',
                   style: TextStyle(fontSize: 18),
                 ),
               ],

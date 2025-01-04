@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
+import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_explain.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
 import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
@@ -15,14 +16,14 @@ import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
 
 abstract class TestRepository {
-  Future<Either<ApiError, HomeDataByUser>> getTestByUser();
-  Future<Either<ApiError, List<Test>>> getTests();
-  Future<Either<ApiError, List<Test>>> getPublicTests();
+  Future<Either<ApiError, HomeDataByUser>> getHomeDataByUser();
+  Future<Either<ApiError, List<Test>>> getTests({int limit = 3});
+  Future<Either<ApiError, HomeDataPublic>> getHomeDataPublic();
   Future<Either<ApiError, List<QuestionModel>>> getDetailTest(String testId);
   Future<Either<ApiError, ResultTestSubmit>> submitTest(
       ResultTestRequest request);
   Future<Either<ApiError, ResultTest>> getAnswerTest(String resultId);
-  Future<Either<ApiError, List<ResultTest>>> getResultTests();
+  Future<Either<ApiError, List<ResultTest>>> getResultTests({int limit = 3});
   Future<Either<ApiError, List<QuestionResult>>> getResultTestByResultId(
       String resultId);
   Future<Either<ApiError, QuestionExplain>> getExplainQuestion(
@@ -35,16 +36,17 @@ class TestRepositoryImpl extends TestRepository {
   TestRepositoryImpl(this._apiClient);
 
   @override
-  Future<Either<ApiError, HomeDataByUser>> getTestByUser(
-      {int limit = 3}) async {
+  Future<Either<ApiError, HomeDataByUser>> getHomeDataByUser() async {
     try {
       final response = await Future.wait([
-        _apiClient.getTest(limit),
-        _apiClient.getResultTestUser(limit),
+        _apiClient.getTest(3),
+        _apiClient.getResultTestUser(3),
+        _apiClient.getBlog(),
       ]);
       return Right(HomeDataByUser(
         tests: response[0] as List<Test>,
         results: response[1] as List<ResultTest>,
+        blogs: response[2] as List<Blog>,
       ));
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
@@ -62,10 +64,16 @@ class TestRepositoryImpl extends TestRepository {
   }
 
   @override
-  Future<Either<ApiError, List<Test>>> getPublicTests() async {
+  Future<Either<ApiError, HomeDataPublic>> getHomeDataPublic() async {
     try {
-      final response = await _apiClient.getTestPublic();
-      return Right(response);
+      final response = await Future.wait([
+        _apiClient.getTestPublic(),
+        _apiClient.getBlog(),
+      ]);
+      return Right(HomeDataPublic(
+        tests: response[0] as List<Test>,
+        blogs: response[1] as List<Blog>,
+      ));
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }

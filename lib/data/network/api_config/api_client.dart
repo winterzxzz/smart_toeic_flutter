@@ -27,6 +27,7 @@ import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';
+import 'package:toeic_desktop/data/models/response/reset_password_response.dart';
 
 part 'api_client.g.dart';
 
@@ -200,14 +201,14 @@ abstract class ApiClient {
   );
 
   @POST('/user/auth/otp/reset-password')
-  Future<void> resetPassword(
+  Future<ResetPasswordResponse> resetPassword(
     @Field("email") String email,
   );
 
-  // @POST('/user/auth/request/reset-password')
-  // Future<void> requestResetPassword(
-  //   @Field("email") String email,
-  // );
+  @POST('/user/auth/request/reset-password')
+  Future<void> requestResetPassword(
+    @Field("email") String email,
+  );
 
   @POST('/user/learning-flashcard/update-session-score')
   Future<void> updateSessionScore(

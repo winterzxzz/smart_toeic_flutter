@@ -7,7 +7,6 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/widgets/form_set_flash_card_dia_log.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_grid.dart';
 
@@ -36,16 +35,16 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 32),
-              Row(
-                children: [
-                  FlashCardMyListItem(),
-                  const SizedBox(width: 16),
-                  FlashCardMyListItem(),
-                  const SizedBox(width: 16),
-                  FlashCardMyListItem(),
-                ],
-              ),
+              // const SizedBox(height: 32),
+              // Row(
+              //   children: [
+              //     FlashCardMyListItem(),
+              //     const SizedBox(width: 16),
+              //     FlashCardMyListItem(),
+              //     const SizedBox(width: 16),
+              //     FlashCardMyListItem(),
+              //   ],
+              // ),
               const SizedBox(height: 16),
               InkWell(
                 onTap: () => showCreateSetFlashCardDialog(context,
