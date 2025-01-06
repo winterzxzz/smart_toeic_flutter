@@ -46,6 +46,7 @@ import ProtectRouter from '../../../wrapper/ProtectRouter'
 import { endpoint } from '../../../api'
 import instance from '../../../configs/axios.instance'
 import { formatDate, formatDateTime } from '../../../utils/formatDate'
+import { toast } from 'react-toastify'
 
 const _subscriptionData = {
   labels: ['Premium', 'Regular'],
@@ -66,6 +67,10 @@ const Revenue = () => {
   const [totalRevenue, setTotalRevenue] = useState(0)
   const [searchTerm, setSearchTerm] = useState('')
   const [subscriptionData, setSubscriptionData] = useState(_subscriptionData)
+  const [transactionCheck, setTransactionCheck] = useState({
+    message: '',
+    status: '',
+  })
   const [filters, setFilters] = useState({
     status: '',
     package: '',
@@ -81,6 +86,48 @@ const Revenue = () => {
   const [transactions, setTransactions] = useState([])
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
+  }
+  const handleUpdateStatus = async (id) => {
+    try {
+      const { data } = await instance.post(endpoint.transaction.updateStatus, {
+        id: id,
+        status: transactionCheck.status,
+      })
+      setTransactions((prev) =>
+        prev.map((transaction) =>
+          transaction.providerId === id
+            ? { ...transaction, status: transactionCheck.status }
+            : transaction,
+        ),
+      )
+      setSelectedTransaction((prev) => ({
+        ...prev,
+        status: transactionCheck.status,
+      }))
+      setTransactionCheck({
+        message: '',
+        status: '',
+      })
+      toast.success('Update status successfully')
+    } catch (error) {
+      toast.error('Update status failed')
+    }
+  }
+  const handleCheckStatus = async (id) => {
+    const { data } = await instance.get(endpoint.transaction.getStatus, {
+      params: { transId: id },
+    })
+    setTransactionCheck({
+      message: data.return_message,
+      status: data.status,
+    })
+  }
+  const handleCloseModal = () => {
+    setViewModal(false)
+    setTransactionCheck({
+      message: '',
+      status: '',
+    })
   }
   const indexOfLastTransaction = currentPage * transactionsPerPage
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage
@@ -131,18 +178,18 @@ const Revenue = () => {
     if (searchTerm) {
       result = result.filter(
         (transaction) =>
-          transaction.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          transaction.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          transaction.invoiceId.toLowerCase().includes(searchTerm.toLowerCase()),
+          transaction?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          transaction?.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          transaction?.invoiceId?.toLowerCase().includes(searchTerm.toLowerCase()),
       )
     }
 
     if (filters.status) {
-      result = result.filter((transaction) => transaction.status === filters.status)
+      result = result.filter((transaction) => transaction?.status === filters.status)
     }
 
     if (filters.package) {
-      result = result.filter((transaction) => transaction.package === filters.package)
+      result = result.filter((transaction) => transaction?.package === filters.package)
     }
 
     if (filters.dateRange) {
@@ -153,12 +200,12 @@ const Revenue = () => {
         last90days: 90,
       }
       const daysAgo = new Date(today.setDate(today.getDate() - days[filters.dateRange]))
-      result = result.filter((transaction) => new Date(transaction.date) >= daysAgo)
+      result = result.filter((transaction) => new Date(transaction?.date) >= daysAgo)
     } else if (filters.startDate && filters.endDate) {
       const start = new Date(filters.startDate)
       const end = new Date(filters.endDate)
       result = result.filter((transaction) => {
-        const date = new Date(transaction.createdAt)
+        const date = new Date(transaction?.createdAt)
         return date >= start && date <= end
       })
     }
@@ -201,7 +248,6 @@ const Revenue = () => {
       )
       amounts = data.map((item) => item.totalAmount)
     }
-
     setRevenueData((prev) => ({
       ...prev,
       labels,
@@ -218,6 +264,14 @@ const Revenue = () => {
     fetchRevenueData(timeFrame)
   }
 
+  useEffect(() => {
+    if (!viewModal) {
+      setTransactionCheck({
+        message: '',
+        status: '',
+      })
+    }
+  }, [viewModal])
   return (
     <>
       <CRow>
@@ -350,7 +404,7 @@ const Revenue = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell>Invoice ID</CTableHeaderCell>
-                    <CTableHeaderCell>User</CTableHeaderCell>
+                    <CTableHeaderCell>Email</CTableHeaderCell>
                     <CTableHeaderCell>Amount</CTableHeaderCell>
                     <CTableHeaderCell>Date & Time</CTableHeaderCell>
                     <CTableHeaderCell>Status</CTableHeaderCell>
@@ -361,7 +415,7 @@ const Revenue = () => {
                   {currentTransactions.map((transaction) => (
                     <CTableRow key={transaction.id}>
                       <CTableDataCell>{transaction.providerId}</CTableDataCell>
-                      <CTableDataCell>{transaction.userId}</CTableDataCell>
+                      <CTableDataCell>{transaction.userId?.email}</CTableDataCell>
 
                       <CTableDataCell>{formatCurrency(transaction.amount)}</CTableDataCell>
                       <CTableDataCell>{formatDateTime(transaction.createdAt)}</CTableDataCell>
@@ -380,7 +434,7 @@ const Revenue = () => {
                       </CTableDataCell>
                       <CTableDataCell>
                         <CButton
-                          color="info"
+                          color="primary"
                           size="sm"
                           className="me-2"
                           onClick={() => {
@@ -390,13 +444,6 @@ const Revenue = () => {
                         >
                           Details
                         </CButton>
-                        {/* <CButton
-                          color="primary"
-                          size="sm"
-                          onClick={() => handleViewUserDetails(transaction.user.id)}
-                        >
-                          <CIcon icon={cilUser} />
-                        </CButton> */}
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -434,28 +481,57 @@ const Revenue = () => {
               <p>
                 <strong>Invoice ID:</strong> {selectedTransaction.providerId}
               </p>
+
               <p>
-                <strong>User:</strong> {selectedTransaction.userId}
-              </p>
-              <p>
-                <strong>Email:</strong> {selectedTransaction.userId}
+                <strong>Email:</strong> {selectedTransaction?.userId?.email}
               </p>
 
               <p>
-                <strong>Amount:</strong> {formatCurrency(selectedTransaction.amount)}
+                <strong>Amount:</strong> {formatCurrency(selectedTransaction?.amount)}
               </p>
               <p>
-                <strong>Date & Time:</strong> {selectedTransaction.date}
+                <strong>Date & Time:</strong> {formatDateTime(selectedTransaction?.createdAt)}
               </p>
               <p>
-                <strong>Status:</strong> {selectedTransaction.status}
+                <strong>Status:</strong> {selectedTransaction?.status}
               </p>
+              {(transactionCheck?.status || transactionCheck?.message) && (
+                <div>
+                  <h5>Check Transaction</h5>
+                  <p>
+                    <strong>Message:</strong> {transactionCheck?.message}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {transactionCheck?.status}
+                  </p>
+                </div>
+              )}
             </div>
           )}
           {/* Pagination Controls */}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setViewModal(false)}>
+          {!transactionCheck?.status ? (
+            <CButton
+              color="primary"
+              onClick={() => handleCheckStatus(selectedTransaction?.providerId)}
+            >
+              Check
+            </CButton>
+          ) : transactionCheck?.status === selectedTransaction?.status ? (
+            <CButton color="primary" disabled>
+              Checked
+            </CButton>
+          ) : (
+            <CButton
+              color="primary"
+              onClick={() => handleUpdateStatus(selectedTransaction?.providerId)}
+            >
+              Update Status
+            </CButton>
+          )}
+
+          <CButton color="secondary" onClick={() => handleCloseModal()}>
             Close
           </CButton>
         </CModalFooter>

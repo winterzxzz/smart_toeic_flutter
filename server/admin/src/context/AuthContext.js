@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import instance from '../configs/axios.instance'
+import { endpoint } from '../api'
 
 const AuthContext = createContext()
 
@@ -14,8 +16,9 @@ export const AuthProvider = ({ children }) => {
   }
 
   // Hàm logout: Xóa token khỏi localStorage
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem('admin_user')
+    await instance.post(endpoint.auth.logout)
     window.location.href = '/login'
     setIsLoggedIn(false)
   }

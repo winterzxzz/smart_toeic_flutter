@@ -28,7 +28,6 @@ const ExamCreate = () => {
     type: '',
     difficulty: 'intermediate',
     isPublished: false,
-    duration: 0,
   })
 
   const [touched, setTouched] = useState({
@@ -36,7 +35,6 @@ const ExamCreate = () => {
     difficulty: false,
     status: false,
     numberOfQuestions: false,
-    duration: false,
   })
   const [errors, setErrors] = useState({})
 
@@ -57,10 +55,20 @@ const ExamCreate = () => {
       newErrors.difficulty = 'Difficulty is required'
     }
 
+    // Validate file
+    if (!fileSelected || fileValid !== true) {
+      newErrors.file = 'A valid file is required'
+    }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
-
+  const handleIsPublishedChange = (e) => {
+    setIsPublished(e.target.value)
+  }
+  const handleNumberOfQuestionsChange = (e) => {
+    setNumberOfQuestions(e.target.value)
+  }
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setExamData((prev) => ({
@@ -109,21 +117,13 @@ const ExamCreate = () => {
     if (!examData.type) {
       newErrors.type = 'Test Type là bắt buộc'
     }
-    if (!examData.duration) {
-      newErrors.duration = 'Duration là bắt buộc'
-    }
-    if (examData.duration <= 0) {
-      newErrors.duration = 'Duration phải lớn hơn 0'
-    }
-    if (isNaN(examData.duration)) {
-      newErrors.duration = 'Duration phải là số'
-    }
+    console.log('newErrors', newErrors)
     setErrors(newErrors)
 
     // Nếu có lỗi, hiển thị thông báo
     if (Object.keys(newErrors).length > 0) {
       setIsValid(false)
-      setValidationMessage(Object.values(newErrors)[0])
+      setValidationMessage('Please fill in all required fields ')
       return
     }
     const { data } = await instance.patch(endpoint.test.updateInfor(examId), examData)
@@ -209,20 +209,6 @@ const ExamCreate = () => {
                     <option value="exam">Exam</option>
                     <option value="miniexam">Mini Exam</option>
                   </CFormSelect>
-                </CCol>
-                <CCol md={6}>
-                  <CFormLabel htmlFor="duration">Duration (minutes)</CFormLabel>
-                  <CFormInput
-                    id="duration"
-                    name="duration"
-                    value={examData.duration}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur('duration')}
-                    invalid={touched.duration && errors.duration}
-                  />
-                  {touched.duration && errors.duration && (
-                    <CFormFeedback invalid>{errors.duration}</CFormFeedback>
-                  )}
                 </CCol>
               </CRow>
 

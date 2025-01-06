@@ -27,6 +27,7 @@ import instance from '../../../configs/axios.instance'
 import { endpoint } from '../../../api'
 import { toast } from 'react-toastify'
 import { useParams } from 'react-router-dom'
+import { formatDate, formatDateTime } from '../../../utils/formatDate'
 const EditPost = () => {
   const [activeTab, setActiveTab] = useState(1)
   const [formData, setFormData] = useState({
@@ -338,14 +339,10 @@ const EditPost = () => {
                         {formData.author}
                       </span>
                     )}
-                    {formData.publishDate && (
+                    {formData.createdAt && (
                       <span className="blog-date ms-3">
                         <i className="fas fa-calendar-alt me-2"></i>
-                        {new Date(formData.publishDate).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
+                        {formatDateTime(formData.createdAt)}
                       </span>
                     )}
                   </div>
@@ -378,7 +375,7 @@ const EditPost = () => {
                         src={formData.image}
                         alt="Featured"
                         style={{
-                          maxWidth: '100%',
+                          width: '100%',
                           height: 'auto',
                           display: 'block',
                         }}

@@ -12,7 +12,7 @@ const ToeicExamList = React.lazy(() => import('./views/toeic/exams/ExamList'))
 const ToeicExamCreate = React.lazy(() => import('./views/toeic/exams/ExamCreate'))
 const ToeicExamUpload = React.lazy(() => import('./views/toeic/exams/ExamUpload'))
 const ExamEdit = React.lazy(() => import('./views/toeic/exams/ExamEdit'))
-
+const ExamEditData = React.lazy(() => import('./views/toeic/exams/ExamEditData'))
 // Blog Management
 const ToeicBlogPosts = React.lazy(() => import('./views/toeic/blog/Posts'))
 const ToeicBlogCreate = React.lazy(() => import('./views/toeic/blog/CreatePost.js'))
@@ -26,7 +26,7 @@ const FlashCards = React.lazy(() => import('./views/toeic/flashcards/FlashCards'
 // Other
 const ToeicRevenue = React.lazy(() => import('./views/toeic/revenue/Revenue'))
 
-//Login 
+//Login
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 const routes = [
@@ -36,13 +36,14 @@ const routes = [
   // User Management
   { path: '/toeic/users', name: 'Users Management', element: ToeicUsers },
   { path: '/toeic/users/:userId', name: 'User Detail', element: UserDetail },
-  
+
   // Exam Routes
   { path: '/toeic/exams/list', name: 'Exam List', element: ToeicExamList },
   { path: '/toeic/exams/create', name: 'Create Exam', element: ToeicExamCreate },
   { path: '/toeic/exams/upload', name: 'Upload Exam', element: ToeicExamUpload },
   { path: '/toeic/exams/edit/:examId', name: 'Edit Exam', element: ExamEdit },
-  
+  { path: '/toeic/exams/upload/:examId', name: 'Edit Exam Data', element: ExamEditData },
+
   // Blog Routes
   { path: '/toeic/blog/posts', name: 'Blog Posts', element: ToeicBlogPosts },
   { path: '/toeic/blog/create', name: 'Create Post', element: ToeicBlogCreate },
@@ -58,7 +59,6 @@ const routes = [
 
   // Login
   { path: '/login', name: 'Login', element: Login },
-   
 ]
 
 export default routes

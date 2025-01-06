@@ -406,7 +406,6 @@ const CreatePost = () => {
           </CCardBody>
         </CCard>
       </CCol>
-      a
     </CRow>
   )
 }

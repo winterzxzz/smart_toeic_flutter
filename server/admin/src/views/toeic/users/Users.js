@@ -75,11 +75,7 @@ const Users = () => {
 
     // Search
     if (searchTerm) {
-      result = result.filter(
-        (user) =>
-          user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          user.email.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      result = result.filter((user) => user.email.toLowerCase().includes(searchTerm.toLowerCase()))
     }
 
     // Status filter
@@ -287,7 +283,6 @@ const Users = () => {
                     <CTableHeaderCell>Status</CTableHeaderCell>
                     <CTableHeaderCell>Membership</CTableHeaderCell>
                     <CTableHeaderCell>Registration Date</CTableHeaderCell>
-                    <CTableHeaderCell>Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -306,7 +301,7 @@ const Users = () => {
                           </CBadge>
                         </CTableDataCell>
                         <CTableDataCell>{user.registeredDate}</CTableDataCell>
-                        <CTableDataCell>
+                        {/* <CTableDataCell>
                           <CButton
                             color={user.status === 'Active' ? 'danger' : 'success'}
                             size="sm"
@@ -315,18 +310,7 @@ const Users = () => {
                           >
                             {user.status === 'Active' ? 'Block' : 'Unblock'}
                           </CButton>
-                          <CButton
-                            color="danger"
-                            size="sm"
-                            variant="outline"
-                            onClick={() => {
-                              setSelectedUser(user)
-                              setDeleteModal(true)
-                            }}
-                          >
-                            <CIcon icon={cilTrash} />
-                          </CButton>
-                        </CTableDataCell>
+                        </CTableDataCell> */}
                       </CTableRow>
                     ))
                   ) : (

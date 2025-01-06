@@ -26,15 +26,24 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const handleLogin = async () => {
-    const { data } = await instance.post(endpoint.auth.login, {
-      email,
-      password,
-    })
-    console.log('data', data)
-    if (data) {
-      login(data)
-      navigate('/dashboard')
-    } else {
+    if (!email || !password) {
+      toast.error('Email and password are required')
+      return
+    }
+    try {
+      const { data } = await instance.post(endpoint.auth.login, {
+        email,
+        password,
+      })
+
+      if (data) {
+        login(data)
+        navigate('/dashboard')
+      } else {
+        toast.error('Email or password is incorrect')
+      }
+    } catch (error) {
+      console.log('error', error)
       toast.error('Email or password is incorrect')
     }
   }

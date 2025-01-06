@@ -16,7 +16,7 @@ import {
 import axios from 'axios'
 import { useEffect } from 'react'
 import * as XLSX from 'xlsx'
-import { toast } from 'react-hot-toast'
+import { toast } from 'react-toastify'
 import { endpoint } from '../../../api'
 import instance from '../../../configs/axios.instance'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
@@ -55,6 +55,7 @@ const ExamCreate = () => {
   const [errorCells, setErrorCells] = useState([])
   const [validationMessage, setValidationMessage] = useState('')
   const [isPublished, setIsPublished] = useState(false)
+  const [duration, setDuration] = useState(0)
   const validateForm = () => {
     const newErrors = {}
 
@@ -105,6 +106,10 @@ const ExamCreate = () => {
     }))
   }
 
+  const handleDurationChange = (e) => {
+    setDuration(e.target.value)
+  }
+
   const handleFileUpload = async (event) => {
     const file = event.target.files[0]
     if (!file) return
@@ -118,7 +123,15 @@ const ExamCreate = () => {
       const arrayBuffer = await file.arrayBuffer()
       const workbook = XLSX.read(arrayBuffer)
       const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' })
+      const jsonData = XLSX.utils
+        .sheet_to_json(worksheet, { header: 1, defval: '' })
+        .filter((row) => {
+          return !row.every((cell) => !cell)
+        })
+      console.log(jsonData)
+      setNumberOfQuestions(jsonData.length - 1)
+      const partSet = new Set(jsonData.map((row) => row[10]))
+      setParts(Array.from(partSet).filter((part) => typeof part === 'number'))
 
       // Validate headers for all test types
       const headers = jsonData[0]
@@ -219,15 +232,7 @@ const ExamCreate = () => {
   const handleTypeChange = (e) => {
     setType(e.target.value)
   }
-  const handlePartChange = (e) => {
-    const value = e.target.value
-    setParts(
-      (prevParts) =>
-        e.target.checked
-          ? [...prevParts, value] // Thêm nếu được chọn
-          : prevParts.filter((part) => part !== value), // Loại bỏ nếu bỏ chọn
-    )
-  }
+
   const handleValidate = () => {
     // Xóa lỗi trước khi xác thực
     setErrors({})
@@ -241,7 +246,15 @@ const ExamCreate = () => {
     if (!examData.difficulty) {
       newErrors.difficulty = 'Difficulty Level là bắt buộc'
     }
-
+    if (!duration) {
+      newErrors.duration = 'Duration là bắt buộc'
+    }
+    if (duration <= 0) {
+      newErrors.duration = 'Duration phải lớn hơn 0'
+    }
+    if (isNaN(Number(duration))) {
+      newErrors.duration = 'Duration phải là số'
+    }
     if (!type) {
       newErrors.type = 'Test Type là bắt buộc'
     }
@@ -251,9 +264,7 @@ const ExamCreate = () => {
     if (numberOfQuestions <= 0) {
       newErrors.numberOfQuestions = 'Number of Questions phải lớn hơn 0'
     }
-    if (!parts.length || parts.length === 0) {
-      newErrors.parts = 'Parts là bắt buộc'
-    }
+
     // Kiểm tra file Excel
     const validExcel =
       files.excelFile && files.excelFile.length > 0 && errorCells.length === 0 && !uploadError
@@ -264,15 +275,13 @@ const ExamCreate = () => {
     // Nếu có lỗi, hiển thị thông báo
     if (Object.keys(newErrors).length > 0 || !validExcel) {
       setIsValid(false)
-      setValidationMessage(
-        'Please fill in all required fields and ensure the Excel file has no errors.',
-      )
+      toast.error(Object.values(newErrors)[0])
       return
     }
 
     // Nếu tất cả đều hợp lệ
     setIsValid(true)
-    setValidationMessage('Validation successful!')
+    toast.success('Validation successful!')
   }
 
   const handleSubmit = async (e) => {
@@ -302,6 +311,7 @@ const ExamCreate = () => {
     formData.append('numberOfQuestions', numberOfQuestions)
     formData.append('parts', JSON.stringify(parts))
     formData.append('difficulty', examData.difficulty)
+    formData.append('duration', duration)
     formData.append('isPublished', isPublished)
     // Log the submitted data
     console.log('Submitted Data:', {
@@ -325,9 +335,11 @@ const ExamCreate = () => {
       })
       console.log('Exam created successfully:', response.data)
       setValidationMessage('Bài kiểm tra đã được lưu thành công!')
+      toast.success('Bài kiểm tra đã được lưu thành công!')
       resetForm() // Reset the form after successful submission
     } catch (error) {
       console.error('Error creating exam:', error)
+      toast.error('Có lỗi xảy ra khi lưu bài kiểm tra.')
       setValidationMessage('Có lỗi xảy ra khi lưu bài kiểm tra.')
     }
   }
@@ -382,6 +394,8 @@ const ExamCreate = () => {
                   <CFormLabel htmlFor="difficulty">Difficulty Level</CFormLabel>
                   <CFormSelect
                     id="difficulty"
+                    Test
+                    Type
                     name="difficulty"
                     value={examData.difficulty}
                     onChange={handleInputChange}
@@ -406,51 +420,19 @@ const ExamCreate = () => {
                     </option>
                     <option value="exam">Exam</option>
                     <option value="miniexam">Mini Exam</option>
-                    <option value="reading">Reading</option>
-                    <option value="listening">Listening</option>
                   </CFormSelect>
                 </CCol>
                 <CCol md={6}>
-                  <CFormLabel htmlFor="numberOfQuestions">Number of Questions</CFormLabel>
+                  <CFormLabel htmlFor="testType">Duration (minutes)</CFormLabel>
                   <CFormInput
-                    id="numberOfQuestions"
-                    name="numberOfQuestions"
-                    value={numberOfQuestions}
-                    onChange={handleNumberOfQuestionsChange}
-                    type="number"
-                    invalid={touched.numberOfQuestions && errors.numberOfQuestions}
+                    id="duration"
+                    name="duration"
+                    value={duration}
+                    onChange={handleDurationChange}
                   />
-                  {touched.numberOfQuestions && errors.numberOfQuestions && (
-                    <CFormFeedback invalid>{errors.numberOfQuestions}</CFormFeedback>
-                  )}
                 </CCol>
               </CRow>
 
-              <CRow>
-                <label style={{ marginBottom: '10px' }}>Parts</label>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                    gap: '10px',
-                  }}
-                >
-                  {['1', '2', '3', '4', '5', '6', '7'].map((part) => (
-                    <div key={part} className="col-span-2">
-                      <label className="">
-                        <input
-                          type="checkbox"
-                          value={part}
-                          checked={parts.includes(part)}
-                          onChange={handlePartChange}
-                          style={{ marginRight: '5px' }}
-                        />
-                        Part {part}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </CRow>
               <CRow className="mb-3">
                 <CCol className="mb-1" md={12}>
                   <label className="me-1" htmlFor="">
@@ -511,6 +493,12 @@ const ExamCreate = () => {
                     <div>
                       <h5>Uploaded Excel File:</h5>
                       <p>{files.excelFile[0].name}</p>
+                      <div>
+                        <div style={{ marginBottom: '10px' }}>
+                          Number of Questions : {numberOfQuestions}
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>Parts: {parts.join(', ')}</div>
+                      </div>
                     </div>
                   )}
                 </CCol>
@@ -555,51 +543,56 @@ const ExamCreate = () => {
                     </ul>
                   </div>
                 )}
-                <table
-                  style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ccc' }}
-                >
-                  <thead>
-                    <tr>
-                      {excelData[0].map((header, index) => (
-                        <th
-                          key={index}
-                          style={{
-                            border: '1px solid black',
-                            padding: '8px',
-                            backgroundColor: '#f2f2f2',
-                          }}
-                        >
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {excelData.slice(1).map((row, rowIndex) => (
-                      <tr key={rowIndex}>
-                        {row.map((cell, cellIndex) => {
-                          // Kiểm tra xem ô hiện tại có lỗi không
-                          const hasError = errorCells.some(
-                            (error) => error.row === rowIndex + 2 && error.col === cellIndex,
-                          )
-                          return (
-                            <td
-                              key={cellIndex}
-                              style={{
-                                border: '1px solid black',
-                                padding: '8px',
-                                backgroundColor: hasError ? '#ffcccc' : 'transparent', // Đánh dấu ô nếu có lỗi
-                                color: hasError ? 'red' : 'black', // Thay đổi màu chữ nếu có lỗi
-                              }}
-                            >
-                              {cell}
-                            </td>
-                          )
-                        })}
+                <div style={{ overflow: 'auto', width: '100%' }}>
+                  <table
+                    style={{
+                      borderCollapse: 'collapse',
+                      border: '1px solid #ccc',
+                    }}
+                  >
+                    <thead>
+                      <tr>
+                        {excelData[0].map((header, index) => (
+                          <th
+                            key={index}
+                            style={{
+                              border: '1px solid black',
+                              padding: '8px',
+                              backgroundColor: '#f2f2f2',
+                            }}
+                          >
+                            {header}
+                          </th>
+                        ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {excelData.slice(1).map((row, rowIndex) => (
+                        <tr key={rowIndex}>
+                          {row.map((cell, cellIndex) => {
+                            // Kiểm tra xem ô hiện tại có lỗi không
+                            const hasError = errorCells.some(
+                              (error) => error.row === rowIndex + 2 && error.col === cellIndex,
+                            )
+                            return (
+                              <td
+                                key={cellIndex}
+                                style={{
+                                  border: '1px solid black',
+                                  padding: '8px',
+                                  backgroundColor: hasError ? '#ffcccc' : 'transparent', // Đánh dấu ô nếu có lỗi
+                                  color: hasError ? 'red' : 'black', // Thay đổi màu chữ nếu có lỗi
+                                }}
+                              >
+                                {cell}
+                              </td>
+                            )
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </CCardBody>

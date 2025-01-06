@@ -50,6 +50,8 @@ const Posts = () => {
   const [statusFilter, setStatusFilter] = useState('')
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [selectedPost, setSelectedPost] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const postsPerPage = 6
 
   const handleCreateNew = () => {
     navigate('/toeic/blog/create')
@@ -70,7 +72,9 @@ const Posts = () => {
       }
     }
   }
-
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
   const handlePreview = (post) => {
     setSelectedPost(post)
     setShowPreviewModal(true)
@@ -83,6 +87,9 @@ const Posts = () => {
     const matchesStatus = !statusFilter || status === statusFilter
     return matchesSearch && matchesCategory && matchesStatus
   })
+  const startIndex = (currentPage - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  const currentPosts = filteredPosts.slice(startIndex, endIndex)
   useEffect(() => {
     async function fetchPosts() {
       const { data } = await instance.get(endpoint.blog.get)
@@ -159,7 +166,7 @@ const Posts = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {filteredPosts.map((post) => (
+                {currentPosts.map((post) => (
                   <CTableRow key={post.id}>
                     <CTableDataCell>{post.title}</CTableDataCell>
                     <CTableDataCell>
@@ -173,7 +180,7 @@ const Posts = () => {
                         color={post.isPublished === true ? 'success' : 'warning'}
                         className="px-2 py-1"
                       >
-                        {post.isPublished === true ? 'Published' : 'Draft'}
+                        {post.isPublished ? 'Published' : 'Draft'}
                       </CBadge>
                     </CTableDataCell>
                     <CTableDataCell>{post.view}</CTableDataCell>
@@ -216,7 +223,18 @@ const Posts = () => {
                 ))}
               </CTableBody>
             </CTable>
-
+            <div>
+              {Array.from({ length: Math.ceil(filteredPosts.length / postsPerPage) }, (_, i) => (
+                <CButton
+                  className="me-1"
+                  key={i}
+                  onClick={() => handlePageChange(i + 1)}
+                  color={currentPage === i + 1 ? 'primary' : 'secondary'} // Highlight current page
+                >
+                  {i + 1}
+                </CButton>
+              ))}
+            </div>
             {/* Preview Modal */}
             <CModal visible={showPreviewModal} onClose={() => setShowPreviewModal(false)} size="lg">
               <CModalHeader closeButton>

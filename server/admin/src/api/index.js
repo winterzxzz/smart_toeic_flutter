@@ -21,14 +21,21 @@ const user = {
 }
 const test = {
   create: `${originUrlAdmin}/test`,
-  get: `${originUrlPub}/test`,
+  get: `${originUrlAdmin}/test`,
+  getById: (id) => `${originUrlAdmin}/test/${id}`,
+  updateInfor: (id) => `${originUrlAdmin}/test/${id}/infor`,
+  updateData: (id) => `${originUrlAdmin}/test/${id}/data`,
+  delete: (id) => `${originUrlAdmin}/test/${id}`,
 }
 const auth = {
   login: `${originUrlAdmin}/auth/login`,
   logout: `${originUrlAdmin}/auth/logout`,
+  currentUser: `${originUrlAdmin}/auth/current-user`,
 }
 const transaction = {
   get: `${originUrlAdmin}/transaction`,
+  updateStatus: `${originUrlAdmin}/transaction/update-status`,
+  getStatus: `${originUrlAdmin}/transaction/status`,
 }
 const cloudinary = {
   uploadImage: `${originUrlAdmin}/cloudinary/upload-image`,
