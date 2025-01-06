@@ -1,0 +1,126 @@
+/* Editor Styles */
+.ql-editor {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.ql-editor h1, .ql-editor h2, .ql-editor h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.ql-editor img {
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.ql-editor blockquote {
+  font-style: italic;
+  border-left: 4px solid #3498db;
+  padding: 1rem 2rem;
+  margin: 2rem 0;
+  background-color: #f8f9fa;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Image Preview Styles */
+.featured-image-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.image-preview-wrapper {
+  width: 100%;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #dee2e6;
+  transition: all 0.3s ease;
+}
+
+.image-preview-container {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.featured-image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Blog Preview Styles */
+.blog-preview {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.blog-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  line-height: 1.2;
+}
+
+.blog-meta {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.blog-content {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: #34495e;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .image-preview-container {
+    height: 300px;
+  }
+  .blog-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .image-preview-container {
+    height: 250px;
+  }
+  .blog-title {
+    font-size: 1.75rem;
+  }
+  .blog-meta {
+    font-size: 0.85rem;
+  }
+}
+
+/* Modal Preview Styles */
+.modal-preview .blog-preview {
+  max-width: 100%;
+  padding: 0;
+}
+
+.modal-preview .blog-title {
+  font-size: 2rem;
+}
+
+.modal-preview .blog-content {
+  font-size: 1rem;
+  line-height: 1.7;
+}
