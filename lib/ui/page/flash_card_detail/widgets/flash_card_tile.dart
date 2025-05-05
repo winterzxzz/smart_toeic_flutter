@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_router/go_router.dart';
-import 'package:text_to_speech/text_to_speech.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -21,13 +21,13 @@ class FlashcardTile extends StatefulWidget {
 }
 
 class _FlashcardTileState extends State<FlashcardTile> {
-  late TextToSpeech flutterTts;
+  late FlutterTts flutterTts;
   bool isPlaying = false;
 
   @override
   void initState() {
     super.initState();
-    flutterTts = TextToSpeech()
+    flutterTts = FlutterTts()
       ..setVolume(1.0)
       ..setLanguage('en-US');
   }
@@ -68,7 +68,7 @@ class _FlashcardTileState extends State<FlashcardTile> {
                     child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.1),
+                          color: Colors.blue.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(

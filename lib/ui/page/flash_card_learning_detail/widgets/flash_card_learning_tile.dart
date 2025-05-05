@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:text_to_speech/text_to_speech.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:toeic_desktop/common/utils/time_utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -14,13 +14,13 @@ class FlashCardLearningTile extends StatefulWidget {
 }
 
 class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
-  late TextToSpeech flutterTts;
+  late FlutterTts flutterTts;
   bool isPlaying = false;
 
   @override
   void initState() {
     super.initState();
-    flutterTts = TextToSpeech()
+    flutterTts = FlutterTts()
       ..setVolume(1.0)
       ..setLanguage('en-US');
   }
@@ -79,7 +79,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                   child: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Colors.blue.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
