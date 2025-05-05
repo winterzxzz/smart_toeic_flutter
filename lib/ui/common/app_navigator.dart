@@ -58,7 +58,9 @@ class AppNavigator {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: AppColors.textWhite,),
+            CircularProgressIndicator(
+              color: AppColors.textWhite,
+            ),
             if (message != null) const SizedBox(height: 16),
             if (message != null)
               Text(
@@ -68,6 +70,14 @@ class AppNavigator {
           ],
         ),
       );
+    });
+
+    Future.delayed(const Duration(seconds: 15), () {
+      if (context.mounted) {
+        if (context.loaderOverlay.visible) {
+          context.loaderOverlay.hide();
+        }
+      }
     });
   }
 

@@ -11,6 +11,8 @@ class ApiUtil {
   static Dio getDio() {
     if (dio == null) {
       dio = Dio();
+      dio!.options.connectTimeout = const Duration(seconds: 15);
+      dio!.options.receiveTimeout = const Duration(seconds: 15);
       dio!.interceptors.add(ApiInterceptors());
       dio!.interceptors.add(PrettyDioLogger(
         requestHeader: true,
