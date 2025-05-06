@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/widgets/app_bar.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/ui/page/bottom_tab/widgets/app_bar.dart';
 
 class BottomTabPage extends StatefulWidget {
   const BottomTabPage({super.key, required this.navigationShell});
@@ -75,13 +76,14 @@ class _BottomTabPageState extends State<BottomTabPage>
         },
         destinations: Constants.bottomTabs.map((tab) {
           return NavigationDestination(
-            icon: Image.asset(
+            icon: SvgPicture.asset(
               tab.icon,
               width: 24,
               height: 24,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.textWhite
-                  : AppColors.textBlack,
+              colorFilter: Theme.of(context).brightness == Brightness.dark
+                  ? const ColorFilter.mode(AppColors.textWhite, BlendMode.srcIn)
+                  : const ColorFilter.mode(
+                      AppColors.textBlack, BlendMode.srcIn),
             ),
             label: tab.title,
           );
