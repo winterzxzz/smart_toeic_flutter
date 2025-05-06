@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
@@ -87,6 +88,7 @@ class _PageState extends State<Page> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Welcome to Smart TOEIC Prep',
@@ -116,27 +118,16 @@ class _PageState extends State<Page> {
                           isPassword: true,
                         ),
                         const SizedBox(height: 24),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: _isLoginButtonEnabled()
-                                ? () {
-                                    context.read<LoginCubit>().login(
-                                          emailController.text,
-                                          passwordController.text,
-                                        );
-                                  }
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: const Text(
-                              'Login',
-                            ),
-                          ),
+                        CustomButton(
+                          text: 'Login',
+                          onPressed: _isLoginButtonEnabled()
+                              ? () {
+                                  context.read<LoginCubit>().login(
+                                        emailController.text,
+                                        passwordController.text,
+                                      );
+                                }
+                              : null,
                         ),
                         const SizedBox(height: 16),
                         // Register
