@@ -13,6 +13,7 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this.authRepo) : super(LoginState.initial());
 
   Future<void> login(String email, String password) async {
+    emit(state.copyWith(loadStatus: LoadStatus.initial));
     try {
       if (!AppValidator.validateEmpty(email)) {
         throw (S.current.empty_email_error);
@@ -43,6 +44,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(state.copyWith(loadStatus: LoadStatus.success));
       });
     } catch (e) {
+      // clear errormessage before
       emit(state.copyWith(
           loadStatus: LoadStatus.failure, errorMessage: e.toString()));
     }

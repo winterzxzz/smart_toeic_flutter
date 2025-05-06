@@ -40,9 +40,12 @@ class _PageState extends State<Page> {
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    nameController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController()
+      ..addListener(() => setState(() {}));
+    nameController = TextEditingController()
+      ..addListener(() => setState(() {}));
+    passwordController = TextEditingController()
+      ..addListener(() => setState(() {}));
   }
 
   @override
@@ -64,11 +67,6 @@ class _PageState extends State<Page> {
     final navigator = RegisterNavigator(context: context);
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
-        if (LoadStatus.loading == state.loadDataStatus) {
-          navigator.showLoadingOverlay();
-        } else {
-          navigator.hideLoadingOverlay();
-        }
         if (LoadStatus.failure == state.loadDataStatus) {
           showToast(title: state.message, type: ToastificationType.error);
         }
@@ -121,17 +119,24 @@ class _PageState extends State<Page> {
                           isPassword: true,
                         ),
                         const SizedBox(height: 24),
-                        CustomButton(
-                          text: 'Sign up',
-                          onPressed: _isRegisterButtonEnabled()
-                              ? () {
-                                  context.read<RegisterCubit>().register(
-                                        emailController.text,
-                                        nameController.text,
-                                        passwordController.text,
-                                      );
-                                }
-                              : null,
+                        BlocSelector<RegisterCubit, RegisterState, bool>(
+                          selector: (RegisterState state) =>
+                              state.loadDataStatus == LoadStatus.loading,
+                          builder: (context, isLoading) {
+                            return CustomButton(
+                              text: 'Sign up',
+                              onPressed: _isRegisterButtonEnabled()
+                                  ? () {
+                                      context.read<RegisterCubit>().register(
+                                            emailController.text.trim(),
+                                            nameController.text.trim(),
+                                            passwordController.text.trim(),
+                                          );
+                                    }
+                                  : null,
+                              isLoading: isLoading,
+                            );
+                          },
                         ),
                         const SizedBox(height: 16),
                         GestureDetector(

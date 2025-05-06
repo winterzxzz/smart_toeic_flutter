@@ -38,7 +38,8 @@ class _PageState extends State<Page> {
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
+    _emailController = TextEditingController()
+      ..addListener(() => setState(() {}));
   }
 
   @override
@@ -56,21 +57,16 @@ class _PageState extends State<Page> {
     final navigator = ResetPasswordNavigator(context: context);
     return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
       listener: (context, state) {
-        if (state.loadStatus == LoadStatus.loading) {
-          navigator.showLoadingOverlay();
-        } else {
-          navigator.hideLoadingOverlay();
-          if (state.loadStatus == LoadStatus.failure) {
-            showToast(
-              title: state.message,
-              type: ToastificationType.error,
-            );
-          } else if (state.loadStatus == LoadStatus.success) {
-            showToast(
-              title: state.message,
-              type: ToastificationType.success,
-            );
-          }
+        if (state.loadStatus == LoadStatus.failure) {
+          showToast(
+            title: state.message,
+            type: ToastificationType.error,
+          );
+        } else if (state.loadStatus == LoadStatus.success) {
+          showToast(
+            title: state.message,
+            type: ToastificationType.success,
+          );
         }
       },
       builder: (context, state) {
@@ -103,17 +99,25 @@ class _PageState extends State<Page> {
                             keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 24),
-                          CustomButton(
-                            text: 'Send',
-                            onPressed: _isResetPasswordButtonEnabled()
-                                ? () {
-                                    context
-                                        .read<ResetPasswordCubit>()
-                                        .resetPassword(
-                                          _emailController.text,
-                                        );
-                                  }
-                                : null,
+                          BlocSelector<ResetPasswordCubit, ResetPasswordState,
+                              bool>(
+                            selector: (ResetPasswordState state) =>
+                                state.loadStatus == LoadStatus.loading,
+                            builder: (context, isLoading) {
+                              return CustomButton(
+                                text: 'Send',
+                                onPressed: _isResetPasswordButtonEnabled()
+                                    ? () {
+                                        context
+                                            .read<ResetPasswordCubit>()
+                                            .resetPassword(
+                                              _emailController.text.trim(),
+                                            );
+                                      }
+                                    : null,
+                                isLoading: isLoading,
+                              );
+                            },
                           ),
                           const SizedBox(height: 24),
                           TextButton(

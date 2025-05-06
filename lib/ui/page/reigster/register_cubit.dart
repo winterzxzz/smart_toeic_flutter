@@ -12,6 +12,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit(this.authRepo) : super(const RegisterState());
 
   Future<void> register(String email, String name, String password) async {
+    emit(state.copyWith(loadDataStatus: LoadStatus.initial));
     try {
       if (!AppValidator.validateEmpty(email)) {
         throw (S.current.empty_email_error);

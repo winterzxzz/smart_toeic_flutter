@@ -9,7 +9,6 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_navigator.dart';
 import 'package:toeic_desktop/ui/page/login/login_state.dart';
@@ -42,8 +41,10 @@ class _PageState extends State<Page> {
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController()
+      ..addListener(() => setState(() {}));
+    passwordController = TextEditingController()
+      ..addListener(() => setState(() {}));
   }
 
   @override
@@ -55,7 +56,6 @@ class _PageState extends State<Page> {
 
   void _onLoginSuccess() {
     AppRouter.clearAndNavigate(AppRouter.home);
-    injector<HomeCubit>().init();
   }
 
   bool _isLoginButtonEnabled() {
@@ -68,14 +68,8 @@ class _PageState extends State<Page> {
     final navigator = LoginNavigator(context: context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state.loadStatus == LoadStatus.loading) {
-          navigator.showLoadingOverlay();
-        } else {
-          navigator.hideLoadingOverlay();
-        }
         if (state.loadStatus == LoadStatus.failure) {
           navigator.error(state.errorMessage);
-          showToast(title: state.errorMessage, type: ToastificationType.error);
         }
         if (state.loadStatus == LoadStatus.success) {
           showToast(title: 'Welcome back!', type: ToastificationType.success);
@@ -102,7 +96,7 @@ class _PageState extends State<Page> {
                   const SizedBox(height: 24),
                   Form(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center, 
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         AuthTextField(
                           controller: emailController,
@@ -119,16 +113,23 @@ class _PageState extends State<Page> {
                           isPassword: true,
                         ),
                         const SizedBox(height: 24),
-                        CustomButton(
-                          text: 'Login',
-                          onPressed: _isLoginButtonEnabled()
-                              ? () {
-                                  context.read<LoginCubit>().login(
-                                        emailController.text,
-                                        passwordController.text,
-                                      );
-                                }
-                              : null,
+                        BlocSelector<LoginCubit, LoginState, bool>(
+                          selector: (state) =>
+                              state.loadStatus == LoadStatus.loading,
+                          builder: (context, isLoading) {
+                            return CustomButton(
+                              text: 'Login',
+                              onPressed: _isLoginButtonEnabled()
+                                  ? () {
+                                      context.read<LoginCubit>().login(
+                                            emailController.text.trim(),
+                                            passwordController.text.trim(),
+                                          );
+                                    }
+                                  : null,
+                              isLoading: isLoading,
+                            );
+                          },
                         ),
                         const SizedBox(height: 16),
                         // Register
