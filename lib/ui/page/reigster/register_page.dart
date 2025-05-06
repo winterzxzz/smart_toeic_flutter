@@ -4,6 +4,8 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_navigator.dart';
@@ -51,6 +53,12 @@ class _PageState extends State<Page> {
     super.dispose();
   }
 
+  bool _isRegisterButtonEnabled() {
+    return emailController.text.isNotEmpty &&
+        nameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigator = RegisterNavigator(context: context);
@@ -70,167 +78,97 @@ class _PageState extends State<Page> {
         }
       },
       child: Scaffold(
-        body: Card(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Welcome to TOEIC Prep',
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Login to access our comprehensive TOEIC preparation resources',
-                  style: TextStyle(color: AppColors.textGray),
-                ),
-                const SizedBox(height: 24),
-                Form(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Welcome to TOEIC Prep',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Login to access our comprehensive TOEIC preparation resources',
+                    style: TextStyle(color: AppColors.textGray),
+                  ),
+                  const SizedBox(height: 24),
+                  Form(
                     child: Column(
                       children: [
-                        TextFormField(
+                        AuthTextField(
                           controller: emailController,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            hintText: 'Enter your email',
-                            labelStyle: TextStyle(color: AppColors.textGray),
-                            hintStyle: TextStyle(
-                              color: AppColors.textGray,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? AppColors.primary
-                                    : AppColors.textWhite,
-                                width: 2,
-                              ),
-                            ),
-                          ),
+                          labelText: 'Email',
+                          hintText: 'Enter your email',
+                          keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 16),
-                        TextFormField(
+                        AuthTextField(
                           controller: nameController,
-                          decoration: InputDecoration(
-                            labelText: 'Name',
-                            hintText: 'Enter your name',
-                            hintStyle: TextStyle(
-                              color: AppColors.textGray,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            labelStyle: TextStyle(color: AppColors.textGray),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? AppColors.primary
-                                    : AppColors.textWhite,
-                                width: 2,
-                              ),
-                            ),
-                          ),
+                          labelText: 'Name',
+                          hintText: 'Enter your name',
+                          keyboardType: TextInputType.name,
                         ),
                         const SizedBox(height: 16),
-                        TextFormField(
+                        AuthTextField(
                           controller: passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            hintText: 'Enter your password',
-                            hintStyle: TextStyle(
-                              color: AppColors.textGray,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            labelStyle: TextStyle(color: AppColors.textGray),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? AppColors.primary
-                                    : AppColors.textWhite,
-                                width: 2,
-                              ),
-                            ),
-                          ),
+                          labelText: 'Password',
+                          hintText: 'Enter your password',
+                          keyboardType: TextInputType.visiblePassword,
+                          isPassword: true,
                         ),
                         const SizedBox(height: 24),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.read<RegisterCubit>().register(
-                                    emailController.text,
-                                    nameController.text,
-                                    passwordController.text,
-                                  );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: const Text(
-                              'Sign up',
-                            ),
-                          ),
+                        CustomButton(
+                          text: 'Sign up',
+                          onPressed: _isRegisterButtonEnabled()
+                              ? () {
+                                  context.read<RegisterCubit>().register(
+                                        emailController.text,
+                                        nameController.text,
+                                        passwordController.text,
+                                      );
+                                }
+                              : null,
                         ),
                         const SizedBox(height: 16),
-                        // Register
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                navigator.navigateToLogin();
-                              },
-                              child: const Text.rich(TextSpan(
-                                text: 'Already have an account? ',
-                                children: [
-                                  TextSpan(
-                                    text: 'Login',
-                                    style: TextStyle(
-                                      color: AppColors.textBlue,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: AppColors.textBlue,
-                                    ),
-                                  ),
-                                ],
-                              )),
-                            ),
-                            const Spacer(),
-                            TextButton(
-                                onPressed: () {
-                                  navigator.navigateToResetPassword();
-                                },
-                                child: const Text(
-                                  'Forgot password?',
-                                  style: TextStyle(
-                                    color: AppColors.textBlue,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: AppColors.textBlue,
-                                  ),
-                                )),
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            navigator.navigateToLogin();
+                          },
+                          child: const Text.rich(TextSpan(
+                            text: 'Already have an account? ',
+                            children: [
+                              TextSpan(
+                                text: 'Login',
+                                style: TextStyle(
+                                  color: AppColors.textBlue,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: AppColors.textBlue,
+                                ),
+                              ),
+                            ],
+                          )),
                         ),
+                        const SizedBox(height: 16),
+                        TextButton(
+                            onPressed: () {
+                              navigator.navigateToResetPassword();
+                            },
+                            child: const Text(
+                              'Forgot password?',
+                              style: TextStyle(
+                                color: AppColors.textBlue,
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.textBlue,
+                              ),
+                            )),
                       ],
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
