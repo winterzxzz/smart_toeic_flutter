@@ -6,6 +6,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
@@ -56,6 +57,11 @@ class _PageState extends State<Page> {
     injector<HomeCubit>().init();
   }
 
+  bool _isLoginButtonEnabled() {
+    return emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigator = LoginNavigator(context: context);
@@ -95,67 +101,33 @@ class _PageState extends State<Page> {
                   Form(
                     child: Column(
                       children: [
-                        TextFormField(
+                        AuthTextField(
                           controller: emailController,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            hintText: 'Enter your email',
-                            hintStyle: TextStyle(
-                              color: AppColors.textGray,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            labelStyle: TextStyle(color: AppColors.textGray),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 2,
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? AppColors.primary
-                                    : AppColors.textWhite,
-                              ),
-                            ),
-                          ),
+                          labelText: 'Email',
+                          hintText: 'Enter your email',
+                          keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 16),
-                        TextFormField(
+                        AuthTextField(
                           controller: passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            hintText: 'Enter your password',
-                            hintStyle: TextStyle(
-                              color: AppColors.textGray,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            labelStyle: TextStyle(color: AppColors.textGray),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? AppColors.primary
-                                    : AppColors.textWhite,
-                                width: 2,
-                              ),
-                            ),
-                          ),
+                          labelText: 'Password',
+                          hintText: 'Enter your password',
+                          keyboardType: TextInputType.visiblePassword,
+                          isPassword: true,
                         ),
                         const SizedBox(height: 24),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {
-                              context.read<LoginCubit>().login(
-                                    emailController.text,
-                                    passwordController.text,
-                                  );
-                            },
+                            onPressed: _isLoginButtonEnabled()
+                                ? () {
+                                    context.read<LoginCubit>().login(
+                                          emailController.text,
+                                          passwordController.text,
+                                        );
+                                  }
+                                : null,
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
