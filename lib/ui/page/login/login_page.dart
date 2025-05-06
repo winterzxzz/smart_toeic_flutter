@@ -76,26 +76,23 @@ class _PageState extends State<Page> {
         }
       },
       child: Scaffold(
-        body: Card(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Welcome to TOEIC Prep',
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Login to access our comprehensive TOEIC preparation resources',
-                  style: TextStyle(color: AppColors.textGray),
-                ),
-                const SizedBox(height: 24),
-                Form(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    'Welcome to Smart TOEIC Prep',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Login to access our comprehensive TOEIC preparation resources',
+                    style: TextStyle(color: AppColors.textGray),
+                  ),
+                  const SizedBox(height: 24),
+                  Form(
                     child: Column(
                       children: [
                         TextFormField(
@@ -171,46 +168,42 @@ class _PageState extends State<Page> {
                         ),
                         const SizedBox(height: 16),
                         // Register
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                navigator.navigateToRegister();
-                              },
-                              child: const Text.rich(TextSpan(
-                                text: 'Don\'t have an account? ',
-                                children: [
-                                  TextSpan(
-                                    text: 'Register',
-                                    style: TextStyle(
-                                      color: AppColors.textBlue,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: AppColors.textBlue,
-                                    ),
-                                  ),
-                                ],
-                              )),
-                            ),
-                            const Spacer(),
-                            TextButton(
-                                onPressed: () {
-                                  navigator.navigateToResetPassword();
-                                },
-                                child: const Text(
-                                  'Forgot password?',
-                                  style: TextStyle(
-                                    color: AppColors.textBlue,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: AppColors.textBlue,
-                                  ),
-                                )),
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            navigator.navigateToRegister();
+                          },
+                          child: const Text.rich(TextSpan(
+                            text: 'Don\'t have an account? ',
+                            children: [
+                              TextSpan(
+                                text: 'Register',
+                                style: TextStyle(
+                                  color: AppColors.textBlue,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: AppColors.textBlue,
+                                ),
+                              ),
+                            ],
+                          )),
                         ),
+                        const SizedBox(height: 16),
+                        TextButton(
+                            onPressed: () {
+                              navigator.navigateToResetPassword();
+                            },
+                            child: const Text(
+                              'Forgot password?',
+                              style: TextStyle(
+                                color: AppColors.textBlue,
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.textBlue,
+                              ),
+                            )),
                       ],
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

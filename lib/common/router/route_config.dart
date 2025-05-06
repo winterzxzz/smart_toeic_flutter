@@ -104,6 +104,23 @@ class AppRouter {
       path: splash,
       builder: (context, state) => const SplashPage(),
     ),
+    // Auth routes
+    GoRoute(
+      name: login,
+      path: login,
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      name: register,
+      path: register,
+      builder: (context, state) => const RegisterPage(),
+    ),
+    GoRoute(
+      name: resetPassword,
+      path: resetPassword,
+      builder: (context, state) => const ResetPasswordPage(),
+    ),
+    // Main app routes with bottom navigation
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => BottomTabPage(
         navigationShell: navigationShell,
@@ -134,15 +151,6 @@ class AppRouter {
               path: onlineTest,
               builder: (context, state) => const SimulationTestScreen(),
             ),
-            GoRoute(
-              name: modeTest,
-              path: modeTest,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final test = args['test'] as Test;
-                return ModeTestpage(test: test);
-              },
-            ),
           ],
         ),
         StatefulShellBranch(
@@ -151,84 +159,6 @@ class AppRouter {
               name: flashCards,
               path: flashCards,
               builder: (context, state) => const SetFlashCardPage(),
-            ),
-            GoRoute(
-              name: flashCardDetail,
-              path: flashCardDetail,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final setId = args['setId'] as String;
-                final title = args['title'] as String;
-                return FlashCardDetailPage(setId: setId, title: title);
-              },
-            ),
-            GoRoute(
-              name: flashCardLearningDetail,
-              path: flashCardLearningDetail,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final setFlashCardLearning =
-                    args['setFlashCardLearning'] as SetFlashCardLearning;
-                return FlashCardDetailLearningPage(
-                  setFlashCardLearning: setFlashCardLearning,
-                );
-              },
-            ),
-            GoRoute(
-              name: flashCardPractive,
-              path: flashCardPractive,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final title = args['title'] as String;
-                final flashCards = args['flashCards'] as List<FlashCard>;
-                return FlashCardPracticePage(
-                  title: title,
-                  flashCards: flashCards,
-                );
-              },
-            ),
-            GoRoute(
-              name: flashCardQuizz,
-              path: flashCardQuizz,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final id = args['id'] as String;
-                return FlashCardQuizPage(
-                  id: id,
-                );
-              },
-            ),
-            GoRoute(
-              name: flashCardQuizzResult,
-              path: flashCardQuizzResult,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final flashCardQuizzScoreRequest =
-                    args['flashCardQuizzScoreRequest']
-                        as List<FlashCardQuizzScoreRequest>;
-                return FlashCardQuizResultPage(
-                  flashCardQuizzScoreRequest: flashCardQuizzScoreRequest,
-                );
-              },
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: transcriptTest,
-              path: transcriptTest,
-              builder: (context, state) => const ListenCopyPage(),
-            ),
-            GoRoute(
-              name: transcriptTestDetail,
-              path: transcriptTestDetail,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final transcriptTestId = args['transcriptTestId'] as String;
-                return TranscriptTestDetailPage(
-                    transcriptTestId: transcriptTestId);
-              },
             ),
           ],
         ),
@@ -245,68 +175,75 @@ class AppRouter {
             ),
           ],
         ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: upgradeAccount,
-              path: upgradeAccount,
-              builder: (context, state) => const PricingPlanScreen(),
-            ),
-            GoRoute(
-              name: upgradeAccountSuccess,
-              path: upgradeAccountSuccess,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>;
-                final paymentReturn = args['paymentReturn'] as PaymentReturn;
-                return UpgradeAccountSuccessPage(paymentReturn: paymentReturn);
-              },
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: login,
-              path: login,
-              builder: (context, state) => const LoginPage(),
-            ),
-            GoRoute(
-              name: profile,
-              path: profile,
-              builder: (context, state) => const ProfilePage(),
-            ),
-            GoRoute(
-              name: register,
-              path: register,
-              builder: (context, state) => const RegisterPage(),
-            ),
-            GoRoute(
-              name: resetPassword,
-              path: resetPassword,
-              builder: (context, state) => const ResetPasswordPage(),
-            ),
-            GoRoute(
-              name: analysis,
-              path: analysis,
-              builder: (context, state) => const AnalysisPage(),
-            ),
-            GoRoute(
-              name: historyTest,
-              path: historyTest,
-              builder: (context, state) => const HistoryTestPage(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: setting,
-              path: setting,
-              builder: (context, state) => const SettingPage(),
-            ),
-          ],
-        ),
       ],
+    ),
+    // Nested routes
+    GoRoute(
+      name: modeTest,
+      path: modeTest,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final test = args['test'] as Test;
+        return ModeTestpage(test: test);
+      },
+    ),
+    GoRoute(
+      name: flashCardDetail,
+      path: flashCardDetail,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final setId = args['setId'] as String;
+        final title = args['title'] as String;
+        return FlashCardDetailPage(setId: setId, title: title);
+      },
+    ),
+    GoRoute(
+      name: flashCardLearningDetail,
+      path: flashCardLearningDetail,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final setFlashCardLearning =
+            args['setFlashCardLearning'] as SetFlashCardLearning;
+        return FlashCardDetailLearningPage(
+          setFlashCardLearning: setFlashCardLearning,
+        );
+      },
+    ),
+    GoRoute(
+      name: flashCardPractive,
+      path: flashCardPractive,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final title = args['title'] as String;
+        final flashCards = args['flashCards'] as List<FlashCard>;
+        return FlashCardPracticePage(
+          title: title,
+          flashCards: flashCards,
+        );
+      },
+    ),
+    GoRoute(
+      name: flashCardQuizz,
+      path: flashCardQuizz,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final id = args['id'] as String;
+        return FlashCardQuizPage(
+          id: id,
+        );
+      },
+    ),
+    GoRoute(
+      name: flashCardQuizzResult,
+      path: flashCardQuizzResult,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final flashCardQuizzScoreRequest = args['flashCardQuizzScoreRequest']
+            as List<FlashCardQuizzScoreRequest>;
+        return FlashCardQuizResultPage(
+          flashCardQuizzScoreRequest: flashCardQuizzScoreRequest,
+        );
+      },
     ),
     GoRoute(
       name: practiceTest,
@@ -334,6 +271,54 @@ class AppRouter {
         final resultModel = args['resultModel'] as ResultModel;
         return ResultTestPage(resultModel: resultModel);
       },
+    ),
+    GoRoute(
+      name: upgradeAccount,
+      path: upgradeAccount,
+      builder: (context, state) => const PricingPlanScreen(),
+    ),
+    GoRoute(
+      name: upgradeAccountSuccess,
+      path: upgradeAccountSuccess,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final paymentReturn = args['paymentReturn'] as PaymentReturn;
+        return UpgradeAccountSuccessPage(paymentReturn: paymentReturn);
+      },
+    ),
+    GoRoute(
+      name: transcriptTest,
+      path: transcriptTest,
+      builder: (context, state) => const ListenCopyPage(),
+    ),
+    GoRoute(
+      name: transcriptTestDetail,
+      path: transcriptTestDetail,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final transcriptTestId = args['transcriptTestId'] as String;
+        return TranscriptTestDetailPage(transcriptTestId: transcriptTestId);
+      },
+    ),
+    GoRoute(
+      name: analysis,
+      path: analysis,
+      builder: (context, state) => const AnalysisPage(),
+    ),
+    GoRoute(
+      name: historyTest,
+      path: historyTest,
+      builder: (context, state) => const HistoryTestPage(),
+    ),
+    GoRoute(
+      name: profile,
+      path: profile,
+      builder: (context, state) => const ProfilePage(),
+    ),
+    GoRoute(
+      name: setting,
+      path: setting,
+      builder: (context, state) => const SettingPage(),
     ),
   ];
 

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/widgets/app_bar.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/widgets/nav_bar.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
 
 class BottomTabPage extends StatefulWidget {
   const BottomTabPage({super.key, required this.navigationShell});
@@ -63,37 +63,29 @@ class _BottomTabPageState extends State<BottomTabPage>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Row(
-        children: [
-          NavBar(widget: widget),
-          Expanded(
-              child: Column(
-            children: [
-              AppBarWidget(),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                    ),
-                    border: Border.all(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? AppColors.gray3
-                          : AppColors.inputBorder,
-                      width: 1,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                    ),
-                    child: widget.navigationShell,
-                  ),
-                ),
-              ),
-            ],
-          )),
-        ],
+      appBar: AppBarWidget(),
+      body: widget.navigationShell,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: widget.navigationShell.currentIndex,
+        onDestinationSelected: (index) {
+          widget.navigationShell.goBranch(
+            index,
+            initialLocation: index == widget.navigationShell.currentIndex,
+          );
+        },
+        destinations: Constants.bottomTabs.map((tab) {
+          return NavigationDestination(
+            icon: Image.asset(
+              tab.icon,
+              width: 24,
+              height: 24,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.textWhite
+                  : AppColors.textBlack,
+            ),
+            label: tab.title,
+          );
+        }).toList(),
       ),
     );
   }
