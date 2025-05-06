@@ -32,7 +32,6 @@ class _ListViewBlogState extends State<ListViewBlog> {
     return BlocBuilder<BlogCubit, BlogState>(
       builder: (context, state) {
         return SizedBox(
-          width: MediaQuery.of(context).size.width * 0.32,
           child: Column(
             children: [
               const SizedBox(height: 16),
@@ -79,7 +78,7 @@ class _ListViewBlogState extends State<ListViewBlog> {
                       )
                     : ListView.separated(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
+                            horizontal: 12.0, vertical: 8.0),
                         itemCount: state.searchBlogs.length,
                         itemBuilder: (context, index) {
                           final blog = state.searchBlogs[index];

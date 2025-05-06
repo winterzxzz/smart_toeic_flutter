@@ -42,20 +42,7 @@ class Page extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        body: Row(
-          children: [
-            ListViewBlog(),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: const VerticalDivider(
-                color: AppColors.gray1,
-              ),
-            ),
-            Expanded(
-              child: const BlogDetail(),
-            ),
-          ],
-        ),
+        body: ListViewBlog(),
       ),
     );
   }

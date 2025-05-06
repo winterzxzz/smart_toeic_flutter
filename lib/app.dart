@@ -54,10 +54,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Setup PortraitUp only
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(
