@@ -4,6 +4,8 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_cubit.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_navigator.dart';
@@ -45,6 +47,10 @@ class _PageState extends State<Page> {
     super.dispose();
   }
 
+  bool _isResetPasswordButtonEnabled() {
+    return _emailController.text.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigator = ResetPasswordNavigator(context: context);
@@ -69,73 +75,45 @@ class _PageState extends State<Page> {
       },
       builder: (context, state) {
         return Scaffold(
-          body: Card(
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Reset your password',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Enter your email and we will send you a link to reset your password',
-                    style: TextStyle(color: AppColors.textGray),
-                  ),
-                  const SizedBox(height: 24),
-                  Form(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Reset your password',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Enter your email and we will send you a link to reset your password',
+                      style: TextStyle(color: AppColors.textGray),
+                    ),
+                    const SizedBox(height: 24),
+                    Form(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TextFormField(
+                          AuthTextField(
                             controller: _emailController,
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                              hintText: 'Enter your email',
-                              labelStyle: TextStyle(color: AppColors.textGray),
-                              hintStyle: TextStyle(
-                                color: AppColors.textGray,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? AppColors.primary
-                                      : AppColors.textWhite,
-                                  width: 2,
-                                ),
-                              ),
-                            ),
+                            labelText: 'Email',
+                            hintText: 'Enter your email',
+                            keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 24),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                context
-                                    .read<ResetPasswordCubit>()
-                                    .resetPassword(
-                                      _emailController.text,
-                                    );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: const Text(
-                                'Send',
-                              ),
-                            ),
+                          CustomButton(
+                            text: 'Send',
+                            onPressed: _isResetPasswordButtonEnabled()
+                                ? () {
+                                    context
+                                        .read<ResetPasswordCubit>()
+                                        .resetPassword(
+                                          _emailController.text,
+                                        );
+                                  }
+                                : null,
                           ),
                           const SizedBox(height: 24),
                           TextButton(
@@ -153,9 +131,9 @@ class _PageState extends State<Page> {
                           ),
                         ],
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

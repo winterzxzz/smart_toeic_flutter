@@ -13,7 +13,7 @@ class AuthTextField extends StatefulWidget {
       required this.controller,
       required this.labelText,
       required this.hintText,
-      required this.keyboardType,
+      this.keyboardType = TextInputType.text,
       this.isPassword = false,
       this.height = 50});
 
@@ -43,7 +43,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
       child: TextFormField(
         controller: widget.controller,
         keyboardType: widget.keyboardType,
-        obscureText: !_isPasswordVisible,
+        obscureText: _isPasswordVisible,
         decoration: InputDecoration(
           labelText: widget.labelText,
           hintText: widget.hintText,

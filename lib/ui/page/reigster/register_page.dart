@@ -97,6 +97,7 @@ class _PageState extends State<Page> {
                   const SizedBox(height: 24),
                   Form(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         AuthTextField(
                           controller: emailController,
@@ -109,7 +110,7 @@ class _PageState extends State<Page> {
                           controller: nameController,
                           labelText: 'Name',
                           hintText: 'Enter your name',
-                          keyboardType: TextInputType.name,
+                          keyboardType: TextInputType.text,
                         ),
                         const SizedBox(height: 16),
                         AuthTextField(

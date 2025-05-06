@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
@@ -34,14 +33,12 @@ class Page extends StatelessWidget {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.success) {
-          if (injector<UserCubit>().state.user != null) {
-            GoRouter.of(context).goNamed(AppRouter.home);
-          } else {
-            GoRouter.of(context).goNamed(AppRouter.login);
-          }
+          GoRouter.of(context).goNamed(AppRouter.login);
         } else if (state.loadStatus == LoadStatus.failure) {
           GoRouter.of(context).goNamed(AppRouter.login);
-          showToast(title: state.message, type: ToastificationType.error);
+          if (state.message.isNotEmpty) {
+            showToast(title: state.message, type: ToastificationType.error);
+          }
         }
       },
       child: Scaffold(

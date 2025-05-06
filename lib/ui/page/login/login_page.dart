@@ -102,6 +102,7 @@ class _PageState extends State<Page> {
                   const SizedBox(height: 24),
                   Form(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center, 
                       children: [
                         AuthTextField(
                           controller: emailController,
@@ -135,19 +136,22 @@ class _PageState extends State<Page> {
                           onTap: () {
                             navigator.navigateToRegister();
                           },
-                          child: const Text.rich(TextSpan(
-                            text: 'Don\'t have an account? ',
-                            children: [
-                              TextSpan(
-                                text: 'Register',
-                                style: TextStyle(
-                                  color: AppColors.textBlue,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: AppColors.textBlue,
+                          child: const Text.rich(
+                            TextSpan(
+                              text: 'Don\'t have an account? ',
+                              children: [
+                                TextSpan(
+                                  text: 'Register',
+                                  style: TextStyle(
+                                    color: AppColors.textBlue,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: AppColors.textBlue,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         TextButton(
