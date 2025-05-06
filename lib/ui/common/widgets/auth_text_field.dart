@@ -42,6 +42,13 @@ class _AuthTextFieldState extends State<AuthTextField> {
       height: widget.height,
       child: TextFormField(
         controller: widget.controller,
+        autofillHints: widget.isPassword
+            ? [
+                AutofillHints.password,
+              ]
+            : [
+                AutofillHints.email,
+              ],
         keyboardType: widget.keyboardType,
         obscureText: _isPasswordVisible,
         decoration: InputDecoration(

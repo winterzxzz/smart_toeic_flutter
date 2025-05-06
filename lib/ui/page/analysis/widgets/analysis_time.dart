@@ -73,7 +73,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                     show: true,
                     border: Border.symmetric(
                       horizontal: BorderSide(
-                        color: AppColors.border.withOpacity(0.2),
+                        color: AppColors.border.withValues(alpha: 0.2),
                       ),
                     ),
                   ),
@@ -112,7 +112,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                     show: true,
                     drawVerticalLine: false,
                     getDrawingHorizontalLine: (value) => FlLine(
-                      color: AppColors.border.withOpacity(0.2),
+                      color: AppColors.border.withValues(alpha: 0.2),
                       strokeWidth: 1,
                     ),
                   ),

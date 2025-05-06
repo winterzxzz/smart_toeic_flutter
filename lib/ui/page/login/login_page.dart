@@ -55,7 +55,7 @@ class _PageState extends State<Page> {
   }
 
   void _onLoginSuccess() {
-    AppRouter.clearAndNavigate(AppRouter.home);
+    AppRouter.clearAndNavigate(AppRouter.bottomTab);
   }
 
   bool _isLoginButtonEnabled() {

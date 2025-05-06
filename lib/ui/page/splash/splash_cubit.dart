@@ -15,7 +15,7 @@ class SplashCubit extends Cubit<SplashState> {
     final isLogin = SharedPreferencesHelper().getCookies() != null;
     if (!isLogin) {
       await Future.delayed(const Duration(seconds: 1));
-      emit(state.copyWith(loadStatus: LoadStatus.success));
+      emit(state.copyWith(loadStatus: LoadStatus.failure));
       return;
     }
     final result = await authRepo.getUser();

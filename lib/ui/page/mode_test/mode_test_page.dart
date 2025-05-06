@@ -122,7 +122,7 @@ class FullTestMode extends StatelessWidget {
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.yellowAccent.withOpacity(.2)),
+                color: Colors.yellowAccent.withValues(alpha: 0.2)),
             child: Text(
               'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
               style: TextStyle(color: Colors.orange),
@@ -180,7 +180,7 @@ class _PracticeModeState extends State<PracticeMode> {
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.green.withOpacity(.3)),
+              color: Colors.green.withValues(alpha: 0.3)),
           child: Text(
             'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
             style: TextStyle(color: Colors.green),
@@ -293,8 +293,8 @@ class _QuestionPartState extends State<QuestionPart> {
             widget.part.tags.length,
             (index) => Chip(
               label: Text(widget.part.tags[index]),
-              side: BorderSide(color: Colors.blue.withOpacity(0.1)),
-              backgroundColor: Colors.blue.withOpacity(0.1),
+              side: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
+              backgroundColor: Colors.blue.withValues(alpha: 0.1),
             ),
           ),
         ),

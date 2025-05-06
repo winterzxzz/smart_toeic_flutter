@@ -68,7 +68,7 @@ class _SliderSectionState extends State<SliderSection> {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +89,7 @@ class _SliderSectionState extends State<SliderSection> {
                       height: 50,
                       margin: const EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                         border: Border.all(
                           color: Colors.white,
                         ),
@@ -129,7 +129,7 @@ class _SliderSectionState extends State<SliderSection> {
                           // Button
                           ElevatedButton(
                             onPressed: () {
-                              GoRouter.of(context).go(AppRouter.onlineTest);
+                              // GoRouter.of(context).go(AppRouter.onlineTest);
                             },
                             child: const Text(
                               "Start Free Trial",
@@ -184,7 +184,7 @@ class _SliderSectionState extends State<SliderSection> {
                       height: 50,
                       margin: const EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                         border: Border.all(
                           color: Colors.white,
                         ),

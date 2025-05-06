@@ -160,7 +160,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               title: const Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
-                GoRouter.of(context).go(AppRouter.profile);
+                // GoRouter.of(context).go(AppRouter.bottomTab);
               },
             ),
             ListTile(

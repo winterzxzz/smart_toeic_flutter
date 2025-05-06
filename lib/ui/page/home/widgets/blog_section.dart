@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/blog/widgets/blog_vertical.dart';
 
@@ -35,7 +33,7 @@ class BlogSection extends StatelessWidget {
             const Spacer(),
             TextButton(
               onPressed: () {
-                GoRouter.of(context).pushNamed(AppRouter.blog);
+                // GoRouter.of(context).pushNamed(AppRouter.blog);
               },
               child: Text('Xem tất cả'),
             ),

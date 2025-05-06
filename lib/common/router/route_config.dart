@@ -12,21 +12,15 @@ import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
-import 'package:toeic_desktop/ui/page/blog/blog_page.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab.dart';
+import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
 import 'package:toeic_desktop/ui/page/history_test/history_test_page.dart';
-import 'package:toeic_desktop/ui/page/introduction/introduction_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_page.dart';
-import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
-import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_practice.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_result.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_page.dart';
-import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_page.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_page.dart';
@@ -51,10 +45,14 @@ class AppRouter {
       redirect: (context, state) {
         final isLogin = SharedPreferencesHelper().getCookies() != null;
         if (!isLogin) {
-          if (state.uri.path == onlineTest ||
-              state.uri.path == flashCards ||
+          if (state.uri.path == bottomTab ||
               state.uri.path == modeTest ||
-              state.uri.path == profile ||
+              state.uri.path == flashCardDetail ||
+              state.uri.path == flashCardLearningDetail ||
+              state.uri.path == flashCardPractive ||
+              state.uri.path == flashCardQuizz ||
+              state.uri.path == flashCardQuizzResult ||
+              state.uri.path == resultTest ||
               state.uri.path == upgradeAccount) {
             return login;
           }
@@ -75,11 +73,8 @@ class AppRouter {
   static const String register = "/register";
   static const String resetPassword = "/reset-password";
   // App routes
-  static const String home = "/home";
+  static const String bottomTab = "/bottom-tab";
   static const String introduction = "/introduction";
-  static const String onlineTest = "/online-test";
-  static const String flashCards = "/flash-cards";
-  static const String blog = "/blog";
   static const String upgradeAccount = "/upgrade-account";
   static const String flashCardDetail = "/flash-card-detail";
   static const String flashCardLearningDetail = "/flash-card-learning-detail";
@@ -89,7 +84,6 @@ class AppRouter {
   static const String flashCardQuizz = "/flash-card-quizz";
   static const String flashCardQuizzResult = "/flash-card-quizz-result";
   static const String resultTest = "/result-test";
-  static const String profile = "/profile";
   static const String setting = "/setting";
   static const String analysis = "/analysis";
   static const String upgradeAccountSuccess = "/upgrade-account-success";
@@ -120,64 +114,12 @@ class AppRouter {
       path: resetPassword,
       builder: (context, state) => const ResetPasswordPage(),
     ),
-    // Main app routes with bottom navigation
-    StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) => BottomTabPage(
-        navigationShell: navigationShell,
-      ),
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: home,
-              path: home,
-              builder: (context, state) => const HomePage(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: introduction,
-              path: introduction,
-              builder: (context, state) => IntroductionPage(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: onlineTest,
-              path: onlineTest,
-              builder: (context, state) => const SimulationTestScreen(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: flashCards,
-              path: flashCards,
-              builder: (context, state) => const SetFlashCardPage(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              name: blog,
-              path: blog,
-              builder: (context, state) {
-                final args = state.extra as Map<String, dynamic>?;
-                final blogId = args?['blogId'] as String?;
-                return BlogPage(blogId: blogId);
-              },
-            ),
-          ],
-        ),
-      ],
-    ),
     // Nested routes
+    GoRoute(
+      name: bottomTab,
+      path: bottomTab,
+      builder: (context, state) => const BottomTabPage(),
+    ),
     GoRoute(
       name: modeTest,
       path: modeTest,
@@ -309,11 +251,6 @@ class AppRouter {
       name: historyTest,
       path: historyTest,
       builder: (context, state) => const HistoryTestPage(),
-    ),
-    GoRoute(
-      name: profile,
-      path: profile,
-      builder: (context, state) => const ProfilePage(),
     ),
     GoRoute(
       name: setting,

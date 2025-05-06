@@ -10,8 +10,8 @@ class AppColors {
   static const Color backgroundLightSub = Color(0xFFF0EEEF);
   static const Color backgroundDarkSub = secondary;
   static const Color backgroundMessage = Color(0xFFF5FBF7);
-  static Color backgroundBlur = const Color(0xFF081C2C).withOpacity(0.24);
-  static Color backgroundOverlay = backgroundDark.withOpacity(0.55);
+  static Color backgroundBlur = const Color(0xFF081C2C).withValues(alpha: 0.24);
+  static Color backgroundOverlay = backgroundDark.withValues(alpha: 0.55);
 
   static const Color backgroundBottomTab = Color(0xFFff6b27);
 
@@ -71,7 +71,7 @@ class AppColors {
   static const Color buttonBGBlack = Color(0xFF4A4A4A);
   static const Color buttonBGDisabled = Colors.white;
   static const Color buttonBorder = Color(0xFFC9C8C8);
-  static Color buttonSentRequest = primary.withOpacity(0.7);
+  static Color buttonSentRequest = primary.withValues(alpha: 0.7);
 
   /// Tabs
   static const Color imageBG = Color(0xFF919191);

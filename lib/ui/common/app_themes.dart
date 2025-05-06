@@ -173,7 +173,7 @@ class TElevatedButtonTheme {
       foregroundColor: AppColors.textWhite,
       backgroundColor: AppColors.primary,
       disabledForegroundColor: AppColors.gray1,
-      disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
+      disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       textStyle: const TextStyle(
           color: AppColors.textBlack, fontWeight: FontWeight.w600),
@@ -188,7 +188,7 @@ class TElevatedButtonTheme {
       foregroundColor: AppColors.textBlack,
       backgroundColor: AppColors.backgroundLight,
       disabledForegroundColor: AppColors.gray1,
-      disabledBackgroundColor: AppColors.backgroundLight.withOpacity(0.5),
+      disabledBackgroundColor: AppColors.backgroundLight.withValues(alpha: 0.5),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       textStyle: const TextStyle(
           color: AppColors.textWhite, fontWeight: FontWeight.w600),

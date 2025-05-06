@@ -197,6 +197,6 @@ class AppStyle {
         thickness: 1,
         indent: 16,
         endIndent: 16,
-        color: Colors.grey.withOpacity(.1),
+        color: Colors.grey.withValues(alpha: 0.1),
       );
 }

@@ -197,24 +197,24 @@ class ResultTestPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressSection(String title, String score, String correct) {
-    return Card(
-      child: Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(title,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text(score,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Text('Correct: $correct',
-                style: TextStyle(fontSize: 12, color: AppColors.success)),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildProgressSection(String title, String score, String correct) {
+  //   return Card(
+  //     child: Container(
+  //       padding: EdgeInsets.all(16),
+  //       child: Column(
+  //         children: [
+  //           Text(title,
+  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+  //           SizedBox(height: 8),
+  //           Text(score,
+  //               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+  //           Text('Correct: $correct',
+  //               style: TextStyle(fontSize: 12, color: AppColors.success)),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class ResultInfoItem extends StatelessWidget {

@@ -33,7 +33,7 @@ class Page extends StatelessWidget {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.success) {
-          GoRouter.of(context).goNamed(AppRouter.home);
+          GoRouter.of(context).goNamed(AppRouter.bottomTab);
         } else if (state.loadStatus == LoadStatus.failure) {
           GoRouter.of(context).goNamed(AppRouter.login);
           if (state.message.isNotEmpty) {

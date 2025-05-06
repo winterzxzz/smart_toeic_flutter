@@ -70,7 +70,7 @@ class Page extends StatelessWidget {
               return Column(
                 children: [
                   // Slider background images
-                  SliderSection(),
+                  // SliderSection(),
                   const SizedBox(height: 48),
                   // Toeic exam section
                   if (state.tests.isNotEmpty) TestSection(tests: state.tests),

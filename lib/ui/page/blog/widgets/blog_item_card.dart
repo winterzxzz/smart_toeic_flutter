@@ -23,7 +23,7 @@ class BlogItemCard extends StatelessWidget {
       builder: (context, focusBlog) {
         final Color color = focusBlog != null
             ? focusBlog.id == blog.id
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.12)
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.12)
                 : Colors.transparent
             : Colors.transparent;
         return Card(
@@ -104,7 +104,7 @@ class BlogItemCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            
+
                             const SizedBox(width: 16),
                             Row(
                               children: [

@@ -1,5 +1,4 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
 import 'package:toeic_desktop/data/models/ui_models/bottom_tab.dart';
@@ -197,28 +196,23 @@ class Constants {
 
   static List<BottomTabModel> bottomTabs = [
     BottomTabModel(
-      title: 'Introduction',
-      route: AppRouter.introduction,
+      title: 'Home',
       icon: AppImages.icIntro,
     ),
     BottomTabModel(
-      title: 'Online Test',
-      route: AppRouter.onlineTest,
+      title: 'Test Practice',
       icon: AppImages.icTest,
     ),
     BottomTabModel(
-      title: 'FlashCards',
-      route: AppRouter.flashCards,
+      title: 'Flashcards',
       icon: AppImages.icFlashCard,
     ),
     BottomTabModel(
-      title: 'Listen && Copy',
-      route: AppRouter.transcriptTest,
+      title: 'Blog',
       icon: AppImages.icListenCopy,
     ),
     BottomTabModel(
-      title: 'Blog',
-      route: AppRouter.blog,
+      title: 'Account',
       icon: AppImages.icBlog,
     ),
   ];

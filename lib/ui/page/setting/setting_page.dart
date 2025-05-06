@@ -126,7 +126,7 @@ class SettingPage extends StatelessWidget {
                                     color: e,
                                     borderRadius: AppStyle.radius4,
                                     border: Border.all(
-                                      color: Colors.grey.withOpacity(.2),
+                                      color: Colors.grey.withValues(alpha: 0.2),
                                       width: 1,
                                     ),
                                   ),

@@ -34,7 +34,10 @@ class QuestionWidget extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                color: Theme.of(context)
+                    .colorScheme
+                    .primary
+                    .withValues(alpha: 0.1),
               ),
               child: SelectionArea(
                 child: Text(
@@ -125,7 +128,8 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   value: option.id?.name ?? '',
                                   groupValue: widget.question
                                       .userAnswer, // Default selected value
-                                  activeColor: Theme.of(context).colorScheme.primary,
+                                  activeColor:
+                                      Theme.of(context).colorScheme.primary,
                                   onChanged: (value) {
                                     context
                                         .read<PracticeTestCubit>()
@@ -162,9 +166,9 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                     option.id?.name) {
                                   if (questionResult?.correctanswer ==
                                       option.id?.name) {
-                                    color = Colors.green.withOpacity(0.5);
+                                    color = Colors.green.withValues(alpha: 0.5);
                                   } else {
-                                    color = Colors.red.withOpacity(0.5);
+                                    color = Colors.red.withValues(alpha: 0.5);
                                   }
                                 }
                                 return Row(

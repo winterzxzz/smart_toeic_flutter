@@ -20,7 +20,6 @@ class TestCard extends StatelessWidget {
     final isAttempted = userAttempt!.count! > 0;
     return Card(
       child: Container(
-        height: 280,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +74,7 @@ class TestCard extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: isAttempted == true
-                    ? AppColors.success.withOpacity(0.2)
+                    ? AppColors.success.withValues(alpha: 0.2)
                     : Colors.grey[500],
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -110,7 +109,7 @@ class TestCard extends StatelessWidget {
                 ],
               ),
             ),
-            Spacer(),
+            const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

@@ -35,9 +35,9 @@ class _SpeechTestState extends State<SpeechTest> {
     );
   }
 
-  void _stopSpeechToText() {
-    speechToText.stop();
-  }
+  // void _stopSpeechToText() {
+  //   speechToText.stop();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _SpeechTestState extends State<SpeechTest> {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blue.withOpacity(level / 100),
+                color: Colors.blue.withValues(alpha: level / 100),
               ),
               child: IconButton(
                 onPressed: () {

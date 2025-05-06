@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 
 class IntroductionPage extends StatelessWidget {
   const IntroductionPage({super.key});
@@ -58,7 +54,7 @@ class IntroductionPage extends StatelessWidget {
           height: 45,
           child: ElevatedButton(
               onPressed: () {
-                GoRouter.of(context).go(AppRouter.home);
+                // GoRouter.of(context).go(AppRouter.home);
               },
               child: Text('Bắt đầu học ngay')),
         ),

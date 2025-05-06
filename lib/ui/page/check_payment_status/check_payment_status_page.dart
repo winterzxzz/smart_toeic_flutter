@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
@@ -90,7 +88,7 @@ class Page extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate back to the home screen
-                      GoRouter.of(context).go(AppRouter.home);
+                      // GoRouter.of(context).go(AppRouter.home);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
