@@ -127,28 +127,46 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Radio<String>(
-                                  value: option.id?.name ?? '',
-                                  groupValue: widget.question
-                                      .userAnswer, // Default selected value
-                                  activeColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  onChanged: (value) {
-                                    context
-                                        .read<PracticeTestCubit>()
-                                        .setUserAnswer(widget.question, value!);
-                                  },
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 40,
+                                      child: Center(
+                                        child: Radio<String>(
+                                          value: option.id?.name ?? '',
+                                          groupValue:
+                                              widget.question.userAnswer,
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          onChanged: (value) {
+                                            context
+                                                .read<PracticeTestCubit>()
+                                                .setUserAnswer(
+                                                    widget.question, value!);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '${option.id?.name}. ',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '${option.id?.name}. ',
-                                ),
+                                const SizedBox(width: 4),
                                 if (widget.question.part > 2)
-                                  Column(
-                                    children: [
-                                      const SizedBox(width: 8),
-                                      Text(option.content.toString()),
-                                    ],
-                                  )
+                                  Expanded(
+                                    child: Text(
+                                      option.content.toString().trim(),
+                                      style: const TextStyle(
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                  ),
                               ],
                             );
                           },
@@ -175,7 +193,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   }
                                 }
                                 return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Radio<String>(
                                       value: option.id?.name ?? '',
@@ -191,11 +209,14 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                         '${option.id?.name}. ',
                                       ),
                                     ),
-                                    Column(
-                                      children: [
-                                        const SizedBox(width: 8),
-                                        Text(option.content.toString()),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(width: 8),
+                                          Text(
+                                              option.content.toString().trim()),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 );
