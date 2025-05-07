@@ -4,6 +4,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -76,21 +77,28 @@ class _PageState extends State<Page> {
         }
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Image.asset(
+                    AppImages.appLogo,
+                    width: 200,
+                  ),
+                  const SizedBox(height: 16),
                   Text(
                     'Welcome to TOEIC Prep',
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
                   const Text(
                     'Login to access our comprehensive TOEIC preparation resources',
                     style: TextStyle(color: AppColors.textGray),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
                   Form(

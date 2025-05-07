@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toastification/toastification.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/login/login_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/login_navigator.dart';
 import 'package:toeic_desktop/ui/page/login/login_state.dart';
@@ -54,10 +54,6 @@ class _PageState extends State<Page> {
     super.dispose();
   }
 
-  void _onLoginSuccess() {
-    AppRouter.clearAndNavigate(AppRouter.bottomTab);
-  }
-
   bool _isLoginButtonEnabled() {
     return emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty;
@@ -72,26 +68,32 @@ class _PageState extends State<Page> {
           navigator.error(state.errorMessage);
         }
         if (state.loadStatus == LoadStatus.success) {
-          showToast(title: 'Welcome back!', type: ToastificationType.success);
-          _onLoginSuccess();
+          GoRouter.of(context).goNamed(AppRouter.bottomTab);
         }
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Image.asset(
+                    AppImages.appLogo,
+                    width: 200,
+                  ),
+                  const SizedBox(height: 16),
                   Text(
                     'Welcome to Smart TOEIC Prep',
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
                   const Text(
                     'Login to access our comprehensive TOEIC preparation resources',
                     style: TextStyle(color: AppColors.textGray),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
                   Form(
