@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/blog/blog_cubit.dart';
 import 'package:toeic_desktop/ui/page/blog/blog_state.dart';
-import 'package:toeic_desktop/ui/page/blog/widgets/blog_detail.dart';
 import 'package:toeic_desktop/ui/page/blog/widgets/list_view_blog_side.dart';
 
 class BlogPage extends StatelessWidget {

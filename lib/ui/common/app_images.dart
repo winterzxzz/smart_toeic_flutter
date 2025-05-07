@@ -84,6 +84,18 @@ class AppImages {
   static const icHome = 'assets/vectors/ic_home.svg';
   static const icListenCopy = 'assets/vectors/ic_listen_copy.svg';
 
+  static const icHomeOutline = 'assets/vectors/ic_home_outline.svg';
+  static const icTestOutline = 'assets/vectors/ic_test_outline.svg';
+  static const icFlashCardOutline = 'assets/vectors/ic_flashcard_outline.svg';
+  static const icBlogOutline = 'assets/vectors/ic_blog_outline.svg';
+  static const icAccountOutline = 'assets/vectors/ic_account_outline.svg';
+
+  static const icAccountFill = 'assets/vectors/ic_account_fill.svg';
+  static const icHomeFill = 'assets/vectors/ic_home_fill.svg';
+  static const icTestFill = 'assets/vectors/ic_test_fill.svg';
+  static const icFlashCardFill = 'assets/vectors/ic_flashcard_fill.svg';
+  static const icBlogFill = 'assets/vectors/ic_blog_fill.svg';
+
   // animations
   static const splashAnimation = 'assets/animations/splash.json';
   static const scanning = 'assets/animations/scanning.json';

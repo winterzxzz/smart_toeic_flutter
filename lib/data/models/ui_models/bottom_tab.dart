@@ -1,10 +1,11 @@
-
 class BottomTabModel {
   final String title;
-  final String icon;
+  final String iconFill;
+  final String iconOutline;
 
   BottomTabModel({
     required this.title,
-    required this.icon,
+    required this.iconFill,
+    required this.iconOutline,
   });
 }

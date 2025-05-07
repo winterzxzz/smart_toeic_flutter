@@ -107,7 +107,21 @@ class Page extends StatelessWidget {
                       destinations: Constants.bottomTabs
                           .map(
                             (item) => NavigationRailDestination(
-                              icon: SvgPicture.asset(item.icon),
+                              icon: SvgPicture.asset(
+                                state.currentIndex ==
+                                        Constants.bottomTabs.indexOf(item)
+                                    ? item.iconFill
+                                    : item.iconOutline,
+                                width: 20,
+                                height: 20,
+                                colorFilter: state.currentIndex ==
+                                        Constants.bottomTabs.indexOf(item)
+                                    ? const ColorFilter.mode(
+                                        Colors.blueAccent,
+                                        BlendMode.srcIn,
+                                      )
+                                    : null,
+                              ),
                               label: Text(item.title),
                               padding: const EdgeInsets.all(8),
                             ),
@@ -136,10 +150,18 @@ class Page extends StatelessWidget {
               bottomNavigationBar: Visibility(
                 visible: orientation == Orientation.portrait,
                 child: BottomNavigationBar(
-                  selectedItemColor: Theme.of(context).colorScheme.primary,
+                  useLegacyColorScheme: true,
+                  backgroundColor: Colors.white,
+                  selectedItemColor: Colors.blueAccent,
                   unselectedItemColor: AppColors.gray3,
-                  selectedLabelStyle: const TextStyle(fontSize: 12),
-                  unselectedLabelStyle: const TextStyle(fontSize: 12),
+                  selectedLabelStyle: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  unselectedLabelStyle: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
                   showUnselectedLabels: true,
                   iconSize: 20,
                   currentIndex: state.currentIndex,
@@ -148,7 +170,23 @@ class Page extends StatelessWidget {
                   },
                   items: Constants.bottomTabs.map((tab) {
                     return BottomNavigationBarItem(
-                      icon: SvgPicture.asset(tab.icon, width: 20, height: 20),
+                      icon: SvgPicture.asset(
+                        state.currentIndex == Constants.bottomTabs.indexOf(tab)
+                            ? tab.iconFill
+                            : tab.iconOutline,
+                        width: 20,
+                        height: 20,
+                        colorFilter: state.currentIndex ==
+                                Constants.bottomTabs.indexOf(tab)
+                            ? const ColorFilter.mode(
+                                Colors.blueAccent,
+                                BlendMode.srcIn,
+                              )
+                            : const ColorFilter.mode(
+                                AppColors.gray3,
+                                BlendMode.srcIn,
+                              ),
+                      ),
                       label: tab.title,
                     );
                   }).toList(),

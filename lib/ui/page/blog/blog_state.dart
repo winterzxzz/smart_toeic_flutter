@@ -17,34 +17,42 @@ class BlogState extends Equatable {
     required this.message,
   });
 
-  // initial state
-  factory BlogState.initial() {
-    return BlogState(
-      loadStatus: LoadStatus.initial,
-      blogs: [],
-      searchBlogs: [],
-      message: '',
-      focusBlog: null,
-    );
-  }
+  factory BlogState.initial() => const BlogState(
+        loadStatus: LoadStatus.initial,
+        blogs: [],
+        searchBlogs: [],
+        message: '',
+      );
 
   BlogState copyWith({
     LoadStatus? loadStatus,
     List<Blog>? blogs,
     List<Blog>? searchBlogs,
-    String? message,
     Blog? focusBlog,
+    String? message,
   }) {
     return BlogState(
       loadStatus: loadStatus ?? this.loadStatus,
       blogs: blogs ?? this.blogs,
       searchBlogs: searchBlogs ?? this.searchBlogs,
-      message: message ?? this.message,
       focusBlog: focusBlog ?? this.focusBlog,
+      message: message ?? this.message,
     );
   }
 
+  bool get isLoading => loadStatus == LoadStatus.loading;
+  bool get isSuccess => loadStatus == LoadStatus.success;
+  bool get isFailure => loadStatus == LoadStatus.failure;
+  bool get hasError => message.isNotEmpty;
+  bool get hasBlogs => blogs.isNotEmpty;
+  bool get hasSearchResults => searchBlogs.isNotEmpty;
+
   @override
-  List<Object?> get props =>
-      [loadStatus, blogs, searchBlogs, message, focusBlog];
+  List<Object?> get props => [
+        loadStatus,
+        blogs,
+        searchBlogs,
+        focusBlog,
+        message,
+      ];
 }

@@ -197,23 +197,28 @@ class Constants {
   static List<BottomTabModel> bottomTabs = [
     BottomTabModel(
       title: 'Home',
-      icon: AppImages.icIntro,
+      iconFill: AppImages.icHomeFill,
+      iconOutline: AppImages.icHomeOutline,
     ),
     BottomTabModel(
       title: 'Test Practice',
-      icon: AppImages.icTest,
+      iconFill: AppImages.icTestFill,
+      iconOutline: AppImages.icTestOutline,
     ),
     BottomTabModel(
       title: 'Flashcards',
-      icon: AppImages.icFlashCard,
+      iconFill: AppImages.icFlashCardFill,
+      iconOutline: AppImages.icFlashCardOutline,
     ),
     BottomTabModel(
       title: 'Blog',
-      icon: AppImages.icListenCopy,
+      iconFill: AppImages.icBlogFill,
+      iconOutline: AppImages.icBlogOutline,
     ),
     BottomTabModel(
       title: 'Account',
-      icon: AppImages.icBlog,
+      iconFill: AppImages.icAccountFill,
+      iconOutline: AppImages.icAccountOutline,
     ),
   ];
 }
