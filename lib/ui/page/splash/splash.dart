@@ -6,7 +6,6 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
-import 'package:lottie/lottie.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/splash/splash_cubit.dart';
 import 'package:toeic_desktop/ui/page/splash/splash_state.dart';
@@ -42,11 +41,13 @@ class Page extends StatelessWidget {
         }
       },
       child: Scaffold(
-          backgroundColor: Colors.white,
-          body: Lottie.asset(AppImages.splashAnimation,
-              width: double.infinity,
-              height: double
-                  .infinity) // This trailing comma makes auto-formatting nicer for build methods.
+          body: Center(
+        child: Image.asset(
+          AppImages.appLogo,
+          width: 200,
+          height: 200,
+        ),
+      ) // This trailing comma makes auto-formatting nicer for build methods.
           ),
     );
   }

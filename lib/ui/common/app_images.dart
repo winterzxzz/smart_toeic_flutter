@@ -1,6 +1,6 @@
 class AppImages {
   /// Common
-  static const appLogo = 'assets/images/app_icon.png';
+  static const appLogo = 'assets/images/app_logo.png';
   static const bgImagePlaceholder = 'assets/images/smartphone.png';
   static const icPersonVector = 'assets/vectors/ic_person.svg';
   static const icLockVector = 'assets/vectors/ic_lock.svg';

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
@@ -9,8 +8,6 @@ import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import '../../../common/utils/logger.dart';
 
 class ApiInterceptors extends QueuedInterceptorsWrapper {
-  BuildContext get context => null;
-
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     response.headers.forEach((name, values) async {

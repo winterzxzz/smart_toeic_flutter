@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:lottie/lottie.dart';
 
 import 'app_colors.dart';
 import 'app_text_styles.dart';
@@ -78,23 +76,6 @@ class AppNavigator {
           context.loaderOverlay.hide();
         }
       }
-    });
-  }
-
-  void showScanningOverlay() {
-    context.loaderOverlay.show(widgetBuilder: (dynamic) {
-      return Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: AppColors.backgroundOverlay,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(AppImages.scanning,
-                fit: BoxFit.contain, width: 200, height: 200)
-          ],
-        ),
-      );
     });
   }
 
