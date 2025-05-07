@@ -214,7 +214,7 @@ class _PageState extends State<Page> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -538,7 +538,7 @@ class _PageState extends State<Page> {
                   right: 0,
                   bottom: 0,
                   child: Container(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     child: Center(
                       child: Container(
                         margin: const EdgeInsets.all(16),
