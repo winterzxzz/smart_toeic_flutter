@@ -27,7 +27,6 @@ class ExamResultCard extends StatelessWidget {
       elevation: 4,
       child: Container(
         width: double.infinity,
-        height: 270,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +88,6 @@ class ExamResultCard extends StatelessWidget {
                 ),
               ],
             ),
-            const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

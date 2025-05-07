@@ -69,8 +69,6 @@ class Page extends StatelessWidget {
             if (state.loadStatus == LoadStatus.success) {
               return Column(
                 children: [
-                  // Slider background images
-                  // SliderSection(),
                   const SizedBox(height: 48),
                   // Toeic exam section
                   if (state.tests.isNotEmpty) TestSection(tests: state.tests),

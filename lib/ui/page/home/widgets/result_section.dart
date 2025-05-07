@@ -13,42 +13,29 @@ class ResultSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            const SizedBox(width: 16),
-            IgnorePointer(
-              ignoring: true,
-              child: Opacity(
-                opacity: 0,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text('Xem tất cả'),
-                ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Your Exam Results",
+                style: Theme.of(context).textTheme.titleLarge!.apply(
+                      fontWeightDelta: 2,
+                    ),
               ),
-            ),
-            const Spacer(),
-            Text(
-              "Your Exam Results",
-              style: Theme.of(context).textTheme.headlineMedium!.apply(
-                    fontWeightDelta: 2,
-                  ),
-            ),
-            const Spacer(),
-            TextButton(
-              onPressed: () {
-                GoRouter.of(context).pushNamed(AppRouter.historyTest);
-              },
-              child: Text('Xem tất cả'),
-            ),
-            const SizedBox(width: 16),
-          ],
+              TextButton(
+                onPressed: () {
+                  GoRouter.of(context).pushNamed(AppRouter.historyTest);
+                },
+                child: Text('Xem tất cả'),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 16),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: results
-                .map((e) => Expanded(child: ExamResultCard(result: e)))
-                .toList())
+        Column(
+          children: results.map((e) => ExamResultCard(result: e)).toList(),
+        )
       ],
     );
   }

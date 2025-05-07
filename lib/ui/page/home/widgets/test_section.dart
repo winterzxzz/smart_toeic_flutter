@@ -33,7 +33,6 @@ class TestSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 16),
         Column(
           children: tests.map((e) => TestCard(test: e)).toList(),
         )

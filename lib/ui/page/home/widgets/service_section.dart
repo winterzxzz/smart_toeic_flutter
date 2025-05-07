@@ -8,20 +8,22 @@ class ServiceSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Our TOEIC Preparation Services",
-          style: Theme.of(context).textTheme.headlineMedium!.apply(
-                fontWeightDelta: 2,
-              ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            "Our TOEIC Preparation Services",
+            style: Theme.of(context).textTheme.titleLarge!.apply(
+                  fontWeightDelta: 2,
+                ),
+          ),
         ),
         const SizedBox(height: 16),
-        Row(
+        Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: Constants.services.map((service) {
-            return Expanded(
-              child: ServiceCard(item: service),
-            );
+            return ServiceCard(item: service);
           }).toList(),
         )
       ],
