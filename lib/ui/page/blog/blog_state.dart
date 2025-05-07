@@ -6,14 +6,12 @@ class BlogState extends Equatable {
   final LoadStatus loadStatus;
   final List<Blog> blogs;
   final List<Blog> searchBlogs;
-  final Blog? focusBlog;
   final String message;
 
   const BlogState({
     required this.loadStatus,
     required this.blogs,
     required this.searchBlogs,
-    this.focusBlog,
     required this.message,
   });
 
@@ -28,14 +26,12 @@ class BlogState extends Equatable {
     LoadStatus? loadStatus,
     List<Blog>? blogs,
     List<Blog>? searchBlogs,
-    Blog? focusBlog,
     String? message,
   }) {
     return BlogState(
       loadStatus: loadStatus ?? this.loadStatus,
       blogs: blogs ?? this.blogs,
       searchBlogs: searchBlogs ?? this.searchBlogs,
-      focusBlog: focusBlog ?? this.focusBlog,
       message: message ?? this.message,
     );
   }
@@ -52,7 +48,6 @@ class BlogState extends Equatable {
         loadStatus,
         blogs,
         searchBlogs,
-        focusBlog,
         message,
       ];
 }

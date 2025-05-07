@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
+import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
@@ -12,6 +13,7 @@ import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/analysis/analysis_page.dart';
+import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
 import 'package:toeic_desktop/ui/page/history_test/history_test_page.dart';
@@ -90,6 +92,7 @@ class AppRouter {
   static const String transcriptTest = "/transcript-test";
   static const String transcriptTestDetail = "/transcript-test-detail";
   static const String historyTest = "/history-test";
+  static const String blogDetail = "/blog-detail";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -256,6 +259,15 @@ class AppRouter {
       name: setting,
       path: setting,
       builder: (context, state) => const SettingPage(),
+    ),
+    GoRoute(
+      name: blogDetail,
+      path: blogDetail,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final blog = args['blog'] as Blog;
+        return BlogDetail(blog: blog);
+      },
     ),
   ];
 

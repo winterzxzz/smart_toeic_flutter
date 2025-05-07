@@ -50,6 +50,9 @@ class QuestionWidget extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: 500),
               child: Image.network(
                 question.image!,
+                errorBuilder: (context, error, stackTrace) {
+                  return const SizedBox.shrink();
+                },
               ),
             ),
           if (question.image != null) const SizedBox(height: 16),

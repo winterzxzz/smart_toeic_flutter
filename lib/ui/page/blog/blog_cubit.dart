@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/blog_repository.dart';
 import 'package:toeic_desktop/ui/page/blog/blog_state.dart';
@@ -22,19 +21,17 @@ class BlogCubit extends Cubit<BlogState> {
           loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
       (r) {
         if (blogId != null) {
-          final blog = r.firstWhere((element) => element.id == blogId,
-              orElse: () => r.first);
           emit(state.copyWith(
-              loadStatus: LoadStatus.success,
-              blogs: r,
-              searchBlogs: r,
-              focusBlog: blog));
+            loadStatus: LoadStatus.success,
+            blogs: r,
+            searchBlogs: r,
+          ));
         } else {
           emit(state.copyWith(
-              loadStatus: LoadStatus.success,
-              blogs: r,
-              searchBlogs: r,
-              focusBlog: r.first));
+            loadStatus: LoadStatus.success,
+            blogs: r,
+            searchBlogs: r,
+          ));
         }
       },
     );
@@ -44,7 +41,8 @@ class BlogCubit extends Cubit<BlogState> {
   void searchBlog(String keyword) async {
     if (keyword.isEmpty) {
       emit(state.copyWith(
-          searchBlogs: state.blogs, focusBlog: state.blogs.first));
+        searchBlogs: state.blogs,
+      ));
       return;
     }
     await Future.microtask(
@@ -55,14 +53,10 @@ class BlogCubit extends Cubit<BlogState> {
           loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
       (r) {
         emit(state.copyWith(
-            loadStatus: LoadStatus.success,
-            searchBlogs: r,
-            focusBlog: r.isEmpty ? null : r.first));
+          loadStatus: LoadStatus.success,
+          searchBlogs: r,
+        ));
       },
     );
-  }
-
-  void setFocusBlog(Blog blog) {
-    emit(state.copyWith(focusBlog: blog));
   }
 }

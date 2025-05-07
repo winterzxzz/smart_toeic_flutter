@@ -152,9 +152,8 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                             const SizedBox(height: 16),
                             const Divider(),
                             const SizedBox(height: 16),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -167,6 +166,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                                     child: Text(
                                         'Review in: ${TimeUtils.getDiffDays(widget.flashcard.optimalTime!)} days (Initial interval: ${widget.flashcard.interval} days)'),
                                   ),
+                                  const SizedBox(height: 8),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 4),

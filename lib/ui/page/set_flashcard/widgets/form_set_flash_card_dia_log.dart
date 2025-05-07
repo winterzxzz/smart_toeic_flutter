@@ -82,8 +82,8 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide:
-                          BorderSide(color: AppColors.gray1.withOpacity(0.1)),
+                      borderSide: BorderSide(
+                          color: AppColors.gray1.withValues(alpha: 0.1)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -146,7 +146,7 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                                color: AppColors.gray1.withOpacity(0.1)),
+                                color: AppColors.gray1.withValues(alpha: 0.1)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),

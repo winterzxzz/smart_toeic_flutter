@@ -49,6 +49,7 @@ class _PageState extends State<Page> {
   bool isCheck = false;
   List<CheckResult> _checkResult = [];
   bool _isCorrect = false;
+  bool _showQuestionList = false;
 
   @override
   void initState() {
@@ -204,6 +205,83 @@ class _PageState extends State<Page> {
     );
   }
 
+  Widget _buildQuestionList(TranscriptTestDetailState state) {
+    return Container(
+      height: 300,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Danh sách câu hỏi',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      _showQuestionList = false;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: state.transcriptTests.length,
+              itemBuilder: (context, index) {
+                final isCurrentQuestion = index == state.currentIndex;
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: isCurrentQuestion
+                        ? AppColors.primary
+                        : Theme.of(context).dividerColor,
+                    child: Text(
+                      '${index + 1}',
+                      style: TextStyle(
+                        color: isCurrentQuestion ? Colors.white : null,
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    'Câu hỏi ${index + 1}',
+                    style: TextStyle(
+                      fontWeight: isCurrentQuestion ? FontWeight.bold : null,
+                    ),
+                  ),
+                  onTap: () {
+                    context
+                        .read<TranscriptTestDetailCubit>()
+                        .goToTranscriptTest(index);
+                    setState(() {
+                      _showQuestionList = false;
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TranscriptTestDetailCubit, TranscriptTestDetailState>(
@@ -226,195 +304,250 @@ class _PageState extends State<Page> {
         return Scaffold(
           key: ValueKey(state.transcriptTests[state.currentIndex].id),
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.1),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Thực hành nghe chép',
-                        style: Theme.of(context).textTheme.titleLarge),
-                    Row(
-                      children: [
-                        IconButton(
-                            onPressed: state.currentIndex > 0
-                                ? () {
-                                    context
-                                        .read<TranscriptTestDetailCubit>()
-                                        .previousTranscriptTest();
-                                  }
-                                : null,
-                            icon: const Icon(Icons.arrow_back)),
-                        const SizedBox(width: 8),
-                        Text(
-                            '${state.currentIndex + 1}/${state.transcriptTests.length}',
-                            style: Theme.of(context).textTheme.titleLarge),
-                        const SizedBox(width: 8),
-                        IconButton(
-                            onPressed: state.currentIndex <
-                                    state.transcriptTests.length - 1
-                                ? () {
-                                    context
-                                        .read<TranscriptTestDetailCubit>()
-                                        .nextTranscriptTest();
-                                  }
-                                : null,
-                            icon: const Icon(Icons.arrow_forward)),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(height: 16),
-                // audio section
-                Builder(builder: (context) {
-                  final audioUrl =
-                      '${Constants.hostUrl}/uploads${state.transcriptTests[state.currentIndex].audioUrl}';
-                  return AudioSection(
-                    audioUrl: audioUrl,
-                  );
-                }),
-                const SizedBox(height: 16),
-                // transcript section
-                TextField(
-                  controller: _transcriptController,
-                  onChanged: (value) {
-                    if (isCheck) {
-                      setState(() {
-                        isCheck = false;
-                      });
-                    }
-                  },
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: 'Nhập nội dung bạn nghe được...',
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: AppColors.inputBorder),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: AppColors.focusBorder),
-                    ),
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width > 600
+                        ? MediaQuery.of(context).size.width * 0.1
+                        : 16,
                   ),
-                ),
-                const SizedBox(height: 32),
-                // button section
-                Row(
-                  children: [
-                    SizedBox(
-                        height: 45,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              _checkTranscription(state
-                                  .transcriptTests[state.currentIndex]
-                                  .transcript!);
-                            },
-                            child: Text('Kiểm tra'))),
-                    const SizedBox(width: 32),
-                    SizedBox(
-                        height: 45,
-                        child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Thực hành nghe chép',
+                              style: Theme.of(context).textTheme.titleLarge,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showQuestionList = true;
+                                  });
+                                },
+                                icon: const Icon(Icons.list),
+                              ),
+                              IconButton(
+                                onPressed: state.currentIndex > 0
+                                    ? () {
+                                        context
+                                            .read<TranscriptTestDetailCubit>()
+                                            .previousTranscriptTest();
+                                      }
+                                    : null,
+                                icon: const Icon(Icons.arrow_back),
+                              ),
+                              Text(
+                                '${state.currentIndex + 1}/${state.transcriptTests.length}',
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              IconButton(
+                                onPressed: state.currentIndex <
+                                        state.transcriptTests.length - 1
+                                    ? () {
+                                        context
+                                            .read<TranscriptTestDetailCubit>()
+                                            .nextTranscriptTest();
+                                      }
+                                    : null,
+                                icon: const Icon(Icons.arrow_forward),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Builder(builder: (context) {
+                        final audioUrl =
+                            '${Constants.hostUrl}/uploads${state.transcriptTests[state.currentIndex].audioUrl}';
+                        return AudioSection(
+                          audioUrl: audioUrl,
+                        );
+                      }),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _transcriptController,
+                        onChanged: (value) {
+                          if (isCheck) {
+                            setState(() {
+                              isCheck = false;
+                            });
+                          }
+                        },
+                        autofocus: true,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          hintText: 'Nhập nội dung bạn nghe được...',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                BorderSide(color: AppColors.inputBorder),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                BorderSide(color: AppColors.focusBorder),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 45,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _checkTranscription(state
+                                    .transcriptTests[state.currentIndex]
+                                    .transcript!);
+                              },
+                              child: const Text('Kiểm tra'),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 45,
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      child: SpeechTest(),
+                                    );
+                                  },
+                                );
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(Icons.volume_up),
+                                  SizedBox(width: 8),
+                                  Text('Thực hành phát âm'),
+                                ],
                               ),
                             ),
-                            onPressed: () {
-                              // show dialog to speech test
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    child: SpeechTest(),
-                                  );
+                          ),
+                          if (state.currentIndex <
+                              state.transcriptTests.length - 1)
+                            SizedBox(
+                              height: 45,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  context
+                                      .read<TranscriptTestDetailCubit>()
+                                      .nextTranscriptTest();
                                 },
-                              );
-                            },
-                            child: Row(
-                              children: [
-                                Icon(Icons.volume_up),
-                                const SizedBox(width: 8),
-                                Text('Thực hành phát âm'),
-                              ],
-                            ))),
-                    Spacer(),
-                    if (state.currentIndex < state.transcriptTests.length - 1)
-                      SizedBox(
-                          height: 45,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                context
-                                    .read<TranscriptTestDetailCubit>()
-                                    .nextTranscriptTest();
-                              },
-                              child: Row(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Icon(Icons.skip_next),
+                                    SizedBox(width: 8),
+                                    Text('Bỏ qua'),
+                                  ],
+                                ),
+                              ),
+                            )
+                          else
+                            SizedBox(
+                              height: 45,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  GoRouter.of(context).pop();
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Icon(Icons.skip_next),
+                                    SizedBox(width: 8),
+                                    Text('Kết thúc'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      if (isCheck) ...[
+                        const SizedBox(height: 32),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'Nội dung bạn nhập: ${_transcriptController.text}',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildCheckResultDisplay(state
+                            .transcriptTests[state.currentIndex].transcript!),
+                        const SizedBox(height: 16),
+                        if (_isCorrect)
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.skip_next),
+                                  FaIcon(FontAwesomeIcons.circleCheck,
+                                      color: AppColors.success),
                                   const SizedBox(width: 8),
-                                  Text('Bỏ qua'),
+                                  Text(
+                                    'Bạn đã đúng!',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          color: AppColors.success,
+                                        ),
+                                  ),
                                 ],
-                              )))
-                    else
-                      SizedBox(
-                          height: 45,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                GoRouter.of(context).pop();
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(Icons.skip_next),
-                                  const SizedBox(width: 8),
-                                  Text('Kết thúc  '),
-                                ],
-                              )))
-                  ],
+                              ),
+                            ],
+                          )
+                      ],
+                      const SizedBox(height: 32),
+                    ],
+                  ),
                 ),
-                if (isCheck) ...[
-                  const SizedBox(height: 32),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      'Nội dung bạn nhập: ${_transcriptController.text}',
-                      style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              if (_showQuestionList)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                      child: Container(
+                        margin: const EdgeInsets.all(16),
+                        child: _buildQuestionList(state),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  _buildCheckResultDisplay(
-                      state.transcriptTests[state.currentIndex].transcript!),
-                  const SizedBox(height: 16),
-                  if (_isCorrect)
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FaIcon(FontAwesomeIcons.circleCheck,
-                                color: AppColors.success),
-                            const SizedBox(width: 8),
-                            Text('Bạn đã đúng!',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      color: AppColors.success,
-                                    )),
-                          ],
-                        ),
-                      ],
-                    )
-                ]
-              ],
-            ),
+                ),
+            ],
           ),
         );
       },

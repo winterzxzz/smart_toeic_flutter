@@ -14,8 +14,8 @@ class HeadingPracticeTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 70,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(
             height: 16,
@@ -25,17 +25,19 @@ class HeadingPracticeTest extends StatelessWidget {
               const SizedBox(
                 width: 16,
               ),
-              BlocSelector<PracticeTestCubit, PracticeTestState, String>(
-                selector: (state) {
-                  return state.title;
-                },
-                builder: (context, title) {
-                  return Text(title,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold));
-                },
+              Expanded(
+                child:
+                    BlocSelector<PracticeTestCubit, PracticeTestState, String>(
+                  selector: (state) {
+                    return state.title;
+                  },
+                  builder: (context, title) {
+                    return Text(title,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold));
+                  },
+                ),
               ),
-              const Spacer(),
               BlocSelector<PracticeTestCubit, PracticeTestState, TestShow>(
                 selector: (state) {
                   return state.testShow;
@@ -85,9 +87,6 @@ class HeadingPracticeTest extends StatelessWidget {
                 width: 16,
               ),
             ],
-          ),
-          const SizedBox(
-            height: 16,
           ),
         ],
       ),

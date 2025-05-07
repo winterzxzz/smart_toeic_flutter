@@ -29,6 +29,9 @@ class _QuestionIndexState extends State<QuestionIndex> {
     final testShow = context.read<PracticeTestCubit>().state.testShow;
     if (testShow == TestShow.test) {
       remainingTime = context.read<PracticeTestCubit>().state.duration;
+      setState(() {
+        remainingTime = remainingTime;
+      });
       startTimer();
     }
   }
@@ -54,9 +57,11 @@ class _QuestionIndexState extends State<QuestionIndex> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
     return SingleChildScrollView(
       child: Container(
-        width: 300,
+        width: isMobile ? double.infinity : 300,
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -74,7 +79,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (state.testShow == TestShow.test)
+                if (!isMobile && state.testShow == TestShow.test)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -92,6 +97,9 @@ class _QuestionIndexState extends State<QuestionIndex> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: _showConfirmSubmitTestDialog,
+                          style: ElevatedButton.styleFrom(
+                            alignment: Alignment.center,
+                          ),
                           child: Text('Nộp bài'),
                         ),
                       ),
@@ -100,22 +108,21 @@ class _QuestionIndexState extends State<QuestionIndex> {
                 ...state.parts.map(
                   (part) {
                     if (state.questions
-                        .where(
-                            (question) => question.part == part.numValue)
+                        .where((question) => question.part == part.numValue)
                         .isNotEmpty) {
                       return Column(
                         children: [
                           const SizedBox(
-                          height: 16,
-                        ),
-                        PracticeTestPart(
-                          title: part.name,
-                          questions: state.questions
-                              .where(
-                                  (question) => question.part == part.numValue)
-                              .toList(),
-                        ),
-                      ],
+                            height: 16,
+                          ),
+                          PracticeTestPart(
+                            title: part.name,
+                            questions: state.questions
+                                .where((question) =>
+                                    question.part == part.numValue)
+                                .toList(),
+                          ),
+                        ],
                       );
                     }
                     return const SizedBox.shrink();

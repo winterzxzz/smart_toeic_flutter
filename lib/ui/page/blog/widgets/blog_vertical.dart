@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 
 class BlogVerticalCard extends StatelessWidget {
@@ -16,9 +17,9 @@ class BlogVerticalCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          // GoRouter.of(context).pushNamed(AppRouter.blog, extra: {
-          //   'blogId': blog.id,
-          // });
+          AppRouter.router.pushNamed(AppRouter.blogDetail, extra: {
+            'blog': blog,
+          });
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

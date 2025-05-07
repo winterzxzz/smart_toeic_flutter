@@ -18,6 +18,9 @@ class PracticeTestPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    final crossAxisCount = isMobile ? 4 : 5;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,8 +34,8 @@ class PracticeTestPart extends StatelessWidget {
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 5, // 5 items per row
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
             crossAxisSpacing: 8.0,
             mainAxisSpacing: 8.0,
             mainAxisExtent: 40,
@@ -55,7 +58,9 @@ class PracticeTestPart extends StatelessWidget {
                       ? AppColors.backgroundDarkSub
                       : AppColors.backgroundLightSub;
                   if (state.testShow == TestShow.test) {
-                    color = isAnswered ? Theme.of(context).colorScheme.primary : color;
+                    color = isAnswered
+                        ? Theme.of(context).colorScheme.primary
+                        : color;
                   } else {
                     for (var questionResult in state.questionsResult) {
                       if (questionResult.questionNum ==
@@ -73,8 +78,10 @@ class PracticeTestPart extends StatelessWidget {
                       color: color,
                       borderRadius: BorderRadius.circular(4.0),
                     ),
-                    child: Text(
-                      '${questions[index].id}',
+                    child: Icon(
+                      isAnswered ? Icons.check_circle : Icons.circle_outlined,
+                      size: 20,
+                      color: isAnswered ? Colors.white : null,
                     ),
                   );
                 },

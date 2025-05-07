@@ -60,6 +60,8 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
     return BlocListener<PracticeTestCubit, PracticeTestState>(
       listenWhen: (previous, current) =>
           previous.loadStatus != current.loadStatus,
@@ -81,22 +83,134 @@ class _PageState extends State<Page> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      width: 16,
-                    ),
+                    if (!isMobile) const SizedBox(width: 16),
                     Expanded(child: SideQuestion()),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    QuestionIndex(),
-                    const SizedBox(
-                      width: 16,
-                    ),
+                    if (!isMobile) ...[
+                      const SizedBox(width: 16),
+                      QuestionIndex(),
+                      const SizedBox(width: 16),
+                    ],
                   ],
                 ),
               ),
             ],
           ),
+          bottomNavigationBar: isMobile
+              ? BottomAppBar(
+                  elevation: 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      BlocSelector<PracticeTestCubit, PracticeTestState, bool>(
+                        selector: (state) {
+                          return state.isShowQuestionIndex;
+                        },
+                        builder: (context, isShowQuestionIndex) {
+                          return IconButton(
+                            icon: Icon(
+                              isShowQuestionIndex
+                                  ? Icons.close
+                                  : Icons.format_list_numbered,
+                            ),
+                            onPressed: () {
+                              context
+                                  .read<PracticeTestCubit>()
+                                  .setIsShowQuestionIndex(!isShowQuestionIndex);
+                            },
+                          );
+                        },
+                      ),
+                      if (widget.testShow == TestShow.test)
+                        BlocBuilder<PracticeTestCubit, PracticeTestState>(
+                          buildWhen: (previous, current) =>
+                              previous.duration != current.duration,
+                          builder: (context, state) {
+                            return Text(
+                              '${state.duration.inMinutes}:${state.duration.inSeconds % 60 < 10 ? '0' : ''}${state.duration.inSeconds % 60}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          },
+                        ),
+                      if (widget.testShow == TestShow.test)
+                        SizedBox(
+                          width: 120,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Nộp bài'),
+                                  content: const Text(
+                                      'Bạn có chắc chắn muốn nộp bài không?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Hủy'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<PracticeTestCubit>()
+                                            .submitTest(
+                                                context,
+                                                context
+                                                    .read<PracticeTestCubit>()
+                                                    .state
+                                                    .duration);
+                                      },
+                                      child: const Text(
+                                        'Nộp bài',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              alignment: Alignment.center,
+                            ),
+                            child: const Text('Nộp bài'),
+                          ),
+                        ),
+                    ],
+                  ),
+                )
+              : null,
+          floatingActionButton: isMobile
+              ? BlocSelector<PracticeTestCubit, PracticeTestState, bool>(
+                  selector: (state) {
+                    return state.isShowQuestionIndex;
+                  },
+                  builder: (context, isShowQuestionIndex) {
+                    if (isShowQuestionIndex) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        margin: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.backgroundDark
+                              : AppColors.backgroundLight,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: .1),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: QuestionIndex(),
+                      );
+                    }
+                    return SizedBox.shrink();
+                  },
+                )
+              : null,
         ),
       ),
     );
@@ -111,7 +225,6 @@ class SideQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).brightness == Brightness.dark
@@ -127,6 +240,7 @@ class SideQuestion extends StatelessWidget {
               .where((q) => q.part == state.focusPart.numValue)
               .toList();
           return ScrollablePositionedList.builder(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             scrollDirection: Axis.vertical,
             itemScrollController:
                 context.read<PracticeTestCubit>().itemScrollController,
@@ -140,41 +254,43 @@ class SideQuestion extends StatelessWidget {
                   },
                   builder: (context, state) {
                     return Container(
-                      margin: EdgeInsets.symmetric(vertical: 16),
-                      child: Row(
-                        children: state.parts
-                            .map((part) => InkWell(
-                                  onTap: () {
-                                    context
-                                        .read<PracticeTestCubit>()
-                                        .setFocusPart(part);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(8),
-                                    margin: EdgeInsets.only(right: 16),
-                                    decoration: BoxDecoration(
-                                      color: part.numValue ==
-                                              state.focusPart.numValue
-                                          ? Theme.of(context).colorScheme.primary
-                                          : Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? AppColors.backgroundDarkSub
-                                              : AppColors.backgroundLightSub,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(part.name,
-                                        style: TextStyle(
-                                            color: part.numValue ==
-                                                    state.focusPart.numValue
-                                                ? Colors.white
-                                                : Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black)),
-                                  ),
-                                ))
-                            .toList(),
+                      height: 38,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.parts.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 16),
+                        itemBuilder: (context, index) => InkWell(
+                          onTap: () {
+                            context
+                                .read<PracticeTestCubit>()
+                                .setFocusPart(state.parts[index]);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            margin: EdgeInsets.only(right: 16),
+                            decoration: BoxDecoration(
+                              color: state.parts[index].numValue ==
+                                      state.focusPart.numValue
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? AppColors.backgroundDarkSub
+                                      : AppColors.backgroundLightSub,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(state.parts[index].name,
+                                style: TextStyle(
+                                    color: state.parts[index].numValue ==
+                                            state.focusPart.numValue
+                                        ? Colors.white
+                                        : Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black)),
+                          ),
+                        ),
                       ),
                     );
                   },

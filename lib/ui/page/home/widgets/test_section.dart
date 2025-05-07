@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
+import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 import 'package:toeic_desktop/ui/page/test_online/widgets/test_card.dart';
 
 class TestSection extends StatelessWidget {
@@ -24,7 +24,7 @@ class TestSection extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                GoRouter.of(context).push(AppRouter.bottomTab);
+                injector<BottomTabCubit>().changeCurrentIndex(1);
               },
               child: Text('Xem tất cả'),
             ),

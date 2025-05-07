@@ -286,6 +286,10 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     );
   }
 
+  void setIsShowQuestionIndex(bool isShow) {
+    emit(state.copyWith(isShowQuestionIndex: isShow));
+  }
+
   @override
   Future<void> close() {
     audioPlayer.dispose();

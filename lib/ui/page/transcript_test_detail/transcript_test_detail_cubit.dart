@@ -32,4 +32,10 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       emit(state.copyWith(currentIndex: state.currentIndex + 1));
     }
   }
+
+  void goToTranscriptTest(int index) {
+    if (index >= 0 && index < state.transcriptTests.length) {
+      emit(state.copyWith(currentIndex: index));
+    }
+  }
 }

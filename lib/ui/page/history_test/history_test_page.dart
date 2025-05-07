@@ -76,13 +76,13 @@ class Page extends StatelessWidget {
     );
   }
 
-  int _getCrossAxisCount(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    if (width < 600) {
-      return 1; // Single column for mobile
-    } else if (width < 900) {
-      return 2; // Two columns for tablets
-    }
-    return 3; // Three columns for larger screens
-  }
+  // int _getCrossAxisCount(BuildContext context) {
+  //   final width = MediaQuery.of(context).size.width;
+  //   if (width < 600) {
+  //     return 1; // Single column for mobile
+  //   } else if (width < 900) {
+  //     return 2; // Two columns for tablets
+  //   }
+  //   return 3; // Three columns for larger screens
+  // }
 }
