@@ -76,8 +76,6 @@ class Page extends StatelessWidget {
                   // Result section
                   if (state.resultTests.isNotEmpty)
                     ResultSection(results: state.resultTests),
-                  const SizedBox(height: 16),
-                  ServiceSection(),
                   if (state.blogs.isNotEmpty) ...[
                     const SizedBox(height: 16),
                     BlogSection(blogs: state.blogs),

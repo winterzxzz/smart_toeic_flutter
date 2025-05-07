@@ -19,6 +19,20 @@ class OnboardingPage extends StatefulWidget {
 
 class _OnboardingPageState extends State<OnboardingPage> {
   int _currentPage = 0;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,73 +40,123 @@ class _OnboardingPageState extends State<OnboardingPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Spacer(flex: 2),
-          // Placeholder for the heart-in-hand illustration
-          Builder(builder: (context) {
-            if (_currentPage == 0) {
-              return OnboardingContentFirst();
-            } else {
-              return OnboardingContent(
-                  item: Constants.services[_currentPage - 1]);
-            }
-          }),
-          const Spacer(flex: 3),
-          // Page indicator
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(Constants.services.length + 1, (index) {
-                return Container(
-                  width: 10,
-                  height: 10,
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: index == _currentPage
-                        ? AppColors.textBlue
-                        : AppColors.textBlue.withValues(alpha: 0.2),
-                  ),
-                );
-              }),
+          const Spacer(),
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: Constants.services.length + 1,
+              onPageChanged: (value) {
+                setState(() {
+                  _currentPage = value;
+                });
+              },
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return OnboardingContentFirst();
+                } else {
+                  return OnboardingContent(item: Constants.services[index - 1]);
+                }
+              },
             ),
           ),
-          // Next button
-          Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 24, bottom: 24),
-              child: Container(
-                width: 56,
-                height: 56,
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_currentPage < (Constants.services.length)) {
-                      setState(() {
-                        _currentPage++;
-                      });
-                    } else {
-                      _onToLogin();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    backgroundColor: AppColors.textBlue,
-                    elevation: 0,
-                  ),
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                    size: 28,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (_currentPage > 0)
+                  InkWell(
+                    borderRadius: BorderRadius.circular(24),
+                    onTap: _onPrevious,
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.textBlue, width: 2),
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: AppColors.textBlue,
+                        weight: 2,
+                        size: 16,
+                      ),
+                    ),
+                  )
+                else
+                  const SizedBox(width: 42),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:
+                      List.generate(Constants.services.length + 1, (index) {
+                    return Container(
+                      width: 10,
+                      height: 10,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: index == _currentPage
+                            ? AppColors.textBlue
+                            : AppColors.textBlue.withValues(alpha: 0.2),
+                      ),
+                    );
+                  }),
+                ),
+                InkWell(
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: _onNext,
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: AppColors.textBlue,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                      size: 16,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
+          const SizedBox(height: 24),
         ],
       ),
     );
+  }
+
+  void _onPrevious() {
+    if (_currentPage > 0) {
+      _pageController.animateToPage(
+        _currentPage - 1,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      setState(() {
+        _currentPage--;
+      });
+    }
+  }
+
+  void _onNext() {
+    if (_currentPage < Constants.services.length) {
+      _pageController.animateToPage(
+        _currentPage + 1,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      setState(() {
+        _currentPage++;
+      });
+    } else {
+      _onToLogin();
+    }
   }
 
   void _onToLogin() async {
