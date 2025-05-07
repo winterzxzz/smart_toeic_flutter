@@ -13,25 +13,22 @@ class ResultSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Your Exam Results",
-                style: Theme.of(context).textTheme.titleLarge!.apply(
-                      fontWeightDelta: 2,
-                    ),
-              ),
-              TextButton(
-                onPressed: () {
-                  GoRouter.of(context).pushNamed(AppRouter.historyTest);
-                },
-                child: Text('Xem tất cả'),
-              ),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Your Exam Results",
+              style: Theme.of(context).textTheme.titleLarge!.apply(
+                    fontWeightDelta: 2,
+                  ),
+            ),
+            TextButton(
+              onPressed: () {
+                GoRouter.of(context).pushNamed(AppRouter.historyTest);
+              },
+              child: Text('Xem tất cả'),
+            ),
+          ],
         ),
         Column(
           children: results.map((e) => ExamResultCard(result: e)).toList(),

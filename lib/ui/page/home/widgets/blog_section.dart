@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/ui/page/blog/widgets/blog_horizontal.dart';
-import 'package:toeic_desktop/ui/page/blog/widgets/blog_vertical.dart';
 
 class BlogSection extends StatelessWidget {
   final List<Blog> blogs;
@@ -11,25 +10,22 @@ class BlogSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Blogs Knowledge",
-                style: Theme.of(context).textTheme.titleLarge!.apply(
-                      fontWeightDelta: 2,
-                    ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // GoRouter.of(context).pushNamed(AppRouter.blog);
-                },
-                child: Text('Xem tất cả'),
-              ),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Blogs Knowledge",
+              style: Theme.of(context).textTheme.titleLarge!.apply(
+                    fontWeightDelta: 2,
+                  ),
+            ),
+            TextButton(
+              onPressed: () {
+                // GoRouter.of(context).pushNamed(AppRouter.blog);
+              },
+              child: Text('Xem tất cả'),
+            ),
+          ],
         ),
         Column(
           children: blogs.take(4).map((blog) {

@@ -13,25 +13,22 @@ class TestSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "TOEIC Exam",
-                style: Theme.of(context).textTheme.titleLarge!.apply(
-                      fontWeightDelta: 2,
-                    ),
-              ),
-              TextButton(
-                onPressed: () {
-                  GoRouter.of(context).push(AppRouter.bottomTab);
-                },
-                child: Text('Xem tất cả'),
-              ),
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "TOEIC Exam",
+              style: Theme.of(context).textTheme.titleLarge!.apply(
+                    fontWeightDelta: 2,
+                  ),
+            ),
+            TextButton(
+              onPressed: () {
+                GoRouter.of(context).push(AppRouter.bottomTab);
+              },
+              child: Text('Xem tất cả'),
+            ),
+          ],
         ),
         Column(
           children: tests.map((e) => TestCard(test: e)).toList(),

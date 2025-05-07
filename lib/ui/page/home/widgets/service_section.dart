@@ -10,14 +10,11 @@ class ServiceSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            "Our TOEIC Preparation Services",
-            style: Theme.of(context).textTheme.titleLarge!.apply(
-                  fontWeightDelta: 2,
-                ),
-          ),
+        Text(
+          "Our TOEIC Preparation Services",
+          style: Theme.of(context).textTheme.titleLarge!.apply(
+                fontWeightDelta: 2,
+              ),
         ),
         const SizedBox(height: 16),
         Column(

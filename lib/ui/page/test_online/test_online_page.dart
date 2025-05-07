@@ -39,41 +39,44 @@ class Page extends StatelessWidget {
           if (state.loadStatus == LoadStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.loadStatus == LoadStatus.success) {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16), 
-                  SizedBox(
-                    width: 200,
-                    height: 45,
-                    child: CustomDropdownExample<String>(
-                      data: TestType.values.map((e) => e.name).toList(),
-                      dataString: TestType.values.map((e) => e.name).toList(),
-                      onChanged: (value) {
-                        context.read<DeThiOnlineCubit>().filterTests(value);
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    runAlignment: WrapAlignment.start,
-                    spacing: 8,
-                    runSpacing: 8,
-                    children:
-                        List.generate(state.filteredTests.length, (index) {
-                      // Number of tests (replace as needed)
-                      return SizedBox(
-                        width: (MediaQuery.of(context).size.width - 60) * 0.32,
-                        child: TestCard(
-                          test: state.filteredTests[index],
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      // Full width dropdown for mobile
+                      SizedBox(
+                        width: double.infinity,
+                        child: CustomDropdownExample<String>(
+                          data: TestType.values.map((e) => e.name).toList(),
+                          dataString:
+                              TestType.values.map((e) => e.name).toList(),
+                          onChanged: (value) {
+                            context.read<DeThiOnlineCubit>().filterTests(value);
+                          },
                         ),
-                      );
-                    }),
+                      ),
+                      const SizedBox(height: 16),
+                      // Vertical list of test cards
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.filteredTests.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          return TestCard(
+                            test: state.filteredTests[index],
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 32),
+                    ],
                   ),
-                  const SizedBox(height: 32),
-                ],
+                ),
               ),
             );
           }

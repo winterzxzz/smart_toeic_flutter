@@ -8,7 +8,6 @@ import 'package:toeic_desktop/ui/page/home/home_state.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/blog_section.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/result_section.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/service_section.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/slider_section.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/test_section.dart';
 
 class HomePage extends StatefulWidget {
@@ -66,39 +65,26 @@ class Page extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            if (state.loadStatus == LoadStatus.success) {
-              return Column(
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
                 children: [
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 16),
                   // Toeic exam section
                   if (state.tests.isNotEmpty) TestSection(tests: state.tests),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 16),
                   // Result section
                   if (state.resultTests.isNotEmpty)
                     ResultSection(results: state.resultTests),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 16),
                   ServiceSection(),
                   if (state.blogs.isNotEmpty) ...[
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 16),
                     BlogSection(blogs: state.blogs),
                   ],
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 16),
                 ],
-              );
-            }
-            return Column(
-              children: [
-                // Slider background images
-                SliderSection(),
-                // Toeic exam section
-                const SizedBox(height: 32),
-                ServiceSection(),
-                if (state.blogs.isNotEmpty) ...[
-                  const SizedBox(height: 32),
-                  BlogSection(blogs: state.blogs),
-                ],
-                const SizedBox(height: 32),
-              ],
+              ),
             );
           },
         ),
