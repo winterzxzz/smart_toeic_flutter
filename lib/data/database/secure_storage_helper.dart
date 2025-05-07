@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:toeic_desktop/app.dart';
 
 import 'share_preferences_helper.dart';
 
@@ -33,7 +34,7 @@ class SecureStorageHelper {
   Future<String?> getToken() async {
     try {
       //If it is the first time opening the app after installation, the value in SecureStore will be deleted.
-      final isFirstRun = await SharedPreferencesHelper.isFirstRun();
+      final isFirstRun = injector<SharedPreferencesHelper>().isFirstRun();
       if (isFirstRun) {
         removeToken();
         return null;

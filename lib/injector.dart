@@ -5,6 +5,8 @@ final injector = GetIt.instance;
 Future<void> init() async {
   injector
     ..registerLazySingleton<Dio>(() => DioClient.createNewDio())
+    ..registerLazySingleton<SharedPreferencesHelper>(
+        () => SharedPreferencesHelper())
     ..registerLazySingleton<ApiClient>(
         () => ApiClient(injector(), baseUrl: AppConfigs.baseUrl))
     ..registerLazySingleton<TestRepository>(

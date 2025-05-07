@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -34,7 +35,12 @@ class Page extends StatelessWidget {
         if (state.loadStatus == LoadStatus.success) {
           GoRouter.of(context).goNamed(AppRouter.bottomTab);
         } else if (state.loadStatus == LoadStatus.failure) {
-          GoRouter.of(context).goNamed(AppRouter.login);
+          final isFirstTime = injector<SharedPreferencesHelper>().isFirstRun();
+          if (isFirstTime) {
+            GoRouter.of(context).goNamed(AppRouter.onboarding);
+          } else {
+            GoRouter.of(context).goNamed(AppRouter.login);
+          }
           if (state.message.isNotEmpty) {
             showToast(title: state.message, type: ToastificationType.error);
           }
@@ -42,10 +48,13 @@ class Page extends StatelessWidget {
       },
       child: Scaffold(
           body: Center(
-        child: Image.asset(
-          AppImages.appLogo,
-          width: 200,
-          height: 200,
+        child: Hero(
+          tag: 'app_logo',
+          child: Image.asset(
+            AppImages.appLogo,
+            width: 200,
+            height: 200,
+          ),
         ),
       ) // This trailing comma makes auto-formatting nicer for build methods.
           ),

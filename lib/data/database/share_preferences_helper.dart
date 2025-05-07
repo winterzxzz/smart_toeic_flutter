@@ -15,20 +15,6 @@ class SharedPreferencesHelper {
   static const _isUseBiometric = 'is_use_biometric';
   static const _cookie = 'cookie';
 
-  static Future<bool> isFirstRun() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      return prefs.getBool(_firstRunKey) ?? false;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  static Future<void> setFirstRun({bool isFirstRun = true}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_firstRunKey, isFirstRun);
-  }
-
   static Future<bool> isOnboarded() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -101,6 +87,14 @@ class SharedPreferencesHelper {
 
     _prefs = await SharedPreferences.getInstance();
     _isInitialized = true;
+  }
+
+  bool isFirstRun() {
+    return _prefs.getBool(_firstRunKey) ?? true;
+  }
+
+  Future<void> setFirstRun({bool isFirstRun = true}) async {
+    await _prefs.setBool(_firstRunKey, isFirstRun);
   }
 
   Future<bool> saveSendbirdUserId(String sendbirdId) async {

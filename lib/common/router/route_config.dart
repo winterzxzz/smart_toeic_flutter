@@ -17,6 +17,7 @@ import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_page.dart';
 import 'package:toeic_desktop/ui/page/history_test/history_test_page.dart';
+import 'package:toeic_desktop/ui/page/onboarding/onboarding_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_page.dart';
 import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
@@ -74,6 +75,7 @@ class AppRouter {
   static const String login = "/login";
   static const String register = "/register";
   static const String resetPassword = "/reset-password";
+  static const String onboarding = "/onboarding";
   // App routes
   static const String bottomTab = "/bottom-tab";
   static const String introduction = "/introduction";
@@ -116,6 +118,11 @@ class AppRouter {
       name: resetPassword,
       path: resetPassword,
       builder: (context, state) => const ResetPasswordPage(),
+    ),
+    GoRoute(
+      name: onboarding,
+      path: onboarding,
+      builder: (context, state) => const OnboardingPage(),
     ),
     // Nested routes
     GoRoute(
