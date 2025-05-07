@@ -10,8 +10,11 @@ import 'package:toeic_desktop/ui/page/flash_card_learn_flip/widgets/flash_card_i
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/widgets/flash_card_item_front.dart';
 
 class FlashCardPracticePage extends StatelessWidget {
-  const FlashCardPracticePage(
-      {super.key, required this.title, required this.flashCards});
+  const FlashCardPracticePage({
+    super.key,
+    required this.title,
+    required this.flashCards,
+  });
 
   final String title;
   final List<FlashCard> flashCards;
@@ -21,104 +24,175 @@ class FlashCardPracticePage extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           injector<FlashCardLearnFlipCubit>()..init(flashCards, title),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
 
 class Page extends StatelessWidget {
-  const Page({
-    super.key,
-  });
+  const Page({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: BlocSelector<FlashCardLearnFlipCubit, FlashCardLearnFlipState,
             String>(
-          selector: (state) {
-            return state.title;
-          },
+          selector: (state) => state.title,
           builder: (context, title) {
-            return Text('Flashcards: $title');
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Flashcards: $title',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                BlocSelector<FlashCardLearnFlipCubit, FlashCardLearnFlipState,
+                    (int, int)>(
+                  selector: (state) =>
+                      (state.currentIndex + 1, state.flashCards.length),
+                  builder: (context, counts) {
+                    return Text(
+                      '${counts.$1}/${counts.$2}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.bodySmall?.color,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
           },
         ),
       ),
       body: BlocBuilder<FlashCardLearnFlipCubit, FlashCardLearnFlipState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () =>
-                        context.read<FlashCardLearnFlipCubit>().flipCard(),
-                    child: FlipCard(
-                      animationDuration: Duration(milliseconds: 300),
-                      rotateSide:
-                          state.isFlipped ? RotateSide.right : RotateSide.left,
-                      onTapFlipping:
-                          false, //When enabled, the card will flip automatically when touched.
-                      axis: FlipAxis.vertical,
-                      controller:
-                          context.read<FlashCardLearnFlipCubit>().controller,
-                      frontWidget: FlashcardFront(
-                        key: ValueKey('front'),
-                        word: state.flashCards[state.currentIndex].word,
-                      ),
-                      backWidget: FlashcardBack(
-                        key: ValueKey('back'),
-                        flashcard: state.flashCards[state.currentIndex],
+          return SafeArea(
+            child: Column(
+              children: [
+                // Progress indicator
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: LinearProgressIndicator(
+                    value: (state.currentIndex + 1) / state.flashCards.length,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                // Flashcard
+                Expanded(
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () =>
+                          context.read<FlashCardLearnFlipCubit>().flipCard(),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        child: FlipCard(
+                          animationDuration: const Duration(milliseconds: 300),
+                          rotateSide: state.isFlipped
+                              ? RotateSide.right
+                              : RotateSide.left,
+                          onTapFlipping: false,
+                          axis: FlipAxis.vertical,
+                          controller: context
+                              .read<FlashCardLearnFlipCubit>()
+                              .controller,
+                          frontWidget: FlashcardFront(
+                            key: const ValueKey('front'),
+                            word: state.flashCards[state.currentIndex].word,
+                          ),
+                          backWidget: FlashcardBack(
+                            key: const ValueKey('back'),
+                            flashcard: state.flashCards[state.currentIndex],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.4,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: state.currentIndex > 0
-                            ? () => context
-                                .read<FlashCardLearnFlipCubit>()
-                                .previousCard()
-                            : null,
-                        child: Text('Previous'),
+                // Navigation buttons
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      // Show Answer button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton.icon(
+                          onPressed: () => context
+                              .read<FlashCardLearnFlipCubit>()
+                              .flipCard(),
+                          icon: Icon(
+                            state.isFlipped
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          label: Text(
+                            state.isFlipped ? 'Hide Answer' : 'Show Answer',
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () =>
-                            context.read<FlashCardLearnFlipCubit>().flipCard(),
-                        child: Text('Show Answer'),
+                      const SizedBox(height: 12),
+                      // Navigation buttons
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 56,
+                              child: ElevatedButton.icon(
+                                onPressed: state.currentIndex > 0
+                                    ? () => context
+                                        .read<FlashCardLearnFlipCubit>()
+                                        .previousCard()
+                                    : null,
+                                icon: const Icon(Icons.arrow_back),
+                                label: const Text('Previous'),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: SizedBox(
+                              height: 56,
+                              child: ElevatedButton.icon(
+                                onPressed: state.currentIndex <
+                                        state.flashCards.length - 1
+                                    ? () => context
+                                        .read<FlashCardLearnFlipCubit>()
+                                        .nextCard()
+                                    : null,
+                                icon: const Icon(Icons.arrow_forward),
+                                label: const Text('Next'),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed:
-                            state.currentIndex < state.flashCards.length - 1
-                                ? () => context
-                                    .read<FlashCardLearnFlipCubit>()
-                                    .nextCard()
-                                : null,
-                        child: Text('Next'),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.05,
-              )
-            ],
+              ],
+            ),
           );
         },
       ),

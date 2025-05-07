@@ -67,7 +67,7 @@ void showCreateFlashCardDialog(BuildContext widgetContext,
           ],
         ),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -122,9 +122,10 @@ void showCreateFlashCardDialog(BuildContext widgetContext,
                               ? null
                               : () async {
                                   widgetContext
-                                  .read<FlashCardDetailCubit>()
-                                  .getFlashCardInforByAI(titleController.text);
-                            }
+                                      .read<FlashCardDetailCubit>()
+                                      .getFlashCardInforByAI(
+                                          titleController.text);
+                                }
                           : null,
                       child: isLoading
                           ? Row(
@@ -141,7 +142,6 @@ void showCreateFlashCardDialog(BuildContext widgetContext,
                                         : Colors.black,
                                   ),
                                 ),
-                                
                                 SizedBox(width: 10),
                                 Text('AI đang điền'),
                               ],
@@ -151,15 +151,14 @@ void showCreateFlashCardDialog(BuildContext widgetContext,
                               children: [
                                 if (isPremium == false) ...[
                                   FaIcon(FontAwesomeIcons.lock),
-                                const SizedBox(width: 8),
-                              ] 
-                              else ...[
-                                FaIcon(FontAwesomeIcons.robot),
-                                const SizedBox(width: 8),
+                                  const SizedBox(width: 8),
+                                ] else ...[
+                                  FaIcon(FontAwesomeIcons.robot),
+                                  const SizedBox(width: 8),
+                                ],
+                                const Text('Điền bằng AI'),
                               ],
-                              const Text('Điền bằng AI'),
-                            ],
-                          ),
+                            ),
                     ),
                   );
                 },

@@ -24,15 +24,13 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.zero,
       child: Container(
-        constraints: const BoxConstraints(maxHeight: 200),
-        width: (MediaQuery.sizeOf(context).width - 60) * 0.23,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
         ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -40,7 +38,10 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                 Expanded(
                   child: Text(
                     widget.flashcard.title,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -51,30 +52,44 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                 ),
               ],
             ),
-            if (widget.flashcard.description.isNotEmpty)
+            if (widget.flashcard.description.isNotEmpty) ...[
+              const SizedBox(height: 8),
               Text(
                 widget.flashcard.description,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
-            const SizedBox(height: 6),
+            ],
+            const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.person_outline, color: AppColors.textGray),
+                Icon(Icons.person_outline, color: AppColors.textGray, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   'winter',
-                  style: TextStyle(color: AppColors.textGray),
+                  style: TextStyle(
+                    color: AppColors.textGray,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.calendar_month_outlined, color: AppColors.textGray),
+                Icon(Icons.calendar_month_outlined,
+                    color: AppColors.textGray, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   'Created at ${DateFormat('dd/MM/yyyy').format(widget.flashcard.createdAt)}',
-                  style: TextStyle(color: AppColors.textGray),
+                  style: TextStyle(
+                    color: AppColors.textGray,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
@@ -84,8 +99,21 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
               children: [
                 Text(
                   '${widget.flashcard.numberOfFlashcards} flashcards',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   onPressed: () {
                     GoRouter.of(context)
                         .pushNamed(AppRouter.flashCardDetail, extra: {
@@ -93,7 +121,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                       'setId': widget.flashcard.id,
                     });
                   },
-                  child: Text('View'),
+                  child: const Text('View'),
                 ),
               ],
             ),
@@ -104,43 +132,46 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
   }
 
   void _showMenuDialog() {
+    final List<PopupMenu> popupMenus = [
+      PopupMenu(
+        title: 'Edit',
+        icon: Icons.edit,
+        onPressed: () {
+          showCreateSetFlashCardDialog(
+            context,
+            title: widget.flashcard.title,
+            description: widget.flashcard.description,
+            onSave: (title, description) {
+              context.read<FlashCardCubit>().updateFlashCardSet(
+                    widget.flashcard.id,
+                    title,
+                    description,
+                  );
+            },
+          );
+        },
+      ),
+      PopupMenu(
+        title: 'Delete',
+        icon: Icons.delete,
+        onPressed: () {
+          showConfirmDialog(
+            context,
+            'Delete Flashcard',
+            'Are you sure you want to delete this flashcard?',
+            () {
+              context.read<FlashCardCubit>().deleteFlashCardSet(
+                    widget.flashcard.id,
+                  );
+            },
+          );
+        },
+      ),
+    ];
+
     showPopMenuOver(
       context,
-      ListItems(
-        popupMenus: [
-          PopupMenu(
-            title: 'Update',
-            icon: Icons.update,
-            onPressed: () async {
-              GoRouter.of(context).pop();
-              await Future.delayed(Duration(milliseconds: 100));
-              if (mounted) {
-                showCreateSetFlashCardDialog(context,
-                    title: widget.flashcard.title,
-                    description: widget.flashcard.description,
-                    onSave: (title, description) {
-                  context.read<FlashCardCubit>().updateFlashCardSet(
-                      widget.flashcard.id, title, description);
-                });
-              }
-            },
-          ),
-          PopupMenu(
-            title: 'Delete',
-            icon: Icons.delete,
-            onPressed: () {
-              GoRouter.of(context).pop();
-              showConfirmDialog(context, 'Bạn có chắc chắn muốn xóa không?',
-                  'Hành động này không thể hoàn tác. Điều này sẽ xóa vĩnh viễn dữ liệu của bạn.',
-                  () {
-                context
-                    .read<FlashCardCubit>()
-                    .deleteFlashCardSet(widget.flashcard.id);
-              });
-            },
-          ),
-        ],
-      ),
+      ListItems(popupMenus: popupMenus),
     );
   }
 }
@@ -172,7 +203,7 @@ class ListItems extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               e.title,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ],
                         ),

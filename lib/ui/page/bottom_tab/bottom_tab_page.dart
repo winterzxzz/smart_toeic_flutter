@@ -8,6 +8,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/keep_alive_page.dart';
 import 'package:toeic_desktop/ui/page/blog/blog_page.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_state.dart';
@@ -197,29 +198,5 @@ class Page extends StatelessWidget {
         );
       },
     );
-  }
-}
-
-class KeepAlivePage extends StatefulWidget {
-  final Widget child;
-
-  const KeepAlivePage({
-    super.key,
-    required this.child,
-  });
-
-  @override
-  State<KeepAlivePage> createState() => _KeepAlivePageState();
-}
-
-class _KeepAlivePageState extends State<KeepAlivePage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.child;
   }
 }

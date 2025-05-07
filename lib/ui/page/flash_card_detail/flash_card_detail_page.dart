@@ -13,8 +13,11 @@ import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/flash_card_tile.
 import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/form_flash_card_dia_log.dart';
 
 class FlashCardDetailPage extends StatelessWidget {
-  const FlashCardDetailPage(
-      {super.key, required this.setId, required this.title});
+  const FlashCardDetailPage({
+    super.key,
+    required this.setId,
+    required this.title,
+  });
 
   final String setId;
   final String title;
@@ -62,57 +65,48 @@ class _PageState extends State<Page> {
               slivers: [
                 // App Bar
                 SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  floating: true,
-                  snap: true,
+                  pinned: true,
                   title: BlocSelector<FlashCardDetailCubit,
                       FlashCardDetailState, List<FlashCard>>(
                     selector: (state) => state.flashCards,
                     builder: (context, flashCards) {
-                      return Text(
-                          'Flashcard: ${widget.title} (${flashCards.length} từ)');
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Flashcard: ${widget.title}',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            '${flashCards.length} từ',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textGray,
+                            ),
+                          ),
+                        ],
+                      );
                     },
                   ),
                   actions: [
-                    PopupMenuButton<int>(
-                      icon: Icon(Icons.more_vert),
-                      color: Theme.of(context).cardColor,
-                      offset: const Offset(0, 50),
-                      onSelected: (value) {
-                        if (value == 0) {
-                        } else if (value == 1) {
-                          showCreateFlashCardDialog(context,
-                              onSave: (flashCardRequest) {
-                            context
-                                .read<FlashCardDetailCubit>()
-                                .createFlashCard(
-                                  flashCardRequest.copyWith(
-                                      setFlashcardId: widget.setId),
-                                );
-                          });
-                        } else if (value == 2) {}
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        showCreateFlashCardDialog(context,
+                            onSave: (flashCardRequest) {
+                          context.read<FlashCardDetailCubit>().createFlashCard(
+                                flashCardRequest.copyWith(
+                                    setFlashcardId: widget.setId),
+                              );
+                        });
                       },
-                      itemBuilder: (context) => [
-                        PopupMenuItem<int>(
-                            value: 1,
-                            child:
-                                Row(mainAxisSize: MainAxisSize.min, children: [
-                              Icon(Icons.add),
-                              const SizedBox(width: 10),
-                              Text('Tạo từ mới',
-                                  style: const TextStyle(
-                                      color: AppColors.actionMenuText))
-                            ])),
-                      ],
-                    )
+                    ),
                   ],
                 ),
 
                 // Content
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.sizeOf(context).width * 0.1,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: state.flashCards.isEmpty
                       ? const SliverToBoxAdapter(
                           child: Center(
@@ -126,86 +120,54 @@ class _PageState extends State<Page> {
                         )
                       : SliverList(
                           delegate: SliverChildListDelegate([
-                            const SizedBox(height: 32),
-                            // Practice Button
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  GoRouter.of(context).pushNamed(
-                                    AppRouter.flashCardQuizz,
-                                    extra: {'id': widget.setId},
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.play_circle_outline_rounded),
-                                    SizedBox(width: 8),
-                                    Text('Luyện tập flashcards'),
-                                  ],
-                                ),
-                              ),
-                            ),
                             const SizedBox(height: 16),
-                            // Random and Pause buttons row
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      final flashCards = context
-                                          .read<FlashCardDetailCubit>()
-                                          .state
-                                          .flashCards;
-                                      GoRouter.of(context).pushNamed(
-                                          AppRouter.flashCardPractive,
-                                          extra: {
-                                            'title': widget.title,
-                                            'flashCards': flashCards,
-                                          });
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.shuffle),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'Xem ngẫu nhiên',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                            Icons.pause_circle_outline_rounded),
-                                        SizedBox(width: 8),
-                                        Text('Dừng học bộ này'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            // Action Buttons
+                            _buildActionButton(
+                              context,
+                              icon: Icons.play_circle_outline_rounded,
+                              label: 'Luyện tập flashcards',
+                              onPressed: () {
+                                GoRouter.of(context).pushNamed(
+                                  AppRouter.flashCardQuizz,
+                                  extra: {'id': widget.setId},
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 12),
+                            _buildActionButton(
+                              context,
+                              icon: Icons.shuffle,
+                              label: 'Xem ngẫu nhiên',
+                              onPressed: () {
+                                final flashCards = context
+                                    .read<FlashCardDetailCubit>()
+                                    .state
+                                    .flashCards;
+                                GoRouter.of(context).pushNamed(
+                                  AppRouter.flashCardPractive,
+                                  extra: {
+                                    'title': widget.title,
+                                    'flashCards': flashCards,
+                                  },
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 12),
+                            _buildActionButton(
+                              context,
+                              icon: Icons.pause_circle_outline_rounded,
+                              label: 'Dừng học bộ này',
+                              onPressed: () {},
                             ),
                             const SizedBox(height: 16),
                             // Flashcard tiles
                             ...state.flashCards.map(
-                              (flashcard) =>
-                                  FlashcardTile(flashcard: flashcard),
+                              (flashcard) => Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: FlashcardTile(flashcard: flashcard),
+                              ),
                             ),
+                            const SizedBox(height: 16),
                           ]),
                         ),
                 ),
@@ -214,6 +176,38 @@ class _PageState extends State<Page> {
           }
           return const SizedBox();
         },
+      ),
+    );
+  }
+
+  Widget _buildActionButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56, // Increased height for better touch target
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 24),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
       ),
     );
   }

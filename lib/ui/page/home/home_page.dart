@@ -69,7 +69,7 @@ class Page extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                 children: [
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   // Toeic exam section
                   if (state.tests.isNotEmpty) TestSection(tests: state.tests),
                   const SizedBox(height: 16),

@@ -9,8 +9,6 @@ class FlashcardFront extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.sizeOf(context).width * 0.6,
-      height: MediaQuery.sizeOf(context).height * 0.6,
       decoration: BoxDecoration(
         color: AppColors.primary,
         borderRadius: BorderRadius.circular(16),

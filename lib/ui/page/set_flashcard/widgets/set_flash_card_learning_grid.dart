@@ -9,14 +9,14 @@ class SetFlashCardLearningGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: flashcards
-          .map(
-            (item) => SetFlashCardLearningItem(flashcard: item),
-          )
-          .toList(),
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: flashcards.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        return SetFlashCardLearningItem(flashcard: flashcards[index]);
+      },
     );
   }
 }

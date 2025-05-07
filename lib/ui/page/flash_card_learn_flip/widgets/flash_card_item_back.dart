@@ -10,8 +10,6 @@ class FlashcardBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.sizeOf(context).width * 0.6,
-      height: MediaQuery.sizeOf(context).height * 0.6,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -20,7 +18,7 @@ class FlashcardBack extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Text(
             'Translate: ${flashcard.translation}',
@@ -59,9 +57,11 @@ class FlashcardBack extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 12),
-                    Text(
-                      example,
-                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                    Expanded(
+                      child: Text(
+                        example,
+                        style: TextStyle(fontSize: 16, color: Colors.black87),
+                      ),
                     ),
                   ],
                 )),

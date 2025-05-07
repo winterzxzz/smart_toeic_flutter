@@ -19,55 +19,56 @@ class SetFlashCardLearningPage extends StatefulWidget {
 
 class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<FlashCardCubit>().fetchFlashCardSetsLearning();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // const SizedBox(height: 32),
-            // Row(
-            //   children: [
-            //     FlashCardMyListItem(),
-            //     const SizedBox(width: 16),
-            //     FlashCardMyListItem(),
-            //     const SizedBox(width: 16),
-            //     FlashCardMyListItem(),
-            //   ],
-            // ),
-            const SizedBox(height: 32),
-            Text(
-              'Flashcard Categories ',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 16),
-            BlocConsumer<FlashCardCubit, FlashCardState>(
-              listenWhen: (previous, current) =>
-                  previous.loadStatusLearning != current.loadStatusLearning ||
-                  previous.flashCardsLearning != current.flashCardsLearning,
-              buildWhen: (previous, current) =>
-                  previous.loadStatusLearning != current.loadStatusLearning ||
-                  previous.flashCardsLearning != current.flashCardsLearning,
-              listener: (context, state) {
-                if (state.loadStatus == LoadStatus.failure) {
-                  AppNavigator(context: context).error(state.message);
-                }
-              },
-              builder: (context, state) {
-                if (state.loadStatus == LoadStatus.loading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state.loadStatusLearning == LoadStatus.success) {
-                  return SetFlashCardLearningGrid(
-                    flashcards: state.flashCardsLearning,
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
-            const SizedBox(height: 32),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              Text(
+                'Flashcard Categories',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 16),
+              BlocConsumer<FlashCardCubit, FlashCardState>(
+                listenWhen: (previous, current) =>
+                    previous.loadStatusLearning != current.loadStatusLearning ||
+                    previous.flashCardsLearning != current.flashCardsLearning,
+                buildWhen: (previous, current) =>
+                    previous.loadStatusLearning != current.loadStatusLearning ||
+                    previous.flashCardsLearning != current.flashCardsLearning,
+                listener: (context, state) {
+                  if (state.loadStatus == LoadStatus.failure) {
+                    AppNavigator(context: context).error(state.message);
+                  }
+                },
+                builder: (context, state) {
+                  if (state.loadStatus == LoadStatus.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state.loadStatusLearning == LoadStatus.success) {
+                    return SetFlashCardLearningGrid(
+                      flashcards: state.flashCardsLearning,
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
@@ -81,15 +82,15 @@ class FlashCardMyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Card(
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
         onTap: () {},
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -98,24 +99,39 @@ class FlashCardMyListItem extends StatelessWidget {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Word learned'),
-                  Icon(Icons.check_circle_outline_outlined,
-                      color: Colors.green),
+                children: const [
+                  Text(
+                    'Word learned',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Icon(
+                    Icons.check_circle_outline_outlined,
+                    color: Colors.green,
+                  ),
                 ],
               ),
+              const SizedBox(height: 8),
               Text(
                 '1,234',
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
+              const SizedBox(height: 4),
               Text(
                 'You\'ve learned 1,234 words so far',
-                style: TextStyle(color: AppColors.textGray),
+                style: TextStyle(
+                  color: AppColors.textGray,
+                  fontSize: 14,
+                ),
               ),
             ],
           ),
         ),
       ),
-    ));
+    );
   }
 }

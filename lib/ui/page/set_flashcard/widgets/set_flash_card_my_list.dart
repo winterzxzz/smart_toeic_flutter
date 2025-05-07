@@ -19,6 +19,12 @@ class SetFlashCardMyListPage extends StatefulWidget {
 
 class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<FlashCardCubit>().fetchFlashCardSets();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<FlashCardCubit, FlashCardState>(
@@ -30,73 +36,73 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
             AppNavigator(context: context).error(state.message);
           }
         },
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // const SizedBox(height: 32),
-              // Row(
-              //   children: [
-              //     FlashCardMyListItem(),
-              //     const SizedBox(width: 16),
-              //     FlashCardMyListItem(),
-              //     const SizedBox(width: 16),
-              //     FlashCardMyListItem(),
-              //   ],
-              // ),
-              const SizedBox(height: 16),
-              InkWell(
-                onTap: () => showCreateSetFlashCardDialog(context,
-                    onSave: (title, description) {
-                  context.read<FlashCardCubit>().createFlashCardSet(
-                        title,
-                        description,
-                      );
-                }),
-                child: Container(
-                  height: 45,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.add, color: Colors.white),
-                      SizedBox(width: 4),
-                      Text(
-                        'Create Flashcard',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 16),
+                InkWell(
+                  onTap: () => showCreateSetFlashCardDialog(context,
+                      onSave: (title, description) {
+                    context.read<FlashCardCubit>().createFlashCardSet(
+                          title,
+                          description,
+                        );
+                  }),
+                  child: Container(
+                    width: double.infinity,
+                    height: 48,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add, color: Colors.white),
+                        SizedBox(width: 8),
+                        Text(
+                          'Create Flashcard',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 32),
-              Text(
-                'Flashcard Categories ',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
-              BlocBuilder<FlashCardCubit, FlashCardState>(
-                buildWhen: (previous, current) =>
-                    previous.loadStatus != current.loadStatus ||
-                    previous.flashCards != current.flashCards,
-                builder: (context, state) {
-                  if (state.loadStatus == LoadStatus.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state.loadStatus == LoadStatus.success) {
-                    return SetFlashCardGrid(flashcards: state.flashCards);
-                  }
-                  return const SizedBox();
-                },
-              ),
-              const SizedBox(height: 32),
-            ],
+                const SizedBox(height: 24),
+                Text(
+                  'Flashcard Categories',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 16),
+                BlocBuilder<FlashCardCubit, FlashCardState>(
+                  buildWhen: (previous, current) =>
+                      previous.loadStatus != current.loadStatus ||
+                      previous.flashCards != current.flashCards,
+                  builder: (context, state) {
+                    if (state.loadStatus == LoadStatus.loading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state.loadStatus == LoadStatus.success) {
+                      return SetFlashCardGrid(flashcards: state.flashCards);
+                    }
+                    return const SizedBox();
+                  },
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),
