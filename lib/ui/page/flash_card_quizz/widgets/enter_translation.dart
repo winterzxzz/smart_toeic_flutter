@@ -69,7 +69,6 @@ class _EnterTranslationState extends State<EnterTranslation> {
         SizedBox(height: 32),
         SizedBox(
           width: double.infinity,
-          height: 40,
           child: ElevatedButton(
             onPressed: () {
               setState(() {

@@ -71,13 +71,15 @@ class _PageState extends State<Page> {
             return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: SizedBox(height: 75),
+                  child:
+                      SizedBox(height: MediaQuery.of(context).padding.top + 16),
                 ),
                 SliverToBoxAdapter(
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       ),
                       color: Theme.of(context).cardColor,
                     ),
@@ -85,7 +87,7 @@ class _PageState extends State<Page> {
                     child: Column(
                       children: [
                         _buildImage(),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 24),
                         AvatarHeading(user: state.user),
                         const ProfileDivider(),
                         TextFieldHeading(
@@ -127,10 +129,15 @@ class _PageState extends State<Page> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text('Reading Target / Reading Current',
+                                        Expanded(
+                                          child: Text(
+                                            'Reading Target / Reading Current',
                                             style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600)),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
                                         Text.rich(
                                           TextSpan(
                                             text:
@@ -167,7 +174,7 @@ class _PageState extends State<Page> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 32),
+                                const SizedBox(height: 24),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -175,11 +182,15 @@ class _PageState extends State<Page> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
+                                        Expanded(
+                                          child: Text(
                                             'Listening Target / Listening Current',
                                             style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600)),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
                                         Text.rich(
                                           TextSpan(
                                             text:
@@ -217,10 +228,10 @@ class _PageState extends State<Page> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 32),
+                                const SizedBox(height: 24),
                                 SizedBox(
                                   width: double.infinity,
-                                  height: 50,
+                                  height: 48,
                                   child: ElevatedButton(
                                     onPressed: () {
                                       showUpdateTargetDialog(
@@ -251,57 +262,55 @@ class _PageState extends State<Page> {
   }
 
   Widget _buildImage() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        SizedBox(
-          height: 40,
-          child: ElevatedButton(
-            onPressed: () {
-              GoRouter.of(context).pushNamed(AppRouter.historyTest);
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
-                const SizedBox(width: 8),
-                Text('See history test'),
-              ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    GoRouter.of(context).pushNamed(AppRouter.historyTest);
+                  },
+                  icon: FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
+                  label: Text('History'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        SizedBox(
-          height: 40,
-          child: ElevatedButton(
-            onPressed: () {
-              GoRouter.of(context).pushNamed(AppRouter.analysis);
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FaIcon(FontAwesomeIcons.chartLine, size: 16),
-                const SizedBox(width: 8),
-                Text('Analyze Result'),
-              ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    GoRouter.of(context).pushNamed(AppRouter.analysis);
+                  },
+                  icon: FaIcon(FontAwesomeIcons.chartLine, size: 16),
+                  label: Text('Analysis'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-        const Spacer(),
+        const SizedBox(height: 16),
         SizedBox(
-          height: 40,
-          child: ElevatedButton(
+          width: double.infinity,
+          child: ElevatedButton.icon(
             onPressed: () {
               context.read<ProfileCubit>().updateProfile(ProfileUpdateRequest(
                   name: nameController.text, bio: bioController.text));
             },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
-                const SizedBox(width: 8),
-                Text('Save'),
-              ],
+            icon: FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
+            label: Text('Save Changes'),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 12),
             ),
           ),
         ),
@@ -315,161 +324,154 @@ class _PageState extends State<Page> {
         TextEditingController(text: initialReadingScore?.toString() ?? '0');
     final listeningController =
         TextEditingController(text: initialListeningScore?.toString() ?? '0');
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (BuildContext diaglogContext) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16,
+            right: 16,
+            top: 16,
           ),
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            width: 400,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Cập nhật điểm mục tiêu',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        GoRouter.of(diaglogContext).pop();
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                Text('Reading target score'),
-                const SizedBox(height: 8),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: readingController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    suffixIcon: Column(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.arrow_drop_up),
-                          onPressed: () {
-                            final currentValue =
-                                int.tryParse(readingController.text) ?? 0;
-                            if (currentValue < 450) {
-                              // Max TOEIC score for listening
-                              readingController.text =
-                                  (currentValue + 5).toString();
-                            }
-                          },
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(minHeight: 20),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.arrow_drop_down),
-                          onPressed: () {
-                            final currentValue =
-                                int.tryParse(readingController.text) ?? 0;
-                            if (currentValue > 0) {
-                              readingController.text =
-                                  (currentValue - 5).toString();
-                            }
-                          },
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(minHeight: 20),
-                        ),
-                      ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Update Target Score',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text('Listening target score'),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: listeningController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            suffixIcon: Column(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.arrow_drop_up),
-                                  onPressed: () {
-                                    final currentValue = int.tryParse(
-                                            listeningController.text) ??
-                                        0;
-                                    if (currentValue < 450) {
-                                      // Max TOEIC score for listening
-                                      listeningController.text =
-                                          (currentValue + 5).toString();
-                                    }
-                                  },
-                                  padding: EdgeInsets.zero,
-                                  constraints: BoxConstraints(minHeight: 20),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  onPressed: () {
-                                    final currentValue = int.tryParse(
-                                            listeningController.text) ??
-                                        0;
-                                    if (currentValue > 0) {
-                                      listeningController.text =
-                                          (currentValue - 5).toString();
-                                    }
-                                  },
-                                  padding: EdgeInsets.zero,
-                                  constraints: BoxConstraints(minHeight: 20),
-                                ),
-                              ],
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+                  IconButton(
+                    icon: Icon(Icons.close),
                     onPressed: () {
-                      // Handle save changes with values from controllers
-                      final readingScore =
-                          int.tryParse(readingController.text) ?? 0;
-                      final listeningScore =
-                          int.tryParse(listeningController.text) ?? 0;
-
-                      context
-                          .read<ProfileCubit>()
-                          .updateTargetScore(readingScore, listeningScore)
-                          .then((_) {
-                        if (diaglogContext.mounted) {
-                          GoRouter.of(diaglogContext).pop();
-                        }
-                      });
-                      // Do something with the scores
+                      Navigator.of(diaglogContext).pop();
                     },
-                    child: Text(
-                      'Update'.toUpperCase(),
-                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Text('Reading target score'),
+              const SizedBox(height: 8),
+              TextField(
+                keyboardType: TextInputType.number,
+                controller: readingController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  suffixIcon: Column(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_drop_up),
+                        onPressed: () {
+                          final currentValue =
+                              int.tryParse(readingController.text) ?? 0;
+                          if (currentValue < 450) {
+                            readingController.text =
+                                (currentValue + 5).toString();
+                          }
+                        },
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(minHeight: 20),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.arrow_drop_down),
+                        onPressed: () {
+                          final currentValue =
+                              int.tryParse(readingController.text) ?? 0;
+                          if (currentValue > 0) {
+                            readingController.text =
+                                (currentValue - 5).toString();
+                          }
+                        },
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(minHeight: 20),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+              Text('Listening target score'),
+              const SizedBox(height: 8),
+              TextField(
+                controller: listeningController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  suffixIcon: Column(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_drop_up),
+                        onPressed: () {
+                          final currentValue =
+                              int.tryParse(listeningController.text) ?? 0;
+                          if (currentValue < 450) {
+                            listeningController.text =
+                                (currentValue + 5).toString();
+                          }
+                        },
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(minHeight: 20),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.arrow_drop_down),
+                        onPressed: () {
+                          final currentValue =
+                              int.tryParse(listeningController.text) ?? 0;
+                          if (currentValue > 0) {
+                            listeningController.text =
+                                (currentValue - 5).toString();
+                          }
+                        },
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(minHeight: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    final readingScore =
+                        int.tryParse(readingController.text) ?? 0;
+                    final listeningScore =
+                        int.tryParse(listeningController.text) ?? 0;
+
+                    context
+                        .read<ProfileCubit>()
+                        .updateTargetScore(readingScore, listeningScore)
+                        .then((_) {
+                      if (diaglogContext.mounted) {
+                        Navigator.of(diaglogContext).pop();
+                      }
+                    });
+                  },
+                  child: Text(
+                    'Update'.toUpperCase(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
           ),
         );
       },

@@ -21,18 +21,21 @@ class TextFieldHeading extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
+          flex: 1,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: TextStyle(fontWeight: FontWeight.w600)),
+              Text(label,
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
               const SizedBox(height: 8),
               Text(description,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 14)),
+                  style: TextStyle(color: Colors.grey[500], fontSize: 10)),
             ],
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
+          flex: 2,
           child: TextField(
             controller: controller,
             enabled: label != 'Profile Email',
@@ -55,7 +58,6 @@ class TextFieldHeading extends StatelessWidget {
             ),
           ),
         ),
-        const Expanded(child: SizedBox()),
       ],
     );
   }

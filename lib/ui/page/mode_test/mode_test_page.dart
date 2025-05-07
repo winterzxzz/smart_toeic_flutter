@@ -131,7 +131,6 @@ class FullTestMode extends StatelessWidget {
           SizedBox(height: 32),
           SizedBox(
             width: 150,
-            height: 45,
             child: ElevatedButton(
               onPressed: () {
                 GoRouter.of(context)
@@ -220,7 +219,6 @@ class _PracticeModeState extends State<PracticeMode> {
         SizedBox(height: 16),
         SizedBox(
           width: 150,
-          height: 45,
           child: ElevatedButton(
             onPressed: selectedParts.isEmpty
                 ? null

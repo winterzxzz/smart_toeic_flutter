@@ -30,11 +30,11 @@ class _AvatarHeadingState extends State<AvatarHeading> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Profile Avatar',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
               const SizedBox(height: 8),
               Text(
                   'Update your profile avatar and then choose where you want it to display',
-                  style: TextStyle(color: Colors.grey[500], fontSize: 14)),
+                  style: TextStyle(color: Colors.grey[500], fontSize: 10)),
             ],
           ),
         ),

@@ -42,105 +42,87 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
         Text('Sắp xếp các từ để tạo thành câu đúng',
             style: TextStyle(fontSize: 18)),
         SizedBox(height: 32),
-        Row(
-          children: [
-            ...shuffledWords.map((word) {
-              return Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      if (isCheck) {
-                        isCheck = false;
-                      }
-                      if (isShowAnswer) {
-                        isShowAnswer = false;
-                      }
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: shuffledWords.map((word) {
+            return InkWell(
+              onTap: () {
+                if (isCheck) {
+                  isCheck = false;
+                }
+                if (isShowAnswer) {
+                  isShowAnswer = false;
+                }
 
-                      setState(() {
-                        selectedWords.add(word);
-                        shuffledWords.remove(word);
-                      });
-                    },
-                    child: Container(
-                      height: 35,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.gray2,
-                        border: Border.all(color: AppColors.gray1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        word,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                ],
-              );
-            }),
-          ],
-        ),
-        SizedBox(height: 16),
-        Container(
-          height: 100,
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: AppColors.gray2,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: ListView.separated(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            scrollDirection: Axis.horizontal,
-            itemCount: selectedWords.length,
-            separatorBuilder: (_, __) => SizedBox(width: 4),
-            itemBuilder: (context, index) {
-              return Center(
-                child: InkWell(
-                  onTap: () {
-                    if (isCheck) {
-                      isCheck = false;
-                    }
-                    if (isShowAnswer) {
-                      isShowAnswer = false;
-                    }
-
-                    setState(() {
-                      shuffledWords.add(selectedWords[index]);
-                      selectedWords.removeAt(index);
-                    });
-                  },
-                  child: Container(
-                    height: 35,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.gray2,
-                      border: Border.all(color: AppColors.gray1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      selectedWords[index],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                setState(() {
+                  selectedWords.add(word);
+                  shuffledWords.remove(word);
+                });
+              },
+              child: Container(
+                height: 35,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.gray2,
+                  border: Border.all(color: AppColors.gray1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  word,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          }).toList(),
+        ),
+        SizedBox(height: 16),
+        Wrap(
+          spacing: 4,
+          direction: Axis.horizontal,
+          runSpacing: 4,
+          children: selectedWords.map((word) {
+            return InkWell(
+              onTap: () {
+                if (isCheck) {
+                  isCheck = false;
+                }
+                if (isShowAnswer) {
+                  isShowAnswer = false;
+                }
+
+                setState(() {
+                  shuffledWords.add(word);
+                  selectedWords.remove(word);
+                });
+              },
+              child: Container(
+                height: 35,
+                width: 100,
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  border: Border.all(color: AppColors.gray1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  word,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
         ),
         SizedBox(height: 32),
         Row(
           children: [
             Expanded(
               child: SizedBox(
-                height: 40,
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {

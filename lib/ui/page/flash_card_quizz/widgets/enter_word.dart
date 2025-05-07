@@ -70,7 +70,6 @@ class _EnterWordState extends State<EnterWord> {
         SizedBox(height: 32),
         SizedBox(
           width: double.infinity,
-          height: 40,
           child: ElevatedButton(
             onPressed: () {
               setState(() {

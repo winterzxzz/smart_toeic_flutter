@@ -61,6 +61,9 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final navigator = AppNavigator(context: context);
+    final size = MediaQuery.of(context).size;
+    final isSmallScreen = size.width < 600;
+
     return BlocConsumer<FlashCardQuizzCubit, FlashCardQuizzState>(
       listener: (context, state) {
         if (state.isAnimating) {
@@ -120,8 +123,10 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               );
                             },
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 32),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: isSmallScreen ? 16 : 32,
+                                vertical: isSmallScreen ? 8 : 16,
+                              ),
                               child: Builder(
                                 key: ValueKey(
                                     '${state.typeQuizzIndex}-${state.currentIndex}'),
@@ -147,7 +152,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                         key: ValueKey(
                                             'enter-translation-${state.currentIndex}'),
                                       );
-
                                     case 3:
                                       return OrderWordToCorrect(
                                         fcLearning: state.flashCardLearning[
@@ -216,10 +220,10 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                 },
                               ),
                               Padding(
-                                padding: EdgeInsets.all(16),
-                                child: Row(
+                                padding:
+                                    EdgeInsets.all(isSmallScreen ? 12 : 16),
+                                child: Column(
                                   children: [
-                                    const SizedBox(width: 32),
                                     Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
@@ -230,39 +234,32 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                         state.isCorrect
                                             ? FontAwesomeIcons.check
                                             : FontAwesomeIcons.xmark,
-                                        size: 40,
+                                        size: isSmallScreen ? 32 : 40,
                                       ),
                                     ),
-                                    const SizedBox(width: 16),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            state.isCorrect
-                                                ? 'Tuyệt vời!'
-                                                : 'Cố gắng hơn!',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Text(
-                                            state.isCorrect
-                                                ? 'Bạn đã trả lời chính xác!'
-                                                : 'Bạn đã trả lời sai!',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      state.isCorrect
+                                          ? 'Tuyệt vời!'
+                                          : 'Cố gắng hơn!',
+                                      style: TextStyle(
+                                        fontSize: isSmallScreen ? 18 : 20,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
+                                    Text(
+                                      state.isCorrect
+                                          ? 'Bạn đã trả lời chính xác!'
+                                          : 'Bạn đã trả lời sai!',
+                                      style: TextStyle(
+                                        fontSize: isSmallScreen ? 14 : 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
                                     SizedBox(
-                                      height: 50,
-                                      width: 200,
+                                      width: double.infinity,
+                                      height: isSmallScreen ? 48 : 50,
                                       child: ElevatedButton(
                                         onPressed: () {
                                           context
@@ -272,7 +269,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                         child: Text('Tiếp tục'),
                                       ),
                                     ),
-                                    const SizedBox(width: 32),
                                   ],
                                 ),
                               ),

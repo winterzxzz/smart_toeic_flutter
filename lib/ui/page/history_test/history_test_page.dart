@@ -15,25 +15,25 @@ class HistoryTestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<HistoryTestCubit>()..getResultTests(),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
 
 class Page extends StatelessWidget {
-  const Page({
-    super.key,
-  });
+  const Page({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
-            automaticallyImplyLeading: false,
-            title: Text('History Test'),
+          SliverAppBar(
+            automaticallyImplyLeading: true,
+            title: const Text('History Test'),
             floating: true,
+            pinned: true,
+            elevation: 0,
           ),
           BlocConsumer<HistoryTestCubit, HistoryTestState>(
             listener: (context, state) {
@@ -53,18 +53,18 @@ class Page extends StatelessWidget {
                     child: Center(child: Text('No data')),
                   );
                 }
-                return SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 1.4,
-                    mainAxisExtent: 270,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) =>
-                        ExamResultCard(result: state.results[index]),
-                    childCount: state.results.length,
+                return SliverPadding(
+                  padding: const EdgeInsets.all(16.0),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: ExamResultCard(
+                          result: state.results[index],
+                        ),
+                      ),
+                      childCount: state.results.length,
+                    ),
                   ),
                 );
               }
@@ -74,5 +74,15 @@ class Page extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  int _getCrossAxisCount(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width < 600) {
+      return 1; // Single column for mobile
+    } else if (width < 900) {
+      return 2; // Two columns for tablets
+    }
+    return 3; // Three columns for larger screens
   }
 }

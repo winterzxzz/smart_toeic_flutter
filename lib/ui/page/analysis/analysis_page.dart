@@ -29,9 +29,7 @@ class AnalysisPage extends StatelessWidget {
 }
 
 class Page extends StatelessWidget {
-  const Page({
-    super.key,
-  });
+  const Page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,119 +50,89 @@ class Page extends StatelessWidget {
           return CustomScrollView(
             controller: context.read<AnalysisCubit>().scrollController,
             slivers: [
-              const SliverAppBar(
-                automaticallyImplyLeading: false,
+              SliverAppBar(
+                automaticallyImplyLeading: true,
                 centerTitle: true,
-                title: Text('TOEIC Performance Dashboard'),
+                title: const Text('TOEIC Performance Dashboard'),
                 floating: true,
-                snap: true,
+                pinned: true,
+                elevation: 0,
               ),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 16,
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: state.profileAnalysis.score != null
-                                  ? AnalysisScore(
-                                      overallScore: state.profileAnalysis.score!,
-                                      listenScore:
-                                          state.profileAnalysis.listenScore!,
-                                      readScore:
-                                          state.profileAnalysis.readScore!,
-                                    )
-                                  : const SizedBox.shrink(),
+              SliverPadding(
+                padding: const EdgeInsets.all(16.0),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (state.profileAnalysis.score != null)
+                            AnalysisScore(
+                              overallScore: state.profileAnalysis.score!,
+                              listenScore: state.profileAnalysis.listenScore!,
+                              readScore: state.profileAnalysis.readScore!,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: state.profileAnalysis.accuracyByPart != null && state.profileAnalysis.accuracyByPart!.isNotEmpty
-                                  ? Column(
-                                      children: [
-                                        const SizedBox(height: 32),
-                                            AnalysisPercentage(
-                                              percentage: state.profileAnalysis
-                                                  .accuracyByPart!,
-                                            ),
-                                          ],
-                                        )
-                                      : const SizedBox.shrink(),
+                          const SizedBox(height: 24),
+                          if (state.profileAnalysis.accuracyByPart != null &&
+                              state.profileAnalysis.accuracyByPart!.isNotEmpty)
+                            AnalysisPercentage(
+                              percentage: state.profileAnalysis.accuracyByPart!,
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: state.profileAnalysis.averageTimeByPart !=
-                                      null && state.profileAnalysis.averageTimeByPart!.isNotEmpty
-                                  ? AnalysisTime(
-                                      averageTimeByPart: state
-                                          .profileAnalysis.averageTimeByPart!,
-                                      timeSecondRecommend: state
-                                          .profileAnalysis.timeSecondRecommend!,
-                                    )
-                                  : const SizedBox.shrink(),
+                          const SizedBox(height: 24),
+                          if (state.profileAnalysis.averageTimeByPart != null &&
+                              state.profileAnalysis.averageTimeByPart!
+                                  .isNotEmpty)
+                            AnalysisTime(
+                              averageTimeByPart:
+                                  state.profileAnalysis.averageTimeByPart!,
+                              timeSecondRecommend:
+                                  state.profileAnalysis.timeSecondRecommend!,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              flex: 2,
-                              child: state.profileAnalysis.categoryAccuracy != null && state.profileAnalysis.categoryAccuracy!.isNotEmpty
-                                  ? StackedBarChartPage(
-                                      categoryAccuracys: state
-                                          .profileAnalysis
-                                          .categoryAccuracy!,
-                                    )
-                                      : const SizedBox.shrink(),
+                          const SizedBox(height: 24),
+                          if (state.profileAnalysis.categoryAccuracy != null &&
+                              state
+                                  .profileAnalysis.categoryAccuracy!.isNotEmpty)
+                            StackedBarChartPage(
+                              categoryAccuracys:
+                                  state.profileAnalysis.categoryAccuracy!,
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 32),
-                        BlocSelector<UserCubit, UserState, UserEntity?>(
-                          selector: (state) {
-                            return state.user;
-                          },
-                          builder: (context, user) {
-                            final isPremium = user?.isPremium();
-                            return ElevatedButton(
-                              onPressed: isPremium == true
-                                  ? () {
-                                      context
-                                          .read<AnalysisCubit>()
-                                          .fetchSuggestForStudy();
-                                    }
-                                  : null,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (isPremium == true)
-                                    FaIcon(FontAwesomeIcons.chartLine)
-                                  else
-                                    FaIcon(FontAwesomeIcons.lock),
-                                  const SizedBox(width: 8),
-                                  Text('Analysis Your Score'),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        if (state.suggestForStudy.isNotEmpty)
-                          AnalysisMarkdown(text: state.suggestForStudy),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(height: 32),
+                          BlocSelector<UserCubit, UserState, UserEntity?>(
+                            selector: (state) => state.user,
+                            builder: (context, user) {
+                              final isPremium = user?.isPremium();
+                              return SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: isPremium == true
+                                      ? () {
+                                          context
+                                              .read<AnalysisCubit>()
+                                              .fetchSuggestForStudy();
+                                        }
+                                      : null,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (isPremium == true)
+                                        const FaIcon(FontAwesomeIcons.chartLine)
+                                      else
+                                        const FaIcon(FontAwesomeIcons.lock),
+                                      const SizedBox(width: 8),
+                                      const Text('Analysis Your Score'),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          if (state.suggestForStudy.isNotEmpty)
+                            AnalysisMarkdown(text: state.suggestForStudy),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
