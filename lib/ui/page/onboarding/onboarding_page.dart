@@ -73,13 +73,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.textBlue, width: 2),
+                        border: Border.all(color: AppColors.primary, width: 2),
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
                       child: Icon(
                         Icons.arrow_back_ios,
-                        color: AppColors.textBlue,
+                        color: AppColors.primary,
                         weight: 2,
                         size: 16,
                       ),
@@ -98,8 +98,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: index == _currentPage
-                            ? AppColors.textBlue
-                            : AppColors.textBlue.withValues(alpha: 0.2),
+                            ? AppColors.primary
+                            : AppColors.primary.withValues(alpha: 0.2),
                       ),
                     );
                   }),
@@ -111,7 +111,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: AppColors.textBlue,
+                      color: AppColors.primary,
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
@@ -227,7 +227,7 @@ class OnboardingContent extends StatelessWidget {
         FaIcon(
           item.icon,
           size: 180,
-          color: AppColors.textBlue,
+          color: AppColors.primary,
         ),
         const SizedBox(height: 32),
         Padding(
