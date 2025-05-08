@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -179,7 +179,7 @@ class _PageState extends State<Page> {
       ),
       child: Row(
         children: [
-          Text('Kết quả: ', style: Theme.of(context).textTheme.bodyLarge),
+          Text('Result: ', style: Theme.of(context).textTheme.bodyLarge),
           Expanded(
             child: Wrap(
               children: _checkResult.map((result) {
@@ -207,28 +207,28 @@ class _PageState extends State<Page> {
 
   Widget _buildQuestionList(TranscriptTestDetailState state) {
     return Container(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.8,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(
         children: [
-          Padding(
+          Container(
             padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                ),
+              ),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Danh sách câu hỏi',
+                  'Question List',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 IconButton(
@@ -244,6 +244,7 @@ class _PageState extends State<Page> {
           ),
           Expanded(
             child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: state.transcriptTests.length,
               itemBuilder: (context, index) {
                 final isCurrentQuestion = index == state.currentIndex;
@@ -260,7 +261,7 @@ class _PageState extends State<Page> {
                     ),
                   ),
                   title: Text(
-                    'Câu hỏi ${index + 1}',
+                    'Question ${index + 1}',
                     style: TextStyle(
                       fontWeight: isCurrentQuestion ? FontWeight.bold : null,
                     ),
@@ -308,11 +309,7 @@ class _PageState extends State<Page> {
             children: [
               SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width > 600
-                        ? MediaQuery.of(context).size.width * 0.1
-                        : 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -323,12 +320,13 @@ class _PageState extends State<Page> {
                         children: [
                           Expanded(
                             child: Text(
-                              'Thực hành nghe chép',
+                              'Listening Practice',
                               style: Theme.of(context).textTheme.titleLarge,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
                                 onPressed: () {
@@ -337,6 +335,7 @@ class _PageState extends State<Page> {
                                   });
                                 },
                                 icon: const Icon(Icons.list),
+                                tooltip: 'Question List',
                               ),
                               IconButton(
                                 onPressed: state.currentIndex > 0
@@ -347,10 +346,11 @@ class _PageState extends State<Page> {
                                       }
                                     : null,
                                 icon: const Icon(Icons.arrow_back),
+                                tooltip: 'Previous Question',
                               ),
                               Text(
                                 '${state.currentIndex + 1}/${state.transcriptTests.length}',
-                                style: Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
                               IconButton(
                                 onPressed: state.currentIndex <
@@ -362,6 +362,7 @@ class _PageState extends State<Page> {
                                       }
                                     : null,
                                 icon: const Icon(Icons.arrow_forward),
+                                tooltip: 'Next Question',
                               ),
                             ],
                           ),
@@ -370,7 +371,7 @@ class _PageState extends State<Page> {
                       const SizedBox(height: 16),
                       Builder(builder: (context) {
                         final audioUrl =
-                            '${Constants.hostUrl}/uploads${state.transcriptTests[state.currentIndex].audioUrl}';
+                            '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${state.transcriptTests[state.currentIndex].audioUrl}';
                         return AudioSection(
                           audioUrl: audioUrl,
                         );
@@ -386,9 +387,9 @@ class _PageState extends State<Page> {
                           }
                         },
                         autofocus: true,
-                        maxLines: 3,
+                        maxLines: 5,
                         decoration: InputDecoration(
-                          hintText: 'Nhập nội dung bạn nghe được...',
+                          hintText: 'Type what you hear...',
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide:
@@ -401,25 +402,25 @@ class _PageState extends State<Page> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 24),
                       Wrap(
-                        spacing: 16,
-                        runSpacing: 16,
+                        spacing: 12,
+                        runSpacing: 12,
                         alignment: WrapAlignment.center,
                         children: [
                           SizedBox(
-                            height: 45,
+                            height: 48,
                             child: ElevatedButton(
                               onPressed: () {
                                 _checkTranscription(state
                                     .transcriptTests[state.currentIndex]
                                     .transcript!);
                               },
-                              child: const Text('Kiểm tra'),
+                              child: const Text('Check'),
                             ),
                           ),
                           SizedBox(
-                            height: 45,
+                            height: 48,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -441,7 +442,7 @@ class _PageState extends State<Page> {
                                 children: const [
                                   Icon(Icons.volume_up),
                                   SizedBox(width: 8),
-                                  Text('Thực hành phát âm'),
+                                  Text('Practice Pronunciation'),
                                 ],
                               ),
                             ),
@@ -449,7 +450,7 @@ class _PageState extends State<Page> {
                           if (state.currentIndex <
                               state.transcriptTests.length - 1)
                             SizedBox(
-                              height: 45,
+                              height: 48,
                               child: ElevatedButton(
                                 onPressed: () {
                                   context
@@ -461,14 +462,14 @@ class _PageState extends State<Page> {
                                   children: const [
                                     Icon(Icons.skip_next),
                                     SizedBox(width: 8),
-                                    Text('Bỏ qua'),
+                                    Text('Skip'),
                                   ],
                                 ),
                               ),
                             )
                           else
                             SizedBox(
-                              height: 45,
+                              height: 48,
                               child: ElevatedButton(
                                 onPressed: () {
                                   GoRouter.of(context).pop();
@@ -478,7 +479,7 @@ class _PageState extends State<Page> {
                                   children: const [
                                     Icon(Icons.skip_next),
                                     SizedBox(width: 8),
-                                    Text('Kết thúc'),
+                                    Text('Finish'),
                                   ],
                                 ),
                               ),
@@ -486,7 +487,7 @@ class _PageState extends State<Page> {
                         ],
                       ),
                       if (isCheck) ...[
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 24),
                         Container(
                           padding: const EdgeInsets.all(16),
                           width: double.infinity,
@@ -495,7 +496,7 @@ class _PageState extends State<Page> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            'Nội dung bạn nhập: ${_transcriptController.text}',
+                            'Your input: ${_transcriptController.text}',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
@@ -513,7 +514,7 @@ class _PageState extends State<Page> {
                                       color: AppColors.success),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'Bạn đã đúng!',
+                                    'Correct!',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge

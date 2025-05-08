@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
@@ -124,7 +124,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                       backgroundImage: state.user?.avatar.isEmpty ?? true
                           ? null
                           : Image.network(
-                              '${Constants.hostUrl}${state.user!.avatar}',
+                              '${AppConfigs.baseUrl.replaceAll('/api', '')}${state.user!.avatar}',
                             ).image,
                       child: state.user?.avatar.isEmpty ?? true
                           ? Text(

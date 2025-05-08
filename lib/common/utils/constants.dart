@@ -1,14 +1,19 @@
+import 'dart:math';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/blog_item.dart';
 import 'package:toeic_desktop/data/models/ui_models/bottom_tab.dart';
+import 'package:toeic_desktop/data/models/ui_models/home_item_task_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
+import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
 
 class Constants {
-  static const hostUrl = 'http://localhost:4000';
-
   static List<BlogItem> blogs = [
     BlogItem(
         imageUrl:
@@ -219,6 +224,51 @@ class Constants {
       title: 'Account',
       iconFill: AppImages.icAccountFill,
       iconOutline: AppImages.icAccountOutline,
+    ),
+  ];
+
+  static List<HomeItemTaskModel> homePracticeTasks = [
+    HomeItemTaskModel(
+      title: 'Listening',
+      image: AppImages.icListenCopy,
+      progress: Random().nextDouble(),
+      onNavigate: (context) =>
+          GoRouter.of(context).push(AppRouter.transcriptTest),
+    ),
+    HomeItemTaskModel(
+      title: 'Test',
+      image: AppImages.icTestOutline,
+      progress: Random().nextDouble(),
+      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(1),
+    ),
+  ];
+
+  static List<HomeItemTaskModel> homeExamPreparationTasks = [
+    HomeItemTaskModel(
+      title: 'Test Online',
+      image: AppImages.icTestOutline,
+      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(1),
+    ),
+    HomeItemTaskModel(
+      title: 'Blogs',
+      image: AppImages.icBlog,
+      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(3),
+    ),
+    HomeItemTaskModel(
+      title: 'Flashcards',
+      image: AppImages.icFlashCardOutline,
+      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(2),
+    ),
+    HomeItemTaskModel(
+      title: 'Premium',
+      image: AppImages.icPremium,
+      onNavigate: (context) =>
+          GoRouter.of(context).push(AppRouter.upgradeAccount),
+    ),
+    HomeItemTaskModel(
+      title: 'Settings',
+      image: AppImages.icSetting,
+      onNavigate: (context) => GoRouter.of(context).push(AppRouter.setting),
     ),
   ];
 }

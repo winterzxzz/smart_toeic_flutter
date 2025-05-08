@@ -21,15 +21,13 @@ class PricingPlanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<UpgradeAccountCubit>(),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
 
 class Page extends StatelessWidget {
-  const Page({
-    super.key,
-  });
+  const Page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,118 +49,151 @@ class Page extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(
+            title: const Text('Upgrade Account'),
+            centerTitle: true,
+          ),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery.sizeOf(context).width * 0.1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 32),
-                  Center(
-                    child: Text(
-                      'Chọn gói dịch vụ phù hợp với bạn',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 24),
+                    Center(
+                      child: Text(
+                        'Choose the plan that\'s right for you',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                  Center(
-                    child: Text(
-                      'Nâng cao kỹ năng TOEIC của bạn với các tính năng độc đáo',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.textGray),
+                    const SizedBox(height: 8),
+                    Center(
+                      child: Text(
+                        'Enhance your TOEIC skills with unique features',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textGray,
+                            ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-                    final isPremium = state.user?.isPremium() ?? false;
-                    if (!isPremium) {
-                    return const SizedBox.shrink();
-                    }
-                      return Center(
-                        child: Column(
-                          children: [
-                            Card(
-                              child: Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                    const SizedBox(height: 24),
+                    BlocBuilder<UserCubit, UserState>(
+                      builder: (context, state) {
+                        final isPremium = state.user?.isPremium() ?? false;
+                        if (!isPremium) {
+                          return const SizedBox.shrink();
+                        }
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 24),
+                          decoration: BoxDecoration(
+                            color: AppColors.success.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: AppColors.success.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   children: [
-                                    Text.rich(
-                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                      TextSpan(
-                                        children: [
-                                          TextSpan(text: 'Trạng thái: '),
-                                          TextSpan(text: 'Premium', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.success)),
-                                        ],
-                                      ),
+                                    Icon(
+                                      Icons.star,
+                                      color: AppColors.success,
                                     ),
-                                    const SizedBox(height: 8),
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(color: AppColors.buttonBorder),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          FaIcon(FontAwesomeIcons.calendarDays),
-                                          const SizedBox(width: 8),
-                                          Builder(
-                                            builder: (context) {
-                                              // Parse ISO date string to DateTime
-                                              final DateTime expiredDate = DateTime.parse(state.user!.upgradeExpiredDate!);
-                                              // Format date to desired display format
-                                              final String expiredDateString = DateFormat('dd/MM/yyyy').format(expiredDate);
-                                              return Text('Ngày hết hạn: $expiredDateString');
-                                            }
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Premium Account',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                            color: AppColors.success,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    // Gia han
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          context.read<UpgradeAccountCubit>().upgradeAccount();
-                                        },
-                                        child: const Text('Gia hạn'),
-                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
+                                const SizedBox(height: 16),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const FaIcon(
+                                          FontAwesomeIcons.calendarDays),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Builder(
+                                          builder: (context) {
+                                            final DateTime expiredDate =
+                                                DateTime.parse(state
+                                                    .user!.upgradeExpiredDate!);
+                                            final String expiredDateString =
+                                                DateFormat('dd/MM/yyyy')
+                                                    .format(expiredDate);
+                                            return Text(
+                                              'Expiration date: $expiredDateString',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      context
+                                          .read<UpgradeAccountCubit>()
+                                          .upgradeAccount();
+                                    },
+                                    icon: const Icon(Icons.refresh),
+                                    label: const Text('Renew'),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 32),
-                          ],
-                        ),
-                      );
-                  }),
-                  const SizedBox(height: 32),
-                  BlocBuilder<UserCubit, UserState>(
-                    builder: (context, state) {
-                      final isPremium = state.user?.isPremium() ?? false;
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: UpgradeAccountCard(
-                              title: 'Gói Miễn phí',
-                              price: '0 VND',
+                          ),
+                        );
+                      },
+                    ),
+                    BlocBuilder<UserCubit, UserState>(
+                      builder: (context, state) {
+                        final isPremium = state.user?.isPremium() ?? false;
+                        return Column(
+                          children: [
+                            UpgradeAccountCard(
+                              title: 'Free Plan',
+                              price: '0 USD',
                               features: [
-                                'Làm bài thi TOEIC',
-                                'Chấm điểm và lưu kết quả',
-                                'Tạo bộ flashcard',
-                                'Truy cập flashcards có sẵn',
-                                'Truy cập blog',
-                                'Điền tự động bằng AI',
-                                'Lời giải AI cho câu hỏi',
-                                'Phân tích chỉ số cá nhân',
-                                'Trắc nghiệm và nhắc nhở',
+                                'Take TOEIC tests',
+                                'Score and save results',
+                                'Create flashcard sets',
+                                'Access existing flashcards',
+                                'Access blog',
+                                'AI auto-fill',
+                                'AI question explanations',
+                                'Personal analytics',
+                                'Quizzes and reminders',
                               ],
                               available: [
                                 true,
@@ -176,75 +207,96 @@ class Page extends StatelessWidget {
                                 false
                               ],
                               isPremium: isPremium,
-                              isCurrentPlan: isPremium == false,
+                              isCurrentPlan: !isPremium,
                               onPressed: null,
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: UpgradeAccountCard(
-                              title: 'Gói Nâng cấp',
-                              price: '5.000 VND',
+                            const SizedBox(height: 16),
+                            UpgradeAccountCard(
+                              title: 'Premium Plan',
+                              price: '5 USD',
                               features: [
-                              'Làm bài thi TOEIC',
-                              'Chấm điểm và lưu kết quả',
-                              'Tạo bộ flashcard',
-                              'Truy cập flashcards có sẵn',
-                              'Truy cập blog',
-                              'Điền tự động bằng AI',
-                              'Lời giải AI cho câu hỏi',
-                              'Phân tích chỉ số cá nhân',
-                              'Trắc nghiệm và nhắc nhở',
-                            ],
-                            available: [
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true
-                            ],
-                            isPremium: isPremium,
-                            isCurrentPlan: isPremium == true,
-                            onPressed: () {
-                              context
-                                  .read<UpgradeAccountCubit>()
-                                  .upgradeAccount();
-                            },
-                          )),
-                        ],
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 32),
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Vẫn còn thắc mắc?',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Liên hệ với chúng tôi để được hỗ trợ',
-                          style: TextStyle(color: AppColors.textGray),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Handle contact support action
-                          },
-                          child: Text('Liên hệ hỗ trợ'),
-                        ),
-                      ],
+                                'Take TOEIC tests',
+                                'Score and save results',
+                                'Create flashcard sets',
+                                'Access existing flashcards',
+                                'Access blog',
+                                'AI auto-fill',
+                                'AI question explanations',
+                                'Personal analytics',
+                                'Quizzes and reminders',
+                              ],
+                              available: [
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true
+                              ],
+                              isPremium: isPremium,
+                              isCurrentPlan: isPremium,
+                              onPressed: () {
+                                context
+                                    .read<UpgradeAccountCubit>()
+                                    .upgradeAccount();
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                ],
+                    const SizedBox(height: 32),
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Still have questions?',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Contact us for support',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.textGray,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              // Handle contact support action
+                            },
+                            icon: const Icon(Icons.support_agent),
+                            label: const Text('Contact Support'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             ),
           ),
@@ -256,7 +308,7 @@ class Page extends StatelessWidget {
   void _launchUrl(String url) async {
     if (!await launchUrl(Uri.parse(url))) {
       showToast(
-        title: 'Không thể mở URL',
+        title: 'Could not open URL',
         type: ToastificationType.error,
       );
     }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
-import 'package:toeic_desktop/ui/page/home/home_state.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/blog_section.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/result_section.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/test_section.dart';
+import 'package:toeic_desktop/ui/page/home/widgets/home_section_task.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _homeCubit = injector<HomeCubit>()..init();
+    _homeCubit = injector<HomeCubit>();
   }
 
   @override
@@ -47,44 +48,67 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigator = AppNavigator(context: context);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: BlocConsumer<HomeCubit, HomeState>(
-          listener: (context, state) {
-            if (state.loadStatus == LoadStatus.loading) {
-              navigator.showLoadingOverlay(
-                message: "Loading...",
-              );
-            } else {
-              navigator.hideLoadingOverlay();
-              if (state.loadStatus == LoadStatus.failure) {
-                navigator.error(state.message);
-              }
-            }
-          },
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Column(
-                children: [
-                  const SizedBox(height: 24),
-                  
-                  // Toeic exam section
-                  if (state.tests.isNotEmpty) TestSection(tests: state.tests),
-                  const SizedBox(height: 16),
-                  // Result section
-                  if (state.resultTests.isNotEmpty)
-                    ResultSection(results: state.resultTests),
-                  if (state.blogs.isNotEmpty) ...[
-                    const SizedBox(height: 16),
-                    BlogSection(blogs: state.blogs),
-                  ],
-                  const SizedBox(height: 16),
-                ],
+      appBar: AppBar(
+        backgroundColor: AppColors.primary,
+        centerTitle: true,
+        title: Text(
+          'Smart TOEIC Prep',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AppColors.textWhite,
+                fontWeight: FontWeight.w600,
               ),
-            );
-          },
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              GoRouter.of(context).push(AppRouter.upgradeAccount);
+            },
+            icon: SvgPicture.asset(
+              AppImages.icPremium,
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(
+                AppColors.textWhite,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(AppImages.banner1),
+                ),
+              ),
+              const SizedBox(height: 16),
+              HomeSectionTask(
+                sectionTitle: 'Practice',
+                tasks: Constants.homePracticeTasks,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              HomeSectionTask(
+                sectionTitle: 'Exam Preparation',
+                tasks: Constants.homeExamPreparationTasks,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -88,8 +88,8 @@ class UpgradeAccountCard extends StatelessWidget {
                       backgroundColor: Colors.grey,
                       color: textColor,
                       value: features
-                              .where(
-                                  (element) => available[features.indexOf(element)])
+                              .where((element) =>
+                                  available[features.indexOf(element)])
                               .length /
                           features.length,
                     ),
@@ -131,7 +131,7 @@ class UpgradeAccountCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: null,
                     style: ElevatedButton.styleFrom(),
-                    child: Text('Miễn phí'),
+                    child: Text('Free'),
                   ),
                 )
               else
@@ -144,7 +144,7 @@ class UpgradeAccountCard extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: onPressed,
-                        child: Text('Nâng cấp ngay'),
+                        child: Text('Upgrade'),
                       ),
                     ),
                   ),
@@ -154,28 +154,29 @@ class UpgradeAccountCard extends StatelessWidget {
           ),
         ),
         if (onPressed != null)
-        Positioned(
-          top: 10,
-          right: 10,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? AppColors.primary
-                  : AppColors.backgroundLight,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              'Khuyến nghị',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontWeight: FontWeight.w700,
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Colors.white
-                        : Colors.black,
-                  ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? AppColors.primary
+                    : AppColors.backgroundLight,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                'Recommend',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+              ),
             ),
           ),
-        ),
       ],
     );
   }

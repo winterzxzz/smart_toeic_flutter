@@ -15,15 +15,13 @@ class ListenCopyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<ListenCopyCubit>()..getTranscriptTests(),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
 
 class Page extends StatelessWidget {
-  const Page({
-    super.key,
-  });
+  const Page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,104 +33,105 @@ class Page extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          body: Row(
-            children: [
-              SizedBox(
-                width: (MediaQuery.of(context).size.width - 60) * 0.3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        context.read<ListenCopyCubit>().toggleFilter();
-                      },
-                      child: Container(
+          endDrawer: Drawer(
+            backgroundColor: Theme.of(context).cardColor,
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      Container(
                         height: 50,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         alignment: Alignment.center,
-                        child: Row(
+                        child: const Row(
                           children: [
-                            const SizedBox(width: 16),
                             Text(
-                              'Bộ lọc',
+                              'Filter',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const Spacer(),
-                            AnimatedRotation(
-                              duration: const Duration(milliseconds: 200),
-                              turns: state.isFilterOpen ? 0 : 0.5,
-                              child: Icon(Icons.keyboard_arrow_up),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: state.isFilterOpen ? 350 : 0,
-                      child: SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            const Divider(),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Column(
-                                children: List.generate(
-                                  4,
-                                  (index) => CheckboxListTile(
-                                    title: Text('Part ${index + 1}'),
-                                    value: state.filterParts
-                                        .contains('${index + 1}'),
-                                    onChanged: (value) {
-                                      context
-                                          .read<ListenCopyCubit>()
-                                          .setFilterPart('${index + 1}');
-                                    },
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    contentPadding: EdgeInsets.zero,
-                                  ),
-                                ),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: state.loadStatus == LoadStatus.loading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : state.filteredTranscriptTestSets.isEmpty
-                        ? const Center(
-                            child: Text('Không có bài tập nào'),
-                          )
-                        : GridView.builder(
-                            padding: const EdgeInsets.all(24.0),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 24,
-                              mainAxisSpacing: 24,
-                              childAspectRatio: 0.8,
+                      const SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            Divider(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: _FilterOptions(),
                             ),
-                            itemCount: state.filteredTranscriptTestSets.length,
-                            itemBuilder: (context, index) {
-                              final test =
-                                  state.filteredTranscriptTestSets[index];
-                              return TranscriptTestItem(test: test);
-                            },
-                          ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
+            ),
+          ),
+          body: CustomScrollView(
+            slivers: [
+              const SliverAppBar(
+                title: Text('Test Listening'),
+                centerTitle: true,
+                floating: true,
+                snap: true,
+              ),
+              if (state.loadStatus == LoadStatus.loading)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else if (state.filteredTranscriptTestSets.isEmpty)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: Text('No test found'),
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.all(16.0),
+                  sliver: SliverList.builder(
+                    itemCount: state.filteredTranscriptTestSets.length,
+                    itemBuilder: (context, index) {
+                      final test = state.filteredTranscriptTestSets[index];
+                      return TranscriptTestItem(test: test);
+                    },
+                  ),
+                ),
             ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _FilterOptions extends StatelessWidget {
+  const _FilterOptions();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ListenCopyCubit, ListenCopyState>(
+      builder: (context, state) {
+        return Column(
+          children: List.generate(
+            4,
+            (index) => CheckboxListTile(
+              title: Text('Part ${index + 1}'),
+              value: state.filterParts.contains('${index + 1}'),
+              onChanged: (value) {
+                context.read<ListenCopyCubit>().setFilterPart('${index + 1}');
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+            ),
           ),
         );
       },

@@ -24,7 +24,7 @@ class AppColors {
   static const Color addButtonLight = Color(0xFF19B4FF);
 
   ///Common
-  static const Color primary = Color(0xFF313443);
+  static const Color primary = Color(0xFF47bcaa);
   static const Color secondary = Color(0xFF3E4450);
   static const Color error = Color(0xFFEB5757);
   static const Color success = Colors.green;

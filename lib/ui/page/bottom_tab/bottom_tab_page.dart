@@ -118,7 +118,7 @@ class Page extends StatelessWidget {
                                 colorFilter: state.currentIndex ==
                                         Constants.bottomTabs.indexOf(item)
                                     ? const ColorFilter.mode(
-                                        Colors.blueAccent,
+                                        AppColors.primary,
                                         BlendMode.srcIn,
                                       )
                                     : null,
@@ -152,8 +152,8 @@ class Page extends StatelessWidget {
                 visible: orientation == Orientation.portrait,
                 child: BottomNavigationBar(
                   useLegacyColorScheme: true,
-                  backgroundColor: Colors.white,
-                  selectedItemColor: Colors.blueAccent,
+                  backgroundColor: AppColors.backgroundLight,
+                  selectedItemColor: AppColors.primary,
                   unselectedItemColor: AppColors.gray3,
                   selectedLabelStyle: const TextStyle(
                     fontSize: 12,
@@ -180,7 +180,7 @@ class Page extends StatelessWidget {
                         colorFilter: state.currentIndex ==
                                 Constants.bottomTabs.indexOf(tab)
                             ? const ColorFilter.mode(
-                                Colors.blueAccent,
+                                AppColors.primary,
                                 BlendMode.srcIn,
                               )
                             : const ColorFilter.mode(

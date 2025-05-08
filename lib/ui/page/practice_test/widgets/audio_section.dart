@@ -69,67 +69,94 @@ class _AudioSectionState extends State<AudioSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16, right: 16),
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.gray3,
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: [
-          InkWell(
-            onTap: () {
-              initAudioPlayer();
-              if (_isPlaying) {
-                _audioPlayer?.pause();
-              } else {
-                _audioPlayer?.resume();
-              }
-              setState(() {
-                _isPlaying = !_isPlaying;
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Material(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: _isPlaying
-                  ? Icon(
-                      Icons.pause,
+                borderRadius: BorderRadius.circular(30),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () {
+                    initAudioPlayer();
+                    if (_isPlaying) {
+                      _audioPlayer?.pause();
+                    } else {
+                      _audioPlayer?.resume();
+                    }
+                    setState(() {
+                      _isPlaying = !_isPlaying;
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    child: Icon(
+                      _isPlaying ? Icons.pause : Icons.play_arrow,
                       color: Colors.black,
-                    )
-                  : Icon(
-                      Icons.play_arrow,
-                      color: Colors.black,
+                      size: 28,
                     ),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Slider(
-                    activeColor: AppColors.textWhite,
-                    inactiveColor: AppColors.gray1,
-                    min: 0,
-                    max: _duration?.inSeconds.toDouble() ?? 0,
-                    value: _position?.inSeconds.toDouble() ?? 0,
-                    onChangeStart: _handleSeekStart,
-                    onChanged: _handleSeekUpdate,
-                    onChangeEnd: _handleSeekEnd,
                   ),
                 ),
-                SizedBox(width: 8),
-                Text(
-                  formatDuration(_position ?? Duration.zero),
-                  style: TextStyle(color: AppColors.textWhite),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  children: [
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 4,
+                        thumbShape: const RoundSliderThumbShape(
+                          enabledThumbRadius: 8,
+                        ),
+                        overlayShape: const RoundSliderOverlayShape(
+                          overlayRadius: 16,
+                        ),
+                      ),
+                      child: Slider(
+                        activeColor: AppColors.textWhite,
+                        inactiveColor: AppColors.gray1,
+                        min: 0,
+                        max: _duration?.inSeconds.toDouble() ?? 0,
+                        value: _position?.inSeconds.toDouble() ?? 0,
+                        onChangeStart: _handleSeekStart,
+                        onChanged: _handleSeekUpdate,
+                        onChangeEnd: _handleSeekEnd,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            formatDuration(_position ?? Duration.zero),
+                            style: const TextStyle(
+                              color: AppColors.textWhite,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Text(
+                            formatDuration(_duration ?? Duration.zero),
+                            style: const TextStyle(
+                              color: AppColors.textWhite,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 16),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test_set.dart';
 
 class TranscriptTestItem extends StatelessWidget {
@@ -19,68 +19,69 @@ class TranscriptTestItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(16)),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFE7F0FF),
-                ),
-                child: Image.network(
-                  '${Constants.hostUrl}/uploads${test.image}',
-                  errorBuilder: (context, error, stackTrace) =>
-                      const SizedBox(),
-                  fit: BoxFit.contain,
+      child: InkWell(
+        onTap: () {
+          GoRouter.of(context).pushNamed(
+            AppRouter.transcriptTestDetail,
+            extra: {'transcriptTestId': test.id},
+          );
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: SizedBox(
+          child: Row(
+            children: [
+              SizedBox(
+                width: 100,
+                child: ClipRRect(
+                  borderRadius:
+                      const BorderRadius.horizontal(left: Radius.circular(16)),
+                  child: Container(
+                    height: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFE7F0FF),
+                    ),
+                    child: Image.network(
+                      '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${test.image}',
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox(),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Text(
-                  test.title ?? '',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      GoRouter.of(context)
-                          .pushNamed(AppRouter.transcriptTestDetail, extra: {
-                        'transcriptTestId': test.id,
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        test.title ?? '',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    child: const Text(
-                      'Làm bài',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
+                      const SizedBox(height: 4),
+                      const Text(
+                        'Click to start test',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

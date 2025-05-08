@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
@@ -47,7 +47,8 @@ class _AvatarHeadingState extends State<AvatarHeading> {
               backgroundImage: widget.user?.avatar.isEmpty ?? true
                   ? null
                   // remove first and last character from the string
-                  : Image.network('${Constants.hostUrl}${widget.user?.avatar}')
+                  : Image.network(
+                          '${AppConfigs.baseUrl.replaceAll('/api', '')}${widget.user?.avatar}')
                       .image,
               child: Stack(
                 alignment: Alignment.center,
