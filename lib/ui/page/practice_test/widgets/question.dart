@@ -88,21 +88,17 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Question number
-        Column(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.blue.shade100,
-              child: Text(
-                '${widget.question.id}',
-                style: const TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+        CircleAvatar(
+          backgroundColor: Colors.blue.shade100,
+          child: Text(
+            '${widget.question.id}',
+            style: const TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
             ),
-          ],
+          ),
         ),
-        const SizedBox(width: 16.0),
+        const SizedBox(width: 8),
         // Options
         Flexible(
           child: Column(
@@ -193,30 +189,36 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   }
                                 }
                                 return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Radio<String>(
-                                      value: option.id?.name ?? '',
-                                      groupValue: questionResult?.useranswer,
-                                      activeColor: Colors.red,
-                                      onChanged: null,
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Radio<String>(
+                                          value: option.id?.name ?? '',
+                                          groupValue:
+                                              questionResult?.useranswer,
+                                          activeColor: Colors.red,
+                                          onChanged: null,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: color,
+                                          ),
+                                          child: Text(
+                                            '${option.id?.name}.',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: color,
-                                      ),
-                                      child: Text(
-                                        '${option.id?.name}. ',
-                                      ),
-                                    ),
+                                    const SizedBox(width: 4),
                                     Expanded(
-                                      child: Column(
-                                        children: [
-                                          const SizedBox(width: 8),
-                                          Text(
-                                              option.content.toString().trim()),
-                                        ],
-                                      ),
+                                      child: Text(
+                                          option.content.toString().trim()),
                                     )
                                   ],
                                 );
@@ -243,7 +245,9 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                 final isPremium =
                                     state.user?.isPremium() ?? false;
                                 if (!isPremium) {
-                                  return Row(
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       InkWell(
                                         onTap: () {
@@ -258,11 +262,10 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(width: 16),
+                                      const SizedBox(height: 16),
                                       // Add upgrade button
                                       SizedBox(
                                         width: 200,
-                                        height: 45,
                                         child: ElevatedButton(
                                           onPressed: null,
                                           child: Row(

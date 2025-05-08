@@ -7,7 +7,6 @@ import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/home_state.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/blog_section.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/result_section.dart';
-import 'package:toeic_desktop/ui/page/home/widgets/service_section.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/test_section.dart';
 
 class HomePage extends StatefulWidget {
@@ -70,6 +69,7 @@ class Page extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 24),
+                  
                   // Toeic exam section
                   if (state.tests.isNotEmpty) TestSection(tests: state.tests),
                   const SizedBox(height: 16),
