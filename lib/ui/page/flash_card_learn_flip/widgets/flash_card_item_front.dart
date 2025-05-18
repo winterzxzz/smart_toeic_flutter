@@ -8,6 +8,7 @@ class FlashcardFront extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primary,
@@ -20,19 +21,15 @@ class FlashcardFront extends StatelessWidget {
         children: [
           Text(
             word,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
+            style: theme.textTheme.headlineMedium?.copyWith(
               color: AppColors.textWhite,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
-          const Text(
+          Text(
             'Click to reveal definition',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.textGray,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.textWhite,
             ),
           ),
         ],

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/flash_card_learn_flip_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card_learn_flip/widgets/flash_card_item_back.dart';
@@ -36,6 +38,7 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const LeadingBackButton(),
         title: BlocSelector<FlashCardLearnFlipCubit, FlashCardLearnFlipState,
             String>(
           selector: (state) => state.title,
@@ -44,7 +47,7 @@ class Page extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Flashcards: $title',
+                  title,
                   style: const TextStyle(fontSize: 16),
                 ),
                 BlocSelector<FlashCardLearnFlipCubit, FlashCardLearnFlipState,
@@ -122,7 +125,7 @@ class Page extends StatelessWidget {
                       // Show Answer button
                       SizedBox(
                         width: double.infinity,
-                        height: 56,
+                        height: 48,
                         child: ElevatedButton.icon(
                           onPressed: () => context
                               .read<FlashCardLearnFlipCubit>()
@@ -148,7 +151,7 @@ class Page extends StatelessWidget {
                         children: [
                           Expanded(
                             child: SizedBox(
-                              height: 56,
+                              height: 48,
                               child: ElevatedButton.icon(
                                 onPressed: state.currentIndex > 0
                                     ? () => context
@@ -158,6 +161,8 @@ class Page extends StatelessWidget {
                                 icon: const Icon(Icons.arrow_back),
                                 label: const Text('Previous'),
                                 style: ElevatedButton.styleFrom(
+                                  disabledBackgroundColor:
+                                      AppColors.gray1.withValues(alpha: 0.5),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -168,7 +173,7 @@ class Page extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: SizedBox(
-                              height: 56,
+                              height: 48,
                               child: ElevatedButton.icon(
                                 onPressed: state.currentIndex <
                                         state.flashCards.length - 1
@@ -179,6 +184,8 @@ class Page extends StatelessWidget {
                                 icon: const Icon(Icons.arrow_forward),
                                 label: const Text('Next'),
                                 style: ElevatedButton.styleFrom(
+                                  disabledBackgroundColor:
+                                      AppColors.gray1.withValues(alpha: 0.5),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
