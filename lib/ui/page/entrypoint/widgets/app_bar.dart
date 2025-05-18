@@ -11,7 +11,7 @@ import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
-import 'package:toeic_desktop/ui/page/tests/test_online_cubit.dart';
+import 'package:toeic_desktop/ui/page/tests/tests_cubit.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({
@@ -182,7 +182,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   'Are you sure?',
                   () {
                     injector<UserCubit>().removeUser(context).then((_) {
-                      injector.resetLazySingleton<DeThiOnlineCubit>();
+                      injector.resetLazySingleton<TestsCubit>();
                     });
                   },
                 );

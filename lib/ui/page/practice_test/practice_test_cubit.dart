@@ -22,7 +22,7 @@ import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
-import 'package:toeic_desktop/ui/page/tests/test_online_cubit.dart';
+import 'package:toeic_desktop/ui/page/tests/tests_cubit.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final TestRepository _testRepository;
@@ -214,7 +214,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       )),
       (r) async {
         await injector<HomeCubit>().getData();
-        await injector<DeThiOnlineCubit>().fetchTests();
+        await injector<TestsCubit>().fetchTests();
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
         ));

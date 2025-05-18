@@ -15,7 +15,7 @@ import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_state.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_page.dart';
-import 'package:toeic_desktop/ui/page/tests/test_online_page.dart';
+import 'package:toeic_desktop/ui/page/tests/tests_page.dart';
 
 class BottomTabPage extends StatefulWidget {
   const BottomTabPage({super.key});

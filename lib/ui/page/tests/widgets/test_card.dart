@@ -18,113 +18,87 @@ class TestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final userAttempt = test.userAttempt;
     final isAttempted = userAttempt!.count! > 0;
+    final theme = Theme.of(context);
+    final tags = [
+      if (test.duration != null)
+        TagWidget(icon: FontAwesomeIcons.clock, text: "${test.duration} min"),
+      if (test.difficulty != null)
+        TagWidget(
+            icon: FontAwesomeIcons.turnUp, text: "level: ${test.difficulty}"),
+      if (userAttempt.count != null)
+        TagWidget(
+            icon: FontAwesomeIcons.fileLines,
+            text: "${userAttempt.count} attempts"),
+    ];
+
     return Card(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Opacity(
-              opacity: isAttempted == true ? 1 : 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(
+            color: isAttempted ? AppColors.success : Colors.transparent,
+            width: 1),
+      ),
+      child: InkWell(
+        onTap: () {
+          GoRouter.of(context).pushNamed(AppRouter.modeTest, extra: {
+            'test': test,
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title and checkmark in a row for mobile
+              Row(
                 children: [
-                  FaIcon(FontAwesomeIcons.circleCheck,
-                      color: AppColors.success),
-                ],
-              ),
-            ),
-            if (test.title != null)
-              Text(
-                test.title!,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                )
-              ),
-            SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              direction: Axis.horizontal,
-              children: [
-                TagWidget(
-                    icon: FontAwesomeIcons.clock,
-                    text: "${test.duration} minutes"),
-                TagWidget(
-                    icon: FontAwesomeIcons.turnUp,
-                    text: "level: ${test.difficulty}"),
-                TagWidget(
-                  icon: FontAwesomeIcons.circleQuestion,
-                  text: "${test.numberOfQuestions} questions",
-                ),
-                TagWidget(
-                  icon: FontAwesomeIcons.circleCheck,
-                  text: "${userAttempt.count!} attempts",
-                ),
-                TagWidget(
-                  icon: FontAwesomeIcons.fileLines,
-                  text: "Type: ${test.type}",
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Container(
-              padding: EdgeInsets.all(8),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: isAttempted == true
-                    ? AppColors.success.withValues(alpha: 0.2)
-                    : Colors.grey[500],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    isAttempted
-                        ? 'Have been ${userAttempt.count!} attempts'
-                        : 'Manage your time effectively !',
-                    style: TextStyle(
-                      color:
-                          isAttempted ? AppColors.success : AppColors.textWhite,
-                      fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: Text(
+                      test.title ?? '',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (isAttempted)
-                    Row(
-                      children: [
-                        Icon(Icons.access_alarm,
-                            color: AppColors.success, size: 16),
-                        const SizedBox(width: 4),
-                        Text(
-                          TimeUtils.timeAgo(test.updatedAt ?? test.createdAt!),
-                          style: TextStyle(
-                            color: AppColors.success,
-                            fontWeight: FontWeight.w500,
-                          ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: isAttempted
+                            ? AppColors.success.withValues(alpha: 0.15)
+                            : Colors.grey[400],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'Last time taken ${TimeUtils.timeAgo(test.updatedAt ?? test.createdAt!)}',
+                        style: TextStyle(
+                          color: AppColors.success,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10,
                         ),
-                      ],
+                      ),
                     ),
                 ],
               ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isAttempted ? AppColors.success : null,
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 24,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: tags.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 8),
+                  itemBuilder: (context, index) {
+                    return tags[index];
+                  },
                 ),
-                onPressed: () {
-                  GoRouter.of(context).pushNamed(AppRouter.modeTest, extra: {
-                    'test': test,
-                  });
-                },
-                child: Text(isAttempted ? "Retake Test" : "Take Test"),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -147,18 +121,19 @@ class TagWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.gray1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: theme.scaffoldBackgroundColor),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FaIcon(icon, size: 16),
+          FaIcon(icon, size: 12),
           const SizedBox(width: 4),
-          Text(text),
+          Text(text, style: TextStyle(fontSize: 12)),
         ],
       ),
     );

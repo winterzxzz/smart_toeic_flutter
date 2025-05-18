@@ -1,5 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class CustomDropdownExample<T> extends StatefulWidget {
@@ -37,9 +38,19 @@ class _CustomDropdownExampleState<T> extends State<CustomDropdownExample<T>> {
       items: widget.data,
       hintText: widget.dataString.first,
       decoration: CustomDropdownDecoration(
-        closedBorder: Border.all(color: Colors.grey.shade300),
+        closedBorder: Border.all(color: AppColors.gray1),
         closedFillColor: color,
         expandedFillColor: color,
+        headerStyle: const TextStyle(
+          fontSize: 12,
+          height: 0.5,
+        ),
+        hintStyle: const TextStyle(fontSize: 12),
+        listItemStyle: const TextStyle(fontSize: 12),
+        closedSuffixIcon: const FaIcon(
+          FontAwesomeIcons.chevronDown,
+          size: 10,
+        ),
       ),
       hintBuilder: (context, hint, enabled) {
         final index = widget.data.indexOf(jobRoleCtrl.value as T);

@@ -54,9 +54,9 @@ Future<void> init() async {
     injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
   }
 
-  if (!injector.isRegistered<DeThiOnlineCubit>()) {
-    injector.registerLazySingleton<DeThiOnlineCubit>(
-        () => DeThiOnlineCubit(injector()));
+  if (!injector.isRegistered<TestsCubit>()) {
+    injector.registerLazySingleton<TestsCubit>(
+        () => TestsCubit(injector()));
   }
 
   if (!injector.isRegistered<SplashCubit>()) {
