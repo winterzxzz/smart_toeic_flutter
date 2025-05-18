@@ -30,7 +30,7 @@ import 'package:toeic_desktop/ui/page/practice_test/practice_test_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
-import 'package:toeic_desktop/ui/page/mode_test/mode_test_page.dart';
+import 'package:toeic_desktop/ui/page/choose_mode_test/mode_test_page.dart';
 import 'package:toeic_desktop/ui/page/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
 

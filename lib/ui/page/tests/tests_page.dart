@@ -4,7 +4,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
+import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/tests/tests_cubit.dart';
 import 'package:toeic_desktop/ui/page/tests/tests_state.dart';
 import 'package:toeic_desktop/ui/page/tests/widgets/test_card.dart';
@@ -53,7 +53,6 @@ class _PageState extends State<Page> {
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  pinned: true,
                   floating: true,
                   title: const Text('Tests'),
                   actions: [
