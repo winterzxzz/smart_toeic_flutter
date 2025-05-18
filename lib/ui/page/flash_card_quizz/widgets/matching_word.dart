@@ -194,6 +194,7 @@ class _MatchingWordState extends State<MatchingWord>
   }
 
   Widget _buildWordContent(String text, bool isSelected, VoidCallback onTap) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -206,10 +207,11 @@ class _MatchingWordState extends State<MatchingWord>
         ),
         padding: const EdgeInsets.all(16),
         child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontWeight: FontWeight.bold,
+          // to capitalize first letter
+          text.capitalizeFirst,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: isSelected ? AppColors.textWhite : AppColors.textBlack,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -223,15 +225,15 @@ class _MatchingWordState extends State<MatchingWord>
         Column(
           children: [
             const SizedBox(height: 32),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Ghép nghĩa', style: TextStyle(fontSize: 18)),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 // Replace the text timer with a linear progress indicator
               ],
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             if (availableWords.isNotEmpty && availableTranslations.isNotEmpty)
               Expanded(
                 child: Row(
@@ -239,9 +241,9 @@ class _MatchingWordState extends State<MatchingWord>
                     // English
                     Expanded(
                       child: ListView.separated(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         itemCount: availableWords.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 16),
+                        separatorBuilder: (_, __) => const SizedBox(height: 16),
                         itemBuilder: (context, index) {
                           final card = availableWords[index];
                           return buildWordContainer(
@@ -256,9 +258,9 @@ class _MatchingWordState extends State<MatchingWord>
                     // Vietnamese
                     Expanded(
                       child: ListView.separated(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         itemCount: availableTranslations.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 16),
+                        separatorBuilder: (_, __) => const SizedBox(height: 16),
                         itemBuilder: (context, index) {
                           final card = availableTranslations[index];
                           return buildWordContainer(
@@ -274,7 +276,7 @@ class _MatchingWordState extends State<MatchingWord>
                 ),
               )
             else
-              Column(
+              const Column(
                 children: [
                   Text(
                       'Bạn đã ghép đúng tất cả các từ, tiếp tục với những dạng khác nhé!'),
@@ -305,4 +307,9 @@ class ShakeCurve extends Curve {
   double transform(double t) {
     return sin(t * pi * 8);
   }
+}
+
+extension StringExtension on String {
+  String get capitalizeFirst =>
+      isEmpty ? this : '${this[0].toUpperCase()}${substring(1)}';
 }

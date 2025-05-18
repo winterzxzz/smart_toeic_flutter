@@ -45,10 +45,6 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 600;
-    final horizontalPadding =
-        isMobile ? 16.0 : MediaQuery.sizeOf(context).width * 0.1;
-
     return Scaffold(
       body: BlocConsumer<FlashCardDetailLearningCubit,
           FlashCardDetailLearningState>(
@@ -74,8 +70,8 @@ class _PageState extends State<Page> {
                     builder: (context, flashCards) {
                       return Text(
                         'Flashcard: ${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} từ)',
-                        style: TextStyle(
-                          fontSize: isMobile ? 16 : 20,
+                        style: const TextStyle(
+                          fontSize: 16,
                         ),
                       );
                     },
@@ -83,65 +79,34 @@ class _PageState extends State<Page> {
                   actions: [
                     IconButton(
                       onPressed: _showStatusInfo,
-                      icon: FaIcon(FontAwesomeIcons.circleInfo,
-                          size: isMobile ? 14 : 16),
+                      icon: const FaIcon(FontAwesomeIcons.circleInfo, size: 16),
                     ),
                   ],
                 ),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
                       const SizedBox(height: 24),
-                      if (isMobile) ...[
-                        _buildActionButton(
-                          onPressed: () {
-                            GoRouter.of(context).pushNamed(
-                              AppRouter.flashCardQuizz,
-                              extra: {
-                                'id': widget
-                                    .setFlashCardLearning.setFlashcardId.id,
-                              },
-                            );
-                          },
-                          icon: Icons.play_circle_outline_rounded,
-                          label: 'Luyện tập flashcards',
-                        ),
-                        const SizedBox(height: 12),
-                        _buildActionButton(
-                          onPressed: () {},
-                          icon: Icons.pause_circle_outline_rounded,
-                          label: 'Dừng học bộ này',
-                        ),
-                      ] else ...[
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildActionButton(
-                                onPressed: () {
-                                  GoRouter.of(context).pushNamed(
-                                    AppRouter.flashCardQuizz,
-                                    extra: {
-                                      'id': widget.setFlashCardLearning
-                                          .setFlashcardId.id,
-                                    },
-                                  );
-                                },
-                                icon: Icons.play_circle_outline_rounded,
-                                label: 'Luyện tập flashcards',
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _buildActionButton(
-                                onPressed: () {},
-                                icon: Icons.pause_circle_outline_rounded,
-                                label: 'Dừng học bộ này',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      _buildActionButton(
+                        onPressed: () {
+                          GoRouter.of(context).pushNamed(
+                            AppRouter.flashCardQuizz,
+                            extra: {
+                              'id':
+                                  widget.setFlashCardLearning.setFlashcardId.id,
+                            },
+                          );
+                        },
+                        icon: Icons.play_circle_outline_rounded,
+                        label: 'Luyện tập flashcards',
+                      ),
+                      const SizedBox(height: 12),
+                      _buildActionButton(
+                        onPressed: () {},
+                        icon: Icons.pause_circle_outline_rounded,
+                        label: 'Dừng học bộ này',
+                      ),
                       const SizedBox(height: 16),
                       ...state.flashCards.map((flashcard) =>
                           FlashCardLearningTile(flashcard: flashcard)),

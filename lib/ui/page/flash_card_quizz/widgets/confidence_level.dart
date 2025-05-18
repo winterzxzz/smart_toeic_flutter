@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 Map<double, String> diffLevels = {
@@ -26,6 +27,7 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (widget.fcLearning.flashcardId == null) {
       return const SizedBox.shrink();
     }
@@ -35,20 +37,17 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
       children: [
         Text(
           widget.fcLearning.flashcardId?.word ?? '',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.purple[700],
+          style: theme.textTheme.headlineMedium?.copyWith(
+            color: AppColors.primary,
           ),
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         Text(
           'Bạn đã thuộc từ này ở mức nào?',
-          style: TextStyle(fontSize: 18),
+          style: theme.textTheme.bodyMedium,
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         ...diffLevels.entries.map((level) {
-          log('confidenceLevel: ${level.key}');
           return Column(
             children: [
               const SizedBox(height: 32),
@@ -63,7 +62,7 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   height: 70,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
@@ -84,7 +83,7 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
                                   value!, widget.fcLearning.id!);
                         },
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(level.value),
                     ],
                   ),

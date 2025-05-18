@@ -23,8 +23,8 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   }
 
   void _startTimer() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      currentTime = currentTime + Duration(seconds: 1);
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      currentTime = currentTime + const Duration(seconds: 1);
     });
   }
 

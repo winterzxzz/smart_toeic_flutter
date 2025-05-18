@@ -37,14 +37,18 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       key: widget.key,
       children: [
-        Text('Sắp xếp các từ để tạo thành câu đúng',
-            style: TextStyle(fontSize: 18)),
-        SizedBox(height: 32),
+        const Center(
+          child: Text('Sắp xếp các từ để tạo thành câu đúng',
+              style: TextStyle(fontSize: 18)),
+        ),
+        const SizedBox(height: 32),
         Wrap(
           spacing: 8,
           runSpacing: 8,
+          direction: Axis.horizontal,
           children: shuffledWords.map((word) {
             return InkWell(
               onTap: () {
@@ -61,17 +65,15 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                 });
               },
               child: Container(
-                height: 35,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.gray2,
+                  color: AppColors.gray1,
                   border: Border.all(color: AppColors.gray1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   word,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -79,46 +81,55 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
             );
           }).toList(),
         ),
-        SizedBox(height: 16),
-        Wrap(
-          spacing: 4,
-          direction: Axis.horizontal,
-          runSpacing: 4,
-          children: selectedWords.map((word) {
-            return InkWell(
-              onTap: () {
-                if (isCheck) {
-                  isCheck = false;
-                }
-                if (isShowAnswer) {
-                  isShowAnswer = false;
-                }
+        const SizedBox(height: 16),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8),
+          constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height * 0.1),
+          decoration: BoxDecoration(
+            color: AppColors.gray1,
+            border: Border.all(color: AppColors.gray1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: selectedWords.map((word) {
+              return InkWell(
+                onTap: () {
+                  if (isCheck) {
+                    isCheck = false;
+                  }
+                  if (isShowAnswer) {
+                    isShowAnswer = false;
+                  }
 
-                setState(() {
-                  shuffledWords.add(word);
-                  selectedWords.remove(word);
-                });
-              },
-              child: Container(
-                height: 35,
-                width: 100,
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  border: Border.all(color: AppColors.gray1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  word,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  setState(() {
+                    shuffledWords.add(word);
+                    selectedWords.remove(word);
+                  });
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.textWhite,
+                    border: Border.all(color: AppColors.textWhite),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    word,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         Row(
           children: [
             Expanded(
@@ -134,25 +145,25 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                             widget.fcLearning.flashcardId!.exampleSentence.first
                                 .toLowerCase());
                   },
-                  child: Text('Kiểm tra'),
+                  child: const Text('Kiểm tra'),
                 ),
               ),
             ),
           ],
         ),
-        SizedBox(height: 32),
-        if (isCheck)
-          Builder(builder: (context) {
-            return Column(
-              children: [
-                SizedBox(height: 8),
-                Text(
-                  'Đáp án: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
-            );
-          }),
+        const SizedBox(height: 32),
+        Visibility(
+          visible: isCheck,
+          child: Column(
+            children: [
+              const SizedBox(height: 8),
+              Text(
+                'Đáp án: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        )
       ],
     );
   }

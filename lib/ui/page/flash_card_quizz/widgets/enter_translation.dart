@@ -36,20 +36,20 @@ class _EnterTranslationState extends State<EnterTranslation> {
       key: widget.key,
       children: [
         Text.rich(
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              TextSpan(text: 'Nhập từ tiếng anh có nghĩa là '),
+              const TextSpan(text: 'Nhập từ tiếng anh có nghĩa là '),
               TextSpan(
                 text: "'${widget.fcLearning.flashcardId!.translation}'",
-                style: TextStyle(
+                style: const TextStyle(
                     fontWeight: FontWeight.bold, color: AppColors.error),
               ),
-              TextSpan(text: ' ?'),
+              const TextSpan(text: ' ?'),
             ],
           ),
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         TextField(
           controller: _controller,
           textAlign: TextAlign.center,
@@ -58,15 +58,15 @@ class _EnterTranslationState extends State<EnterTranslation> {
             hintText: 'Nhập từ tiếng anh',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: const BorderSide(color: Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.purple),
+              borderSide: const BorderSide(color: Colors.purple),
             ),
           ),
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
@@ -74,12 +74,18 @@ class _EnterTranslationState extends State<EnterTranslation> {
               setState(() {
                 isCheck = true;
               });
-              context.read<FlashCardQuizzCubit>().answer(
-                  widget.fcLearning.flashcardId!.word,
-                  _controller.text.toLowerCase() ==
-                      widget.fcLearning.flashcardId!.word.toLowerCase());
+              FocusScope.of(context).unfocus();
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (context.mounted) {
+                  context.read<FlashCardQuizzCubit>().answer(
+                      widget.fcLearning.flashcardId!.word,
+                      _controller.text.toLowerCase() ==
+                          widget.fcLearning.flashcardId!.word.toLowerCase());
+                }
+              });
+              // hide keyboard
             },
-            child: Text('Kiểm tra'),
+            child: const Text('Kiểm tra'),
           ),
         ),
         const SizedBox(height: 32),
@@ -90,10 +96,10 @@ class _EnterTranslationState extends State<EnterTranslation> {
             return Column(
               children: [
                 if (!isCorrect) ...[
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'Đáp án: ${widget.fcLearning.flashcardId!.word}',
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ],

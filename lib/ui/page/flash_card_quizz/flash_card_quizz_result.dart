@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 
 class FlashCardQuizResultPage extends StatelessWidget {
   final List<FlashCardQuizzScoreRequest> flashCardQuizzScoreRequest;
@@ -13,8 +14,8 @@ class FlashCardQuizResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Kết quả bài kiểm tra'),
+        leading: const LeadingBackButton(),
+        title: const Text('Kết quả bài kiểm tra'),
       ),
       body: ListView.builder(
         itemCount: flashCardQuizzScoreRequest.length,

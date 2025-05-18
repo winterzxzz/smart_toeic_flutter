@@ -26,7 +26,7 @@ class FlashCardQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<FlashCardQuizzCubit>()..init(id),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
@@ -64,24 +64,21 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 600;
 
-    return BlocConsumer<FlashCardQuizzCubit, FlashCardQuizzState>(
-      listener: (context, state) {
-        if (state.isAnimating) {
-          _timerController.reset();
-          _timerController.forward();
-        } else {
-          _timerController.stop();
-        }
-        if (state.isFinish) {
-          navigator
-              .pushReplacementNamed(AppRouter.flashCardQuizzResult, extra: {
-            'flashCardQuizzScoreRequest': state.flashCardQuizzScoreRequest,
-          });
-        }
-        if (state.loadStatus == LoadStatus.loading) {
-          navigator.showLoadingOverlay();
-        } else {
-          navigator.hideLoadingOverlay();
+    return Scaffold(
+      body: BlocConsumer<FlashCardQuizzCubit, FlashCardQuizzState>(
+        listener: (context, state) {
+          if (state.isAnimating) {
+            _timerController.reset();
+            _timerController.forward();
+          } else {
+            _timerController.stop();
+          }
+          if (state.isFinish) {
+            navigator
+                .pushReplacementNamed(AppRouter.flashCardQuizzResult, extra: {
+              'flashCardQuizzScoreRequest': state.flashCardQuizzScoreRequest,
+            });
+          }
           if (state.loadStatus == LoadStatus.failure) {
             showToast(title: state.message, type: ToastificationType.error);
           } else if (state.loadStatus == LoadStatus.success) {
@@ -89,201 +86,188 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
               showToast(title: state.message, type: ToastificationType.success);
             }
           }
-        }
-      },
-      builder: (context, state) {
-        if (state.loadStatus != LoadStatus.success) {
-          return const SizedBox.shrink();
-        }
-        return Scaffold(
-          body: Builder(builder: (context) {
-            return SafeArea(
-              child: Center(
-                child: Card(
-                  child: Stack(children: [
-                    IgnorePointer(
-                      ignoring: state.isAnimating,
-                      child: Opacity(
-                        opacity: state.isAnimating ? 0.5 : 1,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder:
-                                (Widget child, Animation<double> animation) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: SlideTransition(
-                                  position: Tween<Offset>(
-                                    begin: const Offset(0.0, 0.1),
-                                    end: Offset.zero,
-                                  ).animate(animation),
-                                  child: child,
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: isSmallScreen ? 16 : 32,
-                                vertical: isSmallScreen ? 8 : 16,
-                              ),
-                              child: Builder(
-                                key: ValueKey(
-                                    '${state.typeQuizzIndex}-${state.currentIndex}'),
-                                builder: (context) {
-                                  switch (state.typeQuizzIndex) {
-                                    case 0:
-                                      return ConfidenceLevel(
-                                        fcLearning: state.flashCardLearning[
-                                            state.currentIndex],
-                                        key: ValueKey(
-                                            'confidence-${state.currentIndex}'),
-                                      );
-                                    case 1:
-                                      return MatchingWord(
-                                        list: state.flashCardLearning,
-                                        key: ValueKey(
-                                            'matching-${state.currentIndex}'),
-                                      );
-                                    case 2:
-                                      return EnterTranslation(
-                                        fcLearning: state.flashCardLearning[
-                                            state.currentIndex],
-                                        key: ValueKey(
-                                            'enter-translation-${state.currentIndex}'),
-                                      );
-                                    case 3:
-                                      return OrderWordToCorrect(
-                                        fcLearning: state.flashCardLearning[
-                                            state.currentIndex],
-                                        key: ValueKey(
-                                            'order-word-to-correct-${state.currentIndex}'),
-                                      );
-                                    case 4:
-                                      return SelectDescription(
-                                        fcLearning: state.flashCardLearning[
-                                            state.currentIndex],
-                                        key: ValueKey(
-                                            'select-description-${state.currentIndex}'),
-                                      );
-                                    case 5:
-                                      return SelectTranslation(
-                                        fcLearning: state.flashCardLearning[
-                                            state.currentIndex],
-                                        key: ValueKey(
-                                            'select-translation-${state.currentIndex}'),
-                                      );
-                                    case 6:
-                                      return EnterWord(
-                                        fcLearning: state.flashCardLearning[
-                                            state.currentIndex],
-                                        key: ValueKey(
-                                            'enter-word-${state.currentIndex}'),
-                                      );
-                                    default:
-                                      return const SizedBox.shrink();
-                                  }
-                                },
-                              ),
-                            ),
+        },
+        builder: (context, state) {
+          if (state.loadStatus == LoadStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Center(
+            child: Stack(children: [
+              IgnorePointer(
+                ignoring: state.isAnimating,
+                child: Opacity(
+                  opacity: state.isAnimating ? 0.5 : 1,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.0, 0.1),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
                           ),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isSmallScreen ? 16 : 32,
+                          vertical: isSmallScreen ? 8 : 16,
+                        ),
+                        child: Builder(
+                          key: ValueKey(
+                              '${state.typeQuizzIndex}-${state.currentIndex}'),
+                          builder: (context) {
+                            switch (state.typeQuizzIndex) {
+                              case 0:
+                                return ConfidenceLevel(
+                                  fcLearning: state
+                                      .flashCardLearning[state.currentIndex],
+                                  key: ValueKey(
+                                      'confidence-${state.currentIndex}'),
+                                );
+                              case 1:
+                                return MatchingWord(
+                                  list: state.flashCardLearning,
+                                  key: ValueKey(
+                                      'matching-${state.currentIndex}'),
+                                );
+                              case 2:
+                                return EnterTranslation(
+                                  fcLearning: state
+                                      .flashCardLearning[state.currentIndex],
+                                  key: ValueKey(
+                                      'enter-translation-${state.currentIndex}'),
+                                );
+                              case 3:
+                                return OrderWordToCorrect(
+                                  fcLearning: state
+                                      .flashCardLearning[state.currentIndex],
+                                  key: ValueKey(
+                                      'order-word-to-correct-${state.currentIndex}'),
+                                );
+                              case 4:
+                                return SelectDescription(
+                                  fcLearning: state
+                                      .flashCardLearning[state.currentIndex],
+                                  key: ValueKey(
+                                      'select-description-${state.currentIndex}'),
+                                );
+                              case 5:
+                                return SelectTranslation(
+                                  fcLearning: state
+                                      .flashCardLearning[state.currentIndex],
+                                  key: ValueKey(
+                                      'select-translation-${state.currentIndex}'),
+                                );
+                              case 6:
+                                return EnterWord(
+                                  fcLearning: state
+                                      .flashCardLearning[state.currentIndex],
+                                  key: ValueKey(
+                                      'enter-word-${state.currentIndex}'),
+                                );
+                              default:
+                                return const SizedBox.shrink();
+                            }
+                          },
                         ),
                       ),
                     ),
-                    if (state.isAnimating) ...[
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: state.isCorrect
-                                ? Colors.green[200]
-                                : Colors.red[200],
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12),
-                            ),
-                          ),
+                  ),
+                ),
+              ),
+              if (state.isAnimating) ...[
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color:
+                          state.isCorrect ? Colors.green[200] : Colors.red[200],
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AnimatedBuilder(
+                          animation: _timerController,
+                          builder: (context, child) {
+                            return LinearProgressIndicator(
+                              value: _timerController.value,
+                              backgroundColor: Colors.transparent,
+                              color:
+                                  state.isCorrect ? Colors.green : Colors.red,
+                              minHeight: 3,
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
                           child: Column(
-                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              AnimatedBuilder(
-                                animation: _timerController,
-                                builder: (context, child) {
-                                  return LinearProgressIndicator(
-                                    value: _timerController.value,
-                                    backgroundColor: Colors.transparent,
-                                    color: state.isCorrect
-                                        ? Colors.green
-                                        : Colors.red,
-                                    minHeight: 3,
-                                  );
-                                },
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: FaIcon(
+                                  state.isCorrect
+                                      ? FontAwesomeIcons.check
+                                      : FontAwesomeIcons.xmark,
+                                  size: isSmallScreen ? 32 : 40,
+                                ),
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.all(isSmallScreen ? 12 : 16),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: FaIcon(
-                                        state.isCorrect
-                                            ? FontAwesomeIcons.check
-                                            : FontAwesomeIcons.xmark,
-                                        size: isSmallScreen ? 32 : 40,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Text(
-                                      state.isCorrect
-                                          ? 'Tuyệt vời!'
-                                          : 'Cố gắng hơn!',
-                                      style: TextStyle(
-                                        fontSize: isSmallScreen ? 18 : 20,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Text(
-                                      state.isCorrect
-                                          ? 'Bạn đã trả lời chính xác!'
-                                          : 'Bạn đã trả lời sai!',
-                                      style: TextStyle(
-                                        fontSize: isSmallScreen ? 14 : 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      height: isSmallScreen ? 48 : 50,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<FlashCardQuizzCubit>()
-                                              .next();
-                                        },
-                                        child: Text('Tiếp tục'),
-                                      ),
-                                    ),
-                                  ],
+                              const SizedBox(height: 12),
+                              Text(
+                                state.isCorrect ? 'Great!' : 'Try harder!',
+                                style: TextStyle(
+                                  fontSize: isSmallScreen ? 18 : 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                state.isCorrect
+                                    ? 'You answered correctly!'
+                                    : 'You answered incorrectly!',
+                                style: TextStyle(
+                                  fontSize: isSmallScreen ? 14 : 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                width: double.infinity,
+                                height: isSmallScreen ? 48 : 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    context.read<FlashCardQuizzCubit>().next();
+                                  },
+                                  child: const Text('Continue'),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      )
-                    ],
-                  ]),
-                ),
-              ),
-            );
-          }),
-        );
-      },
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ]),
+          );
+        },
+      ),
     );
   }
 }

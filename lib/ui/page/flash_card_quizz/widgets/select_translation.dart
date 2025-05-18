@@ -42,7 +42,7 @@ class Page extends StatelessWidget {
       },
       builder: (context, state) {
         if (state.loadStatus == LoadStatus.loading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (state.loadStatus == LoadStatus.success) {
           final list = [
@@ -52,7 +52,7 @@ class Page extends StatelessWidget {
           return SectionQuestion(
               widgetKey: widgetKey, fcLearning: fcLearning, list: list);
         }
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
     );
   }
@@ -92,19 +92,19 @@ class _SectionQuestionState extends State<SectionQuestion> {
       key: widget.widgetKey,
       children: [
         Text.rich(
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              TextSpan(text: 'Chọn nghĩa đúng cho từ '),
+              const TextSpan(text: 'Chọn nghĩa đúng cho từ '),
               TextSpan(
                 text: "'${widget.fcLearning.flashcardId!.word}'",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              TextSpan(text: ' ?'),
+              const TextSpan(text: ' ?'),
             ],
           ),
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         ...shuffledList.map((level) {
           return Column(
             children: [
@@ -123,7 +123,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   height: 70,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
@@ -146,7 +146,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
                                       .toLowerCase());
                         },
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Expanded(child: Text(level)),
                     ],
                   ),
@@ -156,14 +156,15 @@ class _SectionQuestionState extends State<SectionQuestion> {
           );
         }),
         const SizedBox(height: 32),
-        if (isCheck)
-          Builder(builder: (context) {
+        Visibility(
+          visible: isCheck,
+          child: Builder(builder: (context) {
             return Column(
               children: [
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
             );
