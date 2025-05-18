@@ -40,7 +40,7 @@ class TestCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                ),
+                )
               ),
             SizedBox(height: 8),
             Wrap(
@@ -52,7 +52,7 @@ class TestCard extends StatelessWidget {
                     icon: FontAwesomeIcons.clock,
                     text: "${test.duration} minutes"),
                 TagWidget(
-                    icon: FontAwesomeIcons.levelUpAlt,
+                    icon: FontAwesomeIcons.turnUp,
                     text: "level: ${test.difficulty}"),
                 TagWidget(
                   icon: FontAwesomeIcons.circleQuestion,

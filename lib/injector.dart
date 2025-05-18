@@ -21,7 +21,7 @@ Future<void> init() async {
         () => PaymentRepositoryImpl(injector()))
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
-    ..registerLazySingleton<BottomTabCubit>(() => BottomTabCubit())
+    ..registerLazySingleton<EntrypointCubit>(() => EntrypointCubit())
     ..registerLazySingleton<UserCubit>(() => UserCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
     ..registerFactory<FlashCardCubit>(() => FlashCardCubit(injector()))

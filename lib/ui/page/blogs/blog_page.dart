@@ -7,9 +7,9 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/blog/blog_cubit.dart';
-import 'package:toeic_desktop/ui/page/blog/blog_state.dart';
-import 'package:toeic_desktop/ui/page/blog/widgets/blog_vertical.dart';
+import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';
+import 'package:toeic_desktop/ui/page/blogs/blog_state.dart';
+import 'package:toeic_desktop/ui/page/blogs/widgets/blog_vertical.dart';
 
 class BlogPage extends StatelessWidget {
   const BlogPage({super.key, this.blogId});

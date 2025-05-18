@@ -11,7 +11,7 @@ import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
-import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
+import 'package:toeic_desktop/ui/page/tests/test_online_cubit.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({

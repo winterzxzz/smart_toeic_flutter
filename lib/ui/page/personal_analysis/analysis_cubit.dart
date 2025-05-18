@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
-import 'package:toeic_desktop/ui/page/analysis/analysis_state.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/analysis_state.dart';
 
 class AnalysisCubit extends Cubit<AnalysisState> {
   final ProfileRepository profileRepository;

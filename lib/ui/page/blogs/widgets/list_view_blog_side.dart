@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/blog/blog_cubit.dart';
-import 'package:toeic_desktop/ui/page/blog/blog_state.dart';
-import 'package:toeic_desktop/ui/page/blog/widgets/blog_item_card.dart';
+import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';
+import 'package:toeic_desktop/ui/page/blogs/blog_state.dart';
+import 'package:toeic_desktop/ui/page/blogs/widgets/blog_item_card.dart';
 
 class ListViewBlog extends StatefulWidget {
   const ListViewBlog({

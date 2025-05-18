@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
-import 'package:toeic_desktop/ui/page/test_online/widgets/test_card.dart';
+import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
+import 'package:toeic_desktop/ui/page/tests/widgets/test_card.dart';
 
 class TestSection extends StatelessWidget {
   const TestSection({super.key, required this.tests});
@@ -24,7 +24,7 @@ class TestSection extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                injector<BottomTabCubit>().changeCurrentIndex(1);
+                injector<EntrypointCubit>().changeCurrentIndex(1);
               },
               child: Text('Xem tất cả'),
             ),

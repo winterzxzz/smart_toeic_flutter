@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
-import 'package:toeic_desktop/ui/page/blog/widgets/blog_horizontal.dart';
+import 'package:toeic_desktop/ui/page/blogs/widgets/blog_horizontal.dart';
 
 class BlogSection extends StatelessWidget {
   final List<Blog> blogs;

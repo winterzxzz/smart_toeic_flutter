@@ -9,13 +9,13 @@ import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/keep_alive_page.dart';
-import 'package:toeic_desktop/ui/page/blog/blog_page.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_state.dart';
+import 'package:toeic_desktop/ui/page/blogs/blog_page.dart';
+import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
+import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_state.dart';
 import 'package:toeic_desktop/ui/page/home/home_page.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_page.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_page.dart';
-import 'package:toeic_desktop/ui/page/test_online/test_online_page.dart';
+import 'package:toeic_desktop/ui/page/tests/test_online_page.dart';
 
 class BottomTabPage extends StatefulWidget {
   const BottomTabPage({super.key});
@@ -70,13 +70,13 @@ class _BottomTabPageState extends State<BottomTabPage>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => injector<BottomTabCubit>(),
+      create: (context) => injector<EntrypointCubit>(),
       child: Page(widget: widget),
     );
   }
 }
 
-class Page extends StatelessWidget {
+class Page extends StatefulWidget {
   const Page({
     super.key,
     required this.widget,
@@ -85,10 +85,24 @@ class Page extends StatelessWidget {
   final BottomTabPage widget;
 
   @override
+  State<Page> createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  late final EntrypointCubit _entrypointCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _entrypointCubit = injector<EntrypointCubit>();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return OrientationBuilder(
       builder: (context, orientation) {
-        return BlocBuilder<BottomTabCubit, BottomTabState>(
+        return BlocBuilder<EntrypointCubit, EntrypointState>(
           builder: (context, state) {
             return Scaffold(
               resizeToAvoidBottomInset: false,
@@ -100,9 +114,7 @@ class Page extends StatelessWidget {
                       minWidth: 50,
                       selectedIndex: state.currentIndex,
                       onDestinationSelected: (index) {
-                        context
-                            .read<BottomTabCubit>()
-                            .changeCurrentIndex(index);
+                        _entrypointCubit.changeCurrentIndex(index);
                       },
                       labelType: NavigationRailLabelType.none,
                       destinations: Constants.bottomTabs
@@ -133,13 +145,12 @@ class Page extends StatelessWidget {
                   Expanded(
                     child: PageView(
                       physics: const NeverScrollableScrollPhysics(),
-                      controller: context.read<BottomTabCubit>().pageController,
-                      onPageChanged: (index) => context
-                          .read<BottomTabCubit>()
-                          .changeCurrentIndex(index),
+                      controller: _entrypointCubit.pageController,
+                      onPageChanged: (index) =>
+                          _entrypointCubit.changeCurrentIndex(index),
                       children: const [
                         KeepAlivePage(child: HomePage()),
-                        KeepAlivePage(child: SimulationTestScreen()),
+                        KeepAlivePage(child: TestsPage()),
                         KeepAlivePage(child: SetFlashCardPage()),
                         KeepAlivePage(child: BlogPage()),
                         KeepAlivePage(child: ProfilePage()),
@@ -167,7 +178,7 @@ class Page extends StatelessWidget {
                   iconSize: 20,
                   currentIndex: state.currentIndex,
                   onTap: (index) {
-                    context.read<BottomTabCubit>().changeCurrentIndex(index);
+                    _entrypointCubit.changeCurrentIndex(index);
                   },
                   items: Constants.bottomTabs.map((tab) {
                     return BottomNavigationBarItem(

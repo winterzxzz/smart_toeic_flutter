@@ -11,7 +11,7 @@ import 'package:toeic_desktop/data/models/ui_models/home_item_task_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_cubit.dart';
+import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
 
 class Constants {
   static List<BlogItem> blogs = [
@@ -239,7 +239,7 @@ class Constants {
       title: 'Test',
       image: AppImages.icTestOutline,
       progress: Random().nextDouble(),
-      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(1),
+      onTap: () => injector<EntrypointCubit>().changeCurrentIndex(1),
     ),
   ];
 
@@ -247,17 +247,17 @@ class Constants {
     HomeItemTaskModel(
       title: 'Test Online',
       image: AppImages.icTestOutline,
-      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(1),
+      onTap: () => injector<EntrypointCubit>().changeCurrentIndex(1),
     ),
     HomeItemTaskModel(
       title: 'Blogs',
       image: AppImages.icBlog,
-      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(3),
+      onTap: () => injector<EntrypointCubit>().changeCurrentIndex(3),
     ),
     HomeItemTaskModel(
       title: 'Flashcards',
       image: AppImages.icFlashCardOutline,
-      onTap: () => injector<BottomTabCubit>().changeCurrentIndex(2),
+      onTap: () => injector<EntrypointCubit>().changeCurrentIndex(2),
     ),
     HomeItemTaskModel(
       title: 'Premium',

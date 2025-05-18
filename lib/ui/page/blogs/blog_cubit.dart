@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/blog_repository.dart';
-import 'package:toeic_desktop/ui/page/blog/blog_state.dart';
+import 'package:toeic_desktop/ui/page/blogs/blog_state.dart';
 
 class BlogCubit extends Cubit<BlogState> {
   final BlogRepository blogRepository;

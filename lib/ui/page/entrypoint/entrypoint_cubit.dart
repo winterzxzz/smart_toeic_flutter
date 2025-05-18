@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toeic_desktop/ui/page/bottom_tab/bottom_tab_state.dart';
+import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_state.dart';
 
-class BottomTabCubit extends Cubit<BottomTabState> {
+class EntrypointCubit extends Cubit<EntrypointState> {
   late PageController pageController;
-  BottomTabCubit() : super(BottomTabState.initial()) {
+  EntrypointCubit() : super(EntrypointState.initial()) {
     pageController = PageController(initialPage: 0);
   }
 

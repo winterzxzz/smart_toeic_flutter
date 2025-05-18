@@ -8,13 +8,13 @@ import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/analysis/analysis_cubit.dart';
-import 'package:toeic_desktop/ui/page/analysis/analysis_state.dart';
-import 'package:toeic_desktop/ui/page/analysis/widgets/analysis_markdown.dart';
-import 'package:toeic_desktop/ui/page/analysis/widgets/analysis_percentage.dart';
-import 'package:toeic_desktop/ui/page/analysis/widgets/analysis_score.dart';
-import 'package:toeic_desktop/ui/page/analysis/widgets/analysis_time.dart';
-import 'package:toeic_desktop/ui/page/analysis/widgets/chart.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/analysis_cubit.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/analysis_state.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/widgets/analysis_markdown.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/widgets/analysis_percentage.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/widgets/analysis_score.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/widgets/analysis_time.dart';
+import 'package:toeic_desktop/ui/page/personal_analysis/widgets/chart.dart';
 
 class AnalysisPage extends StatelessWidget {
   const AnalysisPage({super.key});

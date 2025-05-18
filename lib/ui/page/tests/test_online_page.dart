@@ -4,13 +4,13 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/page/test_online/test_online_cubit.dart';
-import 'package:toeic_desktop/ui/page/test_online/test_online_state.dart';
+import 'package:toeic_desktop/ui/page/tests/test_online_cubit.dart';
+import 'package:toeic_desktop/ui/page/tests/test_online_state.dart';
 import 'package:toeic_desktop/ui/page/mode_test/widgets/custom_drop_down.dart';
-import 'package:toeic_desktop/ui/page/test_online/widgets/test_card.dart';
+import 'package:toeic_desktop/ui/page/tests/widgets/test_card.dart';
 
-class SimulationTestScreen extends StatelessWidget {
-  const SimulationTestScreen({super.key});
+class TestsPage extends StatelessWidget {
+  const TestsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
