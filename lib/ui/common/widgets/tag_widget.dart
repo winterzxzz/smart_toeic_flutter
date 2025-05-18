@@ -26,7 +26,7 @@ class TagWidget extends StatelessWidget {
         children: [
           FaIcon(icon, size: 12),
           const SizedBox(width: 4),
-          Text(text, style: TextStyle(fontSize: 12)),
+          Text(text, style: const TextStyle(fontSize: 12)),
         ],
       ),
     );

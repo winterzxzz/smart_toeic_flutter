@@ -29,7 +29,7 @@ class _QuestionPartState extends State<QuestionPart> {
             Transform.scale(
               scale: 0.8,
               child: Checkbox(
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 value: widget.isSelected,
                 onChanged: (value) {
                   widget.onChanged(widget.part);
@@ -38,7 +38,7 @@ class _QuestionPartState extends State<QuestionPart> {
             ),
             Text(
               widget.part.partEnum.name,
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
             ),
           ],
         ),
@@ -48,7 +48,7 @@ class _QuestionPartState extends State<QuestionPart> {
           children: List<Widget>.generate(
             widget.part.tags.length,
             (index) => Container(
-              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               decoration: BoxDecoration(
                 color: Colors.blue.withValues(alpha: 0.1),
                 border: Border.all(color: Colors.blue.withValues(alpha: 0.1)),
@@ -56,7 +56,7 @@ class _QuestionPartState extends State<QuestionPart> {
               ),
               child: Text(
                 widget.part.tags[index],
-                style: TextStyle(fontSize: 10),
+                style: const TextStyle(fontSize: 10),
               ),
             ),
           ),

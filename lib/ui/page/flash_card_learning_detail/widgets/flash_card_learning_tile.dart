@@ -62,7 +62,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
               children: [
                 Text(
                   widget.flashcard.flashcardId?.word ?? '',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -82,7 +82,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                         color: Colors.blue.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.volume_up_outlined,
                         color: AppColors.primary,
                       )),
@@ -97,14 +97,14 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                   ),
                   child: Text(
                     widget.flashcard.flashcardId?.partOfSpeech.join(', ') ?? '',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: AppColors.textWhite,
                         fontWeight: FontWeight.w500),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,31 +119,31 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                               'UK'),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         'Translate: ${widget.flashcard.flashcardId?.translation ?? ''}',
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
-                      SizedBox(height: 8),
-                      Text(
+                      const SizedBox(height: 8),
+                      const Text(
                         'Definition:',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(widget.flashcard.flashcardId?.definition ?? ''),
-                      Text('Example Sentences:',
+                      const Text('Example Sentences:',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       if (widget.flashcard.flashcardId?.exampleSentence
                               .isNotEmpty ??
                           false) ...[
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         ...(widget.flashcard.flashcardId?.exampleSentence ?? [])
                             .map((example) => Text(
                                   '- $example',
                                   style: TextStyle(color: Colors.grey[700]),
                                 )),
                       ],
-                      SizedBox(height: 8),
-                      Text('Note:',
+                      const SizedBox(height: 8),
+                      const Text('Note:',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       Text(widget.flashcard.flashcardId?.note ?? ''),
                       if (widget.flashcard.optimalTime != null)
@@ -177,7 +177,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                                     ),
                                     child: Text(
                                       'Retention: ${widget.flashcard.retentionScore?.toStringAsFixed(2) ?? ''}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: AppColors.textWhite,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -202,12 +202,12 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
       children: [
         Text(
           '$label:',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         Text(
           pronunciation,
-          style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+          style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
         ),
       ],
     );

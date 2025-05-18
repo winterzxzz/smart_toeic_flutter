@@ -15,68 +15,68 @@ class FlashcardBack extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.primary, width: 2),
       ),
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
           Text(
             'Translate: ${flashcard.translation}',
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             'Definition:',
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             flashcard.definition,
-            style: TextStyle(fontSize: 16, color: Colors.black87),
+            style: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
           if (flashcard.exampleSentence.isNotEmpty) ...[
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Examples:',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ...flashcard.exampleSentence.map((example) => Row(
                   children: [
                     Container(
                       width: 8,
                       height: 8,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
                       ),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         example,
-                        style: TextStyle(fontSize: 16, color: Colors.black87),
+                        style: const TextStyle(fontSize: 16, color: Colors.black87),
                       ),
                     ),
                   ],
                 )),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Note: ',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               flashcard.note,
-              style: TextStyle(fontSize: 16, color: Colors.black87),
+              style: const TextStyle(fontSize: 16, color: Colors.black87),
             ),
           ],
         ],

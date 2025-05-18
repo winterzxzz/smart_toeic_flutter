@@ -65,10 +65,10 @@ class BlogVerticalCard extends StatelessWidget {
                   Row(
                     children: [
                       _buildInfoItem(FontAwesomeIcons.eye, blog.view ?? 0),
-                      Spacer(),
+                      const Spacer(),
                       Row(
                         children: [
-                          FaIcon(
+                          const FaIcon(
                             FontAwesomeIcons.calendarDays,
                             color: Colors.grey,
                             size: 16,

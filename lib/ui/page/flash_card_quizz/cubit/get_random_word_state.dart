@@ -13,7 +13,7 @@ class GetRandomWordState extends Equatable {
     required this.random4Words,
   });
 
-  factory GetRandomWordState.initial() => GetRandomWordState(
+  factory GetRandomWordState.initial() => const GetRandomWordState(
         loadStatus: LoadStatus.initial,
         message: '',
         random4Words: [],

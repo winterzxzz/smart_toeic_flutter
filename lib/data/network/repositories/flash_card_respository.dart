@@ -95,7 +95,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
   Future<Either<ApiError, void>> deleteFlashCardSet(String id) async {
     try {
       await _apiClient.deleteFlashCardSet(id);
-      return Right(null);
+      return const Right(null);
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
@@ -128,7 +128,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
   Future<Either<ApiError, void>> deleteFlashCard(String id) async {
     try {
       await _apiClient.deleteFlashCard(id);
-      return Right(null);
+      return const Right(null);
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }
@@ -161,7 +161,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       String learningSetId) async {
     try {
       await _apiClient.deleteFlashCardLearning(learningSetId);
-      return Right(null);
+      return const Right(null);
     } on DioException catch (e) {
       return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
     }

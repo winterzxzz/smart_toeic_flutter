@@ -45,7 +45,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
             ],
           ),
           SliverPadding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             sliver: SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +56,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
                       '${widget.test.attemptCount} luợt làm bài',
                       style: theme.textTheme.bodySmall,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                   ],
                   isPracticeMode
                       ? PracticeMode(testId: widget.test.id!)

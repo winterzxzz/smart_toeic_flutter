@@ -56,12 +56,12 @@ class _ListViewBlogState extends State<ListViewBlog> {
                           prefixIcon: const Icon(Icons.search),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(color: AppColors.gray1),
+                            borderSide: const BorderSide(color: AppColors.gray1),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:
-                                BorderSide(color: AppColors.focusBorder),
+                                const BorderSide(color: AppColors.focusBorder),
                           ),
                         ),
                       ),

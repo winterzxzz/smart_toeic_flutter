@@ -19,7 +19,7 @@ class UpgradeAccountSuccessPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => injector<CheckPaymentStatusCubit>()
         ..checkPaymentStatus(paymentReturn.apptransid),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
@@ -57,14 +57,14 @@ class Page extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Congratulations Icon or Image
-                  Icon(
+                  const Icon(
                     Icons.check_circle,
                     color: Colors.green,
                     size: 100,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   // Title Text
-                  Text(
+                  const Text(
                     'Congratulations!',
                     style: TextStyle(
                       fontSize: 28,
@@ -73,9 +73,9 @@ class Page extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   // Subtitle Text
-                  Text(
+                  const Text(
                     'Your account has been successfully upgraded.',
                     style: TextStyle(
                       fontSize: 16,
@@ -83,7 +83,7 @@ class Page extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   // Call-to-Action Button
                   ElevatedButton(
                     onPressed: () {
@@ -93,12 +93,12 @@ class Page extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                          const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Return to Home',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),

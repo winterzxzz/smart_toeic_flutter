@@ -31,166 +31,238 @@ void showCreateFlashCardDialog(BuildContext widgetContext,
   final TextEditingController pronunciationController =
       TextEditingController(text: flashCard?.pronunciation);
 
-  showDialog(
+  showModalBottomSheet(
     context: widgetContext,
-    builder: (context) {
-      return AlertDialog(
-        scrollable: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Thêm từ mới',
-                  style: TextStyle(fontWeight: FontWeight.w500),
+    isScrollControlled: true,
+    showDragHandle: false,
+    backgroundColor: Colors.transparent,
+    builder: (context) => DraggableScrollableSheet(
+      initialChildSize: 1,
+      minChildSize: 1,
+      maxChildSize: 1,
+      builder: (context, scrollController) {
+        final theme = Theme.of(context);
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.cardColor,
+          ),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 44,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Add new word',
+                            style: theme.textTheme.titleLarge,
+                          ),
+                          Text(
+                            'Add new word to the list',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textGray,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(
+                        Icons.close,
+                      ),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    GoRouter.of(context).pop();
-                  },
-                  icon: Icon(
-                    Icons.close,
-                    color: AppColors.gray3,
+              ),
+              const Divider(),
+              // Content
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    children: [
+                      FormItem(
+                        title: 'Word',
+                        controller: titleController,
+                        isRequired: true,
+                      ),
+                      FormItem(
+                        title: 'Meaning',
+                        controller: descriptionController,
+                      ),
+                      FormItem(
+                        title: 'Definition',
+                        controller: definitionController,
+                      ),
+                      FormItem(
+                        title: 'Example 1',
+                        controller: example1SentenceController,
+                      ),
+                      FormItem(
+                        title: 'Example 2',
+                        controller: example2SentenceController,
+                      ),
+                      FormItem(
+                        title: 'Note',
+                        controller: noteController,
+                      ),
+                      FormItem(
+                        title: 'Pronunciation',
+                        controller: partOfSpeechController,
+                      ),
+                      FormItem(
+                        title: 'Part of speech',
+                        controller: pronunciationController,
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            Text(
-              'Thêm từ mới vào danh sách từ',
-              style: TextStyle(fontSize: 12, color: AppColors.textGray),
-            ),
-          ],
-        ),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FormItem(
-                  title: 'Từ', controller: titleController, isRequired: true),
-              FormItem(title: 'Nghĩa', controller: descriptionController),
-              FormItem(title: 'Định nghĩa', controller: definitionController),
-              FormItem(
-                  title: 'Ví dụ 1', controller: example1SentenceController),
-              FormItem(
-                  title: 'Ví dụ 2', controller: example2SentenceController),
-              FormItem(title: 'Ghi chú', controller: noteController),
-              FormItem(title: 'Phát âm', controller: partOfSpeechController),
-              FormItem(title: 'Phần từ', controller: pronunciationController),
+              ),
+              // Bottom actions
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, -5),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: BlocConsumer<FlashCardDetailCubit,
+                          FlashCardDetailState>(
+                        listener: (context, state) {
+                          if (state.loadStatusAiGen == LoadStatus.success) {
+                            final flashCardAiGen = state.flashCardAiGen;
+                            if (flashCardAiGen != null) {
+                              titleController.text = flashCardAiGen.word;
+                              descriptionController.text =
+                                  flashCardAiGen.translation;
+                              definitionController.text =
+                                  flashCardAiGen.definition;
+                              example1SentenceController.text =
+                                  flashCardAiGen.example1;
+                              example2SentenceController.text =
+                                  flashCardAiGen.example2;
+                              noteController.text = flashCardAiGen.note;
+                              partOfSpeechController.text =
+                                  flashCardAiGen.partOfSpeech.join(', ');
+                              pronunciationController.text =
+                                  flashCardAiGen.pronunciation;
+                            }
+                          }
+                        },
+                        bloc: BlocProvider.of<FlashCardDetailCubit>(
+                            widgetContext),
+                        buildWhen: (previous, current) =>
+                            previous.loadStatusAiGen != current.loadStatusAiGen,
+                        builder: (context, state) {
+                          final isLoading =
+                              state.loadStatusAiGen == LoadStatus.loading;
+                          return BlocSelector<UserCubit, UserState,
+                              UserEntity?>(
+                            selector: (state) => state.user,
+                            builder: (context, user) {
+                              final isPremium = user?.isPremium();
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  disabledBackgroundColor:
+                                      AppColors.gray1.withValues(alpha: 0.5),
+                                ),
+                                onPressed: isPremium == true
+                                    ? isLoading
+                                        ? null
+                                        : () async {
+                                            widgetContext
+                                                .read<FlashCardDetailCubit>()
+                                                .getFlashCardInforByAI(
+                                                    titleController.text);
+                                          }
+                                    : null,
+                                child: isLoading
+                                    ? Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: Theme.of(context)
+                                                          .brightness !=
+                                                      Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          const Text('AI is filling...'),
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if (isPremium == false) ...[
+                                            const FaIcon(FontAwesomeIcons.lock),
+                                            const SizedBox(width: 8),
+                                          ] else ...[
+                                            const FaIcon(
+                                                FontAwesomeIcons.robot),
+                                            const SizedBox(width: 8),
+                                          ],
+                                          const Text('Fill by AI'),
+                                        ],
+                                      ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final flashCardRequest = FlashCardRequest(
+                            word: titleController.text,
+                            translation: descriptionController.text,
+                            definition: definitionController.text,
+                            exampleSentence: [
+                              example1SentenceController.text,
+                              example2SentenceController.text,
+                            ],
+                            note: noteController.text,
+                            partOfSpeech:
+                                partOfSpeechController.text.split(', '),
+                            pronunciation: pronunciationController.text,
+                            setFlashcardId: flashCard?.setFlashcardId ?? '',
+                          );
+                          onSave(flashCardRequest);
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-        ),
-        actions: [
-          BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
-            listener: (context, state) {
-              if (state.loadStatusAiGen == LoadStatus.success) {
-                final flashCardAiGen = state.flashCardAiGen;
-                if (flashCardAiGen != null) {
-                  titleController.text = flashCardAiGen.word;
-                  descriptionController.text = flashCardAiGen.translation;
-                  definitionController.text = flashCardAiGen.definition;
-                  example1SentenceController.text = flashCardAiGen.example1;
-                  example2SentenceController.text = flashCardAiGen.example2;
-                  noteController.text = flashCardAiGen.note;
-                  partOfSpeechController.text =
-                      flashCardAiGen.partOfSpeech.join(', ');
-                  pronunciationController.text = flashCardAiGen.pronunciation;
-                }
-              }
-            },
-            bloc: BlocProvider.of<FlashCardDetailCubit>(widgetContext),
-            buildWhen: (previous, current) =>
-                previous.loadStatusAiGen != current.loadStatusAiGen,
-            builder: (context, state) {
-              final isLoading = state.loadStatusAiGen == LoadStatus.loading;
-              return BlocSelector<UserCubit, UserState, UserEntity?>(
-                selector: (state) {
-                  return state.user;
-                },
-                builder: (context, user) {
-                  final isPremium = user?.isPremium();
-                  return SizedBox(
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: isPremium == true
-                          ? isLoading
-                              ? null
-                              : () async {
-                                  widgetContext
-                                      .read<FlashCardDetailCubit>()
-                                      .getFlashCardInforByAI(
-                                          titleController.text);
-                                }
-                          : null,
-                      child: isLoading
-                          ? Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Theme.of(context).brightness !=
-                                            Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Text('AI đang điền'),
-                              ],
-                            )
-                          : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (isPremium == false) ...[
-                                  FaIcon(FontAwesomeIcons.lock),
-                                  const SizedBox(width: 8),
-                                ] else ...[
-                                  FaIcon(FontAwesomeIcons.robot),
-                                  const SizedBox(width: 8),
-                                ],
-                                const Text('Điền bằng AI'),
-                              ],
-                            ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                final flashCardRequest = FlashCardRequest(
-                  word: titleController.text,
-                  translation: descriptionController.text,
-                  definition: definitionController.text,
-                  exampleSentence: [
-                    example1SentenceController.text,
-                    example2SentenceController.text,
-                  ],
-                  note: noteController.text,
-                  partOfSpeech: partOfSpeechController.text.split(', '),
-                  pronunciation: pronunciationController.text,
-                  setFlashcardId: flashCard?.setFlashcardId ?? '',
-                );
-                onSave(flashCardRequest);
-                GoRouter.of(context).pop();
-              },
-              child: const Text('Lưu'),
-            ),
-          ),
-        ],
-      );
-    },
+        );
+      },
+    ),
   );
 }
 
@@ -208,42 +280,48 @@ class FormItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 16),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             width: 80,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.end,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
                 ),
                 // required
-                if (isRequired) Text('*', style: TextStyle(color: Colors.red)),
+                if (isRequired)
+                  const Text('*', style: TextStyle(color: Colors.red)),
               ],
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 8),
           Expanded(
             child: TextField(
               controller: controller, // Attach controller
-              autofocus: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.gray1),
+                  borderSide: const BorderSide(color: AppColors.gray1),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.gray3),
+                  borderSide: const BorderSide(color: AppColors.gray3),
                 ),
               ),
             ),
           ),
+          const SizedBox(width: 8),
         ],
       ),
     );

@@ -20,15 +20,15 @@ class FlashcardFront extends StatelessWidget {
         children: [
           Text(
             word,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
               color: AppColors.textWhite,
             ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             'Click to reveal definition',
             style: TextStyle(
               fontSize: 16,

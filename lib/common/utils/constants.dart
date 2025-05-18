@@ -54,22 +54,22 @@ class Constants {
   ];
 
   static List<ServiceItem> services = [
-    ServiceItem(
+    const ServiceItem(
         icon: FontAwesomeIcons.robot,
         title: 'AI Render',
         desciption:
             'Advanced AI-powered tools to enhance your TOEIC preparation experience.'),
-    ServiceItem(
+    const ServiceItem(
         icon: FontAwesomeIcons.idCard,
         title: 'Flashcards',
         desciption:
             'Interactive flashcards to boost your vocabulary and language skills efficiently.'),
-    ServiceItem(
+    const ServiceItem(
         icon: FontAwesomeIcons.list,
         title: 'Practice Exams',
         desciption:
             'Realistic TOEIC practice exams to assess and improve your test-taking abilities.'),
-    ServiceItem(
+    const ServiceItem(
         icon: FontAwesomeIcons.chartLine,
         title: 'Result Analysis',
         desciption:
@@ -277,25 +277,25 @@ extension ConstantsExtension on Constants {
   static Duration getTimeLimit(String time) {
     switch (time) {
       case '1 minute':
-        return Duration(minutes: 1);
+        return const Duration(minutes: 1);
       case '10 minutes':
-        return Duration(minutes: 10);
+        return const Duration(minutes: 10);
       case '20 minutes':
-        return Duration(minutes: 20);
+        return const Duration(minutes: 20);
       case '30 minutes':
-        return Duration(minutes: 30);
+        return const Duration(minutes: 30);
       case '40 minutes':
-        return Duration(minutes: 40);
+        return const Duration(minutes: 40);
       case '50 minutes':
-        return Duration(minutes: 50);
+        return const Duration(minutes: 50);
       case '60 minutes':
-        return Duration(minutes: 60);
+        return const Duration(minutes: 60);
       case '120 minutes':
-        return Duration(minutes: 120);
+        return const Duration(minutes: 120);
       case 'No limit':
-        return Duration(minutes: 00);
+        return const Duration(minutes: 00);
       default:
-        return Duration(minutes: 120);
+        return const Duration(minutes: 120);
     }
   }
 }

@@ -21,13 +21,13 @@ class FullTestMode extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          ProtipWidget(
+          const ProtipWidget(
             text:
                 'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
             backgroundColor: Colors.yellowAccent,
             textColor: Colors.orange,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           SizedBox(
             width: 150,
             child: ElevatedButton(
@@ -38,7 +38,7 @@ class FullTestMode extends StatelessWidget {
                   'testId': testId,
                   'parts':
                       Constants.parts.map((part) => part.partEnum).toList(),
-                  'duration': Duration(minutes: 120),
+                  'duration': const Duration(minutes: 120),
                 });
               },
               child: Text(
@@ -46,7 +46,7 @@ class FullTestMode extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
         ],
       ),
     );

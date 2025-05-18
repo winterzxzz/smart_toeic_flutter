@@ -56,14 +56,14 @@ class AppNavigator {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               color: AppColors.textWhite,
             ),
             if (message != null) const SizedBox(height: 16),
             if (message != null)
               Text(
                 message,
-                style: TextStyle(color: AppColors.textWhite),
+                style: const TextStyle(color: AppColors.textWhite),
               ),
           ],
         ),

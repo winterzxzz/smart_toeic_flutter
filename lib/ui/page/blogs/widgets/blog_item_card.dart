@@ -65,11 +65,11 @@ class BlogItemCard extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.person,
+                            const Icon(Icons.person,
                                 size: 12, color: AppColors.textGray),
                             const SizedBox(width: 4),
                             Text(blog.author ?? '',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                   color: AppColors.textGray,
                                 )),
@@ -79,12 +79,12 @@ class BlogItemCard extends StatelessWidget {
                         // views
                         Row(
                           children: [
-                            Icon(Icons.remove_red_eye,
+                            const Icon(Icons.remove_red_eye,
                                 size: 12, color: AppColors.textGray),
                             const SizedBox(width: 4),
                             Text(
                               (blog.view ?? 0).toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: AppColors.textGray,
                               ),
@@ -95,14 +95,14 @@ class BlogItemCard extends StatelessWidget {
                         const SizedBox(width: 16),
                         Row(
                           children: [
-                            Icon(Icons.calendar_month,
+                            const Icon(Icons.calendar_month,
                                 size: 12, color: AppColors.textGray),
                             const SizedBox(width: 4),
                             Text(
                               DateFormat('dd/MM/yyyy').format(
                                 blog.createdAt ?? DateTime.now(),
                               ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: AppColors.textGray,
                               ),

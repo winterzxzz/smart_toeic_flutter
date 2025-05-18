@@ -29,13 +29,13 @@ class _PracticeModeState extends State<PracticeMode> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ProtipWidget(
+        const ProtipWidget(
             text:
                 'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
             backgroundColor: Colors.green,
             textColor: Colors.green),
-        SizedBox(height: 16),
-        Text(
+        const SizedBox(height: 16),
+        const Text(
           'Chọn phần thi bạn muốn làm',
           style: TextStyle(fontSize: 14),
         ),
@@ -51,12 +51,12 @@ class _PracticeModeState extends State<PracticeMode> {
               }
               setState(() {});
             })),
-        SizedBox(height: 16),
-        Text(
+        const SizedBox(height: 16),
+        const Text(
           'Giới hạn thời gian (Để trống để làm bài không giới hạn)',
           style: TextStyle(fontSize: 14),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         CustomDropdownExample<String>(
           data: Constants.timeLimit,
           dataString: Constants.timeLimit,
@@ -65,7 +65,7 @@ class _PracticeModeState extends State<PracticeMode> {
             setState(() {});
           },
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         SizedBox(
           width: 150,
           child: ElevatedButton(
@@ -91,7 +91,7 @@ class _PracticeModeState extends State<PracticeMode> {
             ),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }

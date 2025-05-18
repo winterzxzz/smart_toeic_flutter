@@ -54,12 +54,12 @@ class _AuthTextFieldState extends State<AuthTextField> {
         decoration: InputDecoration(
           labelText: widget.labelText,
           hintText: widget.hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: AppColors.textGray,
             fontWeight: FontWeight.w400,
           ),
-          labelStyle: TextStyle(color: AppColors.textGray),
-          border: OutlineInputBorder(
+          labelStyle: const TextStyle(color: AppColors.textGray),
+          border: const OutlineInputBorder(
             borderSide: BorderSide(width: 1),
           ),
           focusedBorder: OutlineInputBorder(

@@ -9,7 +9,7 @@ class CheckPaymentStatusCubit extends Cubit<CheckPaymentStatusState> {
   final PaymentRepository paymentRepository;
 
   CheckPaymentStatusCubit(this.paymentRepository)
-      : super(CheckPaymentStatusState.initial());
+      : super(const CheckPaymentStatusState.initial());
 
   Future<void> checkPaymentStatus(String transId) async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
