@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/setting_card.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/settting_switch.dart';
 
@@ -15,6 +16,7 @@ class SettingPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: const Text('Setting'),
+          leading: const LeadingBackButton(),
         ),
         body: ListView(
           children: [

@@ -156,7 +156,7 @@ class UpgradeAccountCard extends StatelessWidget {
         if (onPressed != null)
           Positioned(
             top: 10,
-            right: 10,
+            left: 10,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class UpgradeAccountCard extends StatelessWidget {
                 'Recommend',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w700,
-                      fontSize: 12,
+                      fontSize: 10,
                       color: Theme.of(context).brightness == Brightness.light
                           ? Colors.white
                           : Colors.black,
