@@ -7,7 +7,8 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning_grid.dart';
+import ;
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning_item.dart';
 
 class SetFlashCardLearningPage extends StatefulWidget {
   const SetFlashCardLearningPage({super.key});
@@ -27,49 +28,56 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              Text(
-                'Flashcard Categories',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 16),
-              BlocConsumer<FlashCardCubit, FlashCardState>(
-                listenWhen: (previous, current) =>
-                    previous.loadStatusLearning != current.loadStatusLearning ||
-                    previous.flashCardsLearning != current.flashCardsLearning,
-                buildWhen: (previous, current) =>
-                    previous.loadStatusLearning != current.loadStatusLearning ||
-                    previous.flashCardsLearning != current.flashCardsLearning,
-                listener: (context, state) {
-                  if (state.loadStatus == LoadStatus.failure) {
-                    AppNavigator(context: context).error(state.message);
-                  }
-                },
-                builder: (context, state) {
-                  if (state.loadStatus == LoadStatus.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state.loadStatusLearning == LoadStatus.success) {
-                    return SetFlashCardLearningGrid(
-                      flashcards: state.flashCardsLearning,
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-              const SizedBox(height: 24),
-            ],
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 16,
+            ),
           ),
-        ),
+          BlocConsumer<FlashCardCubit, FlashCardState>(
+            listenWhen: (previous, current) =>
+                previous.loadStatusLearning != current.loadStatusLearning ||
+                previous.flashCardsLearning != current.flashCardsLearning,
+            buildWhen: (previous, current) =>
+                previous.loadStatusLearning != current.loadStatusLearning ||
+                previous.flashCardsLearning != current.flashCardsLearning,
+            listener: (context, state) {
+              if (state.loadStatus == LoadStatus.failure) {
+                AppNavigator(context: context).error(state.message);
+              }
+            },
+            builder: (context, state) {
+              if (state.loadStatus == LoadStatus.loading) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else if (state.loadStatusLearning == LoadStatus.success) {
+                return SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  sliver: SliverList.separated(
+                    itemBuilder: (context, index) {
+                      return SetFlashCardLearningItem(
+                        flashcard: state.flashCardsLearning[index],
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 8);
+                    },
+                    itemCount: state.flashCardsLearning.length,
+                  ),
+                );
+              }
+              return const SliverToBoxAdapter(child: SizedBox());
+            },
+          ),
+          const SliverPadding(
+            padding: EdgeInsets.only(bottom: 16),
+            sliver: SliverToBoxAdapter(child: SizedBox()),
+          ),
+        ],
       ),
     );
   }

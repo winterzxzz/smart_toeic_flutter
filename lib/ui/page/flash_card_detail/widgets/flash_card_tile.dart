@@ -9,7 +9,7 @@ import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_pop_over.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/form_flash_card_dia_log.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_item.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning_item.dart';
 
 class FlashcardTile extends StatefulWidget {
   final FlashCard flashcard;

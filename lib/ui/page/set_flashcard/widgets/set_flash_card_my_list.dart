@@ -8,7 +8,7 @@ import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/widgets/form_set_flash_card_dia_log.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_grid.dart';
+import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_item.dart';
 
 class SetFlashCardMyListPage extends StatefulWidget {
   const SetFlashCardMyListPage({super.key});
@@ -36,74 +36,84 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
             AppNavigator(context: context).error(state.message);
           }
         },
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 16),
-                InkWell(
-                  onTap: () => showCreateSetFlashCardDialog(context,
-                      onSave: (title, description) {
-                    context.read<FlashCardCubit>().createFlashCardSet(
-                          title,
-                          description,
-                        );
-                  }),
-                  child: Container(
-                    width: double.infinity,
-                    height: 48,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add, color: Colors.white),
-                        SizedBox(width: 8),
-                        Text(
-                          'Create Flashcard',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+        child: CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  const SizedBox(height: 16),
+                  InkWell(
+                    onTap: () => showCreateSetFlashCardDialog(context,
+                        onSave: (title, description) {
+                      context.read<FlashCardCubit>().createFlashCardSet(
+                            title,
+                            description,
+                          );
+                    }),
+                    child: Container(
+                      width: double.infinity,
+                      height: 48,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add, color: Colors.white, size: 16),
+                          SizedBox(width: 8),
+                          Text(
+                            'Create Set Flashcard',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'Flashcard Categories',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 16),
-                BlocBuilder<FlashCardCubit, FlashCardState>(
-                  buildWhen: (previous, current) =>
-                      previous.loadStatus != current.loadStatus ||
-                      previous.flashCards != current.flashCards,
-                  builder: (context, state) {
-                    if (state.loadStatus == LoadStatus.loading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state.loadStatus == LoadStatus.success) {
-                      return SetFlashCardGrid(flashcards: state.flashCards);
-                    }
-                    return const SizedBox();
-                  },
-                ),
-                const SizedBox(height: 24),
-              ],
+                  const SizedBox(height: 16),
+                ]),
+              ),
             ),
-          ),
+            BlocBuilder<FlashCardCubit, FlashCardState>(
+              buildWhen: (previous, current) =>
+                  previous.loadStatus != current.loadStatus ||
+                  previous.flashCards != current.flashCards,
+              builder: (context, state) {
+                if (state.loadStatus == LoadStatus.loading) {
+                  return const SliverFillRemaining(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (state.loadStatus == LoadStatus.success) {
+                  return SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    sliver: SliverList.separated(
+                      itemBuilder: (context, index) {
+                        return SetFlashCardItem(
+                          flashcard: state.flashCards[index],
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 8);
+                      },
+                      itemCount: state.flashCards.length,
+                    ),
+                  );
+                }
+                return const SliverToBoxAdapter(child: SizedBox());
+              },
+            ),
+            const SliverPadding(
+              padding: EdgeInsets.only(bottom: 16),
+            ),
+          ],
         ),
       ),
     );

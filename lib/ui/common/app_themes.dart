@@ -95,7 +95,6 @@ class AppThemes {
     );
   }
 
-  ///Light theme
   ThemeData get theme {
     return ThemeData(
         brightness: brightness,

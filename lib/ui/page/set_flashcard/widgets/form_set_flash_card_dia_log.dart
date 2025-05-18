@@ -5,6 +5,7 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 void showCreateSetFlashCardDialog(BuildContext widgetContext,
     {String? title,
     String? description,
+    bool isEdit = false,
     required Function(String, String) onSave}) {
   final TextEditingController titleController =
       TextEditingController(text: title);
@@ -15,8 +16,8 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
     context: widgetContext,
     builder: (context) {
       final screenWidth = MediaQuery.of(context).size.width;
-      final isMobile = screenWidth < 600;
-      final dialogWidth = screenWidth - 32; // 16px margin on each side
+      final dialogWidth = screenWidth - 14;
+      final theme = Theme.of(context);
 
       return AlertDialog(
         scrollable: true,
@@ -29,8 +30,10 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
           children: [
             Expanded(
               child: Text(
-                'Tạo danh sách thẻ nhớ',
-                style: TextStyle(fontWeight: FontWeight.w500),
+                isEdit ? 'Edit flashcard set' : 'Create flashcard set',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             IconButton(
@@ -50,131 +53,63 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isMobile) ...[
-                Text(
-                  'Tiêu đề',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: titleController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: AppColors.gray1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: AppColors.gray3),
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              Text(
+                'Title',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.gray1),
                   ),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'Mô tả',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                          color: AppColors.gray1.withValues(alpha: 0.1)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: AppColors.gray3),
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.gray3),
                   ),
-                  maxLines: 3,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
-              ] else ...[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 70,
-                      child: Text(
-                        'Tiêu đề',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.end,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: TextField(
-                        controller: titleController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.gray1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.gray3),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                        ),
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Description',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                        color: AppColors.gray1.withValues(alpha: 0.1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: AppColors.gray3),
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
-                SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 70,
-                      child: Text(
-                        'Mô tả',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.end,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: TextField(
-                        controller: descriptionController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                                color: AppColors.gray1.withValues(alpha: 0.1)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: AppColors.gray3),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                        ),
-                        maxLines: 3,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                maxLines: 3,
+              ),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => GoRouter.of(context).pop(),
-            child: Text('Hủy'),
+            child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
               onSave(titleController.text, descriptionController.text);
               GoRouter.of(context).pop();
             },
-            child: const Text('Lưu'),
+            child: const Text('Save'),
           ),
         ],
       );

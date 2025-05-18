@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 
 class SetFlashCardLearningItem extends StatelessWidget {
   final SetFlashCardLearning flashcard;
@@ -13,127 +15,95 @@ class SetFlashCardLearningItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tags = [
+      TagWidget(
+        icon: FontAwesomeIcons.bookBookmark,
+        text: '${flashcard.setFlashcardId.numberOfFlashcards} flashcards',
+      ),
+      TagWidget(
+        icon: FontAwesomeIcons.calendar,
+        text: DateFormat('dd/MM/yyyy').format(flashcard.createdAt),
+      ),
+      TagWidget(
+        icon: FontAwesomeIcons.clock,
+        text:
+            'Last studied: ${DateFormat('dd/MM/yyyy').format(flashcard.lastStudied)}',
+      ),
+    ];
     return Card(
       margin: EdgeInsets.zero,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (_getNumberOfQuestionsReview(flashcard) > 0)
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: InkWell(
+        onTap: () {
+          GoRouter.of(context).pushNamed(
+            AppRouter.flashCardLearningDetail,
+            extra: {'setFlashCardLearning': flashcard},
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Expanded(
+                    child: Text(
+                      flashcard.setFlashcardId.title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.error,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       '${_getNumberOfQuestionsReview(flashcard)} to reviews',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
-            const SizedBox(height: 8),
-            Text(
-              flashcard.setFlashcardId.title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              Text(
+                flashcard.setFlashcardId.description,
+                style: theme.textTheme.bodyMedium,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              flashcard.setFlashcardId.description,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black87,
-              ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Icon(Icons.document_scanner_outlined,
-                    color: AppColors.textGray, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  '${flashcard.setFlashcardId.numberOfFlashcards} flashcards',
-                  style: TextStyle(
-                    color: AppColors.textGray,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(Icons.calendar_month_outlined,
-                    color: AppColors.textGray, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  'Created at ${DateFormat('dd/MM/yyyy').format(flashcard.createdAt)}',
-                  style: TextStyle(
-                    color: AppColors.textGray,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const Divider(),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.success,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () {
-                  GoRouter.of(context).pushNamed(
-                    AppRouter.flashCardLearningDetail,
-                    extra: {
-                      'setFlashCardLearning': flashcard,
-                    },
-                  );
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.play_arrow_outlined),
-                    SizedBox(width: 8),
-                    Text(
-                      'Start Learning',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 4),
+              SizedBox(
+                height: 24,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: tags.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 8),
+                  itemBuilder: (context, index) {
+                    return tags[index];
+                  },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

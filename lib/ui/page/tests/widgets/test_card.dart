@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/time_utils.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 
 class TestCard extends StatelessWidget {
   const TestCard({
@@ -32,6 +33,7 @@ class TestCard extends StatelessWidget {
     ];
 
     return Card(
+      margin: EdgeInsets.zero,
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -109,33 +111,3 @@ class TestCard extends StatelessWidget {
   }
 }
 
-class TagWidget extends StatelessWidget {
-  const TagWidget({
-    super.key,
-    required this.icon,
-    required this.text,
-  });
-
-  final IconData icon;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: theme.scaffoldBackgroundColor),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FaIcon(icon, size: 12),
-          const SizedBox(width: 4),
-          Text(text, style: TextStyle(fontSize: 12)),
-        ],
-      ),
-    );
-  }
-}
