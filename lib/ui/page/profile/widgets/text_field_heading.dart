@@ -1,60 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class TextFieldHeading extends StatelessWidget {
   const TextFieldHeading({
     super.key,
     required this.label,
-    required this.description,
     required this.hintText,
+    this.icon,
     required this.controller,
+    this.maxLines,
   });
 
   final String label;
-  final String description;
+  final IconData? icon;
   final String hintText;
   final TextEditingController controller;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    final theme = Theme.of(context);
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          flex: 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600, fontSize: 12)),
-              const SizedBox(height: 8),
-              Text(description,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 10)),
-            ],
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          flex: 2,
+        Text(label, style: theme.textTheme.titleSmall),
+        const SizedBox(height: 8),
+        SizedBox(
           child: TextField(
             controller: controller,
-            enabled: label != 'Profile Email',
-            maxLines: label == 'Profile Bio' ? 3 : 1,
+            maxLines: maxLines,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w400,
+            ),
+            textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
               hintText: hintText,
-              hintStyle: TextStyle(color: Colors.grey[500]),
-              enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
+              isDense: true,
+              hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textGray,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14),
+              prefix: icon != null
+                  ? Container(
+                      margin: const EdgeInsets.only(right: 8),
+                      child: FaIcon(icon, size: 16, color: AppColors.textGray))
+                  : null,
+              border: const OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: AppColors.textGray),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? AppColors.primary
-                        : Colors.white),
-              ),
-              disabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: AppColors.primary),
               ),
             ),
           ),

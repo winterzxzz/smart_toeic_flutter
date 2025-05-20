@@ -97,7 +97,6 @@ class _PageState extends State<Page> {
     _entrypointCubit = injector<EntrypointCubit>();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(
@@ -105,7 +104,6 @@ class _PageState extends State<Page> {
         return BlocBuilder<EntrypointCubit, EntrypointState>(
           builder: (context, state) {
             return Scaffold(
-              resizeToAvoidBottomInset: false,
               body: Row(
                 children: [
                   Visibility(

@@ -51,7 +51,7 @@ class AppNavigator {
       return Container(
         width: double.infinity,
         height: double.infinity,
-        color: AppColors.backgroundOverlay,
+        color: AppColors.backgroundBlur,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

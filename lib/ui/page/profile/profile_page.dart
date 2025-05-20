@@ -5,11 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
-import 'package:toeic_desktop/ui/common/app_images.dart';
+import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/avatar_heading.dart';
-import 'package:toeic_desktop/ui/page/profile/widgets/heading_container.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/profile_divider.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/text_field_heading.dart';
 
@@ -55,267 +53,282 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(AppImages.profileBackground),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
-            emailController.text = state.user?.email ?? '';
-            nameController.text = state.user?.name ?? '';
-            bioController.text = state.user?.bio ?? '';
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child:
-                      SizedBox(height: MediaQuery.of(context).padding.top + 16),
-                ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      color: Theme.of(context).cardColor,
+      body: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          emailController.text = state.user?.email ?? '';
+          nameController.text = state.user?.name ?? '';
+          bioController.text = state.user?.bio ?? '';
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                backgroundColor: Colors.transparent,
+                actions: [
+                  PopupMenuButton(
+                    color: theme.appBarTheme.backgroundColor,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 150),
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 16),
+                      padding: const EdgeInsets.all(16),
+                      child: const FaIcon(FontAwesomeIcons.ellipsisVertical,
+                          size: 16),
                     ),
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-                    child: Column(
-                      children: [
-                        _buildImage(),
-                        const SizedBox(height: 24),
-                        AvatarHeading(user: state.user),
-                        const ProfileDivider(),
-                        TextFieldHeading(
-                          label: 'Profile Email',
-                          description:
-                              'Your email will be displayed to other users and cannot be changed',
-                          hintText: 'Enter your email',
-                          controller: emailController,
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'settings':
+                          GoRouter.of(context).pushNamed(AppRouter.setting);
+                          break;
+                        case 'history':
+                          GoRouter.of(context).pushNamed(AppRouter.historyTest);
+                          break;
+                        case 'analysis':
+                          GoRouter.of(context).pushNamed(AppRouter.analysis);
+                          break;
+                        case 'logout':
+                          showConfirmDialog(
+                            context,
+                            'Logout',
+                            'Are you sure?',
+                            () {
+                              injector<UserCubit>().removeUser(context);
+                            },
+                          );
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'settings',
+                        child: Row(
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.gear,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              'Settings',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ],
                         ),
-                        const ProfileDivider(),
-                        TextFieldHeading(
-                          label: 'Profile Name',
-                          description:
-                              'Your name will be displayed to other users',
-                          hintText: 'Enter your name',
-                          controller: nameController,
+                      ),
+                      PopupMenuItem(
+                        value: 'history',
+                        child: Row(
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.clockRotateLeft,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              'History',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ],
                         ),
-                        const ProfileDivider(),
-                        TextFieldHeading(
-                          label: 'Profile Bio',
-                          description:
-                              'Your bio will be displayed to other users',
-                          hintText: 'Enter your bio',
-                          controller: bioController,
+                      ),
+                      PopupMenuItem(
+                        value: 'analysis',
+                        child: Row(
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.chartLine,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              'Analysis',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ],
                         ),
-                        ...[
-                          const ProfileDivider(),
-                          HeadingContainer(
-                            title: 'Profile Target Score',
-                            description:
-                                'Your target score will be used to calculate your progress',
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                      ),
+                      PopupMenuItem(
+                        value: 'logout',
+                        child: Row(
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.rightFromBracket,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              'Logout',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      AvatarHeading(user: state.user),
+                      const ProfileDivider(),
+                      TextFieldHeading(
+                        controller: emailController,
+                        label: 'Email',
+                        hintText: 'Enter your email',
+                        icon: FontAwesomeIcons.envelope,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFieldHeading(
+                        controller: nameController,
+                        label: 'Name',
+                        hintText: 'Enter your name',
+                        icon: FontAwesomeIcons.user,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFieldHeading(
+                        controller: bioController,
+                        label: 'Bio',
+                        hintText: 'Enter your bio',
+                        maxLines: 3,
+                      ),
+                      const SizedBox(height: 16),
+                      ...[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Expanded(
-                                          child: Text(
-                                            'Reading Target / Reading Current',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
+                                    const Expanded(
+                                      child: Text(
+                                        'Reading Target / Reading Current',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        Text.rich(
-                                          TextSpan(
-                                            text:
-                                                '${state.user?.targetScore?.reading ?? 0}',
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                            children: [
-                                              const TextSpan(
-                                                text: '/450',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w300),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                    const SizedBox(height: 16),
-                                    LinearProgressIndicator(
-                                      backgroundColor: Colors.grey,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Theme.of(context).primaryColor,
-                                      minHeight: 10,
-                                      value: state.user?.targetScore?.reading !=
-                                              null
-                                          ? state.user!.targetScore!.reading /
-                                              450
-                                          : 0,
-                                    ),
+                                    Text.rich(
+                                      TextSpan(
+                                        text:
+                                            '${state.user?.targetScore?.reading ?? 0}',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                        children: [
+                                          const TextSpan(
+                                            text: '/450',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300),
+                                          )
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
-                                const SizedBox(height: 24),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Expanded(
-                                          child: Text(
-                                            'Listening Target / Listening Current',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        Text.rich(
-                                          TextSpan(
-                                            text:
-                                                '${state.user?.targetScore?.listening ?? 0}',
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                            children: [
-                                              const TextSpan(
-                                                text: '/450',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w300),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 16),
-                                    LinearProgressIndicator(
-                                      backgroundColor: Colors.grey,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Theme.of(context).primaryColor,
-                                      minHeight: 10,
-                                      value: state.user?.targetScore
-                                                  ?.listening !=
-                                              null
-                                          ? state.user!.targetScore!.listening /
-                                              450
-                                          : 0,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 24),
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 48,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      showUpdateTargetDialog(
-                                        initialReadingScore:
-                                            state.user?.targetScore?.reading,
-                                        initialListeningScore:
-                                            state.user?.targetScore?.listening,
-                                      );
-                                    },
-                                    child: const Text('Update Target Score'),
-                                  ),
+                                const SizedBox(height: 16),
+                                LinearProgressIndicator(
+                                  backgroundColor: Colors.grey,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Theme.of(context).primaryColor,
+                                  minHeight: 10,
+                                  value: state.user?.targetScore?.reading !=
+                                          null
+                                      ? state.user!.targetScore!.reading / 450
+                                      : 0,
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                        const SizedBox(height: 20),
+                            const SizedBox(height: 24),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Expanded(
+                                      child: Text(
+                                        'Listening Target / Listening Current',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    Text.rich(
+                                      TextSpan(
+                                        text:
+                                            '${state.user?.targetScore?.listening ?? 0}',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                        children: [
+                                          const TextSpan(
+                                            text: '/450',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                LinearProgressIndicator(
+                                  backgroundColor: Colors.grey,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Theme.of(context).primaryColor,
+                                  minHeight: 10,
+                                  value: state.user?.targetScore?.listening !=
+                                          null
+                                      ? state.user!.targetScore!.listening / 450
+                                      : 0,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  showUpdateTargetDialog(
+                                    initialReadingScore:
+                                        state.user?.targetScore?.reading,
+                                    initialListeningScore:
+                                        state.user?.targetScore?.listening,
+                                  );
+                                },
+                                child: const Text('Update Target Score'),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
-                    ),
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
-    );
-  }
-
-  Widget _buildImage() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    GoRouter.of(context).pushNamed(AppRouter.historyTest);
-                  },
-                  icon:
-                      const FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
-                  label: const Text('History'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    GoRouter.of(context).pushNamed(AppRouter.analysis);
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.chartLine, size: 16),
-                  label: const Text('Analysis'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () {
-              context.read<ProfileCubit>().updateProfile(ProfileUpdateRequest(
-                  name: nameController.text, bio: bioController.text));
-            },
-            icon: const FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
-            label: const Text('Save Changes'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
