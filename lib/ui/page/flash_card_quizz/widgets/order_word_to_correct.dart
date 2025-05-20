@@ -67,14 +67,15 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.gray1,
-                  border: Border.all(color: AppColors.gray1),
+                  color: AppColors.textGray,
+                  border: Border.all(color: AppColors.textGray),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   word,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: AppColors.textWhite,
                   ),
                 ),
               ),
@@ -145,7 +146,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                             widget.fcLearning.flashcardId!.exampleSentence.first
                                 .toLowerCase());
                   },
-                  child: const Text('Kiểm tra'),
+                  child: const Text('KIỂM TRA'),
                 ),
               ),
             ),

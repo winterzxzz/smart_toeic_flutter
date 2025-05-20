@@ -85,7 +85,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
               });
               // hide keyboard
             },
-            child: const Text('Kiểm tra'),
+            child: const Text('KIỂM TRA'),
           ),
         ),
         const SizedBox(height: 32),

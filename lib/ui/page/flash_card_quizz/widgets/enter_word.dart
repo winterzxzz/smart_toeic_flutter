@@ -75,12 +75,18 @@ class _EnterWordState extends State<EnterWord> {
               setState(() {
                 isCheck = true;
               });
-              context.read<FlashCardQuizzCubit>().answer(
-                  widget.fcLearning.flashcardId!.word,
-                  _controller.text.toLowerCase() ==
-                      widget.fcLearning.flashcardId!.translation.toLowerCase());
+              FocusScope.of(context).unfocus();
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (context.mounted) {
+                  context.read<FlashCardQuizzCubit>().answer(
+                      widget.fcLearning.flashcardId!.word,
+                      _controller.text.toLowerCase() ==
+                          widget.fcLearning.flashcardId!.translation
+                              .toLowerCase());
+                }
+              });
             },
-            child: const Text('Kiểm tra'),
+            child: const Text('KIỂM TRA'),
           ),
         ),
         const SizedBox(height: 32),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/ui/common/widgets/keep_alive_page.dart';
 import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
@@ -70,7 +71,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.list),
+                      FaIcon(FontAwesomeIcons.list, size: 16),
                       SizedBox(width: 8),
                       Text('My list'),
                     ],
@@ -80,7 +81,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.book),
+                      FaIcon(FontAwesomeIcons.book, size: 16),
                       SizedBox(width: 8),
                       Text('Studying'),
                     ],
