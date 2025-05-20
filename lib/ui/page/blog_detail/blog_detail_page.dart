@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,11 +19,18 @@ class BlogDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(blog.title ?? ''),
+        title: Text(blog.title?.trim() ?? ''),
+        leading: const LeadingBackButton(),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Divider(
+            height: 1,
+            color: AppColors.gray2,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Theme.of(context).appBarTheme.backgroundColor,
           padding: const EdgeInsets.all(16.0),
           child: SelectionArea(
             child: HtmlWidget(

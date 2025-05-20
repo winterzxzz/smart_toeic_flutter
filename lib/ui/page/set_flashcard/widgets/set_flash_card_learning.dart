@@ -55,7 +55,7 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
                 );
               } else if (state.loadStatusLearning == LoadStatus.success) {
                 return SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   sliver: SliverList.separated(
                     itemBuilder: (context, index) {
                       return SetFlashCardLearningItem(
@@ -63,7 +63,7 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return const SizedBox(height: 8);
+                      return const SizedBox(height: 16);
                     },
                     itemCount: state.flashCardsLearning.length,
                   ),

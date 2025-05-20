@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class BlogHorizontalCard extends StatelessWidget {
   final Blog blog;
@@ -12,25 +14,24 @@ class BlogHorizontalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          // GoRouter.of(context).pushNamed(AppRouter.blog, extra: {
-          //   'blogId': blog.id,
-          // });
+          GoRouter.of(context).pushNamed(AppRouter.blogDetail, extra: {
+            'blog': blog,
+          });
         },
-        child: IntrinsicHeight(
+        child: SizedBox(
+          height: 110,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
-                ),
+                borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
-                  width: 200,
+                  width: 130,
                   child: Image.network(
                     blog.image ?? '',
                     fit: BoxFit.cover,
@@ -39,57 +40,52 @@ class BlogHorizontalCard extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: getCategoryColor(blog.category ?? ''),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          blog.category ?? '',
+                          style: theme.textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textWhite),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
                       // Title
                       Text(
                         blog.title ?? '',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: theme.textTheme.titleSmall,
                       ),
-                      const SizedBox(height: 8),
-                      // Description
-                      Text(
-                        blog.description ?? '',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Footer with views and date
+                      const Spacer(),
                       Row(
                         children: [
-                          _buildInfoItem(FontAwesomeIcons.eye, blog.view ?? 0),
-                          const Spacer(),
-                          Row(
-                            children: [
-                              const FaIcon(
-                                FontAwesomeIcons.calendarDays,
-                                color: Colors.grey,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                DateFormat('dd/MM/yyyy').format(
-                                  blog.createdAt ?? DateTime.now(),
-                                ),
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            'Read More',
+                            style: theme.textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const FaIcon(
+                            FontAwesomeIcons.chevronRight,
+                            size: 14,
+                            color: AppColors.textGray,
                           ),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -101,22 +97,16 @@ class BlogHorizontalCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoItem(IconData icon, int count) {
-    return Row(
-      children: [
-        FaIcon(
-          icon,
-          color: Colors.grey,
-          size: 16,
-        ),
-        const SizedBox(width: 4),
-        Text(
-          count.toString(),
-          style: const TextStyle(
-            color: Colors.grey,
-          ),
-        ),
-      ],
-    );
+  Color getCategoryColor(String category) {
+    switch (category) {
+      case 'Grammar':
+        return AppColors.primary;
+      case 'Study Tips':
+        return AppColors.secondary;
+      case 'Speaking':
+        return Colors.orange;
+      default:
+        return AppColors.primary;
+    }
   }
 }

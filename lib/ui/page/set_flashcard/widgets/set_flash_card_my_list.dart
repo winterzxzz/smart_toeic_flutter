@@ -39,7 +39,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
         child: CustomScrollView(
           slivers: [
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   const SizedBox(height: 16),
@@ -93,7 +93,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                   );
                 } else if (state.loadStatus == LoadStatus.success) {
                   return SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     sliver: SliverList.separated(
                       itemBuilder: (context, index) {
                         return SetFlashCardItem(
@@ -101,7 +101,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                         );
                       },
                       separatorBuilder: (context, index) {
-                        return const SizedBox(height: 8);
+                        return const SizedBox(height: 16);
                       },
                       itemCount: state.flashCards.length,
                     ),

@@ -29,7 +29,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
             leading: const LeadingBackButton(),
             actions: [
               Container(
-                margin: const EdgeInsets.only(right: 8),
+                margin: const EdgeInsets.only(right: 16),
                 height: 40,
                 width: 150,
                 child: CustomDropdownExample<String>(
@@ -45,7 +45,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
             ],
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(16),
             sliver: SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

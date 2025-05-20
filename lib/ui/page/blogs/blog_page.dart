@@ -1,15 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_state.dart';
-import 'package:toeic_desktop/ui/page/blogs/widgets/blog_vertical.dart';
+import 'package:toeic_desktop/ui/page/blogs/widgets/blog_horizontal.dart';
 
 class BlogPage extends StatelessWidget {
   const BlogPage({super.key, this.blogId});
@@ -30,29 +29,46 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocListener<BlogCubit, BlogState>(
       listener: (context, state) {
-        log('Current load status: ${state.loadStatus}');
         if (state.loadStatus == LoadStatus.failure) {
           showToast(title: state.message, type: ToastificationType.error);
         }
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+        body: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              title: Text(
+                'Blogs',
+              ),
+              floating: true,
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(1),
+                child: Divider(
+                  height: 1,
+                  color: AppColors.gray2,
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 50,
+                margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 child: TextField(
                   onChanged: (value) {
                     context.read<BlogCubit>().searchBlog(value);
                   },
                   decoration: InputDecoration(
                     hintText: 'Search blogs...',
-                    prefixIcon: const Icon(Icons.search),
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      size: 18,
+                    ),
                     filled: true,
-                    fillColor: Theme.of(context).cardColor,
+                    fillColor: theme.cardColor,
+                    hintStyle: theme.textTheme.bodyMedium,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -72,28 +88,29 @@ class Page extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                child: BlocBuilder<BlogCubit, BlogState>(
-                  builder: (context, state) {
-                    if (state.loadStatus == LoadStatus.loading) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    return ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      itemCount: state.searchBlogs.length,
-                      itemBuilder: (context, index) {
-                        final blog = state.searchBlogs[index];
-                        return BlogVerticalCard(blog: blog);
-                      },
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 16),
-                    );
-                  },
-                ),
+            ),
+            SliverPadding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              sliver: BlocSelector<BlogCubit, BlogState, List<Blog>>(
+                selector: (state) {
+                  return state.searchBlogs;
+                },
+                builder: (context, searchBlogs) {
+                  return SliverList.separated(
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 12);
+                    },
+                    itemBuilder: (context, index) {
+                      final blog = searchBlogs[index];
+                      return BlogHorizontalCard(blog: blog);
+                    },
+                    itemCount: searchBlogs.length,
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

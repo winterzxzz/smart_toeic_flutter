@@ -72,11 +72,11 @@ class _PageState extends State<Page> {
                 ),
                 SliverPadding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   sliver: SliverList.separated(
                     itemCount: state.filteredTests.length,
                     separatorBuilder: (context, index) =>
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
                     itemBuilder: (context, index) {
                       return TestCard(
                         test: state.filteredTests[index],

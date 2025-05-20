@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class QuestionPart extends StatefulWidget {
   final PartModel part;
@@ -27,9 +28,12 @@ class _QuestionPartState extends State<QuestionPart> {
         Row(
           children: [
             Transform.scale(
-              scale: 0.8,
+              scale: 1.1,
               child: Checkbox(
-                shape: const CircleBorder(),
+                activeColor: AppColors.primary,
+                shape: const CircleBorder(
+                  side: BorderSide(color: AppColors.primary, width: 1),
+                ),
                 value: widget.isSelected,
                 onChanged: (value) {
                   widget.onChanged(widget.part);
