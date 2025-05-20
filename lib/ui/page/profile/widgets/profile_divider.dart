@@ -15,7 +15,7 @@ class ProfileDivider extends StatelessWidget {
         SizedBox(height: height),
         Divider(
           height: 1,
-          color: color.withOpacity(0.5),
+          color: color.withValues(alpha: 0.5),
         ),
         SizedBox(height: height),
       ],

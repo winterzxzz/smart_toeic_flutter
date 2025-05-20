@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/history_test/history_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/history_test/history_test_state.dart';
@@ -32,8 +34,13 @@ class Page extends StatelessWidget {
             automaticallyImplyLeading: true,
             title: Text('History Test'),
             floating: true,
-            pinned: true,
-            elevation: 0,
+            leading: LeadingBackButton(),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(1),
+              child: Divider(
+                color: AppColors.gray2,
+              ),
+            ),
           ),
           BlocConsumer<HistoryTestCubit, HistoryTestState>(
             listener: (context, state) {
@@ -54,17 +61,15 @@ class Page extends StatelessWidget {
                   );
                 }
                 return SliverPadding(
-                  padding: const EdgeInsets.all(16.0),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: ExamResultCard(
-                          result: state.results[index],
-                        ),
-                      ),
-                      childCount: state.results.length,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 16),
+                  sliver: SliverList.separated(
+                    itemBuilder: (context, index) => ExamResultCard(
+                      result: state.results[index],
                     ),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 16),
+                    itemCount: state.results.length,
                   ),
                 );
               }
@@ -75,14 +80,4 @@ class Page extends StatelessWidget {
       ),
     );
   }
-
-  // int _getCrossAxisCount(BuildContext context) {
-  //   final width = MediaQuery.of(context).size.width;
-  //   if (width < 600) {
-  //     return 1; // Single column for mobile
-  //   } else if (width < 900) {
-  //     return 2; // Two columns for tablets
-  //   }
-  //   return 3; // Three columns for larger screens
-  // }
 }

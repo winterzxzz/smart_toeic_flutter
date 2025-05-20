@@ -10,7 +10,9 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       : super(TranscriptTestDetailState.initial());
 
   Future<void> getTranscriptTestDetail(String transcriptTestId) async {
-    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    Future.microtask(() {
+      emit(state.copyWith(loadStatus: LoadStatus.loading));
+    });
     final transcriptTestDetail = await _transcriptTestRepository
         .getTranscriptTestDetail(transcriptTestId);
     transcriptTestDetail.fold(

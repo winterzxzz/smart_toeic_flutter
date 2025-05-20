@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_state.dart';
@@ -54,9 +55,8 @@ class Page extends StatelessWidget {
                 automaticallyImplyLeading: true,
                 centerTitle: true,
                 title: Text('TOEIC Performance Dashboard'),
+                leading: LeadingBackButton(),
                 floating: true,
-                pinned: true,
-                elevation: 0,
               ),
               SliverPadding(
                 padding: const EdgeInsets.all(16.0),

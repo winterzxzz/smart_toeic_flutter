@@ -7,6 +7,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
@@ -49,7 +50,6 @@ class _PageState extends State<Page> {
   bool isCheck = false;
   List<CheckResult> _checkResult = [];
   bool _isCorrect = false;
-  bool _showQuestionList = false;
 
   @override
   void initState() {
@@ -206,80 +206,67 @@ class _PageState extends State<Page> {
   }
 
   Widget _buildQuestionList(TranscriptTestDetailState state) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                ),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Question List',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    setState(() {
-                      _showQuestionList = false;
-                    });
-                  },
-                ),
-              ],
-            ),
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: state.transcriptTests.length,
-              itemBuilder: (context, index) {
-                final isCurrentQuestion = index == state.currentIndex;
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: isCurrentQuestion
-                        ? AppColors.primary
-                        : Theme.of(context).dividerColor,
-                    child: Text(
-                      '${index + 1}',
-                      style: TextStyle(
-                        color: isCurrentQuestion ? Colors.white : null,
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    'Question ${index + 1}',
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Question List',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            itemCount: state.transcriptTests.length,
+            itemBuilder: (context, index) {
+              final isCurrentQuestion = index == state.currentIndex;
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: isCurrentQuestion
+                      ? AppColors.primary
+                      : Theme.of(context).dividerColor,
+                  child: Text(
+                    '${index + 1}',
                     style: TextStyle(
-                      fontWeight: isCurrentQuestion ? FontWeight.bold : null,
+                      color: isCurrentQuestion ? Colors.white : null,
                     ),
                   ),
-                  onTap: () {
-                    context
-                        .read<TranscriptTestDetailCubit>()
-                        .goToTranscriptTest(index);
-                    setState(() {
-                      _showQuestionList = false;
-                    });
-                  },
-                );
-              },
-            ),
+                ),
+                title: Text(
+                  'Question ${index + 1}',
+                  style: TextStyle(
+                    fontWeight: isCurrentQuestion ? FontWeight.bold : null,
+                  ),
+                ),
+                onTap: () {
+                  context
+                      .read<TranscriptTestDetailCubit>()
+                      .goToTranscriptTest(index);
+                },
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -303,251 +290,227 @@ class _PageState extends State<Page> {
           return const SizedBox.shrink();
         }
         return Scaffold(
+          appBar: AppBar(
+            title: const Text('Transcript Test'),
+            leading: const LeadingBackButton(),
+          ),
           key: ValueKey(state.transcriptTests[state.currentIndex].id),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          body: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Listening Practice',
-                              style: Theme.of(context).textTheme.titleLarge,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _showQuestionList = true;
-                                  });
-                                },
-                                icon: const Icon(Icons.list),
-                                tooltip: 'Question List',
-                              ),
-                              IconButton(
-                                onPressed: state.currentIndex > 0
-                                    ? () {
-                                        context
-                                            .read<TranscriptTestDetailCubit>()
-                                            .previousTranscriptTest();
-                                      }
-                                    : null,
-                                icon: const Icon(Icons.arrow_back),
-                                tooltip: 'Previous Question',
-                              ),
-                              Text(
-                                '${state.currentIndex + 1}/${state.transcriptTests.length}',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              IconButton(
-                                onPressed: state.currentIndex <
-                                        state.transcriptTests.length - 1
-                                    ? () {
-                                        context
-                                            .read<TranscriptTestDetailCubit>()
-                                            .nextTranscriptTest();
-                                      }
-                                    : null,
-                                icon: const Icon(Icons.arrow_forward),
-                                tooltip: 'Next Question',
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Builder(builder: (context) {
-                        final audioUrl =
-                            '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${state.transcriptTests[state.currentIndex].audioUrl}';
-                        return AudioSection(
-                          audioUrl: audioUrl,
-                        );
-                      }),
-                      const SizedBox(height: 16),
-                      TextField(
-                        controller: _transcriptController,
-                        onChanged: (value) {
-                          if (isCheck) {
-                            setState(() {
-                              isCheck = false;
-                            });
-                          }
-                        },
-                        autofocus: true,
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          hintText: 'Type what you hear...',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                const BorderSide(color: AppColors.inputBorder),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                const BorderSide(color: AppColors.focusBorder),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 12,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 48,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _checkTranscription(state
-                                    .transcriptTests[state.currentIndex]
-                                    .transcript!);
-                              },
-                              child: const Text('Check'),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 48,
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const Dialog(
-                                      child: SpeechTest(),
-                                    );
-                                  },
-                                );
-                              },
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.volume_up),
-                                  SizedBox(width: 8),
-                                  Text('Practice Pronunciation'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          if (state.currentIndex <
-                              state.transcriptTests.length - 1)
-                            SizedBox(
-                              height: 48,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  context
-                                      .read<TranscriptTestDetailCubit>()
-                                      .nextTranscriptTest();
-                                },
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.skip_next),
-                                    SizedBox(width: 8),
-                                    Text('Skip'),
-                                  ],
-                                ),
-                              ),
-                            )
-                          else
-                            SizedBox(
-                              height: 48,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  GoRouter.of(context).pop();
-                                },
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.skip_next),
-                                    SizedBox(width: 8),
-                                    Text('Finish'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      if (isCheck) ...[
-                        const SizedBox(height: 24),
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            'Your input: ${_transcriptController.text}',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        _buildCheckResultDisplay(state
-                            .transcriptTests[state.currentIndex].transcript!),
-                        const SizedBox(height: 16),
-                        if (_isCorrect)
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const FaIcon(FontAwesomeIcons.circleCheck,
-                                      color: AppColors.success),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Correct!',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(
-                                          color: AppColors.success,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                      ],
-                      const SizedBox(height: 32),
-                    ],
-                  ),
-                ),
+          endDrawer: Drawer(
+            backgroundColor: Theme.of(context).cardColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            child: Center(
+              child: Container(
+                margin: const EdgeInsets.all(16),
+                child: _buildQuestionList(state),
               ),
-              if (_showQuestionList)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    color: Colors.black.withValues(alpha: 0.5),
-                    child: Center(
-                      child: Container(
-                        margin: const EdgeInsets.all(16),
-                        child: _buildQuestionList(state),
-                      ),
+            ),
+          ),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 64),
+                        Builder(builder: (context) {
+                          final audioUrl =
+                              '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${state.transcriptTests[state.currentIndex].audioUrl}';
+                          return AudioSection(
+                            audioUrl: audioUrl,
+                          );
+                        }),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _transcriptController,
+                          onChanged: (value) {
+                            if (isCheck) {
+                              setState(() {
+                                isCheck = false;
+                              });
+                            }
+                          },
+                          maxLines: 5,
+                          decoration: InputDecoration(
+                            hintText: 'Type what you hear...',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                  color: AppColors.inputBorder),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                  color: AppColors.focusBorder),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 48,
+                              width: 300,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _checkTranscription(state
+                                      .transcriptTests[state.currentIndex]
+                                      .transcript!);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                ),
+                                child: const Text('Check'),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            SizedBox(
+                              height: 48,
+                              width: 300,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const Dialog(
+                                        child: SpeechTest(),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.microphoneLines),
+                                    SizedBox(width: 8),
+                                    Text('Practice Pronunciation'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (isCheck) ...[
+                          const SizedBox(height: 24),
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'Your input: ${_transcriptController.text}',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _buildCheckResultDisplay(state
+                              .transcriptTests[state.currentIndex].transcript!),
+                          const SizedBox(height: 16),
+                          if (_isCorrect)
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const FaIcon(FontAwesomeIcons.circleCheck,
+                                        color: AppColors.success),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Correct!',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                            color: AppColors.success,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                        ],
+                        const SizedBox(height: 32),
+                      ],
                     ),
                   ),
                 ),
+              ),
+              Container(
+                height: 70,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: state.currentIndex > 0
+                              ? () {
+                                  context
+                                      .read<TranscriptTestDetailCubit>()
+                                      .previousTranscriptTest();
+                                }
+                              : null,
+                          icon: const FaIcon(
+                            FontAwesomeIcons.chevronLeft,
+                            size: 20,
+                          ),
+                          tooltip: 'Previous Question',
+                        ),
+                        Text(
+                          '${state.currentIndex + 1}/${state.transcriptTests.length}',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        IconButton(
+                          onPressed: state.currentIndex <
+                                  state.transcriptTests.length - 1
+                              ? () {
+                                  context
+                                      .read<TranscriptTestDetailCubit>()
+                                      .nextTranscriptTest();
+                                }
+                              : null,
+                          icon: const FaIcon(
+                            FontAwesomeIcons.chevronRight,
+                            size: 20,
+                          ),
+                          tooltip: 'Next Question',
+                        ),
+                      ],
+                    ),
+
+                    // Button Finish
+                    ElevatedButton(
+                      onPressed: () {
+                        GoRouter.of(context).pop();
+                      },
+                      child: const Text('Finish'),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         );

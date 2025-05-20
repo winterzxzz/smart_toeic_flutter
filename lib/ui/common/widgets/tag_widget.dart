@@ -6,10 +6,12 @@ class TagWidget extends StatelessWidget {
     super.key,
     required this.icon,
     required this.text,
+    this.color,
   });
 
   final IconData icon;
   final String text;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class TagWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          FaIcon(icon, size: 12),
+          FaIcon(icon, size: 12, color: color),
           const SizedBox(width: 4),
           Text(text, style: const TextStyle(fontSize: 12)),
         ],

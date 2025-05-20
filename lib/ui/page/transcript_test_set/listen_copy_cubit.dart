@@ -39,10 +39,12 @@ class ListenCopyCubit extends Cubit<ListenCopyState> {
           filteredTranscriptTestSets: state.transcriptTestSets,
           filterParts: newFilterParts));
     } else {
-      final newTranscriptTestSets = state.transcriptTestSets
-          .where((test) =>
-              newFilterParts.contains(test.transcriptTestSetPart.toString()))
-          .toList();
+      final newTranscriptTestSets = state.transcriptTestSets.where((test) {
+        if (test.transcriptTestSetPart == null) {
+          return false;
+        }
+        return newFilterParts.contains(test.transcriptTestSetPart.toString());
+      }).toList();
       emit(state.copyWith(
           filteredTranscriptTestSets: newTranscriptTestSets,
           filterParts: newFilterParts));

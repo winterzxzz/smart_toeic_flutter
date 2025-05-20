@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_state.dart';
@@ -32,46 +33,48 @@ class Page extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        // Make sure state isn't null
         return Scaffold(
           endDrawer: Drawer(
             backgroundColor: Theme.of(context).cardColor,
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        alignment: Alignment.center,
-                        child: const Row(
-                          children: [
-                            Text(
-                              'Filter',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      alignment: Alignment.center,
+                      child: const Row(
+                        children: [
+                          Text(
+                            'Filter',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      const SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            Divider(),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              child: _FilterOptions(),
-                            ),
-                          ],
-                        ),
+                    ),
+                    const SingleChildScrollView(
+                      physics: NeverScrollableScrollPhysics(),
+                      child: Column(
+                        children: [
+                          Divider(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: _FilterOptions(),
+                          ),
+                        ],
                       ),
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
           body: CustomScrollView(
@@ -81,6 +84,7 @@ class Page extends StatelessWidget {
                 centerTitle: true,
                 floating: true,
                 snap: true,
+                leading: LeadingBackButton(),
               ),
               if (state.loadStatus == LoadStatus.loading)
                 const SliverFillRemaining(
@@ -97,8 +101,10 @@ class Page extends StatelessWidget {
               else
                 SliverPadding(
                   padding: const EdgeInsets.all(16.0),
-                  sliver: SliverList.builder(
+                  sliver: SliverList.separated(
                     itemCount: state.filteredTranscriptTestSets.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 16),
                     itemBuilder: (context, index) {
                       final test = state.filteredTranscriptTestSets[index];
                       return TranscriptTestItem(test: test);
