@@ -16,7 +16,7 @@ class FlashCardMyListItem extends StatelessWidget {
         ),
         onTap: () {},
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.gray2),
@@ -24,7 +24,7 @@ class FlashCardMyListItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Word learned'),
@@ -36,7 +36,7 @@ class FlashCardMyListItem extends StatelessWidget {
                 '1,234',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Text(
+              const Text(
                 'You\'ve learned 1,234 words so far',
                 style: TextStyle(color: AppColors.textGray),
               ),

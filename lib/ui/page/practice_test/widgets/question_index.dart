@@ -37,10 +37,10 @@ class _QuestionIndexState extends State<QuestionIndex> {
   }
 
   void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (remainingTime.inSeconds > 0) {
         setState(() {
-          remainingTime = remainingTime - Duration(seconds: 1);
+          remainingTime = remainingTime - const Duration(seconds: 1);
         });
       } else {
         context.read<PracticeTestCubit>().submitTest(context, remainingTime);
@@ -62,7 +62,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
     return SingleChildScrollView(
       child: Container(
         width: isMobile ? double.infinity : 300,
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).brightness == Brightness.dark
@@ -83,10 +83,10 @@ class _QuestionIndexState extends State<QuestionIndex> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Thời gian còn lại:'),
+                      const Text('Thời gian còn lại:'),
                       Text(
                         '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 24),
                       ),
                       const SizedBox(
@@ -100,7 +100,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
                           style: ElevatedButton.styleFrom(
                             alignment: Alignment.center,
                           ),
-                          child: Text('Nộp bài'),
+                          child: const Text('Nộp bài'),
                         ),
                       ),
                     ],
@@ -140,21 +140,21 @@ class _QuestionIndexState extends State<QuestionIndex> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: Text('Nộp bài'),
-        content: Text('Bạn có chắc chắn muốn nộp bài không?'),
+        title: const Text('Nộp bài'),
+        content: const Text('Bạn có chắc chắn muốn nộp bài không?'),
         actions: [
           TextButton(
               onPressed: () {
                 GoRouter.of(dialogContext).pop();
               },
-              child: Text('Hủy')),
+              child: const Text('Hủy')),
           TextButton(
               onPressed: () {
                 context
                     .read<PracticeTestCubit>()
                     .submitTest(context, remainingTime);
               },
-              child: Text(
+              child: const Text(
                 'Nộp bài',
                 style: TextStyle(color: Colors.red),
               )),

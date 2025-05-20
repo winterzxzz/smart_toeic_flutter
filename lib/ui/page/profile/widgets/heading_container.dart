@@ -22,7 +22,8 @@ class HeadingContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 12)),
               const SizedBox(height: 8),
               Text(description,
                   style: TextStyle(color: Colors.grey[500], fontSize: 10)),

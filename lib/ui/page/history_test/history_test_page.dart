@@ -28,9 +28,9 @@ class Page extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             automaticallyImplyLeading: true,
-            title: const Text('History Test'),
+            title: Text('History Test'),
             floating: true,
             pinned: true,
             elevation: 0,

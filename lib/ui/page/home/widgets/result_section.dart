@@ -26,7 +26,7 @@ class ResultSection extends StatelessWidget {
               onPressed: () {
                 GoRouter.of(context).pushNamed(AppRouter.historyTest);
               },
-              child: Text('Xem tất cả'),
+              child: const Text('Xem tất cả'),
             ),
           ],
         ),

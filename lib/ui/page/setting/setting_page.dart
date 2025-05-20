@@ -20,9 +20,9 @@ class SettingPage extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            Padding(
+            const Padding(
               padding: AppStyle.edgeInsetsA12,
-              child: const Text('Display Theme'),
+              child: Text('Display Theme'),
             ),
             BlocSelector<AppSettingCubit, AppSettingState, ThemeMode>(
               selector: (state) {

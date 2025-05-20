@@ -50,10 +50,10 @@ class Page extends StatelessWidget {
           return CustomScrollView(
             controller: context.read<AnalysisCubit>().scrollController,
             slivers: [
-              SliverAppBar(
+              const SliverAppBar(
                 automaticallyImplyLeading: true,
                 centerTitle: true,
-                title: const Text('TOEIC Performance Dashboard'),
+                title: Text('TOEIC Performance Dashboard'),
                 floating: true,
                 pinned: true,
                 elevation: 0,

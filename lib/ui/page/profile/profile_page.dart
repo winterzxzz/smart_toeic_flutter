@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<ProfileCubit>(),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
@@ -77,7 +77,7 @@ class _PageState extends State<Page> {
                 SliverToBoxAdapter(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
@@ -129,7 +129,7 @@ class _PageState extends State<Page> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Expanded(
+                                        const Expanded(
                                           child: Text(
                                             'Reading Target / Reading Current',
                                             style: TextStyle(
@@ -142,11 +142,11 @@ class _PageState extends State<Page> {
                                           TextSpan(
                                             text:
                                                 '${state.user?.targetScore?.reading ?? 0}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold),
                                             children: [
-                                              TextSpan(
+                                              const TextSpan(
                                                 text: '/450',
                                                 style: TextStyle(
                                                     fontSize: 14,
@@ -182,7 +182,7 @@ class _PageState extends State<Page> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Expanded(
+                                        const Expanded(
                                           child: Text(
                                             'Listening Target / Listening Current',
                                             style: TextStyle(
@@ -195,11 +195,11 @@ class _PageState extends State<Page> {
                                           TextSpan(
                                             text:
                                                 '${state.user?.targetScore?.listening ?? 0}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold),
                                             children: [
-                                              TextSpan(
+                                              const TextSpan(
                                                 text: '/450',
                                                 style: TextStyle(
                                                     fontSize: 14,
@@ -241,7 +241,7 @@ class _PageState extends State<Page> {
                                             state.user?.targetScore?.listening,
                                       );
                                     },
-                                    child: Text('Update Target Score'),
+                                    child: const Text('Update Target Score'),
                                   ),
                                 ),
                               ],
@@ -274,10 +274,11 @@ class _PageState extends State<Page> {
                   onPressed: () {
                     GoRouter.of(context).pushNamed(AppRouter.historyTest);
                   },
-                  icon: FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
-                  label: Text('History'),
+                  icon:
+                      const FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
+                  label: const Text('History'),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
@@ -289,10 +290,10 @@ class _PageState extends State<Page> {
                   onPressed: () {
                     GoRouter.of(context).pushNamed(AppRouter.analysis);
                   },
-                  icon: FaIcon(FontAwesomeIcons.chartLine, size: 16),
-                  label: Text('Analysis'),
+                  icon: const FaIcon(FontAwesomeIcons.chartLine, size: 16),
+                  label: const Text('Analysis'),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
               ),
@@ -307,10 +308,10 @@ class _PageState extends State<Page> {
               context.read<ProfileCubit>().updateProfile(ProfileUpdateRequest(
                   name: nameController.text, bio: bioController.text));
             },
-            icon: FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
-            label: Text('Save Changes'),
+            icon: const FaIcon(FontAwesomeIcons.floppyDisk, size: 16),
+            label: const Text('Save Changes'),
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12),
             ),
           ),
         ),
@@ -327,7 +328,7 @@ class _PageState extends State<Page> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext diaglogContext) {
@@ -345,7 +346,7 @@ class _PageState extends State<Page> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Update Target Score',
                     style: TextStyle(
                       fontSize: 18,
@@ -353,7 +354,7 @@ class _PageState extends State<Page> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                     onPressed: () {
                       Navigator.of(diaglogContext).pop();
                     },
@@ -361,17 +362,17 @@ class _PageState extends State<Page> {
                 ],
               ),
               const SizedBox(height: 24),
-              Text('Reading target score'),
+              const Text('Reading target score'),
               const SizedBox(height: 8),
               TextField(
                 keyboardType: TextInputType.number,
                 controller: readingController,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: Column(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_drop_up),
+                        icon: const Icon(Icons.arrow_drop_up),
                         onPressed: () {
                           final currentValue =
                               int.tryParse(readingController.text) ?? 0;
@@ -381,10 +382,10 @@ class _PageState extends State<Page> {
                           }
                         },
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(minHeight: 20),
+                        constraints: const BoxConstraints(minHeight: 20),
                       ),
                       IconButton(
-                        icon: Icon(Icons.arrow_drop_down),
+                        icon: const Icon(Icons.arrow_drop_down),
                         onPressed: () {
                           final currentValue =
                               int.tryParse(readingController.text) ?? 0;
@@ -394,24 +395,24 @@ class _PageState extends State<Page> {
                           }
                         },
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(minHeight: 20),
+                        constraints: const BoxConstraints(minHeight: 20),
                       ),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              Text('Listening target score'),
+              const Text('Listening target score'),
               const SizedBox(height: 8),
               TextField(
                 controller: listeningController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: Column(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.arrow_drop_up),
+                        icon: const Icon(Icons.arrow_drop_up),
                         onPressed: () {
                           final currentValue =
                               int.tryParse(listeningController.text) ?? 0;
@@ -421,10 +422,10 @@ class _PageState extends State<Page> {
                           }
                         },
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(minHeight: 20),
+                        constraints: const BoxConstraints(minHeight: 20),
                       ),
                       IconButton(
-                        icon: Icon(Icons.arrow_drop_down),
+                        icon: const Icon(Icons.arrow_drop_down),
                         onPressed: () {
                           final currentValue =
                               int.tryParse(listeningController.text) ?? 0;
@@ -434,7 +435,7 @@ class _PageState extends State<Page> {
                           }
                         },
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(minHeight: 20),
+                        constraints: const BoxConstraints(minHeight: 20),
                       ),
                     ],
                   ),

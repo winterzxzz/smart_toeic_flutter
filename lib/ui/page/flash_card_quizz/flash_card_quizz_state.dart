@@ -25,7 +25,7 @@ class FlashCardQuizzState extends Equatable {
     required this.isFinish,
   });
 
-  factory FlashCardQuizzState.initial() => FlashCardQuizzState(
+  factory FlashCardQuizzState.initial() => const FlashCardQuizzState(
         loadStatus: LoadStatus.initial,
         message: '',
         flashCardLearning: [],

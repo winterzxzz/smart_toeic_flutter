@@ -25,7 +25,7 @@ class ResultTestPage extends StatelessWidget {
             // Top stats row
             Container(
               width: 300,
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Theme.of(context).brightness == Brightness.dark
@@ -41,14 +41,14 @@ class ResultTestPage extends StatelessWidget {
                     value:
                         '${resultModel.correctQuestion}/${resultModel.totalQuestion}',
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ResultInfoItem(
                     icon: FontAwesomeIcons.percent,
                     title: 'Accuracy(#correct/#total)',
                     value:
                         '${((resultModel.correctQuestion / (resultModel.totalQuestion == 0 ? 1 : resultModel.totalQuestion)) * 100).toStringAsFixed(2)}%',
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ResultInfoItem(
                     icon: FontAwesomeIcons.clock,
                     title: 'Time to finish',
@@ -59,7 +59,7 @@ class ResultTestPage extends StatelessWidget {
               ),
             ),
 
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
 
             Expanded(
               child: Column(
@@ -80,24 +80,24 @@ class ResultTestPage extends StatelessWidget {
                                   'duration': resultModel.duration,
                                 });
                           },
-                          child: Row(
+                          child: const Row(
                             children: [
                               FaIcon(FontAwesomeIcons.eye),
                               SizedBox(width: 8),
                               Text('View Answer'),
                             ],
                           )),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: AppColors.textBlack,
                             ),
                           ),
                           onPressed: () {
                             GoRouter.of(context).pop();
                           },
-                          child: Row(
+                          child: const Row(
                             children: [
                               FaIcon(FontAwesomeIcons.arrowRotateLeft),
                               SizedBox(width: 8),
@@ -108,7 +108,7 @@ class ResultTestPage extends StatelessWidget {
                           )),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -173,8 +173,8 @@ class ResultTestPage extends StatelessWidget {
     return Card(
       child: Container(
         width: 120,
-        padding: EdgeInsets.all(12),
-        margin: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           children: [
             FaIcon(
@@ -187,10 +187,11 @@ class ResultTestPage extends StatelessWidget {
                           : FontAwesomeIcons.flag,
               color: color,
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(value,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            Text(label, style: TextStyle(fontSize: 12)),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(label, style: const TextStyle(fontSize: 12)),
           ],
         ),
       ),
@@ -236,14 +237,14 @@ class ResultInfoItem extends StatelessWidget {
       child: Row(
         children: [
           FaIcon(icon, size: 20),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           SizedBox(
             width: 120,
             child: Text(title),
           ),
           const Spacer(),
           Text(value,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold, color: AppColors.success)),
         ],
       ),

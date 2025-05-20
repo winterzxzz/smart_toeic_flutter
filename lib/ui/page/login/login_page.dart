@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<LoginCubit>(),
-      child: Page(),
+      child: const Page(),
     );
   }
 }

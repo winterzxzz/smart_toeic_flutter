@@ -38,12 +38,12 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
             ),
             IconButton(
               onPressed: () => GoRouter.of(context).pop(),
-              icon: Icon(
+              icon: const Icon(
                 Icons.close,
                 color: AppColors.gray3,
               ),
               padding: EdgeInsets.zero,
-              constraints: BoxConstraints(),
+              constraints: const BoxConstraints(),
             ),
           ],
         ),
@@ -53,32 +53,32 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Title',
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: titleController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.gray1),
+                    borderSide: const BorderSide(color: AppColors.gray1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.gray3),
+                    borderSide: const BorderSide(color: AppColors.gray3),
                   ),
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Description',
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: descriptionController,
                 decoration: InputDecoration(
@@ -89,10 +89,10 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: AppColors.gray3),
+                    borderSide: const BorderSide(color: AppColors.gray3),
                   ),
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
                 maxLines: 3,
               ),
@@ -102,7 +102,7 @@ void showCreateSetFlashCardDialog(BuildContext widgetContext,
         actions: [
           TextButton(
             onPressed: () => GoRouter.of(context).pop(),
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {

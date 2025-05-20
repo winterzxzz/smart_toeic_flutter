@@ -19,7 +19,7 @@ class ResetPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<ResetPasswordCubit>(),
-      child: Page(),
+      child: const Page(),
     );
   }
 }

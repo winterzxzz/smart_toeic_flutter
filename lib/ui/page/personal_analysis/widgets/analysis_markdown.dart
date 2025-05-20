@@ -29,11 +29,11 @@ class AnalysisMarkdown extends StatelessWidget {
           listItemCrossAxisAlignment:
               MarkdownListItemCrossAxisAlignment.baseline,
           styleSheet: MarkdownStyleSheet(
-            h1: TextStyle(color: Colors.blue, fontSize: 24),
-            p: TextStyle(fontSize: 16, height: 1.5),
-            blockquote:
-                TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
-            listBullet: TextStyle(color: Colors.green),
+            h1: const TextStyle(color: Colors.blue, fontSize: 24),
+            p: const TextStyle(fontSize: 16, height: 1.5),
+            blockquote: const TextStyle(
+                color: Colors.grey, fontStyle: FontStyle.italic),
+            listBullet: const TextStyle(color: Colors.green),
           ),
           selectable: true,
         ),

@@ -52,7 +52,7 @@ class AnalysisScore extends StatelessWidget {
           backgroundColor: Colors.grey[300],
           minHeight: 20,
           color: Colors.black,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             bottomLeft: Radius.circular(10),
           ),

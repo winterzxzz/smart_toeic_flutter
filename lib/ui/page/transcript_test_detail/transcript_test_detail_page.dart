@@ -23,7 +23,7 @@ class TranscriptTestDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => injector<TranscriptTestDetailCubit>()
         ..getTranscriptTestDetail(transcriptTestId),
-      child: Page(),
+      child: const Page(),
     );
   }
 }
@@ -393,12 +393,12 @@ class _PageState extends State<Page> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide:
-                                BorderSide(color: AppColors.inputBorder),
+                                const BorderSide(color: AppColors.inputBorder),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide:
-                                BorderSide(color: AppColors.focusBorder),
+                                const BorderSide(color: AppColors.focusBorder),
                           ),
                         ),
                       ),
@@ -431,15 +431,15 @@ class _PageState extends State<Page> {
                                 showDialog(
                                   context: context,
                                   builder: (context) {
-                                    return Dialog(
+                                    return const Dialog(
                                       child: SpeechTest(),
                                     );
                                   },
                                 );
                               },
-                              child: Row(
+                              child: const Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: const [
+                                children: [
                                   Icon(Icons.volume_up),
                                   SizedBox(width: 8),
                                   Text('Practice Pronunciation'),
@@ -457,9 +457,9 @@ class _PageState extends State<Page> {
                                       .read<TranscriptTestDetailCubit>()
                                       .nextTranscriptTest();
                                 },
-                                child: Row(
+                                child: const Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: const [
+                                  children: [
                                     Icon(Icons.skip_next),
                                     SizedBox(width: 8),
                                     Text('Skip'),
@@ -474,9 +474,9 @@ class _PageState extends State<Page> {
                                 onPressed: () {
                                   GoRouter.of(context).pop();
                                 },
-                                child: Row(
+                                child: const Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: const [
+                                  children: [
                                     Icon(Icons.skip_next),
                                     SizedBox(width: 8),
                                     Text('Finish'),
@@ -510,7 +510,7 @@ class _PageState extends State<Page> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  FaIcon(FontAwesomeIcons.circleCheck,
+                                  const FaIcon(FontAwesomeIcons.circleCheck,
                                       color: AppColors.success),
                                   const SizedBox(width: 8),
                                   Text(

@@ -43,7 +43,7 @@ class IntroductionPage extends StatelessWidget {
         Container(
           margin: EdgeInsets.symmetric(
               horizontal: MediaQuery.sizeOf(context).width / 4),
-          child: Text(
+          child: const Text(
               'Chúng tôi tin rằng việc học TOEIC không cần phải phức tạp hay áp lực. Với TOEIC Prep, bạn sẽ trải nghiệm một cách học tập dễ dàng, thông minh và đầy động lực.'),
         ),
         const SizedBox(
@@ -56,7 +56,7 @@ class IntroductionPage extends StatelessWidget {
               onPressed: () {
                 // GoRouter.of(context).go(AppRouter.home);
               },
-              child: Text('Bắt đầu học ngay')),
+              child: const Text('Bắt đầu học ngay')),
         ),
         const SizedBox(height: 100),
       ],
@@ -77,7 +77,7 @@ class IntroductionPage extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 3),
-          SizedBox(
+          const SizedBox(
             width: double.infinity,
             child: Row(
               children: [
@@ -87,14 +87,14 @@ class IntroductionPage extends StatelessWidget {
                   message:
                       'Hiển thị điểm số và phân tích sâu hiệu suất từng phần, giúp bạn hiểu rõ điểm mạnh và điểm cần cải thiện.',
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 IntroCard(
                   icon: FontAwesomeIcons.chartLine,
                   title: 'Hiện đại và tiện lợi',
                   message:
                       'Mọi tài nguyên học tập đều trong tầm tay bạn, dù ở bất kỳ đâu, trên bất kỳ thiết bị nào.',
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 IntroCard(
                   icon: FontAwesomeIcons.lightbulb,
                   title: 'Flashcard từ vựng thông minh',
@@ -111,14 +111,14 @@ class IntroductionPage extends StatelessWidget {
             width: double.infinity,
             child: Row(
               children: [
-                IntroCard(
+                const IntroCard(
                   icon: FontAwesomeIcons.brain,
                   title: 'AI giải thích đáp án',
                   message:
                       'Giải đáp thắc mắc chi tiết, giúp bạn hiểu rõ từng câu hỏi và tránh lặp lại sai lầm.',
                 ),
                 const SizedBox(width: 16),
-                IntroCard(
+                const IntroCard(
                   icon: FontAwesomeIcons.calculator,
                   title: 'Thống kê và theo dõi tiến độ',
                   message:
@@ -146,20 +146,20 @@ class IntroductionPage extends StatelessWidget {
               ),
         ),
         const SizedBox(height: 16),
-        Row(
+        const Row(
           children: [
             IntroCard(
               title: 'Hiện đại và tiện lợi',
               message:
                   'Mọi tài nguyên học tập đều trong tầm tay bạn, dù ở bất kỳ đâu, trên bất kỳ thiết bị nào.',
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             IntroCard(
               title: 'Cá nhân hóa',
               message:
                   'Lộ trình học và thi được thiết kế phù hợp với năng lực và mục tiêu của từng người học.',
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             IntroCard(
               title: 'Hỗ trợ bởi công nghệ AI',
               message:
@@ -183,7 +183,7 @@ class IntroductionPage extends StatelessWidget {
               ),
         ),
         const SizedBox(height: 16),
-        Text(
+        const Text(
             'Nền tảng học TOEIC hiện đại, tiện lợi và hiệu quả, giúp bạn dễ dàng chuẩn bị cho kỳ thi TOEIC một cách toàn diện.'),
         const SizedBox(height: 100),
       ],
@@ -211,7 +211,7 @@ class IntroCard extends StatelessWidget {
           final isMaxWidth = constraints.maxWidth > (1280 / 3 + 16);
           return Container(
             height: isMaxWidth ? 150 : 180,
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(

@@ -19,7 +19,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<RegisterCubit>(),
-      child: Page(),
+      child: const Page(),
     );
   }
 }

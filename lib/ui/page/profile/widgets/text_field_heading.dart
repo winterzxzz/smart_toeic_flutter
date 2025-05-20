@@ -26,7 +26,8 @@ class TextFieldHeading extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(label,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 12)),
               const SizedBox(height: 8),
               Text(description,
                   style: TextStyle(color: Colors.grey[500], fontSize: 10)),
@@ -43,7 +44,7 @@ class TextFieldHeading extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(color: Colors.grey[500]),
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
               focusedBorder: OutlineInputBorder(
@@ -52,7 +53,7 @@ class TextFieldHeading extends StatelessWidget {
                         ? AppColors.primary
                         : Colors.white),
               ),
-              disabledBorder: OutlineInputBorder(
+              disabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
             ),

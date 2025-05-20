@@ -23,7 +23,7 @@ class BlogSection extends StatelessWidget {
               onPressed: () {
                 // GoRouter.of(context).pushNamed(AppRouter.blog);
               },
-              child: Text('Xem tất cả'),
+              child: const Text('Xem tất cả'),
             ),
           ],
         ),

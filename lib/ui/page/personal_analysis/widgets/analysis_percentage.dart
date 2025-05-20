@@ -53,7 +53,7 @@ class AnalysisPercentage extends StatelessWidget {
                         reservedSize: 30,
                       ),
                     ),
-                    leftTitles: AxisTitles(
+                    leftTitles: const AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 40,

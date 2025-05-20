@@ -44,13 +44,13 @@ class _SpeechTestState extends State<SpeechTest> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Thực hành phát âm'),
+        title: const Text('Thực hành phát âm'),
         actions: [
           IconButton(
             onPressed: () {
               GoRouter.of(context).pop();
             },
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
           ),
         ],
       ),
@@ -59,7 +59,7 @@ class _SpeechTestState extends State<SpeechTest> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Kiểm tra phát âm'),
+            const Text('Kiểm tra phát âm'),
             const SizedBox(height: 32),
             Container(
               width: 100,
@@ -72,7 +72,7 @@ class _SpeechTestState extends State<SpeechTest> {
                 onPressed: () {
                   _startSpeechToText();
                 },
-                icon: Icon(Icons.mic),
+                icon: const Icon(Icons.mic),
               ),
             ),
             Text('Volume Level: ${level.toStringAsFixed(2)}'),

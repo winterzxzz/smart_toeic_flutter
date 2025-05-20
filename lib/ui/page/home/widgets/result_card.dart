@@ -41,7 +41,7 @@ class ExamResultCard extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                FaIcon(
+                const FaIcon(
                   FontAwesomeIcons.calendarPlus,
                   size: 16,
                 ),
@@ -54,7 +54,7 @@ class ExamResultCard extends StatelessWidget {
             const SizedBox(height: 4),
             Row(
               children: [
-                FaIcon(
+                const FaIcon(
                   FontAwesomeIcons.clock,
                   size: 16,
                 ),

@@ -36,7 +36,7 @@ class HomeItemTask extends StatelessWidget {
                 BoxShadow(
                   color: AppColors.backgroundBlur.withValues(alpha: 0.1),
                   blurRadius: 2,
-                  offset: Offset(0, 0),
+                  offset: const Offset(0, 0),
                 ),
               ],
             ),

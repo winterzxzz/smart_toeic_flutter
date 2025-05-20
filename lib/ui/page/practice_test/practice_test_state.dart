@@ -44,7 +44,7 @@ class PracticeTestState extends Equatable {
   // init state
 
   factory PracticeTestState.initial() {
-    return PracticeTestState(
+    return const PracticeTestState(
       loadStatus: LoadStatus.initial,
       testShow: TestShow.test,
       message: '',

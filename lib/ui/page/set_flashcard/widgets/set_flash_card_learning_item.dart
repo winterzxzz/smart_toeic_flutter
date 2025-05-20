@@ -143,7 +143,7 @@ class ListItems extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               e.title,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ],
                         ),

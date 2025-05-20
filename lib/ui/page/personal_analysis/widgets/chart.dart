@@ -39,7 +39,7 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
         return Container(
           height: 70,
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
           ),
           child: Row(
@@ -147,19 +147,19 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
                 enableSideBySideSeriesPlacement: true,
                 enableAxisAnimation: true,
                 enableMultiSelection: true,
-                title: ChartTitle(
+                title: const ChartTitle(
                   text: 'Category Accuracy Chart',
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                legend:
-                    Legend(isVisible: true, position: LegendPosition.bottom),
-                primaryXAxis: CategoryAxis(
+                legend: const Legend(
+                    isVisible: true, position: LegendPosition.bottom),
+                primaryXAxis: const CategoryAxis(
                   title: AxisTitle(text: 'Question Types'),
                 ),
-                primaryYAxis: NumericAxis(
+                primaryYAxis: const NumericAxis(
                   title: AxisTitle(text: 'Count'),
                   interval: 25,
                 ),

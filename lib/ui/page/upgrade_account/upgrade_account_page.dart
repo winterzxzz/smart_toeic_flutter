@@ -104,7 +104,7 @@ class Page extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.star,
                                     color: AppColors.success,
                                   ),

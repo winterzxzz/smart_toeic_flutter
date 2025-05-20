@@ -29,7 +29,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Profile Avatar',
+              const Text('Profile Avatar',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
               const SizedBox(height: 8),
               Text(
@@ -64,7 +64,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                         Text(
                             widget.user?.name.characters.first.toUpperCase() ??
                                 'U',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600)),
                     ],
                   ),
@@ -80,7 +80,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                           color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.camera_alt,
                           color: Colors.white,
                           size: 16,
@@ -99,11 +99,11 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Membership Level',
+                      const Text('Membership Level',
                           style: TextStyle(fontWeight: FontWeight.w600)),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(8),
@@ -117,13 +117,13 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                               AppImages.icPremium,
                               width: 24,
                               height: 24,
-                              colorFilter: ColorFilter.mode(
+                              colorFilter: const ColorFilter.mode(
                                 AppColors.textWhite,
                                 BlendMode.srcIn,
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Text('Premium',
+                            const Text('Premium',
                                 style: TextStyle(
                                     color: AppColors.textWhite,
                                     fontSize: 16,

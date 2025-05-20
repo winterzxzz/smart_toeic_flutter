@@ -77,7 +77,7 @@ class TestCard extends StatelessWidget {
                       ),
                       child: Text(
                         'Last time taken ${TimeUtils.timeAgo(test.updatedAt ?? test.createdAt!)}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.success,
                           fontWeight: FontWeight.w500,
                           fontSize: 10,
@@ -110,4 +110,3 @@ class TestCard extends StatelessWidget {
     return test.userAttempt?.count ?? 0;
   }
 }
-

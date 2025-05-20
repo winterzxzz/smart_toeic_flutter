@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
-      {super.key, required this.icon, required this.tag, required this.hintText});
+      {super.key,
+      required this.icon,
+      required this.tag,
+      required this.hintText});
 
   final IconData icon;
   final String tag;
@@ -14,7 +17,7 @@ class CustomTextField extends StatelessWidget {
       children: [
         // Fixed part
         ConstrainedBox(
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             minHeight: 48.0, // Match the height of the TextField
           ),
           child: Container(
@@ -30,14 +33,14 @@ class CustomTextField extends StatelessWidget {
             child: Center(
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.tag,
                     color: Colors.grey,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     tag,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ],
               ),

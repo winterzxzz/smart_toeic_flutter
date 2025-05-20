@@ -29,7 +29,7 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(
               height: 16,
             ),
@@ -104,9 +104,9 @@ class FlashCardMyListItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Word learned',
                     style: TextStyle(
@@ -128,7 +128,7 @@ class FlashCardMyListItem extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 4),
-              Text(
+              const Text(
                 'You\'ve learned 1,234 words so far',
                 style: TextStyle(
                   color: AppColors.textGray,

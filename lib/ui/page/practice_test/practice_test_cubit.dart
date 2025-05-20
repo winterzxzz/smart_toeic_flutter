@@ -41,9 +41,9 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   }
 
   void _startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (currentTime.inSeconds < state.duration.inSeconds) {
-        currentTime = currentTime + Duration(seconds: 1);
+        currentTime = currentTime + const Duration(seconds: 1);
       }
     });
   }

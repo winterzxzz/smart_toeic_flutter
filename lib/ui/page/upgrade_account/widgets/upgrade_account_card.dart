@@ -58,8 +58,8 @@ class UpgradeAccountCard extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
                   ),
@@ -131,7 +131,7 @@ class UpgradeAccountCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: null,
                     style: ElevatedButton.styleFrom(),
-                    child: Text('Free'),
+                    child: const Text('Free'),
                   ),
                 )
               else
@@ -144,7 +144,7 @@ class UpgradeAccountCard extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: onPressed,
-                        child: Text('Upgrade'),
+                        child: const Text('Upgrade'),
                       ),
                     ),
                   ),

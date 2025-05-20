@@ -33,7 +33,7 @@ class HeadingPracticeTest extends StatelessWidget {
                   },
                   builder: (context, title) {
                     return Text(title,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold));
                   },
                 ),
@@ -53,14 +53,14 @@ class HeadingPracticeTest extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: Text('Bạn có chắc chắn muốn thoát?'),
+                          title: const Text('Bạn có chắc chắn muốn thoát?'),
                           actions: [
                             TextButton(
                                 onPressed: () {
                                   GoRouter.of(context).pop();
                                   GoRouter.of(context).pop();
                                 },
-                                child: Text(
+                                child: const Text(
                                   'Thoát',
                                   style: TextStyle(
                                       color: AppColors.textFieldErrorBorder),
@@ -69,13 +69,13 @@ class HeadingPracticeTest extends StatelessWidget {
                               onPressed: () {
                                 GoRouter.of(context).pop();
                               },
-                              child: Text('Tiếp tục'),
+                              child: const Text('Tiếp tục'),
                             ),
                           ],
                         ),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Thoát',
                       style: TextStyle(
                           color: AppColors.error, fontWeight: FontWeight.bold),

@@ -77,17 +77,17 @@ class _PageState extends State<Page> {
         child: Scaffold(
           body: Column(
             children: [
-              HeadingPracticeTest(),
+              const HeadingPracticeTest(),
               Expanded(
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (!isMobile) const SizedBox(width: 16),
-                    Expanded(child: SideQuestion()),
+                    const Expanded(child: SideQuestion()),
                     if (!isMobile) ...[
                       const SizedBox(width: 16),
-                      QuestionIndex(),
+                      const QuestionIndex(),
                       const SizedBox(width: 16),
                     ],
                   ],
@@ -204,10 +204,10 @@ class _PageState extends State<Page> {
                             ),
                           ],
                         ),
-                        child: QuestionIndex(),
+                        child: const QuestionIndex(),
                       );
                     }
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   },
                 )
               : null,
@@ -268,8 +268,8 @@ class SideQuestion extends StatelessWidget {
                                 .setFocusPart(state.parts[index]);
                           },
                           child: Container(
-                            padding: EdgeInsets.all(8),
-                            margin: EdgeInsets.only(right: 16),
+                            padding: const EdgeInsets.all(8),
+                            margin: const EdgeInsets.only(right: 16),
                             decoration: BoxDecoration(
                               color: state.parts[index].numValue ==
                                       state.focusPart.numValue

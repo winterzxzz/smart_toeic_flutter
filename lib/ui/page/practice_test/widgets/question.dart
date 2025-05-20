@@ -23,7 +23,7 @@ class QuestionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: ValueKey(question.id),
-      margin: EdgeInsets.only(bottom: 32),
+      margin: const EdgeInsets.only(bottom: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,7 +47,7 @@ class QuestionWidget extends StatelessWidget {
             ),
           if (question.image != null)
             Container(
-              constraints: BoxConstraints(maxWidth: 500),
+              constraints: const BoxConstraints(maxWidth: 500),
               child: Image.network(
                 question.image!,
                 errorBuilder: (context, error, stackTrace) {
@@ -264,7 +264,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                       ),
                                       const SizedBox(height: 16),
                                       // Add upgrade button
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 200,
                                         child: ElevatedButton(
                                           onPressed: null,
@@ -274,13 +274,12 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              const FaIcon(
+                                              FaIcon(
                                                 FontAwesomeIcons.robot,
                                                 size: 14,
                                               ),
-                                              const SizedBox(width: 8),
-                                              const Text(
-                                                  'Tạo lời giải bằng AI'),
+                                              SizedBox(width: 8),
+                                              Text('Tạo lời giải bằng AI'),
                                             ],
                                           ),
                                         ),

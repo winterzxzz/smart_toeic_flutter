@@ -157,18 +157,18 @@ class _SectionQuestionState extends State<SectionQuestion> {
         }),
         const SizedBox(height: 32),
         Visibility(
-          visible: isCheck,
-          child: Builder(builder: (context) {
-            return Column(
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ],
-            );
-          })
+            visible: isCheck,
+            child: Builder(builder: (context) {
+              return Column(
+                children: [
+                  const SizedBox(height: 8),
+                  Text(
+                    'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
+              );
+            }))
       ],
     );
   }

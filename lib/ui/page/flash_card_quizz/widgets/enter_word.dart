@@ -37,20 +37,20 @@ class _EnterWordState extends State<EnterWord> {
       key: widget.key,
       children: [
         Text.rich(
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              TextSpan(text: 'Nhập từ tiếng Việt có nghĩa là '),
+              const TextSpan(text: 'Nhập từ tiếng Việt có nghĩa là '),
               TextSpan(
                 text: "'${widget.fcLearning.flashcardId!.word}'",
-                style: TextStyle(
+                style: const TextStyle(
                     fontWeight: FontWeight.bold, color: AppColors.error),
               ),
-              TextSpan(text: ' ?'),
+              const TextSpan(text: ' ?'),
             ],
           ),
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         TextField(
           controller: _controller,
           textAlign: TextAlign.center,
@@ -59,15 +59,15 @@ class _EnterWordState extends State<EnterWord> {
             hintText: 'Nhập từ tiếng Việt',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: const BorderSide(color: Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.purple),
+              borderSide: const BorderSide(color: Colors.purple),
             ),
           ),
         ),
-        SizedBox(height: 32),
+        const SizedBox(height: 32),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
@@ -80,7 +80,7 @@ class _EnterWordState extends State<EnterWord> {
                   _controller.text.toLowerCase() ==
                       widget.fcLearning.flashcardId!.translation.toLowerCase());
             },
-            child: Text('Kiểm tra'),
+            child: const Text('Kiểm tra'),
           ),
         ),
         const SizedBox(height: 32),
@@ -88,10 +88,10 @@ class _EnterWordState extends State<EnterWord> {
           Builder(builder: (context) {
             return Column(
               children: [
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
             );

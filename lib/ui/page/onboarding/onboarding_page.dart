@@ -52,7 +52,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               },
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return OnboardingContentFirst();
+                  return const OnboardingContentFirst();
                 } else {
                   return OnboardingContent(item: Constants.services[index - 1]);
                 }
@@ -77,7 +77,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
-                      child: Icon(
+                      child: const Icon(
                         Icons.arrow_back_ios,
                         color: AppColors.primary,
                         weight: 2,
@@ -110,12 +110,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Container(
                     width: 48,
                     height: 48,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.primary,
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
-                    child: Icon(
+                    child: const Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.white,
                       size: 16,

@@ -26,7 +26,7 @@ class TestSection extends StatelessWidget {
               onPressed: () {
                 injector<EntrypointCubit>().changeCurrentIndex(1);
               },
-              child: Text('Xem tất cả'),
+              child: const Text('Xem tất cả'),
             ),
           ],
         ),
