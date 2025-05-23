@@ -58,6 +58,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
         listener: (context, state) {
@@ -81,8 +82,7 @@ class _PageState extends State<Page> {
                     ),
                     Text(
                       '${state.flashCards.length} words',
-                      style: const TextStyle(
-                        fontSize: 12,
+                      style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textGray,
                       ),
                     ),

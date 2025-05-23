@@ -22,7 +22,7 @@ import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_det
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_page.dart';
 import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_page.dart';
-import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_practice.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_practice_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_result.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_page.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';

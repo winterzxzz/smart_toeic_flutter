@@ -36,6 +36,7 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         leading: const LeadingBackButton(),
@@ -56,10 +57,9 @@ class Page extends StatelessWidget {
                       (state.currentIndex + 1, state.flashCards.length),
                   builder: (context, counts) {
                     return Text(
-                      '${counts.$1}/${counts.$2}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).textTheme.bodySmall?.color,
+                      '${counts.$1}/${counts.$2} words',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textGray,
                       ),
                     );
                   },
