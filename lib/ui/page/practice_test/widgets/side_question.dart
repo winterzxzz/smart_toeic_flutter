@@ -69,7 +69,6 @@ class _SideQuestionState extends State<SideQuestion> {
                           },
                           child: Container(
                             padding: const EdgeInsets.all(8),
-                            margin: const EdgeInsets.only(right: 16),
                             decoration: BoxDecoration(
                               color: state.parts[index].numValue ==
                                       state.focusPart.numValue

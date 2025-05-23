@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
@@ -77,57 +78,74 @@ class _PageState extends State<Page> {
           navigator.hideLoadingOverlay();
         }
       },
-      child: PopScope(
-        canPop: widget.testShow == TestShow.test ? false : true,
-        child: Scaffold(
-          endDrawer: const QuestionIndex(),
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            toolbarHeight: 50,
-            title: const HeadingPracticeTest(),
-          ),
-          body: const SideQuestion(),
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-              children: [
-                if (widget.testShow == TestShow.test)
-                  BlocBuilder<PracticeTestCubit, PracticeTestState>(
-                    buildWhen: (previous, current) =>
-                        previous.duration != current.duration,
-                    builder: (context, state) {
-                      return Text(
-                        '${state.duration.inMinutes}:${state.duration.inSeconds % 60 < 10 ? '0' : ''}${state.duration.inSeconds % 60}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    },
-                  ),
-                if (widget.testShow == TestShow.test) ...[
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      width: 120,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showConfirmDialog(context, 'Are you sure?',
-                              'Are you sure you want to submit the test?', () {
-                            _cubit.submitTest(context, _cubit.state.duration);
-                          });
+      child: BlocListener<PracticeTestCubit, PracticeTestState>(
+        listenWhen: (previous, current) {
+          return previous.loadStatusSubmit != current.loadStatusSubmit;
+        },
+        listener: (context, state) {
+          if (state.loadStatusSubmit == LoadStatus.loading) {
+            navigator.showLoadingOverlay(message: 'Submitting...');
+          } else {
+            navigator.hideLoadingOverlay();
+            if (state.loadStatusSubmit == LoadStatus.success) {
+              navigator.pushReplacementNamed(AppRouter.resultTest,
+                  extra: {'resultModel': state.resultModel});
+            } else {
+              navigator.error(state.message);
+            }
+          }
+        },
+        child: PopScope(
+          canPop: widget.testShow == TestShow.test ? false : true,
+          child: Scaffold(
+            endDrawer: const QuestionIndex(),
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              toolbarHeight: 50,
+              title: const HeadingPracticeTest(),
+            ),
+            body: const SideQuestion(),
+            bottomNavigationBar: BottomAppBar(
+              height: widget.testShow == TestShow.result ? 0 : null,
+              child: widget.testShow == TestShow.result
+                  ? null
+                  : Row(children: [
+                      BlocBuilder<PracticeTestCubit, PracticeTestState>(
+                        buildWhen: (previous, current) =>
+                            previous.duration != current.duration,
+                        builder: (context, state) {
+                          return Text(
+                            '${state.duration.inMinutes}:${state.duration.inSeconds % 60 < 10 ? '0' : ''}${state.duration.inSeconds % 60}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
                         },
-                        style: ElevatedButton.styleFrom(
-                          alignment: Alignment.center,
-                        ),
-                        child: const Text('Submit'),
                       ),
-                    ),
-                  ),
-                ]
-              ],
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          width: 120,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showConfirmDialog(context, 'Are you sure?',
+                                  'Are you sure you want to submit the test?',
+                                  () {
+                                _cubit.submitTest();
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              alignment: Alignment.center,
+                            ),
+                            child: const Text('Submit'),
+                          ),
+                        ),
+                      ),
+                    ]),
             ),
           ),
         ),

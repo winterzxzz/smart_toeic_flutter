@@ -4,11 +4,7 @@ import 'dart:developer';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:toastification/toastification.dart';
-import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -18,11 +14,7 @@ import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
-import 'package:toeic_desktop/ui/page/tests/tests_cubit.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final TestRepository _testRepository;
@@ -37,14 +29,18 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     itemScrollController = ItemScrollController();
     itemPositionListener = ItemPositionsListener.create();
     currentTime = Duration.zero;
-    _startTimer();
   }
 
   void _startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      debugPrint('currentTime: ${currentTime.inSeconds}');
-      if (currentTime.inSeconds < state.duration.inSeconds) {
+      if (state.duration.inSeconds > 0) {
         currentTime = currentTime + const Duration(seconds: 1);
+        emit(state.copyWith(
+            duration: state.duration - const Duration(seconds: 1)));
+      } else {
+        if (state.loadStatusSubmit == LoadStatus.initial) {
+          submitTest();
+        }
       }
     });
   }
@@ -72,6 +68,9 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         focusPart: parts.first,
         testId: testId));
     await getPracticeTestDetail(testId, parts, resultId);
+    if (testShow == TestShow.test) {
+      _startTimer();
+    }
   }
 
   Future<void> getPracticeTestDetail(
@@ -171,8 +170,12 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     ));
   }
 
-  void submitTest(BuildContext context, Duration remainingTime) async {
-    AppNavigator(context: context).showLoadingOverlay();
+  void submitTest() async {
+    if (state.loadStatusSubmit == LoadStatus.loading ||
+        state.loadStatusSubmit == LoadStatus.success) {
+      return;
+    }
+    emit(state.copyWith(loadStatusSubmit: LoadStatus.loading));
     final totalQuestions = state.questions.length;
     final answerdQuestions = state.answers;
     final totalAnswerdQuestions = answerdQuestions.length;
@@ -186,7 +189,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     final listeningScore = totalCorrectQuestions * 10;
     final readingScore = totalCorrectQuestions * 10;
     final overallScore = listeningScore + readingScore;
-    final totalDurationDoIt = state.duration - remainingTime;
+    final totalDurationDoIt = currentTime;
 
     ResultTestRequest request = ResultTestRequest(
       rs: Rs(
@@ -211,14 +214,10 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
 
     response.fold(
       (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
+        loadStatusSubmit: LoadStatus.failure,
+        message: l.errors?.first.message ?? 'Submit test failed',
       )),
       (r) async {
-        await injector<HomeCubit>().getData();
-        await injector<TestsCubit>().fetchTests();
-        emit(state.copyWith(
-          loadStatus: LoadStatus.success,
-        ));
         final resultModel = ResultModel(
           resultId: r.id,
           testId: state.testId,
@@ -233,14 +232,10 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
           readingScore: readingScore,
           duration: totalDurationDoIt,
         );
-
-        if (context.mounted) {
-          AppNavigator(context: context).hideLoadingOverlay();
-          showToast(
-              title: 'Submit test success', type: ToastificationType.success);
-          GoRouter.of(context).pushReplacementNamed(AppRouter.resultTest,
-              extra: {'resultModel': resultModel});
-        }
+        emit(state.copyWith(
+          loadStatusSubmit: LoadStatus.success,
+          resultModel: resultModel,
+        ));
       },
     );
   }

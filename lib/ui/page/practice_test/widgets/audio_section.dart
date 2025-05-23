@@ -80,7 +80,7 @@ class _AudioSectionState extends State<AudioSection> {
     final theme = Theme.of(context);
     return Container(
       height: 60,
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: theme.primaryColor,

@@ -37,6 +37,9 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
           widget.title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
+        const SizedBox(
+          height: 8,
+        ),
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,

@@ -4,10 +4,12 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 
 class PracticeTestState extends Equatable {
   final TestShow testShow;
   final LoadStatus loadStatus;
+  final LoadStatus loadStatusSubmit;
   final String message;
   final String testId;
   final List<QuestionModel> questions;
@@ -20,11 +22,13 @@ class PracticeTestState extends Equatable {
   final Duration duration;
   final bool isShowAnswer;
   final bool isShowQuestionIndex;
-
   final LoadStatus loadStatusExplain;
+
+  final ResultModel? resultModel;
 
   const PracticeTestState({
     required this.loadStatus,
+    required this.loadStatusSubmit,
     required this.testShow,
     required this.message,
     required this.testId,
@@ -39,6 +43,7 @@ class PracticeTestState extends Equatable {
     required this.answers,
     required this.isShowQuestionIndex,
     required this.loadStatusExplain,
+    required this.resultModel,
   });
 
   // init state
@@ -46,6 +51,7 @@ class PracticeTestState extends Equatable {
   factory PracticeTestState.initial() {
     return const PracticeTestState(
       loadStatus: LoadStatus.initial,
+      loadStatusSubmit: LoadStatus.initial,
       testShow: TestShow.test,
       message: '',
       testId: '',
@@ -60,6 +66,7 @@ class PracticeTestState extends Equatable {
       answers: [],
       loadStatusExplain: LoadStatus.initial,
       isShowQuestionIndex: false,
+      resultModel: null,
     );
   }
 
@@ -81,6 +88,8 @@ class PracticeTestState extends Equatable {
     List<QuestionModel>? answers,
     LoadStatus? loadStatusExplain,
     bool? isShowQuestionIndex,
+    LoadStatus? loadStatusSubmit,
+    ResultModel? resultModel,
   }) {
     return PracticeTestState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -98,6 +107,8 @@ class PracticeTestState extends Equatable {
       answers: answers ?? this.answers,
       loadStatusExplain: loadStatusExplain ?? this.loadStatusExplain,
       isShowQuestionIndex: isShowQuestionIndex ?? this.isShowQuestionIndex,
+      loadStatusSubmit: loadStatusSubmit ?? this.loadStatusSubmit,
+      resultModel: resultModel ?? this.resultModel,
     );
   }
 
@@ -120,5 +131,7 @@ class PracticeTestState extends Equatable {
         answers,
         loadStatusExplain,
         isShowQuestionIndex,
+        loadStatusSubmit,
+        resultModel,
       ];
 }

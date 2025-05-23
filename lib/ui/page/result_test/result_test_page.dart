@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/page/result_test/widgets/result_action_buttons.dart';
+import 'package:toeic_desktop/ui/page/result_test/widgets/result_header_card.dart';
+import 'package:toeic_desktop/ui/page/result_test/widgets/result_scrore_section.dart';
 
 class ResultTestPage extends StatelessWidget {
   const ResultTestPage({super.key, required this.resultModel});
@@ -13,240 +12,29 @@ class ResultTestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Test Result: ${resultModel.testName}'),
+        leading: const LeadingBackButton(),
+        elevation: 0,
+        title: Text(
+          resultModel.testName,
+          style: theme.textTheme.titleLarge,
+        ),
+        centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            // Top stats row
-            Container(
-              width: 300,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.backgroundDark
-                    : AppColors.backgroundLight,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ResultInfoItem(
-                    icon: FontAwesomeIcons.circleCheck,
-                    title: 'Test Result',
-                    value:
-                        '${resultModel.correctQuestion}/${resultModel.totalQuestion}',
-                  ),
-                  const SizedBox(height: 16),
-                  ResultInfoItem(
-                    icon: FontAwesomeIcons.percent,
-                    title: 'Accuracy(#correct/#total)',
-                    value:
-                        '${((resultModel.correctQuestion / (resultModel.totalQuestion == 0 ? 1 : resultModel.totalQuestion)) * 100).toStringAsFixed(2)}%',
-                  ),
-                  const SizedBox(height: 16),
-                  ResultInfoItem(
-                    icon: FontAwesomeIcons.clock,
-                    title: 'Time to finish',
-                    value:
-                        '${resultModel.duration.inMinutes}:${resultModel.duration.inSeconds % 60 < 10 ? '0' : ''}${resultModel.duration.inSeconds % 60}',
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(width: 20),
-
-            Expanded(
-              child: Column(
-                children: [
-                  // Score indicators row
-
-                  Row(
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            GoRouter.of(context).pushReplacementNamed(
-                                AppRouter.practiceTest,
-                                extra: {
-                                  'testShow': TestShow.result,
-                                  'resultId': resultModel.resultId,
-                                  'parts': resultModel.parts,
-                                  'testId': resultModel.testId,
-                                  'duration': resultModel.duration,
-                                });
-                          },
-                          child: const Row(
-                            children: [
-                              FaIcon(FontAwesomeIcons.eye),
-                              SizedBox(width: 8),
-                              Text('View Answer'),
-                            ],
-                          )),
-                      const SizedBox(width: 16),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            side: const BorderSide(
-                              color: AppColors.textBlack,
-                            ),
-                          ),
-                          onPressed: () {
-                            GoRouter.of(context).pop();
-                          },
-                          child: const Row(
-                            children: [
-                              FaIcon(FontAwesomeIcons.arrowRotateLeft),
-                              SizedBox(width: 8),
-                              Text(
-                                'Back to test page',
-                              ),
-                            ],
-                          )),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: _buildScoreBox('Correct',
-                              '${resultModel.correctQuestion}', Colors.green)),
-                      Expanded(
-                          child: _buildScoreBox('Incorrect',
-                              '${resultModel.incorrectQuestion}', Colors.red)),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: _buildScoreBox('Skip',
-                              '${resultModel.notAnswerQuestion}', Colors.grey)),
-                      Expanded(
-                          child: _buildScoreBox('Score',
-                              '${resultModel.overallScore}', Colors.blue)),
-                    ],
-                  ),
-
-                  // SizedBox(height: 50),
-
-                  // // Bottom section
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     Expanded(
-                  //         child: _buildProgressSection(
-                  //             'Listening',
-                  //             '${resultModel.listeningScore}/495',
-                  //             '${resultModel.correctQuestion}/100')),
-                  //     Expanded(
-                  //         child: _buildProgressSection(
-                  //             'Reading',
-                  //             '${resultModel.readingScore}/495',
-                  //             '${resultModel.correctQuestion}/100')),
-                  //   ],
-                  // ),
-
-                  // SizedBox(height: 20),
-                  // SizedBox(
-                  //     width: double.infinity,
-                  //     child: _buildProgressSection(
-                  //         'Overall',
-                  //         '${resultModel.overallScore}/990',
-                  //         '${resultModel.correctQuestion}/200')),
-
-                  // SizedBox(height: 50),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildScoreBox(String label, String value, Color color) {
-    return Card(
-      child: Container(
-        width: 120,
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FaIcon(
-              label == 'Correct'
-                  ? FontAwesomeIcons.circleCheck
-                  : label == 'Incorrect'
-                      ? FontAwesomeIcons.circleXmark
-                      : label == 'Skip'
-                          ? FontAwesomeIcons.circle
-                          : FontAwesomeIcons.flag,
-              color: color,
-            ),
-            const SizedBox(height: 4),
-            Text(value,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            Text(label, style: const TextStyle(fontSize: 12)),
+            ResultHeaderCard(resultModel: resultModel),
+            const SizedBox(height: 24),
+            ResultScoreSection(resultModel: resultModel),
+            const SizedBox(height: 24),
+            ResultActionButtons(resultModel: resultModel),
           ],
         ),
-      ),
-    );
-  }
-
-  // Widget _buildProgressSection(String title, String score, String correct) {
-  //   return Card(
-  //     child: Container(
-  //       padding: EdgeInsets.all(16),
-  //       child: Column(
-  //         children: [
-  //           Text(title,
-  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //           SizedBox(height: 8),
-  //           Text(score,
-  //               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-  //           Text('Correct: $correct',
-  //               style: TextStyle(fontSize: 12, color: AppColors.success)),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-}
-
-class ResultInfoItem extends StatelessWidget {
-  const ResultInfoItem({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.value,
-  });
-
-  final IconData icon;
-  final String title;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
-      child: Row(
-        children: [
-          FaIcon(icon, size: 20),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 120,
-            child: Text(title),
-          ),
-          const Spacer(),
-          Text(value,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: AppColors.success)),
-        ],
       ),
     );
   }

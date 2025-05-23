@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
-import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/practice_test_part.dart';
@@ -19,40 +18,7 @@ class QuestionIndex extends StatefulWidget {
 }
 
 class _QuestionIndexState extends State<QuestionIndex> {
-  late Duration remainingTime;
-  Timer? timer;
-
-  @override
-  void initState() {
-    super.initState();
-    final testShow = context.read<PracticeTestCubit>().state.testShow;
-    if (testShow == TestShow.test) {
-      remainingTime = context.read<PracticeTestCubit>().state.duration;
-      setState(() {
-        remainingTime = remainingTime;
-      });
-      startTimer();
-    }
-  }
-
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (remainingTime.inSeconds > 0) {
-        setState(() {
-          remainingTime = remainingTime - const Duration(seconds: 1);
-        });
-      } else {
-        context.read<PracticeTestCubit>().submitTest(context, remainingTime);
-        timer.cancel();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
+  late PracticeTestCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -77,18 +43,6 @@ class _QuestionIndexState extends State<QuestionIndex> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (state.testShow == TestShow.test)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Thời gian còn lại:'),
-                          Text(
-                            '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
-                          ),
-                        ],
-                      ),
                     ...state.parts.map(
                       (part) {
                         if (state.questions
@@ -112,6 +66,36 @@ class _QuestionIndexState extends State<QuestionIndex> {
                         return const SizedBox.shrink();
                       },
                     ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(
+                            color: AppColors.error,
+                          ),
+                        ),
+                        onPressed: () {
+                          showConfirmDialog(
+                            context,
+                            'Exit',
+                            'Are you sure you want to exit?',
+                            () {
+                              GoRouter.of(context).pop();
+                              GoRouter.of(context).pop();
+                            },
+                          );
+                        },
+                        child: Text(
+                          'Exit',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: AppColors.error,
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               );
