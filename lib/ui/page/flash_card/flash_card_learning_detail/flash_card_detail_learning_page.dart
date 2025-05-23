@@ -8,6 +8,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/widgets/flash_card_learning_tile.dart';
@@ -62,14 +63,14 @@ class _PageState extends State<Page> {
               slivers: [
                 SliverAppBar(
                   floating: true,
+                  leading: const LeadingBackButton(),
                   snap: true,
-                  automaticallyImplyLeading: false,
                   title: BlocSelector<FlashCardDetailLearningCubit,
                       FlashCardDetailLearningState, List<FlashCardLearning>>(
                     selector: (state) => state.flashCards,
                     builder: (context, flashCards) {
                       return Text(
-                        'Flashcard: ${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} từ)',
+                        '${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} words)',
                         style: const TextStyle(
                           fontSize: 16,
                         ),
@@ -100,12 +101,6 @@ class _PageState extends State<Page> {
                         },
                         icon: Icons.play_circle_outline_rounded,
                         label: 'Luyện tập flashcards',
-                      ),
-                      const SizedBox(height: 12),
-                      _buildActionButton(
-                        onPressed: () {},
-                        icon: Icons.pause_circle_outline_rounded,
-                        label: 'Dừng học bộ này',
                       ),
                       const SizedBox(height: 16),
                       ...state.flashCards.map((flashcard) =>
