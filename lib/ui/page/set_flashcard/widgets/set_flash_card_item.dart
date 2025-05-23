@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
@@ -20,6 +21,14 @@ class SetFlashCardItem extends StatefulWidget {
 }
 
 class _SetFlashCardItemState extends State<SetFlashCardItem> {
+  late final FlashCardCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<FlashCardCubit>();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -76,19 +85,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                     onSelected: (value) {
                       switch (value) {
                         case 'edit':
-                          showCreateSetFlashCardDialog(
-                            context,
-                            title: widget.flashcard.title,
-                            isEdit: true,
-                            description: widget.flashcard.description,
-                            onSave: (title, description) {
-                              context.read<FlashCardCubit>().updateFlashCardSet(
-                                    widget.flashcard.id,
-                                    title,
-                                    description,
-                                  );
-                            },
-                          );
+                          showEditSetFlashCardBottomSheet(context);
                           break;
                         case 'delete':
                           showConfirmDialog(
@@ -96,9 +93,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                             'Delete Flashcard',
                             'Are you sure you want to delete this flashcard?',
                             () {
-                              context.read<FlashCardCubit>().deleteFlashCardSet(
-                                    widget.flashcard.id,
-                                  );
+                              _cubit.deleteFlashCardSet(widget.flashcard.id);
                             },
                           );
                           break;
@@ -165,6 +160,27 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void showEditSetFlashCardBottomSheet(BuildContext context) {
+    Utils.showModalBottomSheetForm(
+      context: context,
+      title: 'Edit flashcard set',
+      child: FormFlashCard(
+        args: FormFlashCardArgs(
+          title: widget.flashcard.title,
+          description: widget.flashcard.description,
+          type: FormFlashCardType.edit,
+          onSave: (title, description) {
+            _cubit.updateFlashCardSet(
+              widget.flashcard.id,
+              title,
+              description,
+            );
+          },
         ),
       ),
     );

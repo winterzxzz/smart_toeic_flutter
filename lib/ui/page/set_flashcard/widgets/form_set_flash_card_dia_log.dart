@@ -2,117 +2,136 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
-void showCreateSetFlashCardDialog(BuildContext widgetContext,
-    {String? title,
-    String? description,
-    bool isEdit = false,
-    required Function(String, String) onSave}) {
-  final TextEditingController titleController =
-      TextEditingController(text: title);
-  final TextEditingController descriptionController =
-      TextEditingController(text: description);
+enum FormFlashCardType {
+  create,
+  edit,
+}
 
-  showDialog(
-    context: widgetContext,
-    builder: (context) {
-      final screenWidth = MediaQuery.of(context).size.width;
-      final dialogWidth = screenWidth - 14;
-      final theme = Theme.of(context);
+class FormFlashCardArgs {
+  final String? title;
+  final String? description;
+  final FormFlashCardType type;
+  final Function(String, String) onSave;
 
-      return AlertDialog(
-        scrollable: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.max,
+  const FormFlashCardArgs({
+    this.title,
+    this.description,
+    required this.type,
+    required this.onSave,
+  });
+}
+
+class FormFlashCard extends StatefulWidget {
+  const FormFlashCard({
+    super.key,
+    required this.args,
+  });
+
+  final FormFlashCardArgs args;
+
+  @override
+  State<FormFlashCard> createState() => _FormFlashCardState();
+}
+
+class _FormFlashCardState extends State<FormFlashCard> {
+  late final TextEditingController titleController;
+  late final TextEditingController descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.args.title);
+    descriptionController =
+        TextEditingController(text: widget.args.description ?? '');
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Text(
-                isEdit ? 'Edit flashcard set' : 'Create flashcard set',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
+            const Text(
+              'Title',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: titleController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.textGray),
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.primary),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
             ),
-            IconButton(
-              onPressed: () => GoRouter.of(context).pop(),
-              icon: const Icon(
-                Icons.close,
-                color: AppColors.gray3,
+            const SizedBox(height: 16),
+            const Text(
+              'Description',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: descriptionController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.textGray),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.primary),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
+              maxLines: 5,
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => GoRouter.of(context).pop(),
+                    child: const Text('Cancel'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      widget.args.onSave(
+                        titleController.text,
+                        descriptionController.text,
+                      );
+                      GoRouter.of(context).pop();
+                    },
+                    child: const Text('Save'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        content: SizedBox(
-          width: dialogWidth,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Title',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: titleController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.gray1),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.gray3),
-                  ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Description',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: descriptionController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                        color: AppColors.gray1.withValues(alpha: 0.1)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.gray3),
-                  ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
-                maxLines: 3,
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => GoRouter.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              onSave(titleController.text, descriptionController.text);
-              GoRouter.of(context).pop();
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      );
-    },
-  );
+      ),
+    );
+  }
 }

@@ -1,4 +1,5 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 
 class Utils {
   /// Checks if string is email.
@@ -76,5 +77,36 @@ class Utils {
     a = a.replaceAll(' ', '').replaceAll('.', '').replaceAll(',', '');
     b = b.replaceAll(' ', '').replaceAll('.', '').replaceAll(',', '');
     return a.toLowerCase() == b.toLowerCase();
+  }
+
+  static void showModalBottomSheetForm({
+    required BuildContext context,
+    String? title,
+    required Widget child,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 1,
+          minChildSize: 1,
+          maxChildSize: 1,
+          builder: (context, scrollController) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(title ?? ''),
+                leading: const LeadingBackButton(isClose: true),
+              ),
+              body: child,
+            );
+          },
+        );
+      },
+    );
   }
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
@@ -18,10 +19,12 @@ class SetFlashCardMyListPage extends StatefulWidget {
 }
 
 class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
+  late final FlashCardCubit _cubit;
   @override
   void initState() {
     super.initState();
-    context.read<FlashCardCubit>().fetchFlashCardSets();
+    _cubit = context.read<FlashCardCubit>();
+    _cubit.fetchFlashCardSets();
   }
 
   @override
@@ -44,13 +47,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                 delegate: SliverChildListDelegate([
                   const SizedBox(height: 16),
                   InkWell(
-                    onTap: () => showCreateSetFlashCardDialog(context,
-                        onSave: (title, description) {
-                      context.read<FlashCardCubit>().createFlashCardSet(
-                            title,
-                            description,
-                          );
-                    }),
+                    onTap: () => showCreateSetFlashCardBottomSheet(context),
                     child: Container(
                       width: double.infinity,
                       height: 48,
@@ -114,6 +111,21 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
               padding: EdgeInsets.only(bottom: 16),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void showCreateSetFlashCardBottomSheet(BuildContext context) {
+    Utils.showModalBottomSheetForm(
+      context: context,
+      title: 'Create new flashcard set',
+      child: FormFlashCard(
+        args: FormFlashCardArgs(
+          type: FormFlashCardType.create,
+          onSave: (title, description) {
+            _cubit.createFlashCardSet(title, description);
+          },
         ),
       ),
     );

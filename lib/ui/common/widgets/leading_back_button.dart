@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LeadingBackButton extends StatelessWidget {
-  const LeadingBackButton({super.key, this.onPressed});
-
+  const LeadingBackButton({
+    super.key,
+    this.isClose = false,
+    this.onPressed,
+  });
+  final bool isClose;
   final VoidCallback? onPressed;
 
   @override
@@ -13,7 +17,9 @@ class LeadingBackButton extends StatelessWidget {
           () {
             GoRouter.of(context).pop();
           },
-      icon: const Icon(Icons.arrow_back_ios, size: 16),
+      icon: isClose
+          ? const Icon(Icons.close, size: 16)
+          : const Icon(Icons.arrow_back_ios, size: 16),
     );
   }
 }
