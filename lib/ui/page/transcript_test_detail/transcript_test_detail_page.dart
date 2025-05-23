@@ -6,13 +6,18 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/transcript/check_result.dart';
+import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/check_result_display.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/question_list.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/speech_test.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 
 class TranscriptTestDetailPage extends StatelessWidget {
   const TranscriptTestDetailPage({super.key, required this.transcriptTestId});
@@ -30,24 +35,16 @@ class TranscriptTestDetailPage extends StatelessWidget {
 }
 
 class Page extends StatefulWidget {
-  const Page({
-    super.key,
-  });
+  const Page({super.key});
 
   @override
   State<Page> createState() => _PageState();
 }
 
-class CheckResult {
-  final String word;
-  final String status; // "correct", "incorrect", "next"
-
-  CheckResult({required this.word, required this.status});
-}
-
 class _PageState extends State<Page> {
-  late TextEditingController _transcriptController;
-  bool isCheck = false;
+  late final TextEditingController _transcriptController;
+  late final TranscriptCheckerService _transcriptChecker;
+  bool _isCheck = false;
   List<CheckResult> _checkResult = [];
   bool _isCorrect = false;
 
@@ -55,6 +52,7 @@ class _PageState extends State<Page> {
   void initState() {
     super.initState();
     _transcriptController = TextEditingController();
+    _transcriptChecker = TranscriptCheckerService();
   }
 
   @override
@@ -63,210 +61,151 @@ class _PageState extends State<Page> {
     super.dispose();
   }
 
-  List<String> _splitAndLowercase(String text) {
-    return text
-        .toLowerCase()
-        .replaceAll(RegExp(r'[.,!?]'), '')
-        .split(RegExp(r'\s+'))
-      ..removeWhere((word) => word.isEmpty);
-  }
-
-  List<Map<String, dynamic>> _splitAndIndexWords(String text) {
-    List<Map<String, dynamic>> result = [];
-    int currentIndex = 0;
-
-    final cleanText = text.replaceAll(RegExp(r'[.,!?]'), '');
-    final words = cleanText.split(RegExp(r'\s+'))
-      ..removeWhere((word) => word.isEmpty);
-
-    for (String word in words) {
-      result.add({
-        'word': word.toLowerCase(),
-        'index': currentIndex,
-      });
-      currentIndex += word.length + 1; // +1 for the space
-    }
-    return result;
-  }
-
-  void _checkTranscription(String correctTranscript) {
-    final userWords = _splitAndLowercase(_transcriptController.text);
-    final correctWords = _splitAndIndexWords(correctTranscript);
-
-    bool allCorrect = false;
-    int index = 0;
-    List<CheckResult> result = [];
-    int numWord = -1;
-    bool isFalsePart = false;
-
-    for (int i = 0; i < userWords.length; i++) {
-      if (i > correctWords.length - 1) break;
-
-      if (userWords[i] == correctWords[i]['word']) {
-        numWord = i;
-        int preIndex = index;
-
-        if (i == correctWords.length - 1) {
-          result.add(CheckResult(
-            word: correctTranscript.substring(index),
-            status: 'correct',
-          ));
-          allCorrect = true;
-          break;
-        }
-
-        index = correctWords[i + 1]['index'];
-        result.add(CheckResult(
-          word: correctTranscript.substring(preIndex, index),
-          status: 'correct',
-        ));
-      } else {
-        numWord = i;
-        isFalsePart = true;
-        int preIndex = index;
-        allCorrect = false;
-
-        if (i == correctWords.length - 1) {
-          result.add(CheckResult(
-            word: correctTranscript.substring(index),
-            status: 'incorrect',
-          ));
-          break;
-        }
-
-        index = correctWords[i + 1]['index'];
-        result.add(CheckResult(
-          word: correctTranscript.substring(preIndex, index),
-          status: 'incorrect',
-        ));
-        break;
-      }
-    }
-
-    if (!isFalsePart && !allCorrect) {
-      if (numWord < correctWords.length) {
-        if (numWord + 2 < correctWords.length) {
-          result.add(CheckResult(
-            word: correctTranscript.substring(
-              index,
-              correctWords[numWord + 2]['index'],
-            ),
-            status: 'next',
-          ));
-        } else {
-          result.add(CheckResult(
-            word: correctTranscript.substring(index),
-            status: 'next',
-          ));
-        }
-      }
-    }
+  void _handleCheck(String correctTranscript) {
+    final result = _transcriptChecker.checkTranscription(
+      userInput: _transcriptController.text,
+      correctTranscript: correctTranscript,
+    );
 
     setState(() {
-      _checkResult = result;
-      _isCorrect = allCorrect;
-      isCheck = true;
+      _checkResult = result.results;
+      _isCorrect = result.isAllCorrect;
+      _isCheck = true;
     });
   }
 
-  Widget _buildCheckResultDisplay(String transcript) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Text('Result: ', style: Theme.of(context).textTheme.bodyLarge),
-          Expanded(
-            child: Wrap(
-              children: _checkResult.map((result) {
-                final color = switch (result.status) {
-                  'correct' => Colors.green,
-                  'incorrect' => Colors.red,
-                  'next' => Colors.grey,
-                  _ => Colors.black,
-                };
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    result.word,
-                    style: TextStyle(color: color),
-                  ),
-                );
-              }).toList(),
+  Widget _buildInputSection(String correctTranscript) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextField(
+          controller: _transcriptController,
+          onChanged: (value) {
+            if (_isCheck) {
+              setState(() {
+                _isCheck = false;
+              });
+            }
+          },
+          maxLines: 5,
+          decoration: InputDecoration(
+            hintText: 'Type what you hear...',
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.inputBorder),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.focusBorder),
             ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 24),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 48,
+              width: 300,
+              child: ElevatedButton(
+                onPressed: () => _handleCheck(correctTranscript),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                child: const Text('Check'),
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 48,
+              width: 300,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const Dialog(
+                        child: SpeechTest(),
+                      );
+                    },
+                  );
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FaIcon(FontAwesomeIcons.microphoneLines),
+                    SizedBox(width: 8),
+                    Text('Practice Pronunciation'),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
-  Widget _buildQuestionList(TranscriptTestDetailState state) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).dividerColor,
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildNavigationBar(TranscriptTestDetailState state) {
+    return Container(
+      height: 70,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
+              IconButton(
+                onPressed: state.currentIndex > 0
+                    ? () {
+                        context
+                            .read<TranscriptTestDetailCubit>()
+                            .previousTranscriptTest();
+                      }
+                    : null,
+                icon: const FaIcon(
+                  FontAwesomeIcons.chevronLeft,
+                  size: 20,
+                ),
+                tooltip: 'Previous Question',
+              ),
               Text(
-                'Question List',
+                '${state.currentIndex + 1}/${state.transcriptTests.length}',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  GoRouter.of(context).pop();
-                },
+                onPressed: state.currentIndex < state.transcriptTests.length - 1
+                    ? () {
+                        context
+                            .read<TranscriptTestDetailCubit>()
+                            .nextTranscriptTest();
+                      }
+                    : null,
+                icon: const FaIcon(
+                  FontAwesomeIcons.chevronRight,
+                  size: 20,
+                ),
+                tooltip: 'Next Question',
               ),
             ],
           ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            itemCount: state.transcriptTests.length,
-            itemBuilder: (context, index) {
-              final isCurrentQuestion = index == state.currentIndex;
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: isCurrentQuestion
-                      ? AppColors.primary
-                      : Theme.of(context).dividerColor,
-                  child: Text(
-                    '${index + 1}',
-                    style: TextStyle(
-                      color: isCurrentQuestion ? Colors.white : null,
-                    ),
-                  ),
-                ),
-                title: Text(
-                  'Question ${index + 1}',
-                  style: TextStyle(
-                    fontWeight: isCurrentQuestion ? FontWeight.bold : null,
-                  ),
-                ),
-                onTap: () {
-                  context
-                      .read<TranscriptTestDetailCubit>()
-                      .goToTranscriptTest(index);
-                },
-              );
-            },
+          ElevatedButton(
+            onPressed: () => GoRouter.of(context).pop(),
+            child: const Text('Finish'),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -278,241 +217,102 @@ class _PageState extends State<Page> {
           showToast(title: state.message, type: ToastificationType.error);
         }
         setState(() {
-          isCheck = false;
+          _isCheck = false;
           _transcriptController.text = '';
         });
       },
       builder: (context, state) {
-        if (state.loadStatus != LoadStatus.success) {
-          if (state.loadStatus == LoadStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return const SizedBox.shrink();
-        }
+        final bool isLoading = state.loadStatus == LoadStatus.loading ||
+            state.loadStatus == LoadStatus.initial;
+        final bool isSuccess = state.loadStatus == LoadStatus.success;
+        final currentTest =
+            isSuccess ? state.transcriptTests[state.currentIndex] : null;
+        final audioUrl = isSuccess && currentTest != null
+            ? '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${currentTest.audioUrl}'
+            : '';
+
         return Scaffold(
           appBar: AppBar(
             title: const Text('Transcript Test'),
             leading: const LeadingBackButton(),
           ),
-          key: ValueKey(state.transcriptTests[state.currentIndex].id),
-          endDrawer: Drawer(
-            backgroundColor: Theme.of(context).cardColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: Center(
-              child: Container(
-                margin: const EdgeInsets.all(16),
-                child: _buildQuestionList(state),
-              ),
-            ),
-          ),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          body: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 64),
-                        Builder(builder: (context) {
-                          final audioUrl =
-                              '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${state.transcriptTests[state.currentIndex].audioUrl}';
-                          return AudioSection(
-                            audioUrl: audioUrl,
-                          );
-                        }),
-                        const SizedBox(height: 16),
-                        TextField(
-                          controller: _transcriptController,
-                          onChanged: (value) {
-                            if (isCheck) {
-                              setState(() {
-                                isCheck = false;
-                              });
-                            }
-                          },
-                          maxLines: 5,
-                          decoration: InputDecoration(
-                            hintText: 'Type what you hear...',
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                  color: AppColors.inputBorder),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                  color: AppColors.focusBorder),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: 48,
-                              width: 300,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _checkTranscription(state
-                                      .transcriptTests[state.currentIndex]
-                                      .transcript!);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                ),
-                                child: const Text('Check'),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            SizedBox(
-                              height: 48,
-                              width: 300,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                ),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return const Dialog(
-                                        child: SpeechTest(),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.microphoneLines),
-                                    SizedBox(width: 8),
-                                    Text('Practice Pronunciation'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (isCheck) ...[
-                          const SizedBox(height: 24),
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              'Your input: ${_transcriptController.text}',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildCheckResultDisplay(state
-                              .transcriptTests[state.currentIndex].transcript!),
-                          const SizedBox(height: 16),
-                          if (_isCorrect)
-                            Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const FaIcon(FontAwesomeIcons.circleCheck,
-                                        color: AppColors.success),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      'Correct!',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                            color: AppColors.success,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                        ],
-                        const SizedBox(height: 32),
-                      ],
+          key: isSuccess && currentTest != null
+              ? ValueKey(currentTest.id)
+              : null,
+          endDrawer: isSuccess
+              ? Drawer(
+                  backgroundColor: Theme.of(context).cardColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  child: Center(
+                    child: Container(
+                      margin: const EdgeInsets.all(16),
+                      child: QuestionList(
+                        transcriptTests: state.transcriptTests,
+                        currentIndex: state.currentIndex,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Container(
-                height: 70,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
+                )
+              : null,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          body: isLoading
+              ? const LoadingCircle()
+              : isSuccess && currentTest != null
+                  ? Column(
                       children: [
-                        IconButton(
-                          onPressed: state.currentIndex > 0
-                              ? () {
-                                  context
-                                      .read<TranscriptTestDetailCubit>()
-                                      .previousTranscriptTest();
-                                }
-                              : null,
-                          icon: const FaIcon(
-                            FontAwesomeIcons.chevronLeft,
-                            size: 20,
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(height: 64),
+                                  AudioSection(audioUrl: audioUrl),
+                                  const SizedBox(height: 16),
+                                  _buildInputSection(currentTest.transcript!),
+                                  if (_isCheck) ...[
+                                    const SizedBox(height: 24),
+                                    CheckResultDisplay(
+                                      results: _checkResult,
+                                      userInput: _transcriptController.text,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    if (_isCorrect)
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const FaIcon(
+                                              FontAwesomeIcons.circleCheck,
+                                              color: AppColors.success),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            'Correct!',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.copyWith(
+                                                  color: AppColors.success,
+                                                ),
+                                          ),
+                                        ],
+                                      )
+                                  ],
+                                  const SizedBox(height: 32),
+                                ],
+                              ),
+                            ),
                           ),
-                          tooltip: 'Previous Question',
                         ),
-                        Text(
-                          '${state.currentIndex + 1}/${state.transcriptTests.length}',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        IconButton(
-                          onPressed: state.currentIndex <
-                                  state.transcriptTests.length - 1
-                              ? () {
-                                  context
-                                      .read<TranscriptTestDetailCubit>()
-                                      .nextTranscriptTest();
-                                }
-                              : null,
-                          icon: const FaIcon(
-                            FontAwesomeIcons.chevronRight,
-                            size: 20,
-                          ),
-                          tooltip: 'Next Question',
-                        ),
+                        _buildNavigationBar(state),
                       ],
-                    ),
-
-                    // Button Finish
-                    ElevatedButton(
-                      onPressed: () {
-                        GoRouter.of(context).pop();
-                      },
-                      child: const Text('Finish'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                    )
+                  : const SizedBox.shrink(),
         );
       },
     );

@@ -21,8 +21,18 @@ class ListenCopyPage extends StatelessWidget {
   }
 }
 
-class Page extends StatelessWidget {
+class Page extends StatefulWidget {
   const Page({super.key});
+
+  @override
+  State<Page> createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +129,20 @@ class Page extends StatelessWidget {
   }
 }
 
-class _FilterOptions extends StatelessWidget {
+class _FilterOptions extends StatefulWidget {
   const _FilterOptions();
+
+  @override
+  State<_FilterOptions> createState() => _FilterOptionsState();
+}
+
+class _FilterOptionsState extends State<_FilterOptions> {
+  late final ListenCopyCubit _cubit;
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<ListenCopyCubit>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +155,7 @@ class _FilterOptions extends StatelessWidget {
               title: Text('Part ${index + 1}'),
               value: state.filterParts.contains('${index + 1}'),
               onChanged: (value) {
-                context.read<ListenCopyCubit>().setFilterPart('${index + 1}');
+                _cubit.setFilterPart('${index + 1}');
               },
               controlAffinity: ListTileControlAffinity.leading,
               contentPadding: EdgeInsets.zero,

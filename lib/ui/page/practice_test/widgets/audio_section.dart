@@ -19,6 +19,7 @@ class _AudioSectionState extends State<AudioSection> {
   Duration? _duration;
   Duration? _position;
   bool _isPlaying = false;
+  bool _isCompleted = false;
 
   void initAudioPlayer() async {
     if (_audioPlayer == null) {
@@ -27,15 +28,23 @@ class _AudioSectionState extends State<AudioSection> {
       _duration = await _audioPlayer!.getDuration();
       _audioPlayer!.onPositionChanged.listen((Duration p) {
         if (mounted) {
-          setState(() {
-            _position = p;
-          });
+          if (_isCompleted) {
+            setState(() {
+              _isCompleted = false;
+              _position = p;
+            });
+          } else {
+            setState(() {
+              _position = p;
+            });
+          }
         }
       });
 
       _audioPlayer!.onPlayerComplete.listen((_) {
         if (mounted) {
           setState(() {
+            _isCompleted = true;
             _isPlaying = false;
           });
         }
@@ -68,11 +77,12 @@ class _AudioSectionState extends State<AudioSection> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.gray3,
+        color: theme.primaryColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -85,17 +95,7 @@ class _AudioSectionState extends State<AudioSection> {
                 borderRadius: BorderRadius.circular(30),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(30),
-                  onTap: () {
-                    initAudioPlayer();
-                    if (_isPlaying) {
-                      _audioPlayer?.pause();
-                    } else {
-                      _audioPlayer?.resume();
-                    }
-                    setState(() {
-                      _isPlaying = !_isPlaying;
-                    });
-                  },
+                  onTap: handleTapPlayPause,
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     child: Icon(
@@ -161,6 +161,32 @@ class _AudioSectionState extends State<AudioSection> {
         ],
       ),
     );
+  }
+
+  void handleTapPlayPause() async {
+    initAudioPlayer();
+    if (_isCompleted) {
+      await _audioPlayer?.seek(Duration.zero).then((value) {
+        setState(() {
+          _position = Duration.zero;
+          _isCompleted = false;
+          _isPlaying = true;
+        });
+      });
+    }
+    if (_isPlaying) {
+      await _audioPlayer?.pause().then((value) {
+        setState(() {
+          _isPlaying = false;
+        });
+      });
+    } else {
+      await _audioPlayer?.resume().then((value) {
+        setState(() {
+          _isPlaying = true;
+        });
+      });
+    }
   }
 }
 
