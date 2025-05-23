@@ -20,7 +20,9 @@ class BlogDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(blog.title?.trim() ?? ''),
-        leading: const LeadingBackButton(),
+        leading: const LeadingBackButton(
+          isClose: true,
+        ),
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(1),
           child: Divider(

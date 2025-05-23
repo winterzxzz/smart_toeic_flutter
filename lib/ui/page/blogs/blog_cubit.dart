@@ -45,8 +45,7 @@ class BlogCubit extends Cubit<BlogState> {
       ));
       return;
     }
-    await Future.microtask(
-        () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
     final searchBlogs = await blogRepository.searchBlog(keyword);
     searchBlogs.fold(
       (l) => emit(state.copyWith(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 
 class BlogHorizontalCard extends StatelessWidget {
   final Blog blog;
@@ -19,9 +18,7 @@ class BlogHorizontalCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          GoRouter.of(context).pushNamed(AppRouter.blogDetail, extra: {
-            'blog': blog,
-          });
+          showBlogModalBottomSheet(context);
         },
         child: SizedBox(
           height: 110,
@@ -108,5 +105,26 @@ class BlogHorizontalCard extends StatelessWidget {
       default:
         return AppColors.primary;
     }
+  }
+
+  void showBlogModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 1,
+          minChildSize: 1,
+          maxChildSize: 1,
+          builder: (context, scrollController) {
+            return BlogDetail(blog: blog);
+          },
+        );
+      },
+    );
   }
 }
