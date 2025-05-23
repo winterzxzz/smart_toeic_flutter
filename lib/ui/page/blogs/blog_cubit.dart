@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/blog_repository.dart';
@@ -10,10 +8,7 @@ class BlogCubit extends Cubit<BlogState> {
   BlogCubit(this.blogRepository) : super(BlogState.initial());
 
   Future<void> getBlog(String? blogId) async {
-    log('getBlog: $blogId');
-    // Ensure loading state is emitted
-    await Future.microtask(
-        () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
 
     final result = await blogRepository.getBlog();
     result.fold(

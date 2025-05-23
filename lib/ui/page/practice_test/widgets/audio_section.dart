@@ -79,85 +79,85 @@ class _AudioSectionState extends State<AudioSection> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
+      height: 60,
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: theme.primaryColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(50),
       ),
-      child: Column(
+      child: Stack(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Material(
-                color: Colors.white,
+              InkWell(
                 borderRadius: BorderRadius.circular(30),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(30),
-                  onTap: handleTapPlayPause,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    child: Icon(
-                      _isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.black,
-                      size: 28,
-                    ),
+                onTap: handleTapPlayPause,
+                child: Container(
+                  height: 56,
+                  width: 56,
+                  decoration: BoxDecoration(
+                    color: theme.brightness == Brightness.dark
+                        ? AppColors.backgroundDark
+                        : AppColors.backgroundLight,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    _isPlaying ? Icons.pause : Icons.play_arrow,
+                    color: Colors.black,
+                    size: 28,
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 8),
               Expanded(
-                child: Column(
-                  children: [
-                    SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        trackHeight: 4,
-                        thumbShape: const RoundSliderThumbShape(
-                          enabledThumbRadius: 8,
-                        ),
-                        overlayShape: const RoundSliderOverlayShape(
-                          overlayRadius: 16,
-                        ),
-                      ),
-                      child: Slider(
-                        activeColor: AppColors.textWhite,
-                        inactiveColor: AppColors.gray1,
-                        min: 0,
-                        max: _duration?.inSeconds.toDouble() ?? 0,
-                        value: _position?.inSeconds.toDouble() ?? 0,
-                        onChangeStart: _handleSeekStart,
-                        onChanged: _handleSeekUpdate,
-                        onChangeEnd: _handleSeekEnd,
-                      ),
+                child: SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    trackHeight: 4,
+                    thumbShape: const RoundSliderThumbShape(
+                      enabledThumbRadius: 8,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            formatDuration(_position ?? Duration.zero),
-                            style: const TextStyle(
-                              color: AppColors.textWhite,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            formatDuration(_duration ?? Duration.zero),
-                            style: const TextStyle(
-                              color: AppColors.textWhite,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
+                    overlayShape: const RoundSliderOverlayShape(
+                      overlayRadius: 16,
                     ),
-                  ],
+                  ),
+                  child: Slider(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    activeColor: AppColors.textWhite,
+                    inactiveColor: AppColors.gray1,
+                    min: 0,
+                    max: _duration?.inSeconds.toDouble() ?? 0,
+                    value: _position?.inSeconds.toDouble() ?? 0,
+                    onChangeStart: _handleSeekStart,
+                    onChanged: _handleSeekUpdate,
+                    onChangeEnd: _handleSeekEnd,
+                  ),
                 ),
               ),
             ],
           ),
+          Positioned(
+            top: 10,
+            left: 78,
+            right: 8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  formatDuration(_position ?? Duration.zero),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(fontSize: 10, color: Colors.white),
+                ),
+                Text(
+                  formatDuration(_duration ?? Duration.zero),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(fontSize: 10, color: Colors.white),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

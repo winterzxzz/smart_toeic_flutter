@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -57,108 +56,68 @@ class _QuestionIndexState extends State<QuestionIndex> {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 600;
-
-    return SingleChildScrollView(
-      child: Container(
-        width: isMobile ? double.infinity : 300,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppColors.backgroundDark
-              : AppColors.backgroundLight,
-        ),
-        child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
-          buildWhen: (previous, current) =>
-              previous.parts != current.parts ||
-              previous.questions != current.questions ||
-              previous.testShow != current.testShow,
-          builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (!isMobile && state.testShow == TestShow.test)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Thời gian còn lại:'),
-                      Text(
-                        '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      SizedBox(
-                        height: 45,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _showConfirmSubmitTestDialog,
-                          style: ElevatedButton.styleFrom(
-                            alignment: Alignment.center,
-                          ),
-                          child: const Text('Nộp bài'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ...state.parts.map(
-                  (part) {
-                    if (state.questions
-                        .where((question) => question.part == part.numValue)
-                        .isNotEmpty) {
-                      return Column(
+    final theme = Theme.of(context);
+    return Drawer(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+      backgroundColor: theme.brightness == Brightness.dark
+          ? AppColors.backgroundDark
+          : AppColors.backgroundLight,
+      child: SafeArea(
+        child: Container(
+          height: double.infinity,
+          padding: const EdgeInsets.all(16),
+          child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
+            buildWhen: (previous, current) =>
+                previous.parts != current.parts ||
+                previous.questions != current.questions ||
+                previous.testShow != current.testShow,
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (state.testShow == TestShow.test)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          PracticeTestPart(
-                            title: part.name,
-                            questions: state.questions
-                                .where((question) =>
-                                    question.part == part.numValue)
-                                .toList(),
+                          const Text('Thời gian còn lại:'),
+                          Text(
+                            '${remainingTime.inMinutes}:${remainingTime.inSeconds % 60 < 10 ? '0' : ''}${remainingTime.inSeconds % 60}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
                           ),
                         ],
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
+                      ),
+                    ...state.parts.map(
+                      (part) {
+                        if (state.questions
+                            .where((question) => question.part == part.numValue)
+                            .isNotEmpty) {
+                          return Column(
+                            children: [
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              PracticeTestPart(
+                                title: part.name,
+                                questions: state.questions
+                                    .where((question) =>
+                                        question.part == part.numValue)
+                                    .toList(),
+                              ),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            );
-          },
+              );
+            },
+          ),
         ),
-      ),
-    );
-  }
-
-  void _showConfirmSubmitTestDialog() {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Nộp bài'),
-        content: const Text('Bạn có chắc chắn muốn nộp bài không?'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                GoRouter.of(dialogContext).pop();
-              },
-              child: const Text('Hủy')),
-          TextButton(
-              onPressed: () {
-                context
-                    .read<PracticeTestCubit>()
-                    .submitTest(context, remainingTime);
-              },
-              child: const Text(
-                'Nộp bài',
-                style: TextStyle(color: Colors.red),
-              )),
-        ],
       ),
     );
   }

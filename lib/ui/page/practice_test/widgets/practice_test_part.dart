@@ -6,7 +6,7 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
 
-class PracticeTestPart extends StatelessWidget {
+class PracticeTestPart extends StatefulWidget {
   const PracticeTestPart({
     super.key,
     required this.title,
@@ -17,37 +17,41 @@ class PracticeTestPart extends StatelessWidget {
   final List<QuestionModel> questions;
 
   @override
-  Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 600;
-    final crossAxisCount = isMobile ? 4 : 5;
+  State<PracticeTestPart> createState() => _PracticeTestPartState();
+}
 
+class _PracticeTestPartState extends State<PracticeTestPart> {
+  late final PracticeTestCubit _cubit;
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<PracticeTestCubit>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          widget.title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        const SizedBox(
-          height: 16,
         ),
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
             crossAxisSpacing: 8.0,
             mainAxisSpacing: 8.0,
             mainAxisExtent: 40,
           ),
-          itemCount: questions.length,
+          itemCount: widget.questions.length,
           itemBuilder: (context, index) {
-            final isAnswered = questions[index].userAnswer != null;
+            final isAnswered = widget.questions[index].userAnswer != null;
             return InkWell(
               onTap: () {
-                context
-                    .read<PracticeTestCubit>()
-                    .setFocusQuestion(questions[index]);
+                _cubit.setFocusQuestion(widget.questions[index]);
               },
               child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
                 buildWhen: (previous, current) =>
@@ -64,11 +68,11 @@ class PracticeTestPart extends StatelessWidget {
                   } else {
                     for (var questionResult in state.questionsResult) {
                       if (questionResult.questionNum ==
-                          questions[index].id.toString()) {
+                          widget.questions[index].id.toString()) {
                         color = questionResult.correctanswer ==
                                 questionResult.useranswer
-                            ? Colors.green
-                            : Colors.red;
+                            ? AppColors.success
+                            : AppColors.error;
                       }
                     }
                   }
@@ -76,7 +80,7 @@ class PracticeTestPart extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: color,
-                      borderRadius: BorderRadius.circular(4.0),
+                      borderRadius: BorderRadius.circular(6.0),
                     ),
                     child: Icon(
                       isAnswered ? Icons.check_circle : Icons.circle_outlined,
