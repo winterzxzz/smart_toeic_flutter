@@ -8,9 +8,9 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
-import 'package:toeic_desktop/ui/page/flash_card_learning_detail/flash_card_detail_learning_state.dart';
-import 'package:toeic_desktop/ui/page/flash_card_learning_detail/widgets/flash_card_learning_tile.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/widgets/flash_card_learning_tile.dart';
 
 class FlashCardDetailLearningPage extends StatelessWidget {
   const FlashCardDetailLearningPage({

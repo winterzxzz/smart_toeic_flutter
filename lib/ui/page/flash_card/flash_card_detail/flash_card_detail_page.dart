@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
-import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
-import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_state.dart';
-import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/flash_card_tile.dart';
-import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/form_flash_card_dia_log.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/widgets/flash_card_tile.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/widgets/form_flash_card_dia_log.dart';
 
 class FlashCardDetailPage extends StatelessWidget {
   const FlashCardDetailPage({
@@ -48,6 +48,14 @@ class Page extends StatefulWidget {
 }
 
 class _PageState extends State<Page> {
+  late final FlashCardDetailCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<FlashCardDetailCubit>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,39 +72,41 @@ class _PageState extends State<Page> {
               SliverAppBar(
                 pinned: true,
                 leading: const LeadingBackButton(),
-                title: BlocSelector<FlashCardDetailCubit, FlashCardDetailState,
-                    List<FlashCard>>(
-                  selector: (state) => state.flashCards,
-                  builder: (context, flashCards) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.title,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          '${flashCards.length} words',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: AppColors.textGray,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      '${state.flashCards.length} words',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textGray,
+                      ),
+                    ),
+                  ],
                 ),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      showCreateFlashCardDialog(context,
-                          onSave: (flashCardRequest) {
-                        context.read<FlashCardDetailCubit>().createFlashCard(
-                              flashCardRequest.copyWith(
-                                  setFlashcardId: widget.setId),
-                            );
-                      });
+                      Utils.showModalBottomSheetForm(
+                        context: context,
+                        title: 'Add new word',
+                        child: BlocProvider.value(
+                          value: _cubit,
+                          child: FlashCardDetailForm(
+                            args: FlashCardDetailFormArgs(
+                              type: FlashCardDetailFormType.create,
+                              onSave: (flashCardRequest) {
+                                _cubit.createFlashCard(flashCardRequest);
+                              },
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ],
@@ -126,25 +136,14 @@ class _PageState extends State<Page> {
                           icon: Icons.shuffle,
                           label: 'View randomly',
                           onPressed: () {
-                            final flashCards = context
-                                .read<FlashCardDetailCubit>()
-                                .state
-                                .flashCards;
                             GoRouter.of(context).pushNamed(
                               AppRouter.flashCardPractive,
                               extra: {
                                 'title': widget.title,
-                                'flashCards': flashCards,
+                                'flashCards': _cubit.state.flashCards,
                               },
                             );
                           },
-                        ),
-                        const SizedBox(height: 12),
-                        _buildActionButton(
-                          context,
-                          icon: Icons.pause_circle_outline_rounded,
-                          label: 'Stop learning this set',
-                          onPressed: () {},
                         ),
                         const SizedBox(height: 16),
                       ],

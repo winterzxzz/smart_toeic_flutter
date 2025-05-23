@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
 
 class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   final FlashCardRespository _flashCardRepository;

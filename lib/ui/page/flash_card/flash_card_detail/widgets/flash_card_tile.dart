@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
-import 'package:toeic_desktop/ui/page/flash_card_detail/flash_card_detail_cubit.dart';
-import 'package:toeic_desktop/ui/page/flash_card_detail/widgets/form_flash_card_dia_log.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/widgets/form_flash_card_dia_log.dart';
 
 class FlashcardTile extends StatefulWidget {
   final FlashCard flashcard;
@@ -22,10 +23,12 @@ class _FlashcardTileState extends State<FlashcardTile>
   late FlutterTts flutterTts;
   bool isPlaying = false;
   bool isExpanded = false;
+  late final FlashCardDetailCubit _cubit;
 
   @override
   void initState() {
     super.initState();
+    _cubit = context.read<FlashCardDetailCubit>();
     flutterTts = FlutterTts()
       ..setVolume(1.0)
       ..setLanguage('en-US');
@@ -113,18 +116,25 @@ class _FlashcardTileState extends State<FlashcardTile>
                         onSelected: (value) {
                           switch (value) {
                             case 'edit':
-                              showCreateFlashCardDialog(
-                                context,
-                                flashCard: widget.flashcard,
-                                onSave: (flashCardRequest) {
-                                  context
-                                      .read<FlashCardDetailCubit>()
-                                      .updateFlashCard(
-                                        widget.flashcard.id,
-                                        flashCardRequest.word,
-                                        flashCardRequest.translation,
-                                      );
-                                },
+                              Utils.showModalBottomSheetForm(
+                                context: context,
+                                title: 'Edit Flashcard',
+                                child: BlocProvider.value(
+                                  value: _cubit,
+                                  child: FlashCardDetailForm(
+                                    args: FlashCardDetailFormArgs(
+                                      type: FlashCardDetailFormType.edit,
+                                      flashCard: widget.flashcard,
+                                      onSave: (flashCardRequest) {
+                                        _cubit.updateFlashCard(
+                                          widget.flashcard.id,
+                                          flashCardRequest.word,
+                                          flashCardRequest.translation,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
                               );
                               break;
                             case 'delete':

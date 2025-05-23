@@ -3,7 +3,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
 
 class FlashCardCubit extends Cubit<FlashCardState> {
   final FlashCardRespository _flashCardRespository;

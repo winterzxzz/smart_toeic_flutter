@@ -7,15 +7,15 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_cubit.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_state.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/confidence_level.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/enter_translation.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/enter_word.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/matching_word.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/order_word_to_correct.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/select_description.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/widgets/select_translation.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/confidence_level.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/enter_translation.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/enter_word.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/matching_word.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/order_word_to_correct.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/select_description.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/select_translation.dart';
 
 class FlashCardQuizPage extends StatelessWidget {
   final String id;

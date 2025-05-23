@@ -83,6 +83,7 @@ class Utils {
     required BuildContext context,
     String? title,
     required Widget child,
+    bool isClose = true,
   }) {
     showModalBottomSheet(
       context: context,
@@ -100,7 +101,7 @@ class Utils {
             return Scaffold(
               appBar: AppBar(
                 title: Text(title ?? ''),
-                leading: const LeadingBackButton(isClose: true),
+                leading: LeadingBackButton(isClose: isClose),
               ),
               body: child,
             );

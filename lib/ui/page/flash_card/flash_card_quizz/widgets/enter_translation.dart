@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/flash_card_quizz_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
-class EnterWord extends StatefulWidget {
-  const EnterWord({super.key, required this.fcLearning});
+class EnterTranslation extends StatefulWidget {
+  const EnterTranslation({super.key, required this.fcLearning});
 
   final FlashCardLearning fcLearning;
 
   @override
-  State<EnterWord> createState() => _EnterWordState();
+  State<EnterTranslation> createState() => _EnterTranslationState();
 }
 
-class _EnterWordState extends State<EnterWord> {
+class _EnterTranslationState extends State<EnterTranslation> {
   late final TextEditingController _controller;
   bool isCheck = false;
 
-  @override
   @override
   void initState() {
     super.initState();
@@ -40,9 +39,9 @@ class _EnterWordState extends State<EnterWord> {
           style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              const TextSpan(text: 'Nhập từ tiếng Việt có nghĩa là '),
+              const TextSpan(text: 'Nhập từ tiếng anh có nghĩa là '),
               TextSpan(
-                text: "'${widget.fcLearning.flashcardId!.word}'",
+                text: "'${widget.fcLearning.flashcardId!.translation}'",
                 style: const TextStyle(
                     fontWeight: FontWeight.bold, color: AppColors.error),
               ),
@@ -56,7 +55,7 @@ class _EnterWordState extends State<EnterWord> {
           textAlign: TextAlign.center,
           autofocus: true,
           decoration: InputDecoration(
-            hintText: 'Nhập từ tiếng Việt',
+            hintText: 'Nhập từ tiếng anh',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Colors.grey),
@@ -81,10 +80,10 @@ class _EnterWordState extends State<EnterWord> {
                   context.read<FlashCardQuizzCubit>().answer(
                       widget.fcLearning.flashcardId!.word,
                       _controller.text.toLowerCase() ==
-                          widget.fcLearning.flashcardId!.translation
-                              .toLowerCase());
+                          widget.fcLearning.flashcardId!.word.toLowerCase());
                 }
               });
+              // hide keyboard
             },
             child: const Text('KIỂM TRA'),
           ),
@@ -92,13 +91,17 @@ class _EnterWordState extends State<EnterWord> {
         const SizedBox(height: 32),
         if (isCheck)
           Builder(builder: (context) {
+            final isCorrect = _controller.text.toLowerCase() ==
+                widget.fcLearning.flashcardId!.word.toLowerCase();
             return Column(
               children: [
-                const SizedBox(height: 8),
-                Text(
-                  'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
-                  style: const TextStyle(fontSize: 18),
-                ),
+                if (!isCorrect) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    'Đáp án: ${widget.fcLearning.flashcardId!.word}',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
               ],
             );
           }),

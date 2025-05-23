@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_cubit.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/set_flash_card_state.dart';
-import 'package:toeic_desktop/ui/page/set_flashcard/widgets/set_flash_card_learning_item.dart';
+import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
+import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/widgets/set_flash_card_learning_item.dart';
 
 class SetFlashCardLearningPage extends StatefulWidget {
   const SetFlashCardLearningPage({super.key});

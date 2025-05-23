@@ -3,7 +3,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
-import 'package:toeic_desktop/ui/page/flash_card_quizz/cubit/get_random_word_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_state.dart';
 
 class GetRandomWordCubit extends Cubit<GetRandomWordState> {
   final FlashCardRespository _flashCardRepository;
