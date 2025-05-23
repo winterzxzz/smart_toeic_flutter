@@ -96,7 +96,7 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
       }
       return e;
     }).toList()));
-    triggerAnimation(true);
+    triggerAnimation(true, isShowAnimation: false);
   }
 
   void answer(String word, bool isCorrect, {bool isTrigger = true}) {
@@ -155,14 +155,23 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
             )));
   }
 
-  void triggerAnimation(bool isCorrect) {
-    emit(state.copyWith(isAnimating: true, isCorrect: isCorrect));
-    _animationTimer?.cancel();
-    _animationTimer = Timer(const Duration(seconds: 3), () {
-      if (state.isAnimating) {
+  void triggerAnimation(bool isCorrect, {bool isShowAnimation = true}) {
+    if (isShowAnimation) {
+      emit(state.copyWith(isAnimating: true, isCorrect: isCorrect));
+    }
+    if (isShowAnimation) {
+      _animationTimer?.cancel();
+      _animationTimer = Timer(const Duration(seconds: 3), () {
+        if (state.isAnimating) {
+          next();
+        }
+      });
+    } else {
+      _animationTimer?.cancel();
+      _animationTimer = Timer(const Duration(seconds: 2), () {
         next();
-      }
-    });
+      });
+    }
   }
 
   // Add method to get time spent for a specific word

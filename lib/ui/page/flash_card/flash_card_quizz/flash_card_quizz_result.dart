@@ -15,7 +15,7 @@ class FlashCardQuizResultPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const LeadingBackButton(),
-        title: const Text('Kết quả bài kiểm tra'),
+        title: const Text('Quiz Result'),
       ),
       body: ListView.builder(
         itemCount: flashCardQuizzScoreRequest.length,
@@ -30,13 +30,13 @@ class FlashCardQuizResultPage extends StatelessWidget {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Tỉ lệ khó: ${item.difficultRate}'),
-                  Text('Thời gian: ${item.timeMinutes ?? 0} phút'),
-                  Text('Số câu hỏi: ${item.numOfQuiz ?? 0}'),
-                  Text('Số câu đúng: ${item.numOfCorrect ?? 0}'),
+                  Text('Difficulty rate: ${item.difficultRate}'),
+                  Text('Time: ${item.timeMinutes ?? 0} minutes'),
+                  Text('Number of questions: ${item.numOfQuiz ?? 0}'),
+                  Text('Number of correct answers: ${item.numOfCorrect ?? 0}'),
                   Text(
-                      'Số câu sai: ${(item.numOfQuiz ?? 0) - (item.numOfCorrect ?? 0)}'),
-                  Text('Tỉ lệ đúng: ${(item.accuracy ?? 0) * 100}%'),
+                      'Number of wrong answers: ${(item.numOfQuiz ?? 0) - (item.numOfCorrect ?? 0)}'),
+                  Text('Accuracy rate: ${(item.accuracy ?? 0) * 100}%'),
                 ],
               ),
             ),

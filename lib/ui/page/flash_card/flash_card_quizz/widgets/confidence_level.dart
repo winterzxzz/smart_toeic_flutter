@@ -21,7 +21,14 @@ class ConfidenceLevel extends StatefulWidget {
 }
 
 class _ConfidenceLevelState extends State<ConfidenceLevel> {
+  late final FlashCardQuizzCubit _cubit;
   double? confidenceLevel;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<FlashCardQuizzCubit>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +61,8 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
                   setState(() {
                     confidenceLevel = level.key;
                   });
-                  context
-                      .read<FlashCardQuizzCubit>()
-                      .updateConfidenceLevel(level.key, widget.fcLearning.id!);
+                  _cubit.updateConfidenceLevel(
+                      level.key, widget.fcLearning.id!);
                 },
                 child: Container(
                   width: double.infinity,
@@ -75,10 +81,8 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
                           setState(() {
                             confidenceLevel = value;
                           });
-                          context
-                              .read<FlashCardQuizzCubit>()
-                              .updateConfidenceLevel(
-                                  value!, widget.fcLearning.id!);
+                          _cubit.updateConfidenceLevel(
+                              value!, widget.fcLearning.id!);
                         },
                       ),
                       const SizedBox(width: 8),

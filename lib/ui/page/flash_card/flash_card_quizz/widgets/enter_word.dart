@@ -55,6 +55,7 @@ class _EnterWordState extends State<EnterWord> {
           controller: _controller,
           textAlign: TextAlign.center,
           autofocus: true,
+          textCapitalization: TextCapitalization.characters,
           decoration: InputDecoration(
             hintText: 'Nhập từ tiếng Việt',
             enabledBorder: OutlineInputBorder(

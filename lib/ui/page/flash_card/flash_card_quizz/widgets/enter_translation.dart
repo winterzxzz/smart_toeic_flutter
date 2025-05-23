@@ -53,6 +53,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
         TextField(
           controller: _controller,
           textAlign: TextAlign.center,
+          textCapitalization: TextCapitalization.characters,
           autofocus: true,
           decoration: InputDecoration(
             hintText: 'Nhập từ tiếng anh',

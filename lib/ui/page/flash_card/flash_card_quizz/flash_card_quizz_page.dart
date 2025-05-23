@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
@@ -42,6 +45,7 @@ class Page extends StatefulWidget {
 
 class _PageState extends State<Page> with TickerProviderStateMixin {
   late AnimationController _timerController;
+  late final FlashCardQuizzCubit _cubit;
 
   @override
   void initState() {
@@ -50,6 +54,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
       duration: const Duration(seconds: 3),
       vsync: this,
     );
+    _cubit = context.read<FlashCardQuizzCubit>();
   }
 
   @override
@@ -60,11 +65,27 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final navigator = AppNavigator(context: context);
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 600;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        automaticallyImplyLeading: false,
+        actions: [
+          LeadingBackButton(
+            isClose: true,
+            onPressed: () {
+              showConfirmDialog(
+                  context, 'Exit', 'Are you sure you want to exit?', () {
+                GoRouter.of(context).pop();
+              });
+            },
+          )
+        ],
+      ),
       body: BlocConsumer<FlashCardQuizzCubit, FlashCardQuizzState>(
         listener: (context, state) {
           if (state.isAnimating) {
@@ -250,10 +271,23 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                 width: double.infinity,
                                 height: isSmallScreen ? 48 : 50,
                                 child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: state.isCorrect
+                                        ? Colors.green
+                                        : Colors.red,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
                                   onPressed: () {
-                                    context.read<FlashCardQuizzCubit>().next();
+                                    _cubit.next();
                                   },
-                                  child: const Text('Continue'),
+                                  child: const Text(
+                                    'Continue',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
