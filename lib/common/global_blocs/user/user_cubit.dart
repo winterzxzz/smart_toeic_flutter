@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
@@ -18,30 +19,29 @@ class UserCubit extends Cubit<UserState> {
   final ProfileRepository profileRepository;
   UserCubit(this.profileRepository) : super(const UserState());
 
-  Future<void> setUser(UserEntity user) async {
-    emit(state.copyWith(user: user, loadStatus: LoadStatus.success));
-  }
-
   Future<void> getUser() async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await profileRepository.getUser();
     result.fold(
       (l) => emit(state.copyWith(
           loadStatus: LoadStatus.failure,
-          message: l.errors?.first.message ?? 'Unexpected error occurred')),
-      (r) => emit(state.copyWith(loadStatus: LoadStatus.success, user: r)),
+          message: l.errors?.first.message ?? 'Unexpected error occurred',
+          isHaveUser: false)),
+      (r) => emit(state.copyWith(
+          loadStatus: LoadStatus.success, user: r, isHaveUser: true)),
     );
   }
 
   void updateUser(UserEntity user) {
-    emit(state.copyWith(user: user, loadStatus: LoadStatus.success));
+    emit(state.copyWith(
+        user: user, loadStatus: LoadStatus.success, isHaveUser: true));
   }
 
   Future<void> removeUser(BuildContext context) async {
-    await SharedPreferencesHelper().removeCookies().then((_) {
-      emit(const UserState());
-      AppRouter.clearAndNavigate('/');
-    });
+    await SharedPreferencesHelper().removeCookies();
+    await injector.reset();
+    await init();
+    AppRouter.clearAndNavigate('/');
   }
 
   Future<void> updateTargetScore(int reading, int listening) async {

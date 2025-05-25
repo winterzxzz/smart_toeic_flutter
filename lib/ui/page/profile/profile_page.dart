@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -60,9 +61,8 @@ class _PageState extends State<Page> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: BlocConsumer<UserCubit, UserState>(
-        listenWhen: (previous, current) =>
-            previous.loadStatus != current.loadStatus,
+      body: BlocListener<UserCubit, UserState>(
+        listenWhen: (previous, current) => previous.user != current.user,
         listener: (context, state) {
           if (state.user != null) {
             emailController.text = state.user?.email ?? '';
@@ -70,218 +70,234 @@ class _PageState extends State<Page> {
             bioController.text = state.user?.bio ?? '';
           }
         },
-        builder: (context, state) {
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                floating: true,
-                title: const Text('Profile'),
-                actions: [
-                  PopupMenuButton(
-                    color: theme.appBarTheme.backgroundColor,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(minWidth: 150),
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 16),
-                      padding: const EdgeInsets.all(16),
-                      child: const FaIcon(FontAwesomeIcons.ellipsisVertical,
-                          size: 16),
-                    ),
-                    onSelected: (value) {
-                      switch (value) {
-                        case 'settings':
-                          GoRouter.of(context).pushNamed(AppRouter.setting);
-                          break;
-                        case 'target-score':
-                          showUpdateTargetDialog();
-                          break;
-                        case 'history':
-                          GoRouter.of(context).pushNamed(AppRouter.historyTest);
-                          break;
-                        case 'analysis':
-                          GoRouter.of(context).pushNamed(AppRouter.analysis);
-                          break;
-                        case 'logout':
-                          showConfirmDialog(
-                            context,
-                            'Logout',
-                            'Are you sure?',
-                            () {
-                              injector<UserCubit>().removeUser(context);
-                            },
-                          );
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'settings',
-                        child: Row(
-                          children: [
-                            const FaIcon(
-                              FontAwesomeIcons.gear,
-                              size: 14,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'Settings',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'target-score',
-                        child: Row(
-                          children: [
-                            const FaIcon(
-                              FontAwesomeIcons.chartLine,
-                              size: 14,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'Target Score',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'history',
-                        child: Row(
-                          children: [
-                            const FaIcon(
-                              FontAwesomeIcons.clockRotateLeft,
-                              size: 14,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'History',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'analysis',
-                        child: Row(
-                          children: [
-                            const FaIcon(
-                              FontAwesomeIcons.chartLine,
-                              size: 14,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'Analysis',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'logout',
-                        child: Row(
-                          children: [
-                            const FaIcon(
-                              FontAwesomeIcons.rightFromBracket,
-                              color: AppColors.error,
-                              size: 14,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'Logout',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.error,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              title: const Text('Profile'),
+              actions: [
+                PopupMenuButton(
+                  color: theme.appBarTheme.backgroundColor,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 150),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.all(16),
+                    child: const FaIcon(FontAwesomeIcons.ellipsisVertical,
+                        size: 16),
                   ),
-                ],
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child: Column(
-                    children: [
-                      AvatarHeading(user: state.user),
-                      const ProfileDivider(
-                        height: 16,
-                      ),
-                      TextFieldHeading(
-                        controller: emailController,
-                        label: 'Email',
-                        hintText: 'Enter your email',
-                        icon: FontAwesomeIcons.envelope,
-                        disabled: true,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFieldHeading(
-                        controller: nameController,
-                        label: 'Name',
-                        hintText: 'Enter your name',
-                        icon: FontAwesomeIcons.user,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFieldHeading(
-                        controller: bioController,
-                        label: 'Bio',
-                        hintText: 'Enter your bio',
-                        maxLines: 3,
-                      ),
-                      const ProfileDivider(
-                        height: 16,
-                      ),
-                      TargetScoreWidget(
-                        title: 'Reading Target / Reading Current',
-                        targetScore: state.user?.targetScore?.reading,
-                      ),
-                      const SizedBox(height: 16),
-                      TargetScoreWidget(
-                        title: 'Listening Target / Listening Current',
-                        targetScore: state.user?.targetScore?.listening,
-                      ),
-                      const ProfileDivider(
-                        height: 16,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (state.updateStatus != LoadStatus.loading) {
-                              userCubit.updateProfile(
-                                ProfileUpdateRequest(
-                                  name: nameController.text,
-                                  bio: bioController.text,
-                                ),
-                              );
-                            }
+                  onSelected: (value) {
+                    switch (value) {
+                      case 'settings':
+                        GoRouter.of(context).pushNamed(AppRouter.setting);
+                        break;
+                      case 'target-score':
+                        showUpdateTargetDialog();
+                        break;
+                      case 'history':
+                        GoRouter.of(context).pushNamed(AppRouter.historyTest);
+                        break;
+                      case 'analysis':
+                        GoRouter.of(context).pushNamed(AppRouter.analysis);
+                        break;
+                      case 'logout':
+                        showConfirmDialog(
+                          context,
+                          'Logout',
+                          'Are you sure?',
+                          () {
+                            userCubit.removeUser(context);
                           },
-                          child: state.updateStatus == LoadStatus.loading
-                              ? const LoadingCircle(
-                                  size: 20,
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  'Update Profile',
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                        ),
+                        );
+                        break;
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'settings',
+                      child: Row(
+                        children: [
+                          const FaIcon(
+                            FontAwesomeIcons.gear,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            'Settings',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    PopupMenuItem(
+                      value: 'target-score',
+                      child: Row(
+                        children: [
+                          const FaIcon(
+                            FontAwesomeIcons.chartLine,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            'Target Score',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'history',
+                      child: Row(
+                        children: [
+                          const FaIcon(
+                            FontAwesomeIcons.clockRotateLeft,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            'History',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'analysis',
+                      child: Row(
+                        children: [
+                          const FaIcon(
+                            FontAwesomeIcons.chartLine,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            'Analysis',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'logout',
+                      child: Row(
+                        children: [
+                          const FaIcon(
+                            FontAwesomeIcons.rightFromBracket,
+                            color: AppColors.error,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            'Logout',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.error,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Column(
+                  children: [
+                    const AvatarHeading(),
+                    const ProfileDivider(
+                      height: 16,
+                    ),
+                    TextFieldHeading(
+                      controller: emailController,
+                      label: 'Email',
+                      hintText: 'Enter your email',
+                      icon: FontAwesomeIcons.envelope,
+                      disabled: true,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFieldHeading(
+                      controller: nameController,
+                      label: 'Name',
+                      hintText: 'Enter your name',
+                      icon: FontAwesomeIcons.user,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFieldHeading(
+                      controller: bioController,
+                      label: 'Bio',
+                      hintText: 'Enter your bio',
+                      maxLines: 3,
+                    ),
+                    const ProfileDivider(
+                      height: 16,
+                    ),
+                    BlocSelector<UserCubit, UserState, UserEntity?>(
+                      selector: (state) {
+                        return state.user;
+                      },
+                      builder: (context, user) {
+                        return Column(
+                          children: [
+                            TargetScoreWidget(
+                              title: 'Reading Target / Reading Current',
+                              targetScore: user?.targetScore?.reading,
+                            ),
+                            const SizedBox(height: 16),
+                            TargetScoreWidget(
+                              title: 'Listening Target / Listening Current',
+                              targetScore: user?.targetScore?.listening,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    const ProfileDivider(
+                      height: 16,
+                    ),
+                    BlocSelector<UserCubit, UserState, LoadStatus?>(
+                      selector: (state) {
+                        return state.updateStatus;
+                      },
+                      builder: (context, updateStatus) {
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (updateStatus != LoadStatus.loading) {
+                                userCubit.updateProfile(
+                                  ProfileUpdateRequest(
+                                    name: nameController.text,
+                                    bio: bioController.text,
+                                  ),
+                                );
+                              }
+                            },
+                            child: updateStatus == LoadStatus.loading
+                                ? const LoadingCircle(
+                                    size: 20,
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    'Update Profile',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ],
-          );
-        },
+            ),
+          ],
+        ),
       ),
     );
   }

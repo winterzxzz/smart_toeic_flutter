@@ -40,7 +40,7 @@ class LoginCubit extends Cubit<LoginState> {
           (error) => emit(state.copyWith(
               loadStatus: LoadStatus.failure,
               errorMessage: error.errors?.first.message)), (response) {
-        injector<UserCubit>().setUser(response);
+        injector<UserCubit>().updateUser(response);
         emit(state.copyWith(loadStatus: LoadStatus.success));
       });
     } catch (e) {

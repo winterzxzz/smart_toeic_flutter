@@ -6,6 +6,7 @@ class UserState extends Equatable {
   final LoadStatus updateTargetScoreStatus;
   final String message;
   final UserEntity? user;
+  final bool isHaveUser;
 
   const UserState({
     this.loadStatus = LoadStatus.initial,
@@ -13,6 +14,7 @@ class UserState extends Equatable {
     this.updateTargetScoreStatus = LoadStatus.initial,
     this.message = '',
     this.user,
+    this.isHaveUser = false,
   });
 
   @override
@@ -22,6 +24,7 @@ class UserState extends Equatable {
         updateTargetScoreStatus,
         message,
         user,
+        isHaveUser,
       ];
 
   UserState copyWith({
@@ -30,6 +33,7 @@ class UserState extends Equatable {
     LoadStatus? updateTargetScoreStatus,
     String? message,
     UserEntity? user,
+    bool? isHaveUser,
   }) {
     return UserState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -37,7 +41,8 @@ class UserState extends Equatable {
       updateTargetScoreStatus:
           updateTargetScoreStatus ?? this.updateTargetScoreStatus,
       message: message ?? this.message,
-      user: user ?? this.user,
+      user: (isHaveUser ?? this.isHaveUser) == true ? user ?? this.user : null,
+      isHaveUser: isHaveUser ?? this.isHaveUser,
     );
   }
 }

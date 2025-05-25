@@ -282,6 +282,6 @@ class AppRouter {
     while (AppRouter.router.canPop() == true) {
       AppRouter.router.pop();
     }
-    AppRouter.router.pushReplacement(path);
+    AppRouter.router.goNamed(path);
   }
 }
