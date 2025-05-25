@@ -75,9 +75,6 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<AppSettingCubit>(
               create: (context) => injector<AppSettingCubit>()),
-          BlocProvider<UserCubit>(
-            create: (context) => injector<UserCubit>(),
-          ),
         ],
         child: BlocBuilder<AppSettingCubit, AppSettingState>(
           buildWhen: (previous, current) {

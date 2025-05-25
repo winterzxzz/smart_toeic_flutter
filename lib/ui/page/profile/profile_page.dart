@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/avatar_heading.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/profile_divider.dart';
@@ -42,25 +45,34 @@ class _PageState extends State<Page> {
   late final TextEditingController emailController;
   late final TextEditingController nameController;
   late final TextEditingController bioController;
-
+  late final UserCubit userCubit;
   @override
   void initState() {
     super.initState();
-    final user = injector<UserCubit>().state.user;
-    emailController = TextEditingController(text: user?.email ?? '');
-    nameController = TextEditingController(text: user?.name ?? '');
-    bioController = TextEditingController(text: user?.bio ?? '');
+    userCubit = injector<UserCubit>();
+    emailController =
+        TextEditingController(text: userCubit.state.user?.email ?? '');
+    nameController =
+        TextEditingController(text: userCubit.state.user?.name ?? '');
+    bioController =
+        TextEditingController(text: userCubit.state.user?.bio ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: BlocBuilder<UserCubit, UserState>(
+      body: BlocConsumer<UserCubit, UserState>(
+        listenWhen: (previous, current) =>
+            previous.loadStatus != current.loadStatus,
+        listener: (context, state) {
+          if (state.user != null) {
+            emailController.text = state.user?.email ?? '';
+            nameController.text = state.user?.name ?? '';
+            bioController.text = state.user?.bio ?? '';
+          }
+        },
         builder: (context, state) {
-          emailController.text = state.user?.email ?? '';
-          nameController.text = state.user?.name ?? '';
-          bioController.text = state.user?.bio ?? '';
           return CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -81,6 +93,9 @@ class _PageState extends State<Page> {
                       switch (value) {
                         case 'settings':
                           GoRouter.of(context).pushNamed(AppRouter.setting);
+                          break;
+                        case 'target-score':
+                          showUpdateTargetDialog();
                           break;
                         case 'history':
                           GoRouter.of(context).pushNamed(AppRouter.historyTest);
@@ -112,6 +127,22 @@ class _PageState extends State<Page> {
                             const SizedBox(width: 16),
                             Text(
                               'Settings',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 'target-score',
+                        child: Row(
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.chartLine,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              'Target Score',
                               style: theme.textTheme.bodyMedium,
                             ),
                           ],
@@ -155,12 +186,15 @@ class _PageState extends State<Page> {
                           children: [
                             const FaIcon(
                               FontAwesomeIcons.rightFromBracket,
+                              color: AppColors.error,
                               size: 14,
                             ),
                             const SizedBox(width: 16),
                             Text(
                               'Logout',
-                              style: theme.textTheme.bodyMedium,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: AppColors.error,
+                              ),
                             ),
                           ],
                         ),
@@ -184,6 +218,7 @@ class _PageState extends State<Page> {
                         label: 'Email',
                         hintText: 'Enter your email',
                         icon: FontAwesomeIcons.envelope,
+                        disabled: true,
                       ),
                       const SizedBox(height: 16),
                       TextFieldHeading(
@@ -211,21 +246,40 @@ class _PageState extends State<Page> {
                         title: 'Listening Target / Listening Current',
                         targetScore: state.user?.targetScore?.listening,
                       ),
-                      const SizedBox(height: 24),
+                      const ProfileDivider(
+                        height: 16,
+                      ),
                       SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            showUpdateTargetDialog();
+                            if (state.updateStatus != LoadStatus.loading) {
+                              userCubit.updateProfile(
+                                ProfileUpdateRequest(
+                                  name: nameController.text,
+                                  bio: bioController.text,
+                                ),
+                              );
+                            }
                           },
-                          child: Text(
-                            'Update Target Score',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
+                          child: state.updateStatus == LoadStatus.loading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  'Update Profile',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
                       ),
                     ],

@@ -10,6 +10,7 @@ class TextFieldHeading extends StatelessWidget {
     this.icon,
     required this.controller,
     this.maxLines,
+    this.disabled = false,
   });
 
   final String label;
@@ -17,6 +18,7 @@ class TextFieldHeading extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
   final int? maxLines;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class TextFieldHeading extends StatelessWidget {
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
+            enabled: !disabled,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
               hintText: hintText,

@@ -19,7 +19,7 @@ class UserCubit extends Cubit<UserState> {
   UserCubit(this.profileRepository) : super(const UserState());
 
   Future<void> setUser(UserEntity user) async {
-    emit(state.copyWith(user: user));
+    emit(state.copyWith(user: user, loadStatus: LoadStatus.success));
   }
 
   Future<void> getUser() async {
@@ -34,7 +34,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void updateUser(UserEntity user) {
-    emit(state.copyWith(user: user));
+    emit(state.copyWith(user: user, loadStatus: LoadStatus.success));
   }
 
   Future<void> removeUser(BuildContext context) async {
@@ -80,16 +80,23 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> updateProfile(ProfileUpdateRequest request) async {
+    emit(state.copyWith(updateStatus: LoadStatus.loading));
     final response = await profileRepository.updateProfile(request);
     response.fold(
-      (l) => showToast(
-          title: l.errors?.first.message ?? 'Unexpected error occurred',
-          type: ToastificationType.error),
+      (l) {
+        emit(state.copyWith(
+            updateStatus: LoadStatus.failure,
+            message: l.errors?.first.message ?? 'Unexpected error occurred'));
+        showToast(
+            title: l.errors?.first.message ?? 'Unexpected error occurred',
+            type: ToastificationType.error);
+      },
       (r) {
         final currentUser = state.user!;
         final updatedUser =
             currentUser.copyWith(name: request.name, bio: request.bio);
-        updateUser(updatedUser);
+        emit(state.copyWith(
+            user: updatedUser, updateStatus: LoadStatus.success));
         showToast(
             title: 'Update profile success', type: ToastificationType.success);
       },
