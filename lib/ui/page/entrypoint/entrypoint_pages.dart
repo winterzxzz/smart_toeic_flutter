@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/keep_alive_page.dart';
@@ -47,22 +46,9 @@ class _BottomTabPageState extends State<BottomTabPage>
     // Handle links
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       debugPrint('onAppLink: $uri');
-      final path = uri.pathSegments.first;
-      final params = uri.queryParameters;
-      final paymentReturn = PaymentReturn(
-        amount: params['amount'] ?? '',
-        appid: params['appid'] ?? '',
-        apptransid: params['apptransid'] ?? '',
-        bankcode: params['bankcode'] ?? '',
-        checksum: params['checksum'] ?? '',
-        discountamount: params['discountamount'] ?? '',
-        pmcid: params['pmcid'] ?? '',
-        status: params['status'] ?? '',
-      );
+      final path = uri.path;
       if (mounted) {
-        GoRouter.of(context).go('/$path', extra: {
-          'paymentReturn': paymentReturn,
-        });
+        GoRouter.of(context).go(path);
       }
     });
   }

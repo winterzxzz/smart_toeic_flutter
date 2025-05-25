@@ -126,10 +126,29 @@ class AppRouter {
     ),
     // Nested routes
     GoRoute(
-      name: bottomTab,
-      path: bottomTab,
-      builder: (context, state) => const BottomTabPage(),
-    ),
+        name: bottomTab,
+        path: bottomTab,
+        builder: (context, state) => const BottomTabPage(),
+        routes: [
+          GoRoute(
+            name: upgradeAccountSuccess,
+            path: upgradeAccountSuccess,
+            builder: (context, state) {
+              final params = state.uri.queryParameters;
+              final payment = PaymentReturn(
+                amount: params['amount'] ?? '',
+                appid: params['appid'] ?? '',
+                apptransid: params['apptransid'] ?? '',
+                bankcode: params['bankcode'] ?? '',
+                checksum: params['checksum'] ?? '',
+                discountamount: params['discountamount'] ?? '',
+                pmcid: params['pmcid'] ?? '',
+                status: params['status'] ?? '',
+              );
+              return UpgradeAccountSuccessPage(payment: payment);
+            },
+          ),
+        ]),
     GoRoute(
       name: modeTest,
       path: modeTest,
@@ -228,15 +247,6 @@ class AppRouter {
       name: upgradeAccount,
       path: upgradeAccount,
       builder: (context, state) => const PricingPlanScreen(),
-    ),
-    GoRoute(
-      name: upgradeAccountSuccess,
-      path: upgradeAccountSuccess,
-      builder: (context, state) {
-        final args = state.extra as Map<String, dynamic>;
-        final paymentReturn = args['paymentReturn'] as PaymentReturn;
-        return UpgradeAccountSuccessPage(paymentReturn: paymentReturn);
-      },
     ),
     GoRoute(
       name: transcriptTest,
