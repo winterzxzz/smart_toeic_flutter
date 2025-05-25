@@ -13,8 +13,7 @@ class AnalysisCubit extends Cubit<AnalysisState> {
   }
 
   Future<void> fetchProfileAnalysis() async {
-    await Future.microtask(
-        () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await profileRepository.getProfileAnalysis();
     result.fold(
         (l) => emit(state.copyWith(
