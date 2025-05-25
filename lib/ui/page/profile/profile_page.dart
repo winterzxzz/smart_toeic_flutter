@@ -6,10 +6,11 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
-import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/avatar_heading.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/profile_divider.dart';
+import 'package:toeic_desktop/ui/page/profile/widgets/target_score.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/text_field_heading.dart';
+import 'package:toeic_desktop/ui/page/profile/widgets/update_target_score_form.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -22,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => injector<ProfileCubit>(),
+      create: (context) => injector<UserCubit>(),
       child: const Page(),
     );
   }
@@ -64,7 +65,7 @@ class _PageState extends State<Page> {
             slivers: [
               SliverAppBar(
                 floating: true,
-                backgroundColor: Colors.transparent,
+                title: const Text('Profile'),
                 actions: [
                   PopupMenuButton(
                     color: theme.appBarTheme.backgroundColor,
@@ -170,12 +171,14 @@ class _PageState extends State<Page> {
               ),
               SliverToBoxAdapter(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Column(
                     children: [
-                      const SizedBox(height: 16),
                       AvatarHeading(user: state.user),
-                      const ProfileDivider(),
+                      const ProfileDivider(
+                        height: 16,
+                      ),
                       TextFieldHeading(
                         controller: emailController,
                         label: 'Email',
@@ -196,131 +199,35 @@ class _PageState extends State<Page> {
                         hintText: 'Enter your bio',
                         maxLines: 3,
                       ),
+                      const ProfileDivider(
+                        height: 16,
+                      ),
+                      TargetScoreWidget(
+                        title: 'Reading Target / Reading Current',
+                        targetScore: state.user?.targetScore?.reading,
+                      ),
                       const SizedBox(height: 16),
-                      ...[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Expanded(
-                                      child: Text(
-                                        'Reading Target / Reading Current',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                    Text.rich(
-                                      TextSpan(
-                                        text:
-                                            '${state.user?.targetScore?.reading ?? 0}',
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                        children: [
-                                          const TextSpan(
-                                            text: '/450',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-                                LinearProgressIndicator(
-                                  backgroundColor: Colors.grey,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Theme.of(context).primaryColor,
-                                  minHeight: 10,
-                                  value: state.user?.targetScore?.reading !=
-                                          null
-                                      ? state.user!.targetScore!.reading / 450
-                                      : 0,
-                                ),
-                              ],
+                      TargetScoreWidget(
+                        title: 'Listening Target / Listening Current',
+                        targetScore: state.user?.targetScore?.listening,
+                      ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showUpdateTargetDialog();
+                          },
+                          child: Text(
+                            'Update Target Score',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
-                            const SizedBox(height: 24),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Expanded(
-                                      child: Text(
-                                        'Listening Target / Listening Current',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                    Text.rich(
-                                      TextSpan(
-                                        text:
-                                            '${state.user?.targetScore?.listening ?? 0}',
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                        children: [
-                                          const TextSpan(
-                                            text: '/450',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-                                LinearProgressIndicator(
-                                  backgroundColor: Colors.grey,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Theme.of(context).primaryColor,
-                                  minHeight: 10,
-                                  value: state.user?.targetScore?.listening !=
-                                          null
-                                      ? state.user!.targetScore!.listening / 450
-                                      : 0,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 24),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  showUpdateTargetDialog(
-                                    initialReadingScore:
-                                        state.user?.targetScore?.reading,
-                                    initialListeningScore:
-                                        state.user?.targetScore?.listening,
-                                  );
-                                },
-                                child: const Text('Update Target Score'),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ],
-                      const SizedBox(height: 20),
+                      ),
                     ],
                   ),
                 ),
@@ -332,162 +239,15 @@ class _PageState extends State<Page> {
     );
   }
 
-  void showUpdateTargetDialog(
-      {int? initialReadingScore, int? initialListeningScore}) {
-    final readingController =
-        TextEditingController(text: initialReadingScore?.toString() ?? '0');
-    final listeningController =
-        TextEditingController(text: initialListeningScore?.toString() ?? '0');
+  void showUpdateTargetDialog() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (BuildContext diaglogContext) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 16,
-            right: 16,
-            top: 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Update Target Score',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.of(diaglogContext).pop();
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              const Text('Reading target score'),
-              const SizedBox(height: 8),
-              TextField(
-                keyboardType: TextInputType.number,
-                controller: readingController,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  suffixIcon: Column(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_drop_up),
-                        onPressed: () {
-                          final currentValue =
-                              int.tryParse(readingController.text) ?? 0;
-                          if (currentValue < 450) {
-                            readingController.text =
-                                (currentValue + 5).toString();
-                          }
-                        },
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(minHeight: 20),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_drop_down),
-                        onPressed: () {
-                          final currentValue =
-                              int.tryParse(readingController.text) ?? 0;
-                          if (currentValue > 0) {
-                            readingController.text =
-                                (currentValue - 5).toString();
-                          }
-                        },
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(minHeight: 20),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text('Listening target score'),
-              const SizedBox(height: 8),
-              TextField(
-                controller: listeningController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  suffixIcon: Column(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_drop_up),
-                        onPressed: () {
-                          final currentValue =
-                              int.tryParse(listeningController.text) ?? 0;
-                          if (currentValue < 450) {
-                            listeningController.text =
-                                (currentValue + 5).toString();
-                          }
-                        },
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(minHeight: 20),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_drop_down),
-                        onPressed: () {
-                          final currentValue =
-                              int.tryParse(listeningController.text) ?? 0;
-                          if (currentValue > 0) {
-                            listeningController.text =
-                                (currentValue - 5).toString();
-                          }
-                        },
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(minHeight: 20),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () {
-                    final readingScore =
-                        int.tryParse(readingController.text) ?? 0;
-                    final listeningScore =
-                        int.tryParse(listeningController.text) ?? 0;
-
-                    context
-                        .read<ProfileCubit>()
-                        .updateTargetScore(readingScore, listeningScore)
-                        .then((_) {
-                      if (diaglogContext.mounted) {
-                        Navigator.of(diaglogContext).pop();
-                      }
-                    });
-                  },
-                  child: Text(
-                    'Update'.toUpperCase(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        );
+      builder: (_) {
+        return const UpdateTargetScoreForm();
       },
     );
   }

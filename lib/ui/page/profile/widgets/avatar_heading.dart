@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
-import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
 
 class AvatarHeading extends StatefulWidget {
   const AvatarHeading({super.key, required this.user});
@@ -17,16 +17,22 @@ class AvatarHeading extends StatefulWidget {
 }
 
 class _AvatarHeadingState extends State<AvatarHeading> {
+  late final UserCubit profileCubit;
+  @override
+  void initState() {
+    super.initState();
+    profileCubit = injector<UserCubit>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
       child: CircleAvatar(
-        radius: 50,
+        radius: 48,
         backgroundColor: Theme.of(context).secondaryHeaderColor,
         backgroundImage: widget.user?.avatar.isEmpty ?? true
             ? null
-            // remove first and last character from the string
             : Image.network(
                     '${AppConfigs.baseUrl.replaceAll('/api', '')}${widget.user?.avatar}')
                 .image,
@@ -53,7 +59,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                   _pickImage();
                 },
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     shape: BoxShape.circle,
@@ -78,8 +84,6 @@ class _AvatarHeadingState extends State<AvatarHeading> {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
     final file = File(image.path);
-    if (mounted) {
-      context.read<ProfileCubit>().updateProfileAvatar(file);
-    }
+    profileCubit.updateProfileAvatar(file);
   }
 }

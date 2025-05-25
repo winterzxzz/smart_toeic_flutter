@@ -24,10 +24,9 @@ import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_rand
 import 'package:toeic_desktop/ui/page/history_test/history_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_cubit.dart';
+import 'package:toeic_desktop/ui/page/tests/tests_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_cubit.dart';
-import 'package:toeic_desktop/ui/page/profile/profile_cubit.dart';
-import 'package:toeic_desktop/ui/page/tests/tests_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';

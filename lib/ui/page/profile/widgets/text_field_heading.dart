@@ -25,7 +25,7 @@ class TextFieldHeading extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: theme.textTheme.titleSmall),
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         SizedBox(
           child: TextField(
             controller: controller,
