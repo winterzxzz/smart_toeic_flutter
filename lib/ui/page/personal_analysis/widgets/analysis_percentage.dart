@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class AnalysisPercentage extends StatelessWidget {
+class AnalysisPercentage extends StatefulWidget {
   const AnalysisPercentage({
     super.key,
     required this.percentage,
@@ -12,20 +10,24 @@ class AnalysisPercentage extends StatelessWidget {
   final Map<String, String> percentage;
 
   @override
-  Widget build(BuildContext context) {
-    log('percentage: ${percentage.entries}');
+  State<AnalysisPercentage> createState() => _AnalysisPercentageState();
+}
 
+class _AnalysisPercentageState extends State<AnalysisPercentage> {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: Container(
         padding: const EdgeInsets.all(16),
         height: 300, // Add fixed height for the chart
         child: Column(
           children: [
-            const Text(
+            Text(
               'Độ chính xác theo Phần(%)',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             Expanded(
               child: BarChart(
                 BarChartData(
@@ -47,7 +49,7 @@ class AnalysisPercentage extends StatelessWidget {
                           ];
                           return Text(
                             titles[value.toInt() - 1],
-                            style: const TextStyle(fontSize: 12),
+                            style: theme.textTheme.bodySmall,
                           );
                         },
                         reservedSize: 30,
@@ -69,7 +71,7 @@ class AnalysisPercentage extends StatelessWidget {
                   ),
                   borderData: FlBorderData(show: false),
                   gridData: const FlGridData(show: true),
-                  barGroups: percentage.entries
+                  barGroups: widget.percentage.entries
                       .map((e) => _createBarData(
                           int.parse(e.key), double.parse(e.value)))
                       .toList(),
@@ -83,13 +85,17 @@ class AnalysisPercentage extends StatelessWidget {
   }
 
   BarChartGroupData _createBarData(int x, double y) {
+    final theme = Theme.of(context);
     return BarChartGroupData(
       x: x,
       barRods: [
         BarChartRodData(
           toY: y,
           gradient: LinearGradient(
-            colors: [Colors.red.shade300, Colors.orange.shade100],
+            colors: [
+              theme.primaryColor,
+              theme.primaryColor.withValues(alpha: .8)
+            ],
           ),
           width: 25,
           borderRadius: const BorderRadius.only(

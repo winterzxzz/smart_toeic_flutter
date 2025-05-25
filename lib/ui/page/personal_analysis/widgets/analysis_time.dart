@@ -32,6 +32,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
     double value,
     double shadowValue,
   ) {
+    final theme = Theme.of(context);
     return BarChartGroupData(
       x: x,
       barRods: [
@@ -39,11 +40,19 @@ class _AnalysisTimeState extends State<AnalysisTime> {
           toY: value,
           color: color,
           width: 10,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(6),
+            topRight: Radius.circular(6),
+          ),
         ),
         BarChartRodData(
           toY: shadowValue,
-          color: AppColors.success,
+          color: theme.primaryColor.withValues(alpha: .8),
           width: 10,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(6),
+            topRight: Radius.circular(6),
+          ),
         ),
       ],
       showingTooltipIndicators: touchedGroupIndex == x ? [0] : [],
@@ -54,14 +63,15 @@ class _AnalysisTimeState extends State<AnalysisTime> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            const Text(
-              'Phân tích Thời gian (giây mỗi câu hỏi)',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              'Phân tích Thời gian (s/câu)',
+              style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 20),
             AspectRatio(
@@ -100,7 +110,10 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                           final index = value.toInt() - 1;
                           return SideTitleWidget(
                             axisSide: meta.axisSide,
-                            child: Text(widget.parts[index]),
+                            child: Text(
+                              widget.parts[index],
+                              style: theme.textTheme.bodyMedium,
+                            ),
                           );
                         },
                       ),
