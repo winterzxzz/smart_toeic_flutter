@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
 
 class PracticeTestPart extends StatefulWidget {
   const PracticeTestPart({

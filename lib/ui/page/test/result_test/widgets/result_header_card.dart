@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
-import 'package:toeic_desktop/ui/page/result_test/widgets/result_info_item.dart';
+import 'package:toeic_desktop/ui/page/test/result_test/widgets/result_info_item.dart';
 
 class ResultHeaderCard extends StatelessWidget {
   const ResultHeaderCard({super.key, required this.resultModel});

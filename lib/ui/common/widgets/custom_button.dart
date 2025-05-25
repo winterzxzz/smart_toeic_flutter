@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -29,13 +30,9 @@ class CustomButton extends StatelessWidget {
         ),
         child: Center(
           child: isLoading
-              ? const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
+              ? const LoadingCircle(
+                  size: 20,
+                  color: Colors.white,
                 )
               : Text(
                   text,

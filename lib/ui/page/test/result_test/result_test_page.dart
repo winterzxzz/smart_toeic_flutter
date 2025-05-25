@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
-import 'package:toeic_desktop/ui/page/result_test/widgets/result_action_buttons.dart';
-import 'package:toeic_desktop/ui/page/result_test/widgets/result_header_card.dart';
-import 'package:toeic_desktop/ui/page/result_test/widgets/result_scrore_section.dart';
+import 'package:toeic_desktop/ui/page/test/result_test/widgets/result_action_buttons.dart';
+import 'package:toeic_desktop/ui/page/test/result_test/widgets/result_header_card.dart';
+import 'package:toeic_desktop/ui/page/test/result_test/widgets/result_scrore_section.dart';
 
 class ResultTestPage extends StatelessWidget {
   const ResultTestPage({super.key, required this.resultModel});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
-import 'package:toeic_desktop/ui/page/tests/widgets/test_card.dart';
+import 'package:toeic_desktop/ui/page/test/tests/widgets/test_card.dart';
 
 class TestSection extends StatelessWidget {
   const TestSection({super.key, required this.tests});

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
-import 'package:toeic_desktop/ui/page/history_test/history_test_state.dart';
+import 'package:toeic_desktop/ui/page/test/history_test/history_test_state.dart';
 
 class HistoryTestCubit extends Cubit<HistoryTestState> {
   final TestRepository _testRepository;

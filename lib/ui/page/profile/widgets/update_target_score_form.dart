@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 
 class UpdateTargetScoreForm extends StatefulWidget {
   const UpdateTargetScoreForm({
@@ -117,23 +120,48 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
             ],
           ),
           const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+          BlocSelector<UserCubit, UserState, LoadStatus>(
+            selector: (state) {
+              return state.updateTargetScoreStatus;
+            },
+            builder: (context, updateTargetScoreStatus) {
+              return SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (updateTargetScoreStatus == LoadStatus.loading) {
+                      return;
+                    }
+
+                    userCubit
+                        .updateTargetScore(readingScore, listeningScore)
+                        .then((value) {
+                      if (context.mounted) {
+                        GoRouter.of(context).pop();
+                      }
+                    });
+                  },
+                  child: updateTargetScoreStatus == LoadStatus.loading
+                      ? const LoadingCircle(
+                          size: 20,
+                          color: Colors.white,
+                        )
+                      : Text(
+                          'Update',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
-              ),
-              onPressed: () {
-                GoRouter.of(context).pop();
-                userCubit.updateTargetScore(readingScore, listeningScore);
-              },
-              child: const Text(
-                'Update',
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(height: 16),
         ],

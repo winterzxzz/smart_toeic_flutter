@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/practice_test_part.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/practice_test_part.dart';
 
 class QuestionIndex extends StatefulWidget {
   const QuestionIndex({

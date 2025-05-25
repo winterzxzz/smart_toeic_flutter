@@ -7,11 +7,11 @@ import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/heading_practice_test.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/question_index.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/side_question.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/heading_practice_test.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question_index.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/side_question.dart';
 
 class PracticeTestPage extends StatefulWidget {
   const PracticeTestPage({

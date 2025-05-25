@@ -45,15 +45,21 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> updateTargetScore(int reading, int listening) async {
+    emit(state.copyWith(updateTargetScoreStatus: LoadStatus.loading));
     final response =
         await profileRepository.updateTargetScore(reading, listening);
     response.fold(
-      (l) => showToast(
-        title: l.errors?.first.message ?? 'Unexpected error occurred',
-        type: ToastificationType.error,
-      ),
+      (l) {
+        emit(state.copyWith(
+            updateTargetScoreStatus: LoadStatus.failure,
+            message: l.errors?.first.message ?? 'Unexpected error occurred'));
+        showToast(
+            title: l.errors?.first.message ?? 'Unexpected error occurred',
+            type: ToastificationType.error);
+      },
       (r) {
-        updateUser(r);
+        emit(state.copyWith(
+            updateTargetScoreStatus: LoadStatus.success, user: r));
         showToast(
             title: 'Update target score success',
             type: ToastificationType.success);

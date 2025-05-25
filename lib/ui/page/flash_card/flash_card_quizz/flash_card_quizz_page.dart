@@ -9,6 +9,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
@@ -110,9 +111,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
         },
         builder: (context, state) {
           if (state.loadStatus == LoadStatus.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const LoadingCircle();
           }
           return Center(
             child: Stack(children: [

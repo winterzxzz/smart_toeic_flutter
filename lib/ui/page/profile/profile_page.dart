@@ -9,6 +9,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/avatar_heading.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/profile_divider.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/target_score.dart';
@@ -261,14 +262,9 @@ class _PageState extends State<Page> {
                             }
                           },
                           child: state.updateStatus == LoadStatus.loading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
+                              ? const LoadingCircle(
+                                  size: 20,
+                                  color: Colors.white,
                                 )
                               : Text(
                                   'Update Profile',

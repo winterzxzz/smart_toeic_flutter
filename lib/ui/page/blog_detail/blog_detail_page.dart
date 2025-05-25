@@ -4,6 +4,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,6 +43,9 @@ class BlogDetail extends StatelessWidget {
                 return true;
               },
               enableCaching: true,
+              onLoadingBuilder: (context, element, loadingProgress) {
+                return const LoadingCircle();
+              },
               customWidgetBuilder: (ele) {
                 if (ele.localName == 'img') {
                   final src = ele.attributes['src'];

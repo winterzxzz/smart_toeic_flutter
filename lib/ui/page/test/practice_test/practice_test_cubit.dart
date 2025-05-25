@@ -14,7 +14,7 @@ import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final TestRepository _testRepository;

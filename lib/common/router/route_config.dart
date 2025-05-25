@@ -16,7 +16,7 @@ import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_pages.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_page.dart';
-import 'package:toeic_desktop/ui/page/history_test/history_test_page.dart';
+import 'package:toeic_desktop/ui/page/test/history_test/history_test_page.dart';
 import 'package:toeic_desktop/ui/page/onboarding/onboarding_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_page.dart';
@@ -26,12 +26,12 @@ import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_car
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_result.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_page.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_page.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/mode_test_page.dart';
-import 'package:toeic_desktop/ui/page/result_test/result_test_page.dart';
+import 'package:toeic_desktop/ui/page/test/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
 
 import '../../ui/page/splash/splash.dart';

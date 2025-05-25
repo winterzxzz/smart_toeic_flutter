@@ -9,6 +9,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/widgets/flash_card_learning_tile.dart';
@@ -55,35 +56,36 @@ class _PageState extends State<Page> {
           }
         },
         builder: (context, state) {
-          if (state.loadStatus == LoadStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state.loadStatus == LoadStatus.success) {
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  floating: true,
-                  leading: const LeadingBackButton(),
-                  snap: true,
-                  title: BlocSelector<FlashCardDetailLearningCubit,
-                      FlashCardDetailLearningState, List<FlashCardLearning>>(
-                    selector: (state) => state.flashCards,
-                    builder: (context, flashCards) {
-                      return Text(
-                        '${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} words)',
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
-                      );
-                    },
-                  ),
-                  actions: [
-                    IconButton(
-                      onPressed: _showStatusInfo,
-                      icon: const FaIcon(FontAwesomeIcons.circleInfo, size: 16),
-                    ),
-                  ],
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                leading: const LeadingBackButton(),
+                snap: true,
+                title: BlocSelector<FlashCardDetailLearningCubit,
+                    FlashCardDetailLearningState, List<FlashCardLearning>>(
+                  selector: (state) => state.flashCards,
+                  builder: (context, flashCards) {
+                    return Text(
+                      '${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} words)',
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    );
+                  },
                 ),
+                actions: [
+                  IconButton(
+                    onPressed: _showStatusInfo,
+                    icon: const FaIcon(FontAwesomeIcons.circleInfo, size: 16),
+                  ),
+                ],
+              ),
+              if (state.loadStatus == LoadStatus.loading)
+                const SliverFillRemaining(
+                  child: LoadingCircle(),
+                )
+              else if (state.loadStatus == LoadStatus.success)
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverList(
@@ -108,10 +110,8 @@ class _PageState extends State<Page> {
                     ]),
                   ),
                 ),
-              ],
-            );
-          }
-          return const SizedBox();
+            ],
+          );
         },
       ),
     );

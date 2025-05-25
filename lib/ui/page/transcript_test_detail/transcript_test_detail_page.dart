@@ -11,7 +11,7 @@ import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/audio_section.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/check_result_display.dart';

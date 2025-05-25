@@ -4,6 +4,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_state.dart';
@@ -98,9 +99,7 @@ class _PageState extends State<Page> {
               ),
               if (state.loadStatus == LoadStatus.loading)
                 const SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: LoadingCircle(),
                 )
               else if (state.filteredTranscriptTestSets.isEmpty)
                 const SliverFillRemaining(

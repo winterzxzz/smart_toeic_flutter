@@ -8,6 +8,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/widgets/flash_card_tile.dart';
@@ -154,9 +155,7 @@ class _PageState extends State<Page> {
               // Content
               if (state.loadStatus == LoadStatus.loading)
                 const SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: LoadingCircle(),
                 )
               else if (state.loadStatus == LoadStatus.success)
                 SliverPadding(

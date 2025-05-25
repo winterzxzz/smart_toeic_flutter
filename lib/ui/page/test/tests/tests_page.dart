@@ -4,10 +4,11 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
-import 'package:toeic_desktop/ui/page/tests/tests_cubit.dart';
-import 'package:toeic_desktop/ui/page/tests/tests_state.dart';
-import 'package:toeic_desktop/ui/page/tests/widgets/test_card.dart';
+import 'package:toeic_desktop/ui/page/test/tests/tests_cubit.dart';
+import 'package:toeic_desktop/ui/page/test/tests/tests_state.dart';
+import 'package:toeic_desktop/ui/page/test/tests/widgets/test_card.dart';
 
 class TestsPage extends StatelessWidget {
   const TestsPage({super.key});
@@ -47,29 +48,32 @@ class _PageState extends State<Page> {
           }
         },
         builder: (context, state) {
-          if (state.loadStatus == LoadStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state.loadStatus == LoadStatus.success) {
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  floating: true,
-                  title: const Text('Tests'),
-                  actions: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      height: 40,
-                      width: 150,
-                      child: CustomDropdownExample<String>(
-                        data: TestType.values.map((e) => e.name).toList(),
-                        dataString: TestType.values.map((e) => e.name).toList(),
-                        onChanged: (value) {
-                          _testsCubit.filterTests(value);
-                        },
-                      ),
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                title: const Text('Tests'),
+                actions: [
+                  Container(
+                    margin: const EdgeInsets.only(right: 8),
+                    height: 40,
+                    width: 150,
+                    child: CustomDropdownExample<String>(
+                      data: TestType.values.map((e) => e.name).toList(),
+                      dataString: TestType.values.map((e) => e.name).toList(),
+                      onChanged: (value) {
+                        _testsCubit.filterTests(value);
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+              if (state.loadStatus == LoadStatus.loading)
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: LoadingCircle(),
+                )
+              else if (state.loadStatus == LoadStatus.success)
                 SliverPadding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -83,11 +87,14 @@ class _PageState extends State<Page> {
                       );
                     },
                   ),
+                )
+              else
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: SizedBox(),
                 ),
-              ],
-            );
-          }
-          return const SizedBox();
+            ],
+          );
         },
       ),
     );

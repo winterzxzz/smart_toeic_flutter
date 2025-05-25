@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/audio_section.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/question_info_widget.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/audio_section.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question_info_widget.dart';
 
 class QuestionWidget extends StatelessWidget {
   const QuestionWidget({

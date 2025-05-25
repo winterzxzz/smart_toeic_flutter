@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_cubit.dart';
-import 'package:toeic_desktop/ui/page/practice_test/practice_test_state.dart';
-import 'package:toeic_desktop/ui/page/practice_test/widgets/question.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question.dart';
 
 class SideQuestion extends StatefulWidget {
   const SideQuestion({
