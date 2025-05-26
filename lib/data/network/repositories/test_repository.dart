@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
@@ -49,7 +48,7 @@ class TestRepositoryImpl extends TestRepository {
         blogs: response[2] as List<Blog>,
       ));
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -59,7 +58,7 @@ class TestRepositoryImpl extends TestRepository {
       final response = await _apiClient.getTest(limit);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -75,7 +74,7 @@ class TestRepositoryImpl extends TestRepository {
         blogs: response[1] as List<Blog>,
       ));
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -86,7 +85,7 @@ class TestRepositoryImpl extends TestRepository {
       final response = await _apiClient.getDetailTest(testId);
       return Right(response.map((e) => e.toQuestionModel()).toList());
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -97,7 +96,7 @@ class TestRepositoryImpl extends TestRepository {
       final response = await _apiClient.createResultItem(request);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -107,7 +106,7 @@ class TestRepositoryImpl extends TestRepository {
       final response = await _apiClient.getResultTest(resultId);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -118,7 +117,7 @@ class TestRepositoryImpl extends TestRepository {
       final response = await _apiClient.getResultTestUser(limit);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -129,7 +128,7 @@ class TestRepositoryImpl extends TestRepository {
       final response = await _apiClient.getResultTestByResultId(resultId);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -140,7 +139,7 @@ class TestRepositoryImpl extends TestRepository {
       final response = await _apiClient.getExplanation(request);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

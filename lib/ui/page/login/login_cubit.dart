@@ -37,9 +37,9 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(loadStatus: LoadStatus.loading));
       final result = await authRepo.login(email, password);
       result.fold(
-          (error) => emit(state.copyWith(
-              loadStatus: LoadStatus.failure,
-              errorMessage: error.errors?.first.message)), (response) {
+          (l) => emit(state.copyWith(
+              loadStatus: LoadStatus.failure, errorMessage: l.message)),
+          (response) {
         injector<UserCubit>().updateUser(response);
         emit(state.copyWith(loadStatus: LoadStatus.success));
       });

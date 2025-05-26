@@ -13,9 +13,9 @@ class UpgradeAccountCubit extends Cubit<UpgradeAccountState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await _paymentRepository.getPayment();
     result.fold(
-      (error) => emit(state.copyWith(
+      (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: error.errors?.first.message ?? 'Unexpected error occurred',
+        message: l.message,
       )),
       (payment) => emit(
           state.copyWith(payment: payment, loadStatus: LoadStatus.success)),

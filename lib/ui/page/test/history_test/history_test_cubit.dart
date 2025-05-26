@@ -12,9 +12,8 @@ class HistoryTestCubit extends Cubit<HistoryTestState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await _testRepository.getResultTests(limit: 10);
     result.fold(
-      (error) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure,
-          message: error.errors?.first.message)),
+      (l) => emit(state.copyWith(
+          loadStatus: LoadStatus.failure, message: l.message)),
       (results) => emit(
           state.copyWith(loadStatus: LoadStatus.success, results: results)),
     );

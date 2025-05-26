@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
@@ -55,7 +54,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.getFlashCardUser();
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -66,7 +65,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.getFlashCardSetLearning();
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -76,7 +75,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.getFlashCardSet(setId);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -87,7 +86,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.createFlashCardSet(title, description);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -97,7 +96,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       await _apiClient.deleteFlashCardSet(id);
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -109,7 +108,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
           await _apiClient.updateFlashCardSet(id, title, description);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -120,7 +119,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.createFlashCard(flashCardRequest);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -130,7 +129,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       await _apiClient.deleteFlashCard(id);
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -141,7 +140,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.updateFlashCard(id, word, translation);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -152,7 +151,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.getFlashCardInforByAI(prompt);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -163,7 +162,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       await _apiClient.deleteFlashCardLearning(learningSetId);
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -174,7 +173,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.getFlashCardLearning(learningSetId);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -185,7 +184,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.updateFlashCardLearning(learningSetId);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -197,7 +196,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
           await _apiClient.updateSessionScore(flashCardQuizzScoreRequest);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -207,7 +206,7 @@ class FlashCardRespositoryImpl extends FlashCardRespository {
       final response = await _apiClient.getRandom4Words();
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

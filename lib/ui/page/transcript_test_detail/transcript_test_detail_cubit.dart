@@ -17,7 +17,7 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
         .getTranscriptTestDetail(transcriptTestId);
     transcriptTestDetail.fold(
       (l) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
+          loadStatus: LoadStatus.failure, message: l.message)),
       (r) => emit(
           state.copyWith(loadStatus: LoadStatus.success, transcriptTests: r)),
     );

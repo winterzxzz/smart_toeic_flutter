@@ -17,7 +17,7 @@ class ListenCopyCubit extends Cubit<ListenCopyState> {
     transcriptTests.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: l.errors?.first.message,
+        message: l.message,
       )),
       (r) => emit(state.copyWith(
           loadStatus: LoadStatus.success,

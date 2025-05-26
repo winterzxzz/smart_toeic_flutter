@@ -14,7 +14,6 @@ abstract class AuthRepository {
     required String password,
   });
 
-
   Future<Either<ApiError, ResetPasswordResponse>> resetPassword(String email);
 }
 
@@ -30,7 +29,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.login(email, password);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -44,10 +43,9 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.signUp(email, name, password);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
-
 
   @override
   Future<Either<ApiError, ResetPasswordResponse>> resetPassword(
@@ -56,7 +54,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final result = await apiClient.resetPassword(email);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

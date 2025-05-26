@@ -215,7 +215,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     response.fold(
       (l) => emit(state.copyWith(
         loadStatusSubmit: LoadStatus.failure,
-        message: l.errors?.first.message ?? 'Submit test failed',
+        message: l.message,
       )),
       (r) async {
         final resultModel = ResultModel(

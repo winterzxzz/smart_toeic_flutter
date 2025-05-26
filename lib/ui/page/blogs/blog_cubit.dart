@@ -13,7 +13,7 @@ class BlogCubit extends Cubit<BlogState> {
     final result = await blogRepository.getBlog();
     result.fold(
       (l) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
+          loadStatus: LoadStatus.failure, message: l.message)),
       (r) {
         if (blogId != null) {
           emit(state.copyWith(
@@ -44,7 +44,7 @@ class BlogCubit extends Cubit<BlogState> {
     final searchBlogs = await blogRepository.searchBlog(keyword);
     searchBlogs.fold(
       (l) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
+          loadStatus: LoadStatus.failure, message: l.message)),
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,

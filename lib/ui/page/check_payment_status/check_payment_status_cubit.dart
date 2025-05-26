@@ -16,7 +16,7 @@ class CheckPaymentStatusCubit extends Cubit<CheckPaymentStatusState> {
     final result = await paymentRepository.checkPaymentStatus(transId);
     result.fold(
         (l) => emit(
-            state.copyWith(loadStatus: LoadStatus.failure, message: l.errors?.first.message)),
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
         (r) {
       emit(state.copyWith(
           loadStatus: LoadStatus.success, message: r.payment.returnMessage));

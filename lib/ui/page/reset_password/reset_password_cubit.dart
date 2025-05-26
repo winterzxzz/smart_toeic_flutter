@@ -12,7 +12,7 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
     final rs = await authRepository.resetPassword(email);
     rs.fold((l) {
       emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.errors?.first.message));
+          loadStatus: LoadStatus.failure, message: l.message));
     }, (r) {
       emit(state.copyWith(
           loadStatus: LoadStatus.success,

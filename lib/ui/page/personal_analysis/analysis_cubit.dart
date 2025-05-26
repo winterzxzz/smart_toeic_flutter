@@ -16,9 +16,8 @@ class AnalysisCubit extends Cubit<AnalysisState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await profileRepository.getProfileAnalysis();
     result.fold(
-        (l) => emit(state.copyWith(
-            loadStatus: LoadStatus.failure,
-            message: l.errors?.first.message ?? 'Unexpected error occurred')),
+        (l) => emit(
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
         (r) => emit(state.copyWith(
             loadStatus: LoadStatus.success, profileAnalysis: r)));
   }
@@ -27,9 +26,8 @@ class AnalysisCubit extends Cubit<AnalysisState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await profileRepository.getSuggestForStudy();
     result.fold(
-        (l) => emit(state.copyWith(
-            loadStatus: LoadStatus.failure,
-            message: l.errors?.first.message ?? 'Unexpected error occurred')),
+        (l) => emit(
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
         (r) {
       emit(state.copyWith(loadStatus: LoadStatus.success, suggestForStudy: r));
       _scrollToTheEnd();

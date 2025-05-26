@@ -39,9 +39,9 @@ class RegisterCubit extends Cubit<RegisterState> {
       final result =
           await authRepo.signUp(email: email, name: name, password: password);
       result.fold(
-          (error) => emit(state.copyWith(
+          (l) => emit(state.copyWith(
               loadDataStatus: LoadStatus.failure,
-              message: error.errors?.first.message)), (response) {
+              message: l.message)), (response) {
         emit(state.copyWith(
             loadDataStatus: LoadStatus.success,
             message: 'Register success! Login to continue'));

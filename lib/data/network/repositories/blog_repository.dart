@@ -22,7 +22,7 @@ class BlogRepositoryImpl extends BlogRepository {
       final result = await apiClient.getBlog();
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -32,7 +32,7 @@ class BlogRepositoryImpl extends BlogRepository {
       final result = await apiClient.searchBlog(keyword);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

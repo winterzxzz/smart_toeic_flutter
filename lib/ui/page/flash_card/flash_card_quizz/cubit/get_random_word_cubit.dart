@@ -12,7 +12,7 @@ class GetRandomWordCubit extends Cubit<GetRandomWordState> {
 
   Future<void> getRandom4Words() async {
     final rs = await _flashCardRepository.getRandom4Words();
-    rs.fold((l) => emit(state.copyWith(loadStatus: LoadStatus.failure, message: l.errors?.first.message)), (r) {
+    rs.fold((l) => emit(state.copyWith(loadStatus: LoadStatus.failure, message: l.message)), (r) {
       emit(state.copyWith(loadStatus: LoadStatus.success, random4Words: r));
     });
   }

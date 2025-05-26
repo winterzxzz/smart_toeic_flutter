@@ -20,10 +20,9 @@ class SplashCubit extends Cubit<SplashState> {
     }
     final result = await profileRepo.getUser();
     result.fold(
-        (error) => emit(state.copyWith(
-            loadStatus: LoadStatus.failure,
-            message: error.errors?.first.message ??
-                'Unexpected error occurred')), (response) {
+        (l) => emit(
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
+        (response) {
       injector<UserCubit>().updateUser(response);
       emit(state.copyWith(loadStatus: LoadStatus.success));
     });

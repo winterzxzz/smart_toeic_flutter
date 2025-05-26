@@ -1,5 +1,4 @@
 
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
@@ -24,7 +23,7 @@ class TranscriptTestRepositoryImpl extends TranscriptTestRepository {
       final response = await _apiClient.getTranscriptTest();
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -34,7 +33,7 @@ class TranscriptTestRepositoryImpl extends TranscriptTestRepository {
       final response = await _apiClient.getTranscriptTestDetail(transcriptTestId);
       return Right(response);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

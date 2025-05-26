@@ -1,40 +1,63 @@
-// To parse this JSON data, do
-//
-//     final apiError = apiErrorFromJson(jsonString);
+import 'dart:io';
 
-import 'package:json_annotation/json_annotation.dart';
-import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:equatable/equatable.dart';
 
-part 'api_error.g.dart';
+class ApiError extends Equatable implements Exception {
+  late final String message;
+  late final int? statusCode;
+  // ignore: prefer_const_constructors_in_immutables
+  ApiError(this.statusCode, this.message);
 
-ApiError apiErrorFromJson(String str) => ApiError.fromJson(json.decode(str));
+  ApiError.fromDioError(DioException dioException) {
+    statusCode = dioException.response?.statusCode;
 
-String apiErrorToJson(ApiError data) => json.encode(data.toJson());
+    switch (dioException.type) {
+      case DioExceptionType.cancel:
+        message = 'Request to API server was cancelled';
+        break;
 
-@JsonSerializable()
-class ApiError {
-    @JsonKey(name: "errors")
-    final List<Error>? errors;
+      case DioExceptionType.connectionTimeout:
+        message = 'Connection timeout with API server';
+        break;
 
-    ApiError({
-        this.errors,
-    });
+      case DioExceptionType.receiveTimeout:
+        message = 'Receive timeout in connection with API server';
+        break;
 
-    factory ApiError.fromJson(Map<String, dynamic> json) => _$ApiErrorFromJson(json);
+      case DioExceptionType.sendTimeout:
+        message = 'Send timeout in connection with API server';
+        break;
 
-    Map<String, dynamic> toJson() => _$ApiErrorToJson(this);
-}
+      case DioExceptionType.connectionError:
+        if (dioException.error.runtimeType == SocketException) {
+          message = 'Please check your internet connection';
+          break;
+        } else {
+          message = 'Unexpected error occurred';
+          break;
+        }
 
-@JsonSerializable()
-class Error {
-    @JsonKey(name: "message")
-    final String? message;
+      case DioExceptionType.badCertificate:
+        message = 'Bad Certificate';
+        break;
 
-    Error({
-        this.message,
-    });
+      case DioExceptionType.badResponse:
+        if (statusCode == 401) {
+          message = 'Account logged in on another device';
+        } else {
+          message =
+              dioException.response?.data?['errors']?[0]['message'] ??
+              'Unexpected error occurred';
+        }
+        break;
 
-    factory Error.fromJson(Map<String, dynamic> json) => _$ErrorFromJson(json);
+      case DioExceptionType.unknown:
+        message = 'Unexpected error occurred';
+        break;
+    }
+  }
 
-    Map<String, dynamic> toJson() => _$ErrorToJson(this);
+  @override
+  List<Object?> get props => [message, statusCode];
 }

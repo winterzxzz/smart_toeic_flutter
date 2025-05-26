@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
@@ -24,7 +23,7 @@ class PaymentRepositoryImpl extends PaymentRepository {
       final result = await _apiClient.getPayment();
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -41,7 +40,7 @@ class PaymentRepositoryImpl extends PaymentRepository {
         result[1] as UserEntity,
       ));
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

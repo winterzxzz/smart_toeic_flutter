@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -33,7 +32,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final result = await apiClient.getUser();
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(e.response?.data));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -50,7 +49,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
         result[1] as String, // Add explicit cast here
       ));
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -60,7 +59,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final result = await apiClient.getProfileAnalysis();
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -70,7 +69,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final result = await apiClient.getSuggestForStudy();
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -84,7 +83,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       });
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -95,7 +94,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       // remove first and last character
       return Right(result.substring(1, result.length - 1));
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 
@@ -106,7 +105,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       final result = await apiClient.updateProfile(request);
       return Right(result);
     } on DioException catch (e) {
-      return Left(ApiError.fromJson(jsonDecode(e.response?.data)));
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

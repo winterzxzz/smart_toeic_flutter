@@ -25,7 +25,7 @@ class UserCubit extends Cubit<UserState> {
     result.fold(
       (l) => emit(state.copyWith(
           loadStatus: LoadStatus.failure,
-          message: l.errors?.first.message ?? 'Unexpected error occurred',
+          message: l.message,
           isHaveUser: false)),
       (r) => emit(state.copyWith(
           loadStatus: LoadStatus.success, user: r, isHaveUser: true)),
@@ -52,9 +52,9 @@ class UserCubit extends Cubit<UserState> {
       (l) {
         emit(state.copyWith(
             updateTargetScoreStatus: LoadStatus.failure,
-            message: l.errors?.first.message ?? 'Unexpected error occurred'));
+            message: l.message));
         showToast(
-            title: l.errors?.first.message ?? 'Unexpected error occurred',
+            title: l.message,
             type: ToastificationType.error);
       },
       (r) {
@@ -71,7 +71,7 @@ class UserCubit extends Cubit<UserState> {
     final response = await profileRepository.updateProfileAvatar(avatar);
     response.fold(
       (l) => showToast(
-        title: l.errors?.first.message ?? 'Unexpected error occurred',
+        title: l.message,
         type: ToastificationType.error,
       ),
       (r) {
@@ -91,11 +91,9 @@ class UserCubit extends Cubit<UserState> {
     response.fold(
       (l) {
         emit(state.copyWith(
-            updateStatus: LoadStatus.failure,
-            message: l.errors?.first.message ?? 'Unexpected error occurred'));
+            updateStatus: LoadStatus.failure, message: l.message));
         showToast(
-            title: l.errors?.first.message ?? 'Unexpected error occurred',
-            type: ToastificationType.error);
+            title: l.message, type: ToastificationType.error);
       },
       (r) {
         final currentUser = state.user!;
