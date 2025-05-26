@@ -204,7 +204,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          GoRouter.of(context).goNamed(
+                                          GoRouter.of(context).pushNamed(
                                               AppRouter.upgradeAccount);
                                         },
                                         child: const Text(

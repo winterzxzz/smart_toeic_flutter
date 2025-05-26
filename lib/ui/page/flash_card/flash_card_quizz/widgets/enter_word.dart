@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 class EnterWord extends StatefulWidget {
@@ -55,7 +56,7 @@ class _EnterWordState extends State<EnterWord> {
           controller: _controller,
           textAlign: TextAlign.center,
           autofocus: true,
-          textCapitalization: TextCapitalization.characters,
+          inputFormatters: [CapitalizeFirstLetterFormatter()],
           decoration: InputDecoration(
             hintText: 'Nhập từ tiếng Việt',
             enabledBorder: OutlineInputBorder(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 class EnterTranslation extends StatefulWidget {
@@ -53,7 +54,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
         TextField(
           controller: _controller,
           textAlign: TextAlign.center,
-          textCapitalization: TextCapitalization.characters,
+          inputFormatters: [CapitalizeFirstLetterFormatter()],
           autofocus: true,
           decoration: InputDecoration(
             hintText: 'Nhập từ tiếng anh',

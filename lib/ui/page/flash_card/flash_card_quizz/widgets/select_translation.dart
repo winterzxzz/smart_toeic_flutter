@@ -87,6 +87,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       key: widget.widgetKey,
@@ -95,7 +96,9 @@ class _SectionQuestionState extends State<SectionQuestion> {
           style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              const TextSpan(text: 'Chọn nghĩa đúng cho từ '),
+              const TextSpan(
+                text: 'Chọn nghĩa đúng cho từ ',
+              ),
               TextSpan(
                 text: "'${widget.fcLearning.flashcardId!.word}'",
                 style: const TextStyle(fontWeight: FontWeight.bold),
@@ -147,7 +150,13 @@ class _SectionQuestionState extends State<SectionQuestion> {
                         },
                       ),
                       const SizedBox(width: 8),
-                      Expanded(child: Text(level)),
+                      Expanded(
+                          child: Text(
+                        level.isNotEmpty
+                            ? level[0].toUpperCase() + level.substring(1)
+                            : '',
+                        style: theme.textTheme.bodyMedium,
+                      )),
                     ],
                   ),
                 ),
