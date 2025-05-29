@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 
 class UpdateTargetScoreForm extends StatefulWidget {
@@ -46,7 +47,7 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Update Target Score',
+                S.current.update_target_score,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -60,7 +61,7 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
             ],
           ),
           const SizedBox(height: 16),
-          Text('Reading target score', style: theme.textTheme.bodyMedium),
+          Text(S.current.reading_target_score, style: theme.textTheme.bodyMedium),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -91,7 +92,7 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
             ],
           ),
           const SizedBox(height: 16),
-          Text('Listening target score', style: theme.textTheme.bodyMedium),
+          Text(S.current.listening_target_score, style: theme.textTheme.bodyMedium),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -153,7 +154,7 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
                           color: Colors.white,
                         )
                       : Text(
-                          'Update',
+                          S.current.update,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

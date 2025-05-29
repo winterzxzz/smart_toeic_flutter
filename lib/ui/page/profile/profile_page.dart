@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/enums/profile_menu_button.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -89,23 +90,23 @@ class _PageState extends State<Page> {
                   ),
                   onSelected: (value) {
                     switch (value) {
-                      case 'settings':
+                      case ProfileMenuButton.settings:
                         GoRouter.of(context).pushNamed(AppRouter.setting);
                         break;
-                      case 'target-score':
+                      case ProfileMenuButton.targetScore:
                         showUpdateTargetDialog();
                         break;
-                      case 'history':
+                      case ProfileMenuButton.history:
                         GoRouter.of(context).pushNamed(AppRouter.historyTest);
                         break;
-                      case 'analysis':
+                      case ProfileMenuButton.analysis:
                         GoRouter.of(context).pushNamed(AppRouter.analysis);
                         break;
-                      case 'logout':
+                      case ProfileMenuButton.logout:
                         showConfirmDialog(
                           context,
-                          'Logout',
-                          'Are you sure?',
+                          ProfileMenuButton.logout.getTitle(),
+                          S.current.are_you_sure,
                           () {
                             userCubit.removeUser(context);
                           },
@@ -115,7 +116,7 @@ class _PageState extends State<Page> {
                   },
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      value: 'settings',
+                      value: ProfileMenuButton.settings,
                       child: Row(
                         children: [
                           const FaIcon(
@@ -124,14 +125,14 @@ class _PageState extends State<Page> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            'Settings',
+                            ProfileMenuButton.settings.getTitle(),
                             style: theme.textTheme.bodyMedium,
                           ),
                         ],
                       ),
                     ),
                     PopupMenuItem(
-                      value: 'target-score',
+                      value: ProfileMenuButton.targetScore,
                       child: Row(
                         children: [
                           const FaIcon(
@@ -140,14 +141,14 @@ class _PageState extends State<Page> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            'Target Score',
+                            ProfileMenuButton.targetScore.getTitle(),
                             style: theme.textTheme.bodyMedium,
                           ),
                         ],
                       ),
                     ),
                     PopupMenuItem(
-                      value: 'history',
+                      value: ProfileMenuButton.history,
                       child: Row(
                         children: [
                           const FaIcon(
@@ -156,14 +157,14 @@ class _PageState extends State<Page> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            'History',
+                            ProfileMenuButton.history.getTitle(),
                             style: theme.textTheme.bodyMedium,
                           ),
                         ],
                       ),
                     ),
                     PopupMenuItem(
-                      value: 'analysis',
+                      value: ProfileMenuButton.analysis,
                       child: Row(
                         children: [
                           const FaIcon(
@@ -172,14 +173,14 @@ class _PageState extends State<Page> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            'Analysis',
+                            ProfileMenuButton.analysis.getTitle(),
                             style: theme.textTheme.bodyMedium,
                           ),
                         ],
                       ),
                     ),
                     PopupMenuItem(
-                      value: 'logout',
+                      value: ProfileMenuButton.logout,
                       child: Row(
                         children: [
                           const FaIcon(
@@ -189,7 +190,7 @@ class _PageState extends State<Page> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            'Logout',
+                            ProfileMenuButton.logout.getTitle(),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.error,
                             ),
@@ -213,23 +214,23 @@ class _PageState extends State<Page> {
                     ),
                     TextFieldHeading(
                       controller: emailController,
-                      label: 'Email',
-                      hintText: 'Enter your email',
+                      label: S.current.email_label,
+                      hintText: S.current.email_hint,
                       icon: FontAwesomeIcons.envelope,
                       disabled: true,
                     ),
                     const SizedBox(height: 16),
                     TextFieldHeading(
                       controller: nameController,
-                      label: 'Name',
-                      hintText: 'Enter your name',
+                      label: S.current.name_label,
+                      hintText: S.current.name_hint,
                       icon: FontAwesomeIcons.user,
                     ),
                     const SizedBox(height: 16),
                     TextFieldHeading(
                       controller: bioController,
-                      label: 'Bio',
-                      hintText: 'Enter your bio',
+                      label: S.current.bio_label,
+                      hintText: S.current.bio_hint,
                       maxLines: 3,
                     ),
                     const ProfileDivider(
@@ -243,12 +244,14 @@ class _PageState extends State<Page> {
                         return Column(
                           children: [
                             TargetScoreWidget(
-                              title: 'Reading Target / Reading Current',
+                              title:
+                                  '${S.current.reading_target} / ${S.current.reading_current}',
                               targetScore: user?.targetScore?.reading,
                             ),
                             const SizedBox(height: 16),
                             TargetScoreWidget(
-                              title: 'Listening Target / Listening Current',
+                              title:
+                                  '${S.current.listening_target} / ${S.current.listening_current}',
                               targetScore: user?.targetScore?.listening,
                             ),
                           ],
@@ -283,7 +286,7 @@ class _PageState extends State<Page> {
                                     color: Colors.white,
                                   )
                                 : Text(
-                                    'Update Profile',
+                                    S.current.update_profile,
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white,

@@ -769,6 +769,276 @@ class S {
       args: [],
     );
   }
+
+  /// `Target Score`
+  String get target_score {
+    return Intl.message(
+      'Target Score',
+      name: 'target_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get history {
+    return Intl.message(
+      'History',
+      name: 'history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Analysis`
+  String get analysis {
+    return Intl.message(
+      'Analysis',
+      name: 'analysis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure?`
+  String get are_you_sure {
+    return Intl.message(
+      'Are you sure?',
+      name: 'are_you_sure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bio`
+  String get bio_label {
+    return Intl.message(
+      'Bio',
+      name: 'bio_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your bio`
+  String get bio_hint {
+    return Intl.message(
+      'Enter your bio',
+      name: 'bio_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading Target`
+  String get reading_target {
+    return Intl.message(
+      'Reading Target',
+      name: 'reading_target',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading Current`
+  String get reading_current {
+    return Intl.message(
+      'Reading Current',
+      name: 'reading_current',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listening Target`
+  String get listening_target {
+    return Intl.message(
+      'Listening Target',
+      name: 'listening_target',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listening Current`
+  String get listening_current {
+    return Intl.message(
+      'Listening Current',
+      name: 'listening_current',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Profile`
+  String get update_profile {
+    return Intl.message(
+      'Update Profile',
+      name: 'update_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Target Score`
+  String get update_target_score {
+    return Intl.message(
+      'Update Target Score',
+      name: 'update_target_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading Target Score`
+  String get reading_target_score {
+    return Intl.message(
+      'Reading Target Score',
+      name: 'reading_target_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listening Target Score`
+  String get listening_target_score {
+    return Intl.message(
+      'Listening Target Score',
+      name: 'listening_target_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get update {
+    return Intl.message(
+      'Update',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Display Theme`
+  String get display_theme {
+    return Intl.message(
+      'Display Theme',
+      name: 'display_theme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow System`
+  String get follow_system {
+    return Intl.message(
+      'Follow System',
+      name: 'follow_system',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Mode`
+  String get light_mode {
+    return Intl.message(
+      'Light Mode',
+      name: 'light_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark Mode`
+  String get dark_mode {
+    return Intl.message(
+      'Dark Mode',
+      name: 'dark_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `System Mode`
+  String get system_mode {
+    return Intl.message(
+      'System Mode',
+      name: 'system_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theme Color`
+  String get theme_color {
+    return Intl.message(
+      'Theme Color',
+      name: 'theme_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dynamic Color`
+  String get dynamic_color {
+    return Intl.message(
+      'Dynamic Color',
+      name: 'dynamic_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History Test`
+  String get history_test {
+    return Intl.message(
+      'History Test',
+      name: 'history_test',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No data found`
+  String get no_data_found {
+    return Intl.message(
+      'No data found',
+      name: 'no_data_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TOEIC Performance Dashboard`
+  String get toeic_performance_dashboard {
+    return Intl.message(
+      'TOEIC Performance Dashboard',
+      name: 'toeic_performance_dashboard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Analysis Your Score`
+  String get analysis_your_score {
+    return Intl.message(
+      'Analysis Your Score',
+      name: 'analysis_your_score',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

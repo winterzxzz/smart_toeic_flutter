@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -31,12 +32,12 @@ class Page extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             automaticallyImplyLeading: true,
-            title: Text('History Test'),
+            title: Text(S.current.history_test),
             floating: true,
-            leading: LeadingBackButton(),
-            bottom: PreferredSize(
+            leading: const LeadingBackButton(),
+            bottom: const PreferredSize(
               preferredSize: Size.fromHeight(1),
               child: Divider(
                 color: AppColors.gray2,
@@ -57,8 +58,8 @@ class Page extends StatelessWidget {
               }
               if (state.loadStatus == LoadStatus.success) {
                 if (state.results.isEmpty) {
-                  return const SliverFillRemaining(
-                    child: Center(child: Text('No data')),
+                  return SliverFillRemaining(
+                    child: Center(child: Text(S.current.no_data_found)),
                   );
                 }
                 return SliverPadding(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/setting_card.dart';
@@ -15,14 +16,14 @@ class SettingPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Setting'),
+          title: Text(S.current.settings),
           leading: const LeadingBackButton(),
         ),
         body: ListView(
           children: [
-            const Padding(
+            Padding(
               padding: AppStyle.edgeInsetsA12,
-              child: Text('Display Theme'),
+              child: Text(S.current.display_theme),
             ),
             BlocSelector<AppSettingCubit, AppSettingState, ThemeMode>(
               selector: (state) {
@@ -34,9 +35,7 @@ class SettingPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       RadioListTile<int>(
-                        title: const Text(
-                          "Follow System",
-                        ),
+                        title: Text(S.current.follow_system),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.system.index,
                         contentPadding: AppStyle.edgeInsetsH12,
@@ -47,9 +46,7 @@ class SettingPage extends StatelessWidget {
                         },
                       ),
                       RadioListTile<int>(
-                        title: const Text(
-                          "Light Mode",
-                        ),
+                        title: Text(S.current.light_mode),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.light.index,
                         contentPadding: AppStyle.edgeInsetsH12,
@@ -60,9 +57,7 @@ class SettingPage extends StatelessWidget {
                         },
                       ),
                       RadioListTile<int>(
-                        title: const Text(
-                          "Dark Mode",
-                        ),
+                        title: Text(S.current.dark_mode),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.dark.index,
                         contentPadding: AppStyle.edgeInsetsH12,
@@ -78,10 +73,10 @@ class SettingPage extends StatelessWidget {
               },
             ),
             AppStyle.vGap12,
-            const Padding(
+            Padding(
               padding: AppStyle.edgeInsetsA12,
               child: Text(
-                "Theme Color",
+                S.current.theme_color,
               ),
             ),
             BlocBuilder<AppSettingCubit, AppSettingState>(
@@ -96,7 +91,7 @@ class SettingPage extends StatelessWidget {
                     children: [
                       SettingsSwitch(
                         value: state.isDynamicColor,
-                        title: "Dynamic Color",
+                        title: S.current.dynamic_color,
                         onChanged: (e) {
                           injector<AppSettingCubit>()
                               .changeDynamicColor(isDynamicColor: e);

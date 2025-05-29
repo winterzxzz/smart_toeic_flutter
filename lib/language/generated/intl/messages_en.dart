@@ -28,8 +28,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "all": MessageLookupByLibrary.simpleMessage("All"),
         "already_have_account":
             MessageLookupByLibrary.simpleMessage("Already have an account?"),
+        "analysis": MessageLookupByLibrary.simpleMessage("Analysis"),
+        "analysis_your_score":
+            MessageLookupByLibrary.simpleMessage("Analysis Your Score"),
         "app_name": MessageLookupByLibrary.simpleMessage("Smart TOEIC Prep"),
+        "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
         "back_to_login": MessageLookupByLibrary.simpleMessage("Back to login"),
+        "bio_hint": MessageLookupByLibrary.simpleMessage("Enter your bio"),
+        "bio_label": MessageLookupByLibrary.simpleMessage("Bio"),
         "blogs": MessageLookupByLibrary.simpleMessage("Blogs"),
         "blogs_title": MessageLookupByLibrary.simpleMessage("Blogs"),
         "confirm_password_length_error": MessageLookupByLibrary.simpleMessage(
@@ -40,8 +46,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create New Flashcard"),
         "create_new_flashcard_set":
             MessageLookupByLibrary.simpleMessage("Create New Flashcard Set"),
+        "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
+        "display_theme": MessageLookupByLibrary.simpleMessage("Display Theme"),
         "dont_have_account":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
+        "dynamic_color": MessageLookupByLibrary.simpleMessage("Dynamic Color"),
         "email_exist_error":
             MessageLookupByLibrary.simpleMessage("Email does not exist"),
         "email_hint": MessageLookupByLibrary.simpleMessage("Enter your email"),
@@ -61,9 +70,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "flashcards": MessageLookupByLibrary.simpleMessage("Flashcards"),
         "flashcards_description": MessageLookupByLibrary.simpleMessage(
             "Interactive flashcards to boost your vocabulary and language skills efficiently."),
+        "follow_system": MessageLookupByLibrary.simpleMessage("Follow System"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "google": MessageLookupByLibrary.simpleMessage("Google"),
+        "history": MessageLookupByLibrary.simpleMessage("History"),
+        "history_test": MessageLookupByLibrary.simpleMessage("History Test"),
         "invalid_confirm_password_error": MessageLookupByLibrary.simpleMessage(
             "Confirm password must have text, number and special character"),
         "invalid_email_error":
@@ -71,12 +83,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "invalid_password_error": MessageLookupByLibrary.simpleMessage(
             "Password must have text, number and special character"),
         "last_studied": MessageLookupByLibrary.simpleMessage("Last Studied"),
+        "light_mode": MessageLookupByLibrary.simpleMessage("Light Mode"),
         "listening": MessageLookupByLibrary.simpleMessage("Listening"),
+        "listening_current":
+            MessageLookupByLibrary.simpleMessage("Listening Current"),
+        "listening_target":
+            MessageLookupByLibrary.simpleMessage("Listening Target"),
+        "listening_target_score":
+            MessageLookupByLibrary.simpleMessage("Listening Target Score"),
         "login_button": MessageLookupByLibrary.simpleMessage("Login"),
         "login_description": MessageLookupByLibrary.simpleMessage(
             "Login to access our comprehensive TOEIC preparation resources"),
         "login_title":
             MessageLookupByLibrary.simpleMessage("Welcome to Smart TOEIC Prep"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "mini_exam": MessageLookupByLibrary.simpleMessage("Mini-Exam"),
         "minute": MessageLookupByLibrary.simpleMessage("minute"),
         "minutes": MessageLookupByLibrary.simpleMessage("minutes"),
@@ -84,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "name_hint": MessageLookupByLibrary.simpleMessage("Enter your name"),
         "name_label": MessageLookupByLibrary.simpleMessage("Name"),
         "no_blogs": MessageLookupByLibrary.simpleMessage("No blogs found"),
+        "no_data_found": MessageLookupByLibrary.simpleMessage("No data found"),
         "no_limit": MessageLookupByLibrary.simpleMessage("No limit"),
         "onboarding_description": MessageLookupByLibrary.simpleMessage(
             "The best app for TOEIC test-takers"),
@@ -102,6 +123,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "premium": MessageLookupByLibrary.simpleMessage("Premium"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "read_more": MessageLookupByLibrary.simpleMessage("Read More"),
+        "reading_current":
+            MessageLookupByLibrary.simpleMessage("Reading Current"),
+        "reading_target":
+            MessageLookupByLibrary.simpleMessage("Reading Target"),
+        "reading_target_score":
+            MessageLookupByLibrary.simpleMessage("Reading Target Score"),
         "register_button": MessageLookupByLibrary.simpleMessage("Register"),
         "register_description": MessageLookupByLibrary.simpleMessage(
             "Create an account to access our comprehensive TOEIC preparation resources"),
@@ -120,10 +147,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Set Flashcard"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "studying": MessageLookupByLibrary.simpleMessage("Studying"),
+        "system_mode": MessageLookupByLibrary.simpleMessage("System Mode"),
+        "target_score": MessageLookupByLibrary.simpleMessage("Target Score"),
         "test": MessageLookupByLibrary.simpleMessage("Test"),
         "test_online": MessageLookupByLibrary.simpleMessage("Test Online"),
         "tests": MessageLookupByLibrary.simpleMessage("Tests"),
+        "theme_color": MessageLookupByLibrary.simpleMessage("Theme Color"),
         "to_reviews": MessageLookupByLibrary.simpleMessage("to reviews"),
+        "toeic_performance_dashboard":
+            MessageLookupByLibrary.simpleMessage("TOEIC Performance Dashboard"),
+        "update": MessageLookupByLibrary.simpleMessage("Update"),
+        "update_profile":
+            MessageLookupByLibrary.simpleMessage("Update Profile"),
+        "update_target_score":
+            MessageLookupByLibrary.simpleMessage("Update Target Score"),
         "upgrade_account":
             MessageLookupByLibrary.simpleMessage("Upgrade Account"),
         "word_learned": MessageLookupByLibrary.simpleMessage("Word Learned")

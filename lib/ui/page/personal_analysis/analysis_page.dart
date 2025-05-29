@@ -6,6 +6,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -57,11 +58,11 @@ class _PageState extends State<Page> {
           return CustomScrollView(
             controller: analysisCubit.scrollController,
             slivers: [
-              const SliverAppBar(
+              SliverAppBar(
                 automaticallyImplyLeading: true,
                 centerTitle: true,
-                title: Text('TOEIC Performance Dashboard'),
-                leading: LeadingBackButton(),
+                title: Text(S.current.toeic_performance_dashboard),
+                leading: const LeadingBackButton(),
                 floating: true,
               ),
               if (state.loadStatus == LoadStatus.loading)
@@ -129,7 +130,7 @@ class _PageState extends State<Page> {
                                     else
                                       const FaIcon(FontAwesomeIcons.lock),
                                     const SizedBox(width: 8),
-                                    const Text('Analysis Your Score'),
+                                    Text(S.current.analysis_your_score),
                                   ],
                                 ),
                               ),
