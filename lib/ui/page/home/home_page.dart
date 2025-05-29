@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
-import 'package:toeic_desktop/ui/page/home/home_cubit.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_section_task.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,26 +15,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final HomeCubit _homeCubit;
-
   @override
   void initState() {
     super.initState();
-    _homeCubit = injector<HomeCubit>();
   }
 
   @override
   void dispose() {
-    _homeCubit.reset();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _homeCubit,
-      child: const Page(),
-    );
+    return const Page();
   }
 }
 

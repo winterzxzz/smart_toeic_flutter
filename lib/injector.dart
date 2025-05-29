@@ -49,13 +49,8 @@ Future<void> init() async {
     ..registerFactory<BlogCubit>(() => BlogCubit(injector()))
     ..registerFactory<HistoryTestCubit>(() => HistoryTestCubit(injector()));
 
-  if (!injector.isRegistered<HomeCubit>()) {
-    injector.registerLazySingleton<HomeCubit>(() => HomeCubit(injector()));
-  }
-
   if (!injector.isRegistered<TestsCubit>()) {
-    injector.registerLazySingleton<TestsCubit>(
-        () => TestsCubit(injector()));
+    injector.registerLazySingleton<TestsCubit>(() => TestsCubit(injector()));
   }
 
   if (!injector.isRegistered<SplashCubit>()) {

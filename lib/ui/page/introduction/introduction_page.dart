@@ -78,7 +78,6 @@ class ThirdIntroWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final size = MediaQuery.sizeOf(context);
     return SizedBox(
       width: double.infinity,
       child: Column(
