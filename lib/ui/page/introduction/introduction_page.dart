@@ -12,15 +12,15 @@ class IntroductionPage extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             width: double.infinity,
-            child: Column(
+            child: const Column(
               children: [
-                _firstIntro(context),
-                const Divider(),
-                _secondIntro(context),
-                const Divider(),
-                _thirdIntro(context),
-                const Divider(),
-                _tourIntro(context),
+                FirstIntroWidget(),
+                Divider(),
+                SecondIntroWidget(),
+                Divider(),
+                ThirdIntroWidget(),
+                Divider(),
+                TourIntroWidget(),
               ],
             ),
           ),
@@ -28,21 +28,29 @@ class IntroductionPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _tourIntro(BuildContext context) {
+class TourIntroWidget extends StatelessWidget {
+  const TourIntroWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final size = MediaQuery.sizeOf(context);
     return Column(
       children: [
         const SizedBox(height: 100),
         Text(
           'Cam kết của TOEIC Prepp',
-          style: Theme.of(context).textTheme.headlineSmall!.apply(
-                fontWeightDelta: 2,
-              ),
+          style: theme.textTheme.headlineSmall!.apply(
+            fontWeightDelta: 2,
+          ),
         ),
         const SizedBox(height: 16),
         Container(
           margin: EdgeInsets.symmetric(
-              horizontal: MediaQuery.sizeOf(context).width / 4),
+            horizontal: size.width / 4,
+          ),
           child: const Text(
               'Chúng tôi tin rằng việc học TOEIC không cần phải phức tạp hay áp lực. Với TOEIC Prep, bạn sẽ trải nghiệm một cách học tập dễ dàng, thông minh và đầy động lực.'),
         ),
@@ -62,8 +70,15 @@ class IntroductionPage extends StatelessWidget {
       ],
     );
   }
+}
 
-  SizedBox _thirdIntro(BuildContext context) {
+class ThirdIntroWidget extends StatelessWidget {
+  const ThirdIntroWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final size = MediaQuery.sizeOf(context);
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -72,9 +87,9 @@ class IntroductionPage extends StatelessWidget {
           const SizedBox(height: 100),
           Text(
             'Chúng tôi mang đến cho bạn',
-            style: Theme.of(context).textTheme.headlineSmall!.apply(
-                  fontWeightDelta: 2,
-                ),
+            style: theme.textTheme.headlineSmall!.apply(
+              fontWeightDelta: 2,
+            ),
           ),
           const SizedBox(height: 3),
           const SizedBox(
@@ -134,16 +149,22 @@ class IntroductionPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Column _secondIntro(BuildContext context) {
+class SecondIntroWidget extends StatelessWidget {
+  const SecondIntroWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         const SizedBox(height: 100),
         Text(
           'Vì sao nên chọn TOEIC Prep?',
-          style: Theme.of(context).textTheme.headlineSmall!.apply(
-                fontWeightDelta: 2,
-              ),
+          style: theme.textTheme.headlineSmall!.apply(
+            fontWeightDelta: 2,
+          ),
         ),
         const SizedBox(height: 16),
         const Row(
@@ -171,16 +192,22 @@ class IntroductionPage extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _firstIntro(BuildContext context) {
+class FirstIntroWidget extends StatelessWidget {
+  const FirstIntroWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         const SizedBox(height: 100),
         Text(
           'Chào mừng đến với TOEIC Prep',
-          style: Theme.of(context).textTheme.headlineSmall!.apply(
-                fontWeightDelta: 2,
-              ),
+          style: theme.textTheme.headlineSmall!.apply(
+            fontWeightDelta: 2,
+          ),
         ),
         const SizedBox(height: 16),
         const Text(
@@ -205,6 +232,7 @@ class IntroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Expanded(
       child: Card(
         child: LayoutBuilder(builder: (context, constraints) {
@@ -215,7 +243,7 @@ class IntroCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Theme.of(context).brightness == Brightness.light
+                color: theme.brightness == Brightness.light
                     ? Colors.grey.shade200
                     : Colors.grey.shade800,
               ),
@@ -228,10 +256,7 @@ class IntroCard extends StatelessWidget {
                 if (icon != null) const SizedBox(height: 8),
                 Text(
                   title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .apply(fontWeightDelta: 2),
+                  style: theme.textTheme.bodyLarge!.apply(fontWeightDelta: 2),
                 ),
                 const SizedBox(height: 8),
                 Text(message),

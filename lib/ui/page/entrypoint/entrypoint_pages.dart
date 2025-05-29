@@ -32,7 +32,6 @@ class _BottomTabPageState extends State<BottomTabPage>
   void initState() {
     super.initState();
     _appLinks = AppLinks();
-
     initDeepLinks();
   }
 
