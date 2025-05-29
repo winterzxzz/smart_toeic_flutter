@@ -92,7 +92,9 @@ class ExamResultCard extends StatelessWidget {
                             Text(
                               '${result.secondTime}s',
                               style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.primary, fontSize: 12),
+                                color: AppColors.primary,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
@@ -116,7 +118,9 @@ class ExamResultCard extends StatelessWidget {
                             Text(
                               ' ${DateFormat('dd/MM/yyyy').format(result.createdAt)}',
                               style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.primary, fontSize: 12),
+                                color: AppColors.primary,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),

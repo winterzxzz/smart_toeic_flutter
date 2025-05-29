@@ -48,16 +48,17 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         centerTitle: true,
         title: Text(
           'Smart TOEIC Prep',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppColors.textWhite,
-                fontWeight: FontWeight.w600,
-              ),
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: AppColors.textWhite,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         actions: [
           IconButton(

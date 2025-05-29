@@ -15,14 +15,17 @@ class HomeSectionTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(sectionTitle,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textBlack,
-                  fontWeight: FontWeight.bold,
-                )),
+        Text(
+          sectionTitle,
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: AppColors.textBlack,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(
           height: 16,
         ),

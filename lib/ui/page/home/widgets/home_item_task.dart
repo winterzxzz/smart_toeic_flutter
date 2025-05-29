@@ -13,6 +13,7 @@ class HomeItemTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         InkWell(
@@ -31,7 +32,7 @@ class HomeItemTask extends StatelessWidget {
             width: 80,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Theme.of(context).appBarTheme.backgroundColor,
+              color: theme.appBarTheme.backgroundColor,
               boxShadow: [
                 BoxShadow(
                   color: AppColors.backgroundBlur.withValues(alpha: 0.1),
@@ -71,9 +72,9 @@ class HomeItemTask extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           homeItemTaskModel.title,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textBlack,
-              ),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: AppColors.textBlack,
+          ),
         ),
       ],
     );
