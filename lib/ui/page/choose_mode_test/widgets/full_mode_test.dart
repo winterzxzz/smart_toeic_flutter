@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/protip_widget.dart';
 
 class FullTestMode extends StatelessWidget {
@@ -21,9 +22,8 @@ class FullTestMode extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          const ProtipWidget(
-            text:
-                'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+          ProtipWidget(
+            text: S.current.full_mode_tips,
             backgroundColor: Colors.yellowAccent,
             textColor: Colors.orange,
           ),
@@ -42,7 +42,7 @@ class FullTestMode extends StatelessWidget {
                 });
               },
               child: Text(
-                'Bắt đầu thi'.toUpperCase(),
+                S.current.start_test.toUpperCase(),
               ),
             ),
           ),

@@ -6,6 +6,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
@@ -80,7 +81,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
             isClose: true,
             onPressed: () {
               showConfirmDialog(
-                  context, 'Exit', 'Are you sure you want to exit?', () {
+                  context, S.current.exit, S.current.are_you_sure_exit, () {
                 GoRouter.of(context).pop();
               });
             },
@@ -250,7 +251,9 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                state.isCorrect ? 'Great!' : 'Try harder!',
+                                state.isCorrect
+                                    ? S.current.great
+                                    : S.current.try_harder,
                                 style: TextStyle(
                                   fontSize: isSmallScreen ? 18 : 20,
                                   fontWeight: FontWeight.w600,
@@ -258,8 +261,8 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               ),
                               Text(
                                 state.isCorrect
-                                    ? 'You answered correctly!'
-                                    : 'You answered incorrectly!',
+                                    ? S.current.you_answered_correctly
+                                    : S.current.you_answered_incorrectly,
                                 style: TextStyle(
                                   fontSize: isSmallScreen ? 14 : 16,
                                   fontWeight: FontWeight.w500,
@@ -281,9 +284,9 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                   onPressed: () {
                                     _cubit.next();
                                   },
-                                  child: const Text(
-                                    'Continue',
-                                    style: TextStyle(
+                                  child: Text(
+                                    S.current.next_question,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                   ),

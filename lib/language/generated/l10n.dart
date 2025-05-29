@@ -1039,6 +1039,446 @@ class S {
       args: [],
     );
   }
+
+  /// `Attempt Count`
+  String get attempt_count {
+    return Intl.message(
+      'Attempt Count',
+      name: 'attempt_count',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full`
+  String get full {
+    return Intl.message(
+      'Full',
+      name: 'full',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Part to Practice`
+  String get select_part_to_practice {
+    return Intl.message(
+      'Select Part to Practice',
+      name: 'select_part_to_practice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.`
+  String get practive_part_tips {
+    return Intl.message(
+      'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+      name: 'practive_part_tips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Limit Time`
+  String get limit_time {
+    return Intl.message(
+      'Limit Time',
+      name: 'limit_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave blank to do the test without time limit`
+  String get limit_time_hint {
+    return Intl.message(
+      'Leave blank to do the test without time limit',
+      name: 'limit_time_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice`
+  String get practice_button {
+    return Intl.message(
+      'Practice',
+      name: 'practice_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.`
+  String get full_mode_tips {
+    return Intl.message(
+      'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+      name: 'full_mode_tips',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Test`
+  String get start_test {
+    return Intl.message(
+      'Start Test',
+      name: 'start_test',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checking Payment Status...`
+  String get checking_payment_status {
+    return Intl.message(
+      'Checking Payment Status...',
+      name: 'checking_payment_status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Congratulations!`
+  String get congratulations {
+    return Intl.message(
+      'Congratulations!',
+      name: 'congratulations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account has been successfully upgraded.`
+  String get your_account_has_been_successfully_upgraded {
+    return Intl.message(
+      'Your account has been successfully upgraded.',
+      name: 'your_account_has_been_successfully_upgraded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return to Home`
+  String get return_to_home {
+    return Intl.message(
+      'Return to Home',
+      name: 'return_to_home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred while checking payment status.`
+  String get an_error_occured_while_checking_payment_status {
+    return Intl.message(
+      'An error occurred while checking payment status.',
+      name: 'an_error_occured_while_checking_payment_status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cannot open URL`
+  String get cannot_open_url {
+    return Intl.message(
+      'Cannot open URL',
+      name: 'cannot_open_url',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exit`
+  String get exit {
+    return Intl.message(
+      'Exit',
+      name: 'exit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to exit?`
+  String get are_you_sure_exit {
+    return Intl.message(
+      'Are you sure you want to exit?',
+      name: 'are_you_sure_exit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Great!`
+  String get great {
+    return Intl.message(
+      'Great!',
+      name: 'great',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try Harder!`
+  String get try_harder {
+    return Intl.message(
+      'Try Harder!',
+      name: 'try_harder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You answered correctly!`
+  String get you_answered_correctly {
+    return Intl.message(
+      'You answered correctly!',
+      name: 'you_answered_correctly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You answered incorrectly!`
+  String get you_answered_incorrectly {
+    return Intl.message(
+      'You answered incorrectly!',
+      name: 'you_answered_incorrectly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try Again`
+  String get try_again {
+    return Intl.message(
+      'Try Again',
+      name: 'try_again',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next Question`
+  String get next_question {
+    return Intl.message(
+      'Next Question',
+      name: 'next_question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hard to Remember`
+  String get hard_to_remember {
+    return Intl.message(
+      'Hard to Remember',
+      name: 'hard_to_remember',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Relatively Hard`
+  String get relatively_hard {
+    return Intl.message(
+      'Relatively Hard',
+      name: 'relatively_hard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Easy to Remember`
+  String get easy_to_remember {
+    return Intl.message(
+      'Easy to Remember',
+      name: 'easy_to_remember',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Very Easy to Remember`
+  String get very_easy_to_remember {
+    return Intl.message(
+      'Very Easy to Remember',
+      name: 'very_easy_to_remember',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What is your confidence level?`
+  String get what_is_your_confidence_level {
+    return Intl.message(
+      'What is your confidence level?',
+      name: 'what_is_your_confidence_level',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Matching Word`
+  String get matching_word {
+    return Intl.message(
+      'Matching Word',
+      name: 'matching_word',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You matched correct all words!, Continue with other forms!`
+  String get you_matched_correct_all_words {
+    return Intl.message(
+      'You matched correct all words!, Continue with other forms!',
+      name: 'you_matched_correct_all_words',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter English Word`
+  String get enter_english_word {
+    return Intl.message(
+      'Enter English Word',
+      name: 'enter_english_word',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check`
+  String get check {
+    return Intl.message(
+      'Check',
+      name: 'check',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Answer`
+  String get answer {
+    return Intl.message(
+      'Answer',
+      name: 'answer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Word to Correct`
+  String get order_word_to_correct {
+    return Intl.message(
+      'Order Word to Correct',
+      name: 'order_word_to_correct',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading...`
+  String get loading {
+    return Intl.message(
+      'Loading...',
+      name: 'loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Description`
+  String get select_description {
+    return Intl.message(
+      'Select Description',
+      name: 'select_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Meaning`
+  String get select_meaning {
+    return Intl.message(
+      'Select Meaning',
+      name: 'select_meaning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Vietnamese Word`
+  String get enter_vietnamese_word {
+    return Intl.message(
+      'Enter Vietnamese Word',
+      name: 'enter_vietnamese_word',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `words`
+  String get words {
+    return Intl.message(
+      'words',
+      name: 'words',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practive Flashcard`
+  String get practive_flashcard {
+    return Intl.message(
+      'Practive Flashcard',
+      name: 'practive_flashcard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status Explanation`
+  String get status_explanation {
+    return Intl.message(
+      'Status Explanation',
+      name: 'status_explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Decay Score`
+  String get decay_score {
+    return Intl.message(
+      'Decay Score',
+      name: 'decay_score',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

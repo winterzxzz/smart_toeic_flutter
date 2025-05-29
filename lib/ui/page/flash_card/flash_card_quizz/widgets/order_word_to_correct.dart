@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
@@ -40,9 +41,9 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
       crossAxisAlignment: CrossAxisAlignment.start,
       key: widget.key,
       children: [
-        const Center(
-          child: Text('Sắp xếp các từ để tạo thành câu đúng',
-              style: TextStyle(fontSize: 18)),
+        Center(
+          child: Text(S.current.order_word_to_correct,
+              style: const TextStyle(fontSize: 18)),
         ),
         const SizedBox(height: 32),
         Wrap(
@@ -146,7 +147,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                             widget.fcLearning.flashcardId!.exampleSentence.first
                                 .toLowerCase());
                   },
-                  child: const Text('KIỂM TRA'),
+                  child: Text(S.current.check),
                 ),
               ),
             ),
@@ -159,7 +160,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
             children: [
               const SizedBox(height: 8),
               Text(
-                'Đáp án: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
+                '${S.current.answer}: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
                 style: const TextStyle(fontSize: 18),
               ),
             ],

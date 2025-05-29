@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 
 void showConfirmDialog(
     BuildContext context, String title, String content, Function() onConfirm) {
@@ -11,13 +12,13 @@ void showConfirmDialog(
             actions: [
               TextButton(
                   onPressed: () => GoRouter.of(context).pop(),
-                  child: const Text('Cancel')),
+                  child: Text(S.current.cancel)),
               ElevatedButton(
                   onPressed: () {
                     GoRouter.of(context).pop();
                     onConfirm();
                   },
-                  child: const Text('Confirm')),
+                  child: Text(S.current.confirm)),
             ],
           ));
 }

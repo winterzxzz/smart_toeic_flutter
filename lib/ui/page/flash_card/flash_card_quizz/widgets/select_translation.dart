@@ -4,6 +4,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_state.dart';
@@ -96,8 +97,8 @@ class _SectionQuestionState extends State<SectionQuestion> {
           style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              const TextSpan(
-                text: 'Chọn nghĩa đúng cho từ ',
+              TextSpan(
+                text: S.current.select_meaning,
               ),
               TextSpan(
                 text: "'${widget.fcLearning.flashcardId!.word}'",
@@ -172,7 +173,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
                 children: [
                   const SizedBox(height: 8),
                   Text(
-                    'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
+                    '${S.current.answer}: ${widget.fcLearning.flashcardId!.translation}',
                     style: const TextStyle(fontSize: 18),
                   ),
                 ],

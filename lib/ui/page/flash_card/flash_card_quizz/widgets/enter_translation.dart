@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
@@ -40,7 +41,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
           style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              const TextSpan(text: 'Nhập từ tiếng anh có nghĩa là '),
+              TextSpan(text: S.current.enter_english_word),
               TextSpan(
                 text: "'${widget.fcLearning.flashcardId!.translation}'",
                 style: const TextStyle(
@@ -57,7 +58,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
           inputFormatters: [CapitalizeFirstLetterFormatter()],
           autofocus: true,
           decoration: InputDecoration(
-            hintText: 'Nhập từ tiếng anh',
+            hintText: S.current.enter_english_word,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Colors.grey),
@@ -87,7 +88,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
               });
               // hide keyboard
             },
-            child: const Text('KIỂM TRA'),
+            child: Text(S.current.check),
           ),
         ),
         const SizedBox(height: 32),
@@ -100,7 +101,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
                 if (!isCorrect) ...[
                   const SizedBox(height: 8),
                   Text(
-                    'Đáp án: ${widget.fcLearning.flashcardId!.word}',
+                    '${S.current.answer}: ${widget.fcLearning.flashcardId!.word}',
                     style: const TextStyle(fontSize: 18),
                   ),
                 ],

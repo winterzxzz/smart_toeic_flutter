@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:confetti/confetti.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
@@ -225,11 +226,12 @@ class _MatchingWordState extends State<MatchingWord>
         Column(
           children: [
             const SizedBox(height: 32),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Ghép nghĩa', style: TextStyle(fontSize: 18)),
-                SizedBox(width: 8),
+                Text(S.current.matching_word,
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(width: 8),
                 // Replace the text timer with a linear progress indicator
               ],
             ),
@@ -276,10 +278,9 @@ class _MatchingWordState extends State<MatchingWord>
                 ),
               )
             else
-              const Column(
+              Column(
                 children: [
-                  Text(
-                      'Bạn đã ghép đúng tất cả các từ, tiếp tục với những dạng khác nhé!'),
+                  Text(S.current.you_matched_correct_all_words),
                 ],
               ),
           ],

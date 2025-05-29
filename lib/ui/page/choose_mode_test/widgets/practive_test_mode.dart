@@ -4,6 +4,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/protip_widget.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/question_parts.dart';
@@ -29,15 +30,14 @@ class _PracticeModeState extends State<PracticeMode> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const ProtipWidget(
-            text:
-                'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+        ProtipWidget(
+            text: S.current.practive_part_tips,
             backgroundColor: Colors.green,
             textColor: Colors.green),
         const SizedBox(height: 16),
-        const Text(
-          'Chọn phần thi bạn muốn làm',
-          style: TextStyle(fontSize: 14),
+        Text(
+          S.current.select_part_to_practice,
+          style: const TextStyle(fontSize: 14),
         ),
         ...Constants.parts.map((part) => QuestionPart(
             part: part,
@@ -52,9 +52,9 @@ class _PracticeModeState extends State<PracticeMode> {
               setState(() {});
             })),
         const SizedBox(height: 16),
-        const Text(
-          'Giới hạn thời gian (Để trống để làm bài không giới hạn)',
-          style: TextStyle(fontSize: 14),
+        Text(
+          '${S.current.limit_time} (${S.current.limit_time_hint})',
+          style: const TextStyle(fontSize: 14),
         ),
         const SizedBox(height: 16),
         CustomDropdownExample<String>(
@@ -87,7 +87,7 @@ class _PracticeModeState extends State<PracticeMode> {
               disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
             ),
             child: Text(
-              'Luyện tập'.toUpperCase(),
+              S.current.practice_button.toUpperCase(),
             ),
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -67,7 +68,7 @@ class _PageState extends State<Page> {
                   selector: (state) => state.flashCards,
                   builder: (context, flashCards) {
                     return Text(
-                      '${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} words)',
+                      '${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} ${S.current.words})',
                       style: const TextStyle(
                         fontSize: 16,
                       ),
@@ -102,7 +103,7 @@ class _PageState extends State<Page> {
                           );
                         },
                         icon: Icons.play_circle_outline_rounded,
-                        label: 'Luyện tập flashcards',
+                        label: S.current.practive_flashcard,
                       ),
                       const SizedBox(height: 16),
                       ...state.flashCards.map((flashcard) =>
@@ -156,7 +157,7 @@ class _PageState extends State<Page> {
               ),
             ),
             IconButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => GoRouter.of(context).pop(),
               icon: const Icon(Icons.close),
             )
           ],

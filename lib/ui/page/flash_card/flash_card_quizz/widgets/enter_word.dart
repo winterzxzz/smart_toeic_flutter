@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
@@ -41,7 +42,7 @@ class _EnterWordState extends State<EnterWord> {
           style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              const TextSpan(text: 'Nhập từ tiếng Việt có nghĩa là '),
+              TextSpan(text: S.current.enter_vietnamese_word),
               TextSpan(
                 text: "'${widget.fcLearning.flashcardId!.word}'",
                 style: const TextStyle(
@@ -58,7 +59,7 @@ class _EnterWordState extends State<EnterWord> {
           autofocus: true,
           inputFormatters: [CapitalizeFirstLetterFormatter()],
           decoration: InputDecoration(
-            hintText: 'Nhập từ tiếng Việt',
+            hintText: S.current.enter_vietnamese_word,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Colors.grey),
@@ -88,7 +89,7 @@ class _EnterWordState extends State<EnterWord> {
                 }
               });
             },
-            child: const Text('KIỂM TRA'),
+            child: Text(S.current.check),
           ),
         ),
         const SizedBox(height: 32),
@@ -98,7 +99,7 @@ class _EnterWordState extends State<EnterWord> {
               children: [
                 const SizedBox(height: 8),
                 Text(
-                  'Đáp án: ${widget.fcLearning.flashcardId!.translation}',
+                  '${S.current.answer}: ${widget.fcLearning.flashcardId!.translation}',
                   style: const TextStyle(fontSize: 18),
                 ),
               ],

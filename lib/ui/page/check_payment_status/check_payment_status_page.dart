@@ -5,6 +5,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -20,7 +21,7 @@ class UpgradeAccountSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<CheckPaymentStatusCubit>()
-        ..checkPaymentStatus('250525_46982'),
+        ..checkPaymentStatus(payment.appid),
       child: const Page(),
     );
   }
@@ -37,7 +38,7 @@ class Page extends StatelessWidget {
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.loading) {
           AppNavigator(context: context)
-              .showLoadingOverlay(message: 'Checking payment status...');
+              .showLoadingOverlay(message: S.current.checking_payment_status);
         } else {
           AppNavigator(context: context).hideLoadingOverlay();
           if (state.loadStatus == LoadStatus.success) {
@@ -73,9 +74,9 @@ class Page extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     // Title Text
-                    const Text(
-                      'Congratulations!',
-                      style: TextStyle(
+                    Text(
+                      S.current.congratulations,
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -84,9 +85,9 @@ class Page extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     // Subtitle Text
-                    const Text(
-                      'Your account has been successfully upgraded.',
-                      style: TextStyle(
+                    Text(
+                      S.current.your_account_has_been_successfully_upgraded,
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.black54,
                       ),
@@ -106,9 +107,10 @@ class Page extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Return to Home',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      child: Text(
+                        S.current.return_to_home,
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   ],
@@ -135,7 +137,8 @@ class Page extends StatelessWidget {
                   Text(
                     state.message.isNotEmpty
                         ? state.message
-                        : 'An error occurred while checking payment status.',
+                        : S.current
+                            .an_error_occured_while_checking_payment_status,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black54,
@@ -155,9 +158,9 @@ class Page extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text(
-                      'Return to Home',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    child: Text(
+                      S.current.return_to_home,
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ],

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 Map<double, String> diffLevels = {
-  0: 'Khó nhớ',
-  0.3: 'Tương đối khó',
-  0.6: 'Dễ nhớ',
-  1: 'Rất dễ nhớ',
+  0: S.current.hard_to_remember,
+  0.3: S.current.relatively_hard,
+  0.6: S.current.easy_to_remember,
+  1: S.current.very_easy_to_remember,
 };
 
 class ConfidenceLevel extends StatefulWidget {
@@ -48,7 +49,7 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
         ),
         const SizedBox(height: 32),
         Text(
-          'Bạn đã thuộc từ này ở mức nào?',
+          S.current.what_is_your_confidence_level,
           style: theme.textTheme.bodyMedium,
         ),
         const SizedBox(height: 32),

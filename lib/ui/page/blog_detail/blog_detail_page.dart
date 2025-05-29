@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -69,7 +70,7 @@ class BlogDetail extends StatelessWidget {
   void _launchUrl(String url) async {
     if (!await launchUrl(Uri.parse(url))) {
       showToast(
-        title: 'Không thể mở URL',
+        title: S.current.cannot_open_url,
         type: ToastificationType.error,
       );
     }
