@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -57,14 +58,14 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add, color: Colors.white, size: 16),
-                          SizedBox(width: 8),
+                          const Icon(Icons.add, color: Colors.white, size: 16),
+                          const SizedBox(width: 8),
                           Text(
-                            'Create Set Flashcard',
-                            style: TextStyle(
+                            S.current.create_new_flashcard,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -118,7 +119,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
   void showCreateSetFlashCardBottomSheet(BuildContext context) {
     Utils.showModalBottomSheetForm(
       context: context,
-      title: 'Create new flashcard set',
+      title: S.current.create_new_flashcard_set,
       child: FormFlashCard(
         args: FormFlashCardArgs(
           type: FormFlashCardType.create,

@@ -14,7 +14,7 @@ import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
-import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_pages.dart';
+import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_page.dart';
 import 'package:toeic_desktop/ui/page/test/history_test/history_test_page.dart';
 import 'package:toeic_desktop/ui/page/onboarding/onboarding_page.dart';

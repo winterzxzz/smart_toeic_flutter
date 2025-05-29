@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
@@ -86,13 +87,13 @@ class _PageState extends State<Page> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Reset your password',
+                      S.current.reset_password_title,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Enter your email and we will send you a link to reset your password',
-                      style: TextStyle(color: AppColors.textGray),
+                    Text(
+                      S.current.reset_password_description,
+                      style: const TextStyle(color: AppColors.textGray),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24),
@@ -102,8 +103,8 @@ class _PageState extends State<Page> {
                         children: [
                           AuthTextField(
                             controller: _emailController,
-                            labelText: 'Email',
-                            hintText: 'Enter your email',
+                            labelText: S.current.email_label,
+                            hintText: S.current.email_hint,
                             keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 24),
@@ -113,7 +114,7 @@ class _PageState extends State<Page> {
                                 state.loadStatus == LoadStatus.loading,
                             builder: (context, isLoading) {
                               return CustomButton(
-                                text: 'Send',
+                                text: S.current.send_button,
                                 onPressed: _isResetPasswordButtonEnabled()
                                     ? () {
                                         context
@@ -132,9 +133,9 @@ class _PageState extends State<Page> {
                             onPressed: () {
                               navigator.navigateToLogin();
                             },
-                            child: const Text(
-                              'Back to login',
-                              style: TextStyle(
+                            child: Text(
+                              S.current.back_to_login,
+                              style: const TextStyle(
                                 color: AppColors.textBlue,
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.textBlue,

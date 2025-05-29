@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -54,12 +55,12 @@ class _PageState extends State<Page> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
-            const SliverAppBar(
+            SliverAppBar(
               title: Text(
-                'Blogs',
+                S.current.blogs_title,
               ),
               floating: true,
-              bottom: PreferredSize(
+              bottom: const PreferredSize(
                 preferredSize: Size.fromHeight(1),
                 child: Divider(
                   height: 1,
@@ -79,7 +80,7 @@ class _PageState extends State<Page> {
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: 'Search blogs...',
+                    hintText: S.current.search_blogs,
                     prefixIcon: const Icon(
                       Icons.search,
                       size: 18,
@@ -119,8 +120,8 @@ class _PageState extends State<Page> {
                     );
                   }
                   if (state.searchBlogs.isEmpty) {
-                    return const SliverToBoxAdapter(
-                      child: Center(child: Text('No blogs found')),
+                    return SliverToBoxAdapter(
+                      child: Center(child: Text(S.current.no_blogs)),
                     );
                   }
                   return SliverList.separated(

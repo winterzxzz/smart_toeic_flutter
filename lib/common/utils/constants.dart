@@ -10,6 +10,7 @@ import 'package:toeic_desktop/data/models/ui_models/bottom_tab.dart';
 import 'package:toeic_desktop/data/models/ui_models/home_item_task_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
 
@@ -54,26 +55,22 @@ class Constants {
   ];
 
   static List<ServiceItem> services = [
-    const ServiceItem(
+    ServiceItem(
         icon: FontAwesomeIcons.robot,
-        title: 'AI Render',
-        desciption:
-            'Advanced AI-powered tools to enhance your TOEIC preparation experience.'),
-    const ServiceItem(
+        title: S.current.ai_render,
+        desciption: S.current.ai_render_description),
+    ServiceItem(
         icon: FontAwesomeIcons.idCard,
-        title: 'Flashcards',
-        desciption:
-            'Interactive flashcards to boost your vocabulary and language skills efficiently.'),
-    const ServiceItem(
+        title: S.current.flashcards,
+        desciption: S.current.flashcards_description),
+    ServiceItem(
         icon: FontAwesomeIcons.list,
-        title: 'Practice Exams',
-        desciption:
-            'Realistic TOEIC practice exams to assess and improve your test-taking abilities.'),
-    const ServiceItem(
+        title: S.current.practice_exams,
+        desciption: S.current.practice_exams_description),
+    ServiceItem(
         icon: FontAwesomeIcons.chartLine,
-        title: 'Result Analysis',
-        desciption:
-            'Detailed analysis of your exam performance to identify strengths and areas for improvement.'),
+        title: S.current.result_analysis,
+        desciption: S.current.result_analysis_description),
   ];
 
   static List<String> timeLimit = [
@@ -229,14 +226,14 @@ class Constants {
 
   static List<HomeItemTaskModel> homePracticeTasks = [
     HomeItemTaskModel(
-      title: 'Listening',
+      title: S.current.listening,
       image: AppImages.icListenCopy,
       progress: Random().nextDouble(),
       onNavigate: (context) =>
           GoRouter.of(context).push(AppRouter.transcriptTest),
     ),
     HomeItemTaskModel(
-      title: 'Test',
+      title: S.current.test,
       image: AppImages.icTestOutline,
       progress: Random().nextDouble(),
       onTap: () => injector<EntrypointCubit>().changeCurrentIndex(1),
@@ -245,28 +242,28 @@ class Constants {
 
   static List<HomeItemTaskModel> homeExamPreparationTasks = [
     HomeItemTaskModel(
-      title: 'Test Online',
+      title: S.current.test_online,
       image: AppImages.icTestOutline,
       onTap: () => injector<EntrypointCubit>().changeCurrentIndex(1),
     ),
     HomeItemTaskModel(
-      title: 'Blogs',
+      title: S.current.blogs,
       image: AppImages.icBlog,
       onTap: () => injector<EntrypointCubit>().changeCurrentIndex(3),
     ),
     HomeItemTaskModel(
-      title: 'Flashcards',
+      title: S.current.flashcards,
       image: AppImages.icFlashCardOutline,
       onTap: () => injector<EntrypointCubit>().changeCurrentIndex(2),
     ),
     HomeItemTaskModel(
-      title: 'Premium',
+      title: S.current.premium,
       image: AppImages.icPremium,
       onNavigate: (context) =>
           GoRouter.of(context).push(AppRouter.upgradeAccount),
     ),
     HomeItemTaskModel(
-      title: 'Settings',
+      title: S.current.settings,
       image: AppImages.icSetting,
       onNavigate: (context) => GoRouter.of(context).push(AppRouter.setting),
     ),

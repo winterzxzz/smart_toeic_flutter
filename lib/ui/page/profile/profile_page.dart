@@ -8,6 +8,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -74,7 +75,7 @@ class _PageState extends State<Page> {
           slivers: [
             SliverAppBar(
               floating: true,
-              title: const Text('Profile'),
+              title: Text(S.current.profile),
               actions: [
                 PopupMenuButton(
                   color: theme.appBarTheme.backgroundColor,

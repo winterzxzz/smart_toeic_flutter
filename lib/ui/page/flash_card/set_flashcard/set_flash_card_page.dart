@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/keep_alive_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/widgets/set_flash_card_learning.dart';
@@ -56,7 +57,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Set Flash Cards'),
+          title: Text(S.current.set_flashcard_title),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(48),
             child: TabBar(
@@ -66,14 +67,14 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
               indicatorColor: Theme.of(context).primaryColor,
               labelColor: Theme.of(context).primaryColor,
               unselectedLabelColor: Colors.grey,
-              tabs: const [
+              tabs: [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FaIcon(FontAwesomeIcons.list, size: 16),
-                      SizedBox(width: 8),
-                      Text('My list'),
+                      const FaIcon(FontAwesomeIcons.list, size: 16),
+                      const SizedBox(width: 8),
+                      Text(S.current.my_list),
                     ],
                   ),
                 ),
@@ -81,9 +82,9 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FaIcon(FontAwesomeIcons.book, size: 16),
-                      SizedBox(width: 8),
-                      Text('Studying'),
+                      const FaIcon(FontAwesomeIcons.book, size: 16),
+                      const SizedBox(width: 8),
+                      Text(S.current.studying),
                     ],
                   ),
                 ),

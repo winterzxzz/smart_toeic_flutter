@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
@@ -52,7 +53,7 @@ class _PageState extends State<Page> {
             slivers: [
               SliverAppBar(
                 floating: true,
-                title: const Text('Tests'),
+                title: Text(S.current.tests),
                 actions: [
                   Container(
                     margin: const EdgeInsets.only(right: 8),

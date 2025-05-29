@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 
@@ -70,7 +71,7 @@ class BlogHorizontalCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'Read More',
+                            S.current.read_more,
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontWeight: FontWeight.w400,
                             ),

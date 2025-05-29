@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 
@@ -19,7 +20,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
     final tags = [
       TagWidget(
         icon: FontAwesomeIcons.bookBookmark,
-        text: '${flashcard.setFlashcardId.numberOfFlashcards} flashcards',
+        text: '${flashcard.setFlashcardId.numberOfFlashcards} ${S.current.flashcards.toLowerCase()}',
       ),
       TagWidget(
         icon: FontAwesomeIcons.calendar,
@@ -28,7 +29,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
       TagWidget(
         icon: FontAwesomeIcons.clock,
         text:
-            'Last studied: ${DateFormat('dd/MM/yyyy').format(flashcard.lastStudied)}',
+            '${S.current.last_studied}: ${DateFormat('dd/MM/yyyy').format(flashcard.lastStudied)}',
       ),
     ];
     return Card(
@@ -73,7 +74,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      '${_getNumberOfQuestionsReview(flashcard)} to reviews',
+                      '${_getNumberOfQuestionsReview(flashcard)} ${S.current.to_reviews}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 10,

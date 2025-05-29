@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
@@ -91,13 +92,13 @@ class _PageState extends State<Page> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Welcome to TOEIC Prep',
+                    S.current.login_title,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Login to access our comprehensive TOEIC preparation resources',
-                    style: TextStyle(color: AppColors.textGray),
+                  Text(
+                    S.current.register_description,
+                    style: const TextStyle(color: AppColors.textGray),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
@@ -107,22 +108,22 @@ class _PageState extends State<Page> {
                       children: [
                         AuthTextField(
                           controller: emailController,
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
+                          labelText: S.current.email_label,
+                          hintText: S.current.email_hint,
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 16),
                         AuthTextField(
                           controller: nameController,
-                          labelText: 'Name',
-                          hintText: 'Enter your name',
+                          labelText: S.current.name_label,
+                          hintText: S.current.name_hint,
                           keyboardType: TextInputType.text,
                         ),
                         const SizedBox(height: 16),
                         AuthTextField(
                           controller: passwordController,
-                          labelText: 'Password',
-                          hintText: 'Enter your password',
+                          labelText: S.current.password_label,
+                          hintText: S.current.password_hint,
                           keyboardType: TextInputType.visiblePassword,
                           isPassword: true,
                         ),
@@ -132,7 +133,7 @@ class _PageState extends State<Page> {
                               state.loadDataStatus == LoadStatus.loading,
                           builder: (context, isLoading) {
                             return CustomButton(
-                              text: 'Sign up',
+                              text: S.current.register_button,
                               onPressed: _isRegisterButtonEnabled()
                                   ? () {
                                       context.read<RegisterCubit>().register(
@@ -151,12 +152,12 @@ class _PageState extends State<Page> {
                           onTap: () {
                             navigator.navigateToLogin();
                           },
-                          child: const Text.rich(TextSpan(
-                            text: 'Already have an account? ',
+                          child: Text.rich(TextSpan(
+                            text: '${S.current.already_have_account} ',
                             children: [
                               TextSpan(
-                                text: 'Login',
-                                style: TextStyle(
+                                text: S.current.login_button,
+                                style: const TextStyle(
                                   color: AppColors.textBlue,
                                   decoration: TextDecoration.underline,
                                   decorationColor: AppColors.textBlue,
@@ -170,9 +171,9 @@ class _PageState extends State<Page> {
                             onPressed: () {
                               navigator.navigateToResetPassword();
                             },
-                            child: const Text(
-                              'Forgot password?',
-                              style: TextStyle(
+                            child: Text(
+                              S.current.forgot_password,
+                              style: const TextStyle(
                                 color: AppColors.textBlue,
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.textBlue,

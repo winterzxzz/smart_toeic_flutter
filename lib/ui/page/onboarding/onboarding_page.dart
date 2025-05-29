@@ -6,6 +6,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/app_text_styles.dart';
@@ -35,7 +36,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
@@ -194,7 +194,7 @@ class OnboardingContentFirst extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Text(
-            'Thank You For Trusting TOEIC Test Pro',
+            S.current.onboarding_title,
             style: AppTextStyle.blackS18Bold.copyWith(fontSize: 22),
             textAlign: TextAlign.center,
           ),
@@ -203,7 +203,7 @@ class OnboardingContentFirst extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Text(
-            'The best app for TOEIC test-takers',
+            S.current.onboarding_description,
             style: AppTextStyle.grayS16,
             textAlign: TextAlign.center,
           ),

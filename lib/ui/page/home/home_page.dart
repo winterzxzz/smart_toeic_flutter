@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_section_task.dart';
@@ -44,7 +45,7 @@ class Page extends StatelessWidget {
         backgroundColor: AppColors.primary,
         centerTitle: true,
         title: Text(
-          'Smart TOEIC Prep',
+          S.current.app_name,
           style: theme.textTheme.titleLarge?.copyWith(
             color: AppColors.textWhite,
             fontWeight: FontWeight.w600,
@@ -85,14 +86,14 @@ class Page extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               HomeSectionTask(
-                sectionTitle: 'Practice',
+                sectionTitle: S.current.practice,
                 tasks: Constants.homePracticeTasks,
               ),
               const SizedBox(
                 height: 16,
               ),
               HomeSectionTask(
-                sectionTitle: 'Exam Preparation',
+                sectionTitle: S.current.exam_preparation,
                 tasks: Constants.homeExamPreparationTasks,
               ),
               const SizedBox(

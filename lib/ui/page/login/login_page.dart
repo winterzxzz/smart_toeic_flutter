@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
@@ -86,13 +87,13 @@ class _PageState extends State<Page> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Welcome to Smart TOEIC Prep',
+                    S.current.login_title,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Login to access our comprehensive TOEIC preparation resources',
-                    style: TextStyle(color: AppColors.textGray),
+                  Text(
+                    S.current.login_description,
+                    style: const TextStyle(color: AppColors.textGray),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
@@ -102,15 +103,15 @@ class _PageState extends State<Page> {
                       children: [
                         AuthTextField(
                           controller: emailController,
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
+                          labelText: S.current.email_label,
+                          hintText: S.current.email_hint,
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 16),
                         AuthTextField(
                           controller: passwordController,
-                          labelText: 'Password',
-                          hintText: 'Enter your password',
+                          labelText: S.current.password_label,
+                          hintText: S.current.password_hint,
                           keyboardType: TextInputType.visiblePassword,
                           isPassword: true,
                         ),
@@ -120,7 +121,7 @@ class _PageState extends State<Page> {
                               state.loadStatus == LoadStatus.loading,
                           builder: (context, isLoading) {
                             return CustomButton(
-                              text: 'Login',
+                              text: S.current.login_button,
                               onPressed: _isLoginButtonEnabled()
                                   ? () {
                                       context.read<LoginCubit>().login(
@@ -139,13 +140,13 @@ class _PageState extends State<Page> {
                           onTap: () {
                             navigator.navigateToRegister();
                           },
-                          child: const Text.rich(
+                          child: Text.rich(
                             TextSpan(
-                              text: 'Don\'t have an account? ',
+                              text: S.current.dont_have_account,
                               children: [
                                 TextSpan(
-                                  text: 'Register',
-                                  style: TextStyle(
+                                  text: S.current.register_button,
+                                  style: const TextStyle(
                                     color: AppColors.textBlue,
                                     decoration: TextDecoration.underline,
                                     decorationColor: AppColors.textBlue,
@@ -161,9 +162,9 @@ class _PageState extends State<Page> {
                             onPressed: () {
                               navigator.navigateToResetPassword();
                             },
-                            child: const Text(
-                              'Forgot password?',
-                              style: TextStyle(
+                            child: Text(
+                              S.current.forgot_password,
+                              style: const TextStyle(
                                 color: AppColors.textBlue,
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.textBlue,
