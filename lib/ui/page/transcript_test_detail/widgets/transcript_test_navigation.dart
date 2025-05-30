@@ -77,10 +77,13 @@ class _TranscriptTestNavigationState extends State<TranscriptTestNavigation> {
                     GoRouter.of(context).pop();
                   }
                 },
-                child: Text(
-                    state.currentIndex < state.transcriptTests.length - 1
-                        ? S.current.next
-                        : S.current.finish),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                      state.currentIndex < state.transcriptTests.length - 1
+                          ? S.current.next
+                          : S.current.finish),
+                ),
               ),
             ],
           ),

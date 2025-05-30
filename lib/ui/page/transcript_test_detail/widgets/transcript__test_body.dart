@@ -43,32 +43,30 @@ class TranscriptTestBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const TranscriptTestInput(),
+                  const SizedBox(height: 24),
+                  const CheckResultDisplay(),
+                  const SizedBox(height: 16),
                   BlocSelector<TranscriptTestDetailCubit,
                       TranscriptTestDetailState, bool>(
                     selector: (state) {
                       return state.isCorrect;
                     },
                     builder: (context, isCorrect) {
-                      return Column(
+                      if (!isCorrect) {
+                        return const SizedBox.shrink();
+                      }
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 24),
-                          const CheckResultDisplay(),
-                          const SizedBox(height: 16),
-                          if (isCorrect)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const FaIcon(FontAwesomeIcons.circleCheck,
-                                    color: AppColors.success),
-                                const SizedBox(width: 8),
-                                Text(
-                                  S.current.correct,
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: AppColors.success,
-                                  ),
-                                ),
-                              ],
-                            )
+                          const FaIcon(FontAwesomeIcons.circleCheck,
+                              color: AppColors.success),
+                          const SizedBox(width: 8),
+                          Text(
+                            S.current.correct,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: AppColors.success,
+                            ),
+                          ),
                         ],
                       );
                     },

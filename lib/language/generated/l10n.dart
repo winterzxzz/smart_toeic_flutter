@@ -1579,6 +1579,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Filter`
+  String get filter {
+    return Intl.message(
+      'Filter',
+      name: 'filter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Test Listening`
+  String get test_listening {
+    return Intl.message(
+      'Test Listening',
+      name: 'test_listening',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click to start test`
+  String get click_to_start_test {
+    return Intl.message(
+      'Click to start test',
+      name: 'click_to_start_test',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "check": MessageLookupByLibrary.simpleMessage("Check"),
         "checking_payment_status":
             MessageLookupByLibrary.simpleMessage("Checking Payment Status..."),
+        "click_to_start_test":
+            MessageLookupByLibrary.simpleMessage("Click to start test"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "confirm_password_length_error": MessageLookupByLibrary.simpleMessage(
             "Confirm password must have 6-30 characters"),
@@ -92,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Exam Preparation"),
         "exit": MessageLookupByLibrary.simpleMessage("Exit"),
         "facebook": MessageLookupByLibrary.simpleMessage("Facebook"),
+        "filter": MessageLookupByLibrary.simpleMessage("Filter"),
         "finish": MessageLookupByLibrary.simpleMessage("Finish"),
         "flashcards": MessageLookupByLibrary.simpleMessage("Flashcards"),
         "flashcards_description": MessageLookupByLibrary.simpleMessage(
@@ -214,6 +217,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "system_mode": MessageLookupByLibrary.simpleMessage("System Mode"),
         "target_score": MessageLookupByLibrary.simpleMessage("Target Score"),
         "test": MessageLookupByLibrary.simpleMessage("Test"),
+        "test_listening":
+            MessageLookupByLibrary.simpleMessage("Test Listening"),
         "test_online": MessageLookupByLibrary.simpleMessage("Test Online"),
         "tests": MessageLookupByLibrary.simpleMessage("Tests"),
         "theme_color": MessageLookupByLibrary.simpleMessage("Theme Color"),

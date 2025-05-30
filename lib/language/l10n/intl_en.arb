@@ -154,5 +154,8 @@
     "next": "Next", 
     "finish": "Finish", 
     "your_input": "Your Input",
-    "result": "Result"
+    "result": "Result", 
+    "filter": "Filter", 
+    "test_listening": "Test Listening", 
+    "click_to_start_test": "Click to start test"
 }

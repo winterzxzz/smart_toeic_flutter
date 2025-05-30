@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_state.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_set/widgets/filter_option.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/widgets/transcript_test_item.dart';
 
 class ListenCopyPage extends StatelessWidget {
@@ -37,6 +39,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocConsumer<ListenCopyCubit, ListenCopyState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.failure) {
@@ -47,65 +50,56 @@ class _PageState extends State<Page> {
         // Make sure state isn't null
         return Scaffold(
           endDrawer: Drawer(
-            backgroundColor: Theme.of(context).cardColor,
+            backgroundColor: theme.cardColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      alignment: Alignment.center,
-                      child: const Row(
-                        children: [
-                          Text(
-                            'Filter',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    alignment: Alignment.center,
+                    child: Row(
+                      children: [
+                        Text(
+                          S.current.filter,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SingleChildScrollView(
-                      physics: NeverScrollableScrollPhysics(),
-                      child: Column(
-                        children: [
-                          Divider(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: _FilterOptions(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-              ],
+                  ),
+                  const Divider(),
+                  const Expanded(child: FilterOptions()),
+                ],
+              ),
             ),
           ),
           body: CustomScrollView(
             slivers: [
-              const SliverAppBar(
-                title: Text('Test Listening'),
+              SliverAppBar(
+                title: Text(S.current.test_listening),
                 centerTitle: true,
                 floating: true,
                 snap: true,
-                leading: LeadingBackButton(),
+                leading: const LeadingBackButton(),
               ),
               if (state.loadStatus == LoadStatus.loading)
                 const SliverFillRemaining(
                   child: LoadingCircle(),
                 )
               else if (state.filteredTranscriptTestSets.isEmpty)
-                const SliverFillRemaining(
+                SliverFillRemaining(
                   child: Center(
-                    child: Text('No test found'),
-                  ),
+                      child: Text(
+                    S.current.no_data_found,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: .6),
+                    ),
+                  )),
                 )
               else
                 SliverPadding(
@@ -121,44 +115,6 @@ class _PageState extends State<Page> {
                   ),
                 ),
             ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _FilterOptions extends StatefulWidget {
-  const _FilterOptions();
-
-  @override
-  State<_FilterOptions> createState() => _FilterOptionsState();
-}
-
-class _FilterOptionsState extends State<_FilterOptions> {
-  late final ListenCopyCubit _cubit;
-  @override
-  void initState() {
-    super.initState();
-    _cubit = context.read<ListenCopyCubit>();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ListenCopyCubit, ListenCopyState>(
-      builder: (context, state) {
-        return Column(
-          children: List.generate(
-            4,
-            (index) => CheckboxListTile(
-              title: Text('Part ${index + 1}'),
-              value: state.filterParts.contains('${index + 1}'),
-              onChanged: (value) {
-                _cubit.setFilterPart('${index + 1}');
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
-            ),
           ),
         );
       },

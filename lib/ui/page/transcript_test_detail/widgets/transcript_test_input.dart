@@ -42,23 +42,32 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: _transcriptController,
-              onChanged: (value) {
-                if (isCheck) {
-                  _cubit.toggleIsCheck();
+            BlocListener<TranscriptTestDetailCubit, TranscriptTestDetailState>(
+              listenWhen: (previous, current) =>
+                  previous.userInput != current.userInput,
+              listener: (context, state) {
+                if (state.userInput.isEmpty) {
+                  _transcriptController.clear();
                 }
               },
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: S.current.type_what_you_hear,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.inputBorder),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: AppColors.focusBorder),
+              child: TextField(
+                controller: _transcriptController,
+                onChanged: (value) {
+                  if (isCheck) {
+                    _cubit.toggleIsCheck();
+                  }
+                },
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintText: S.current.type_what_you_hear,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.inputBorder),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.focusBorder),
+                  ),
                 ),
               ),
             ),

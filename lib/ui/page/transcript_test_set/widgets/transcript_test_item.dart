@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test_set.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class TranscriptTestItem extends StatelessWidget {
@@ -63,7 +64,7 @@ class TranscriptTestItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      test.title ?? 'Untitled',
+                      test.title ?? '',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -72,7 +73,7 @@ class TranscriptTestItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Click to start test',
+                      S.current.click_to_start_test,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textGray,
                       ),

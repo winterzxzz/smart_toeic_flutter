@@ -136,12 +136,13 @@ class _AudioSectionState extends State<AudioSection> {
                   ),
                 ),
               ),
+              const SizedBox(width: 8),
             ],
           ),
           Positioned(
             top: 10,
             left: 78,
-            right: 8,
+            right: 16,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

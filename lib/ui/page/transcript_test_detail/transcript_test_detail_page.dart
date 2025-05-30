@@ -58,10 +58,10 @@ class _PageState extends State<Page> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
                   ),
-                  child: Center(
-                    child: Container(
-                      margin: const EdgeInsets.all(16),
-                      child: const QuestionList(),
+                  child: const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: QuestionList(),
                     ),
                   ),
                 )
@@ -69,7 +69,9 @@ class _PageState extends State<Page> {
           backgroundColor: theme.appBarTheme.backgroundColor,
           body: state.loadStatus == LoadStatus.loading
               ? const LoadingCircle()
-              : const TranscriptTestBody(),
+              : state.loadStatus == LoadStatus.success
+                  ? const TranscriptTestBody()
+                  : const SizedBox.shrink(),
         );
       },
     );

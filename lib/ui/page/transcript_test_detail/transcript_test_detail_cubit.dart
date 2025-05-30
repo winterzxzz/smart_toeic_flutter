@@ -31,19 +31,31 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
 
   void previousTranscriptTest() {
     if (state.currentIndex > 0) {
-      emit(state.copyWith(currentIndex: state.currentIndex - 1));
+      emit(state.copyWith(
+          currentIndex: state.currentIndex - 1,
+          isCheck: false,
+          isCorrect: false,
+          userInput: ''));
     }
   }
 
   void nextTranscriptTest() {
     if (state.currentIndex < state.transcriptTests.length - 1) {
-      emit(state.copyWith(currentIndex: state.currentIndex + 1));
+      emit(state.copyWith(
+          currentIndex: state.currentIndex + 1,
+          isCheck: false,
+          isCorrect: false,
+          userInput: ''));
     }
   }
 
   void goToTranscriptTest(int index) {
     if (index >= 0 && index < state.transcriptTests.length) {
-      emit(state.copyWith(currentIndex: index));
+      emit(state.copyWith(
+          currentIndex: index,
+          isCheck: false,
+          isCorrect: false,
+          userInput: ''));
     }
   }
 
@@ -53,7 +65,7 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
         userInput: userInput,
         correctTranscript: currentTranscriptQuestion.transcript!);
 
-    emit(state.copyWith(  
+    emit(state.copyWith(
       isCheck: true,
       checkResults: result.results,
       isCorrect: result.isAllCorrect,

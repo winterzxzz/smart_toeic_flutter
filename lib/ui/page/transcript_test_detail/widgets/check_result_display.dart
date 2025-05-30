@@ -47,25 +47,28 @@ class CheckResultDisplay extends StatelessWidget {
             children: [
               Text('${S.current.result}: ', style: theme.textTheme.bodyLarge),
               Expanded(
-                child: BlocSelector<TranscriptTestDetailCubit,
-                    TranscriptTestDetailState, List<CheckResult>>(
-                  selector: (state) {
-                    return state.checkResults;
-                  },
-                  builder: (context, results) {
+                child: BlocBuilder<TranscriptTestDetailCubit,
+                    TranscriptTestDetailState>(
+                  buildWhen: (state, previous) =>
+                      state.checkResults != previous.checkResults ||
+                      state.isCheck != previous.isCheck,
+                  builder: (context, state) {
+                    if (!state.isCheck) {
+                      return const SizedBox.shrink();
+                    }
                     return Wrap(
-                      children: results.map((result) {
+                      children: state.checkResults.map((result) {
                         final color = switch (result.status) {
                           CheckResultStatus.correct => Colors.green,
                           CheckResultStatus.incorrect => Colors.red,
                           CheckResultStatus.next => Colors.grey,
                         };
-
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: Text(
                             result.word,
-                            style: TextStyle(color: color),
+                            style:
+                                theme.textTheme.bodyLarge!.apply(color: color),
                           ),
                         );
                       }).toList(),
