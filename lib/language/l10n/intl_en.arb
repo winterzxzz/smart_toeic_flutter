@@ -144,5 +144,15 @@
     "words": "words", 
     "practive_flashcard": "Practive Flashcard", 
     "status_explanation": "Status Explanation", 
-    "decay_score": "Decay Score"
+    "decay_score": "Decay Score", 
+    "practice_pronoun": "Practice Pronunciation", 
+    "type_what_you_hear": "Type what you hear...", 
+    "transcript_test": "Transcript Test", 
+    "question_list": "Question List", 
+    "question": "Question", 
+    "correct": "Correct!",
+    "next": "Next", 
+    "finish": "Finish", 
+    "your_input": "Your Input",
+    "result": "Result"
 }

@@ -86,6 +86,7 @@ class _PageState extends State<Page> {
                       size: 18,
                     ),
                     filled: true,
+                    isDense: false,
                     fillColor: theme.cardColor,
                     hintStyle: theme.textTheme.bodyMedium,
                     border: OutlineInputBorder(

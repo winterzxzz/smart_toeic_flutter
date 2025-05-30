@@ -1,13 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
+import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
 class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   final TranscriptTestRepository _transcriptTestRepository;
+  final TranscriptCheckerService _transcriptCheckerService;
 
-  TranscriptTestDetailCubit(this._transcriptTestRepository)
-      : super(TranscriptTestDetailState.initial());
+  TranscriptTestDetailCubit({
+    required TranscriptTestRepository transcriptTestRepository,
+    required TranscriptCheckerService transcriptCheckerService,
+  })  : _transcriptTestRepository = transcriptTestRepository,
+        _transcriptCheckerService = transcriptCheckerService,
+        super(TranscriptTestDetailState.initial());
 
   Future<void> getTranscriptTestDetail(String transcriptTestId) async {
     Future.microtask(() {
@@ -16,8 +22,8 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
     final transcriptTestDetail = await _transcriptTestRepository
         .getTranscriptTestDetail(transcriptTestId);
     transcriptTestDetail.fold(
-      (l) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.message)),
+      (l) => emit(
+          state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
       (r) => emit(
           state.copyWith(loadStatus: LoadStatus.success, transcriptTests: r)),
     );
@@ -39,5 +45,23 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
     if (index >= 0 && index < state.transcriptTests.length) {
       emit(state.copyWith(currentIndex: index));
     }
+  }
+
+  void handleCheck(String userInput) {
+    final currentTranscriptQuestion = state.transcriptTests[state.currentIndex];
+    final result = _transcriptCheckerService.checkTranscription(
+        userInput: userInput,
+        correctTranscript: currentTranscriptQuestion.transcript!);
+
+    emit(state.copyWith(  
+      isCheck: true,
+      checkResults: result.results,
+      isCorrect: result.isAllCorrect,
+      userInput: userInput,
+    ));
+  }
+
+  void toggleIsCheck() {
+    emit(state.copyWith(isCheck: !state.isCheck));
   }
 }

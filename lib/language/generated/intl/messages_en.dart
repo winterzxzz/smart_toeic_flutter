@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Confirm password and password do not match"),
         "congratulations":
             MessageLookupByLibrary.simpleMessage("Congratulations!"),
+        "correct": MessageLookupByLibrary.simpleMessage("Correct!"),
         "create_new_flashcard":
             MessageLookupByLibrary.simpleMessage("Create New Flashcard"),
         "create_new_flashcard_set":
@@ -91,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Exam Preparation"),
         "exit": MessageLookupByLibrary.simpleMessage("Exit"),
         "facebook": MessageLookupByLibrary.simpleMessage("Facebook"),
+        "finish": MessageLookupByLibrary.simpleMessage("Finish"),
         "flashcards": MessageLookupByLibrary.simpleMessage("Flashcards"),
         "flashcards_description": MessageLookupByLibrary.simpleMessage(
             "Interactive flashcards to boost your vocabulary and language skills efficiently."),
@@ -138,6 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_list": MessageLookupByLibrary.simpleMessage("My List"),
         "name_hint": MessageLookupByLibrary.simpleMessage("Enter your name"),
         "name_label": MessageLookupByLibrary.simpleMessage("Name"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
         "next_question": MessageLookupByLibrary.simpleMessage("Next Question"),
         "no_blogs": MessageLookupByLibrary.simpleMessage("No blogs found"),
         "no_data_found": MessageLookupByLibrary.simpleMessage("No data found"),
@@ -159,12 +162,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Practice Exams"),
         "practice_exams_description": MessageLookupByLibrary.simpleMessage(
             "Realistic TOEIC practice exams to assess and improve your test-taking abilities."),
+        "practice_pronoun":
+            MessageLookupByLibrary.simpleMessage("Practice Pronunciation"),
         "practive_flashcard":
             MessageLookupByLibrary.simpleMessage("Practive Flashcard"),
         "practive_part_tips": MessageLookupByLibrary.simpleMessage(
             "Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi."),
         "premium": MessageLookupByLibrary.simpleMessage("Premium"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "question": MessageLookupByLibrary.simpleMessage("Question"),
+        "question_list": MessageLookupByLibrary.simpleMessage("Question List"),
         "read_more": MessageLookupByLibrary.simpleMessage("Read More"),
         "reading_current":
             MessageLookupByLibrary.simpleMessage("Reading Current"),
@@ -181,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Enter your email and we will send you a link to reset your password"),
         "reset_password_title":
             MessageLookupByLibrary.simpleMessage("Reset your password"),
+        "result": MessageLookupByLibrary.simpleMessage("Result"),
         "result_analysis":
             MessageLookupByLibrary.simpleMessage("Result Analysis"),
         "result_analysis_description": MessageLookupByLibrary.simpleMessage(
@@ -212,8 +220,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "to_reviews": MessageLookupByLibrary.simpleMessage("to reviews"),
         "toeic_performance_dashboard":
             MessageLookupByLibrary.simpleMessage("TOEIC Performance Dashboard"),
+        "transcript_test":
+            MessageLookupByLibrary.simpleMessage("Transcript Test"),
         "try_again": MessageLookupByLibrary.simpleMessage("Try Again"),
         "try_harder": MessageLookupByLibrary.simpleMessage("Try Harder!"),
+        "type_what_you_hear":
+            MessageLookupByLibrary.simpleMessage("Type what you hear..."),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "update_profile":
             MessageLookupByLibrary.simpleMessage("Update Profile"),
@@ -235,6 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "You matched correct all words!, Continue with other forms!"),
         "your_account_has_been_successfully_upgraded":
             MessageLookupByLibrary.simpleMessage(
-                "Your account has been successfully upgraded.")
+                "Your account has been successfully upgraded."),
+        "your_input": MessageLookupByLibrary.simpleMessage("Your Input")
       };
 }

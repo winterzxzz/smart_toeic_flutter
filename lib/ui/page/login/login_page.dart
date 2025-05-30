@@ -142,7 +142,7 @@ class _PageState extends State<Page> {
                           },
                           child: Text.rich(
                             TextSpan(
-                              text: S.current.dont_have_account,
+                              text: '${S.current.dont_have_account} ',
                               children: [
                                 TextSpan(
                                   text: S.current.register_button,

@@ -1479,6 +1479,106 @@ class S {
       args: [],
     );
   }
+
+  /// `Practice Pronunciation`
+  String get practice_pronoun {
+    return Intl.message(
+      'Practice Pronunciation',
+      name: 'practice_pronoun',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type what you hear...`
+  String get type_what_you_hear {
+    return Intl.message(
+      'Type what you hear...',
+      name: 'type_what_you_hear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transcript Test`
+  String get transcript_test {
+    return Intl.message(
+      'Transcript Test',
+      name: 'transcript_test',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question List`
+  String get question_list {
+    return Intl.message(
+      'Question List',
+      name: 'question_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question`
+  String get question {
+    return Intl.message(
+      'Question',
+      name: 'question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Correct!`
+  String get correct {
+    return Intl.message(
+      'Correct!',
+      name: 'correct',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finish`
+  String get finish {
+    return Intl.message(
+      'Finish',
+      name: 'finish',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Input`
+  String get your_input {
+    return Intl.message(
+      'Your Input',
+      name: 'your_input',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Result`
+  String get result {
+    return Intl.message(
+      'Result',
+      name: 'result',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

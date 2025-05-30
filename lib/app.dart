@@ -15,6 +15,7 @@ import 'package:toeic_desktop/data/network/repositories/payment_repository.dart'
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
+import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
@@ -56,9 +57,6 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider<AuthRepository>(
           create: (context) => injector<AuthRepository>(),
-        ),
-        RepositoryProvider<FlashCardRespository>(
-          create: (context) => injector<FlashCardRespository>(),
         ),
         RepositoryProvider<TestRepository>(
           create: (context) => injector<TestRepository>(),

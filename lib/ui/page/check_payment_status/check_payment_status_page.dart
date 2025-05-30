@@ -21,7 +21,7 @@ class UpgradeAccountSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<CheckPaymentStatusCubit>()
-        ..checkPaymentStatus(payment.appid),
+        ..checkPaymentStatus(payment.apptransid),
       child: const Page(),
     );
   }

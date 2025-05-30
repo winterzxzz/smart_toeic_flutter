@@ -130,7 +130,9 @@ class UpgradeAccountCard extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: null,
-                    style: ElevatedButton.styleFrom(),
+                    style: ElevatedButton.styleFrom(
+                      disabledForegroundColor: AppColors.textGray,
+                    ),
                     child: const Text('Free'),
                   ),
                 )

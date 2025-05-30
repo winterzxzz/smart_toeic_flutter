@@ -48,8 +48,13 @@ Future<void> init() async {
         () => CheckPaymentStatusCubit(injector()))
     ..registerFactory<GetRandomWordCubit>(() => GetRandomWordCubit(injector()))
     ..registerFactory<ListenCopyCubit>(() => ListenCopyCubit(injector()))
+    ..registerFactory<TranscriptCheckerService>(
+        () => TranscriptCheckerService())
     ..registerFactory<TranscriptTestDetailCubit>(
-        () => TranscriptTestDetailCubit(injector()))
+        () => TranscriptTestDetailCubit(
+              transcriptTestRepository: injector(),
+              transcriptCheckerService: injector(),
+            ))
     ..registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(injector()))
     ..registerFactory<BlogCubit>(() => BlogCubit(injector()))
     ..registerFactory<HistoryTestCubit>(() => HistoryTestCubit(injector()));

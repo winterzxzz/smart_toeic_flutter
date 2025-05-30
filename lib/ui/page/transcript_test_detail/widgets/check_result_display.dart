@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/transcript/check_result.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
 class CheckResultDisplay extends StatelessWidget {
   const CheckResultDisplay({
     super.key,
-    required this.results,
-    required this.userInput,
   });
-
-  final List<CheckResult> results;
-  final String userInput;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         Container(
           padding: const EdgeInsets.all(16),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Text(
-            'Your input: $userInput',
-            style: Theme.of(context).textTheme.bodyLarge,
+          child: BlocSelector<TranscriptTestDetailCubit,
+              TranscriptTestDetailState, String>(
+            selector: (state) {
+              return state.userInput;
+            },
+            builder: (context, userInput) {
+              return Text(
+                '${S.current.your_input}: $userInput',
+                style: theme.textTheme.bodyLarge,
+              );
+            },
           ),
         ),
         const SizedBox(height: 16),
@@ -32,29 +40,37 @@ class CheckResultDisplay extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             children: [
-              Text('Result: ', style: Theme.of(context).textTheme.bodyLarge),
+              Text('${S.current.result}: ', style: theme.textTheme.bodyLarge),
               Expanded(
-                child: Wrap(
-                  children: results.map((result) {
-                    final color = switch (result.status) {
-                      CheckResultStatus.correct => Colors.green,
-                      CheckResultStatus.incorrect => Colors.red,
-                      CheckResultStatus.next => Colors.grey,
-                    };
+                child: BlocSelector<TranscriptTestDetailCubit,
+                    TranscriptTestDetailState, List<CheckResult>>(
+                  selector: (state) {
+                    return state.checkResults;
+                  },
+                  builder: (context, results) {
+                    return Wrap(
+                      children: results.map((result) {
+                        final color = switch (result.status) {
+                          CheckResultStatus.correct => Colors.green,
+                          CheckResultStatus.incorrect => Colors.red,
+                          CheckResultStatus.next => Colors.grey,
+                        };
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        result.word,
-                        style: TextStyle(color: color),
-                      ),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Text(
+                            result.word,
+                            style: TextStyle(color: color),
+                          ),
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
+                  },
                 ),
               ),
             ],
