@@ -84,184 +84,177 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  FormItem(
-                    title: 'Word',
-                    controller: wordController,
-                    isRequired: true,
-                  ),
-                  FormItem(
-                    title: 'Meaning',
-                    controller: meaningController,
-                  ),
-                  FormItem(
-                    title: 'Definition',
-                    controller: definitionController,
-                  ),
-                  FormItem(
-                    title: 'Example 1',
-                    controller: example1SentenceController,
-                  ),
-                  FormItem(
-                    title: 'Example 2',
-                    controller: example2SentenceController,
-                  ),
-                  FormItem(
-                    title: 'Note',
-                    controller: noteController,
-                  ),
-                  FormItem(
-                    title: 'Pronunciation',
-                    controller: pronunciationController,
-                  ),
-                  FormItem(
-                    title: 'Part of speech',
-                    controller: partOfSpeechController,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Bottom actions
-          Container(
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -5),
-                ),
-              ],
-            ),
-            child: Row(
+            child: Column(
               children: [
-                Expanded(
-                  child:
-                      BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
-                    listener: (context, state) {
-                      if (state.loadStatusAiGen == LoadStatus.success) {
-                        final flashCardAiGen = state.flashCardAiGen;
-                        if (flashCardAiGen != null) {
-                          wordController.text = flashCardAiGen.word;
-                          meaningController.text = flashCardAiGen.translation;
-                          definitionController.text = flashCardAiGen.definition;
-                          example1SentenceController.text =
-                              flashCardAiGen.example1;
-                          example2SentenceController.text =
-                              flashCardAiGen.example2;
-                          noteController.text = flashCardAiGen.note;
-                          partOfSpeechController.text =
-                              flashCardAiGen.partOfSpeech.join(', ');
-                          pronunciationController.text =
-                              flashCardAiGen.pronunciation;
-                        }
-                      }
-                    },
-                    bloc: BlocProvider.of<FlashCardDetailCubit>(context),
-                    buildWhen: (previous, current) =>
-                        previous.loadStatusAiGen != current.loadStatusAiGen,
-                    builder: (context, state) {
-                      final isLoading =
-                          state.loadStatusAiGen == LoadStatus.loading;
-                      return BlocSelector<UserCubit, UserState, UserEntity?>(
-                        selector: (state) => state.user,
-                        builder: (context, user) {
-                          final isPremium = user?.isPremium();
-                          return ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              disabledBackgroundColor:
-                                  AppColors.gray1.withValues(alpha: 0.5),
-                            ),
-                            onPressed: isPremium == true
-                                ? isLoading
-                                    ? null
-                                    : () async {
-                                        context
-                                            .read<FlashCardDetailCubit>()
-                                            .getFlashCardInforByAI(
-                                                wordController.text);
-                                      }
-                                : null,
-                            child: isLoading
-                                ? Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: Theme.of(context).brightness !=
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      const Text('AI is filling...'),
-                                    ],
-                                  )
-                                : Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      if (isPremium == false) ...[
-                                        const FaIcon(FontAwesomeIcons.lock),
-                                        const SizedBox(width: 8),
-                                      ] else ...[
-                                        const FaIcon(FontAwesomeIcons.robot),
-                                        const SizedBox(width: 8),
-                                      ],
-                                      const Text('Fill by AI'),
-                                    ],
-                                  ),
-                          );
-                        },
-                      );
-                    },
-                  ),
+                FormItem(
+                  title: 'Word',
+                  controller: wordController,
+                  isRequired: true,
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final flashCardRequest = FlashCardRequest(
-                        word: wordController.text,
-                        translation: meaningController.text,
-                        definition: definitionController.text,
-                        exampleSentence: [
-                          example1SentenceController.text,
-                          example2SentenceController.text,
-                        ],
-                        note: noteController.text,
-                        partOfSpeech: partOfSpeechController.text.split(', '),
-                        pronunciation: pronunciationController.text,
-                        setFlashcardId:
-                            widget.args.flashCard?.setFlashcardId ?? '',
-                      );
-                      widget.args.onSave(flashCardRequest);
-                      GoRouter.of(context).pop();
-                    },
-                    child: const Text('Save'),
-                  ),
+                FormItem(
+                  title: 'Meaning',
+                  controller: meaningController,
+                ),
+                FormItem(
+                  title: 'Definition',
+                  controller: definitionController,
+                ),
+                FormItem(
+                  title: 'Example 1',
+                  controller: example1SentenceController,
+                ),
+                FormItem(
+                  title: 'Example 2',
+                  controller: example2SentenceController,
+                ),
+                FormItem(
+                  title: 'Note',
+                  controller: noteController,
+                ),
+                FormItem(
+                  title: 'Pronunciation',
+                  controller: pronunciationController,
+                ),
+                FormItem(
+                  title: 'Part of speech',
+                  controller: partOfSpeechController,
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+        // Bottom actions
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 10,
+                offset: const Offset(0, -5),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
+                  listener: (context, state) {
+                    if (state.loadStatusAiGen == LoadStatus.success) {
+                      final flashCardAiGen = state.flashCardAiGen;
+                      if (flashCardAiGen != null) {
+                        wordController.text = flashCardAiGen.word;
+                        meaningController.text = flashCardAiGen.translation;
+                        definitionController.text = flashCardAiGen.definition;
+                        example1SentenceController.text =
+                            flashCardAiGen.example1;
+                        example2SentenceController.text =
+                            flashCardAiGen.example2;
+                        noteController.text = flashCardAiGen.note;
+                        partOfSpeechController.text =
+                            flashCardAiGen.partOfSpeech.join(', ');
+                        pronunciationController.text =
+                            flashCardAiGen.pronunciation;
+                      }
+                    }
+                  },
+                  bloc: BlocProvider.of<FlashCardDetailCubit>(context),
+                  buildWhen: (previous, current) =>
+                      previous.loadStatusAiGen != current.loadStatusAiGen,
+                  builder: (context, state) {
+                    final isLoading =
+                        state.loadStatusAiGen == LoadStatus.loading;
+                    return BlocSelector<UserCubit, UserState, UserEntity?>(
+                      selector: (state) => state.user,
+                      builder: (context, user) {
+                        final isPremium = user?.isPremium();
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            disabledBackgroundColor:
+                                AppColors.gray1.withValues(alpha: 0.5),
+                          ),
+                          onPressed: isPremium == true
+                              ? isLoading
+                                  ? null
+                                  : () async {
+                                      context
+                                          .read<FlashCardDetailCubit>()
+                                          .getFlashCardInforByAI(
+                                              wordController.text);
+                                    }
+                              : null,
+                          child: isLoading
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Theme.of(context).brightness !=
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Text('AI is filling...'),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (isPremium == false) ...[
+                                      const FaIcon(FontAwesomeIcons.lock),
+                                      const SizedBox(width: 8),
+                                    ] else ...[
+                                      const FaIcon(FontAwesomeIcons.robot),
+                                      const SizedBox(width: 8),
+                                    ],
+                                    const Text('Fill by AI'),
+                                  ],
+                                ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    final flashCardRequest = FlashCardRequest(
+                      word: wordController.text,
+                      translation: meaningController.text,
+                      definition: definitionController.text,
+                      exampleSentence: [
+                        example1SentenceController.text,
+                        example2SentenceController.text,
+                      ],
+                      note: noteController.text,
+                      partOfSpeech: partOfSpeechController.text.split(', '),
+                      pronunciation: pronunciationController.text,
+                      setFlashcardId:
+                          widget.args.flashCard?.setFlashcardId ?? '',
+                    );
+                    widget.args.onSave(flashCardRequest);
+                    GoRouter.of(context).pop();
+                  },
+                  child: const Text('Save'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
