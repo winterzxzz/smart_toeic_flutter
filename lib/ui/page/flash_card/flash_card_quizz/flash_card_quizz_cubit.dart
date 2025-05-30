@@ -34,13 +34,11 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
         await _flashCardRepository.updateFlashCardLearning(newLearningSetId);
     rs.fold(
         (l1) => emit(state.copyWith(
-            loadStatus: LoadStatus.failure,
-            message: l1.message)), (r1) async {
+            loadStatus: LoadStatus.failure, message: l1.message)), (r1) async {
       final rs2 = await _flashCardRepository.getFlashCardsLearning(r1.id!);
       rs2.fold(
           (l2) => emit(state.copyWith(
-              loadStatus: LoadStatus.failure,
-              message: l2.message)),
+              loadStatus: LoadStatus.failure, message: l2.message)),
           (r2) => emit(state.copyWith(
               loadStatus: LoadStatus.success,
               flashCardLearning: r2,
@@ -145,8 +143,8 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
     final rs = await _flashCardRepository
         .updateSessionScore(newFlashCardQuizzScoreRequest);
     rs.fold(
-        (l) => emit(state.copyWith(
-            loadStatus: LoadStatus.failure, message: l.message)),
+        (l) => emit(
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
         (r) => emit(state.copyWith(
               isFinish: true,
               flashCardQuizzScoreRequest: newFlashCardQuizzScoreRequest,

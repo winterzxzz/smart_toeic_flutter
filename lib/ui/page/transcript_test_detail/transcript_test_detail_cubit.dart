@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
@@ -7,6 +9,8 @@ import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_det
 class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   final TranscriptTestRepository _transcriptTestRepository;
   final TranscriptCheckerService _transcriptCheckerService;
+
+  Timer? _animationTimer;
 
   TranscriptTestDetailCubit({
     required TranscriptTestRepository transcriptTestRepository,
@@ -29,17 +33,8 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
     );
   }
 
-  void previousTranscriptTest() {
-    if (state.currentIndex > 0) {
-      emit(state.copyWith(
-          currentIndex: state.currentIndex - 1,
-          isCheck: false,
-          isCorrect: false,
-          userInput: ''));
-    }
-  }
-
   void nextTranscriptTest() {
+    _animationTimer?.cancel();
     if (state.currentIndex < state.transcriptTests.length - 1) {
       emit(state.copyWith(
           currentIndex: state.currentIndex + 1,
@@ -71,6 +66,13 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       isCorrect: result.isAllCorrect,
       userInput: userInput,
     ));
+
+    _animationTimer?.cancel();
+    _animationTimer = Timer(const Duration(seconds: 3), () {
+      if (state.isCorrect) {
+        nextTranscriptTest();
+      }
+    });
   }
 
   void toggleIsCheck() {

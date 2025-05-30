@@ -29,7 +29,7 @@ class CheckResultDisplay extends StatelessWidget {
             },
             builder: (context, userInput) {
               return Text(
-                '${S.current.your_input}: $userInput',
+                '${S.current.you}: $userInput',
                 style: theme.textTheme.bodyLarge,
               );
             },
@@ -43,40 +43,46 @@ class CheckResultDisplay extends StatelessWidget {
             color: theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Row(
-            children: [
-              Text('${S.current.result}: ', style: theme.textTheme.bodyLarge),
-              Expanded(
-                child: BlocBuilder<TranscriptTestDetailCubit,
-                    TranscriptTestDetailState>(
-                  buildWhen: (state, previous) =>
-                      state.checkResults != previous.checkResults ||
-                      state.isCheck != previous.isCheck,
-                  builder: (context, state) {
-                    if (!state.isCheck) {
-                      return const SizedBox.shrink();
-                    }
-                    return Wrap(
-                      children: state.checkResults.map((result) {
-                        final color = switch (result.status) {
-                          CheckResultStatus.correct => Colors.green,
-                          CheckResultStatus.incorrect => Colors.red,
-                          CheckResultStatus.next => Colors.grey,
-                        };
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Text(
-                            result.word,
-                            style:
-                                theme.textTheme.bodyLarge!.apply(color: color),
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
+          child:
+              BlocBuilder<TranscriptTestDetailCubit, TranscriptTestDetailState>(
+            buildWhen: (state, previous) =>
+                state.checkResults != previous.checkResults ||
+                state.isCheck != previous.isCheck,
+            builder: (context, state) {
+              if (!state.isCheck) {
+                return Text('${S.current.result}: ',
+                    style: theme.textTheme.bodyLarge);
+              }
+
+              List<TextSpan> spans = [
+                TextSpan(
+                  text: '${S.current.result}: ',
+                  style: theme.textTheme.bodyLarge,
                 ),
-              ),
-            ],
+              ];
+
+              for (int i = 0; i < state.checkResults.length; i++) {
+                final result = state.checkResults[i];
+                final color = switch (result.status) {
+                  CheckResultStatus.correct => Colors.green,
+                  CheckResultStatus.incorrect => Colors.red,
+                  CheckResultStatus.next => Colors.grey,
+                };
+
+                if (i > 0) {
+                  spans.add(const TextSpan(text: ' '));
+                }
+
+                spans.add(TextSpan(
+                  text: result.word,
+                  style: theme.textTheme.bodyLarge!.apply(color: color),
+                ));
+              }
+
+              return RichText(
+                text: TextSpan(children: spans),
+              );
+            },
           ),
         ),
       ],

@@ -1,77 +1,249 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
-import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/question_list.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/processing_indicator.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/transcript__test_body.dart';
 
 class TranscriptTestDetailPage extends StatelessWidget {
-  const TranscriptTestDetailPage({super.key, required this.transcriptTestId});
+  const TranscriptTestDetailPage(
+      {super.key, required this.transcriptTestId, required this.title});
 
   final String transcriptTestId;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<TranscriptTestDetailCubit>()
         ..getTranscriptTestDetail(transcriptTestId),
-      child: const Page(),
+      child: Page(title: title),
     );
   }
 }
 
 class Page extends StatefulWidget {
-  const Page({super.key});
+  const Page({super.key, required this.title});
+
+  final String title;
 
   @override
   State<Page> createState() => _PageState();
 }
 
-class _PageState extends State<Page> {
+class _PageState extends State<Page> with TickerProviderStateMixin {
+  late AnimationController _timerController;
+  late TranscriptTestDetailCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _timerController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+    _cubit = context.read<TranscriptTestDetailCubit>();
+  }
+
+  @override
+  void dispose() {
+    _timerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BlocConsumer<TranscriptTestDetailCubit, TranscriptTestDetailState>(
+      listenWhen: (previous, current) =>
+          previous.loadStatus != current.loadStatus ||
+          previous.isCorrect != current.isCorrect,
       listener: (context, state) {
+        if (state.isCorrect) {
+          _timerController.reset();
+          _timerController.forward();
+        } else {
+          _timerController.stop();
+        }
         if (state.loadStatus == LoadStatus.failure) {
           showToast(title: state.message, type: ToastificationType.error);
         }
       },
       buildWhen: (previous, current) =>
-          previous.loadStatus != current.loadStatus,
+          previous.loadStatus != current.loadStatus ||
+          previous.isCorrect != current.isCorrect,
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(S.current.transcript_test),
-            leading: const LeadingBackButton(),
-          ),
-          endDrawer: state.loadStatus == LoadStatus.success
-              ? Drawer(
-                  backgroundColor: Theme.of(context).cardColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: QuestionList(),
+        return PopScope(
+          canPop: false,
+          child: Scaffold(
+            backgroundColor: theme.appBarTheme.backgroundColor,
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      title: Text(widget.title),
+                      leading: LeadingBackButton(
+                        isClose: true,
+                        onPressed: () {
+                          showConfirmDialog(context, S.current.exit,
+                              S.current.are_you_sure_exit, () {
+                            GoRouter.of(context).pop();
+                          });
+                        },
+                      ),
+                      pinned: true,
+                      floating: false,
+                      expandedHeight:
+                          state.loadStatus == LoadStatus.success ? 50.0 : null,
+                      bottom: state.loadStatus == LoadStatus.success
+                          ? const PreferredSize(
+                              preferredSize: Size.fromHeight(5),
+                              child: ProcessingIndicator(),
+                            )
+                          : null,
                     ),
-                  ),
-                )
-              : null,
-          backgroundColor: theme.appBarTheme.backgroundColor,
-          body: state.loadStatus == LoadStatus.loading
-              ? const LoadingCircle()
-              : state.loadStatus == LoadStatus.success
-                  ? const TranscriptTestBody()
-                  : const SizedBox.shrink(),
+                    SliverFillRemaining(
+                      child: state.loadStatus == LoadStatus.loading
+                          ? const LoadingCircle()
+                          : state.loadStatus == LoadStatus.success
+                              ? const TranscriptTestBody()
+                              : const SizedBox.shrink(),
+                    ),
+                  ],
+                ),
+                if (state.isCorrect) ...[
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: state.isCorrect
+                            ? Colors.green[200]
+                            : Colors.red[200],
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(12),
+                          bottomRight: Radius.circular(12),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AnimatedBuilder(
+                            animation: _timerController,
+                            builder: (context, child) {
+                              return LinearProgressIndicator(
+                                value: _timerController.value,
+                                backgroundColor: Colors.transparent,
+                                color:
+                                    state.isCorrect ? Colors.green : Colors.red,
+                                minHeight: 3,
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: FaIcon(
+                                    state.isCorrect
+                                        ? FontAwesomeIcons.check
+                                        : FontAwesomeIcons.xmark,
+                                    size: 32,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  state.isCorrect
+                                      ? S.current.great
+                                      : S.current.try_harder,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  state.isCorrect
+                                      ? S.current.you_answered_correctly
+                                      : S.current.you_answered_incorrectly,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                BlocBuilder<TranscriptTestDetailCubit,
+                                    TranscriptTestDetailState>(
+                                  buildWhen: (previous, current) =>
+                                      previous.currentIndex !=
+                                          current.currentIndex ||
+                                      previous.transcriptTests !=
+                                          current.transcriptTests,
+                                  builder: (context, state) {
+                                    final isLast = state.currentIndex >=
+                                        state.transcriptTests.length - 1;
+                                    return SizedBox(
+                                      width: double.infinity,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: state.isCorrect
+                                              ? Colors.green
+                                              : Colors.red,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          if (isLast) {
+                                            GoRouter.of(context).pop();
+                                            return;
+                                          }
+                                          _cubit.nextTranscriptTest();
+                                        },
+                                        child: Text(
+                                          isLast
+                                              ? S.current.finish
+                                              : S.current.next_question,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ],
+            ),
+          ),
         );
       },
     );

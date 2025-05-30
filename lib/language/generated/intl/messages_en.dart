@@ -244,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "What is your confidence level?"),
         "word_learned": MessageLookupByLibrary.simpleMessage("Word Learned"),
         "words": MessageLookupByLibrary.simpleMessage("words"),
+        "you": MessageLookupByLibrary.simpleMessage("You"),
         "you_answered_correctly":
             MessageLookupByLibrary.simpleMessage("You answered correctly!"),
         "you_answered_incorrectly":
@@ -252,7 +253,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "You matched correct all words!, Continue with other forms!"),
         "your_account_has_been_successfully_upgraded":
             MessageLookupByLibrary.simpleMessage(
-                "Your account has been successfully upgraded."),
-        "your_input": MessageLookupByLibrary.simpleMessage("Your Input")
+                "Your account has been successfully upgraded.")
       };
 }

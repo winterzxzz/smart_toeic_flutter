@@ -1560,11 +1560,11 @@ class S {
     );
   }
 
-  /// `Your Input`
-  String get your_input {
+  /// `You`
+  String get you {
     return Intl.message(
-      'Your Input',
-      name: 'your_input',
+      'You',
+      name: 'you',
       desc: '',
       args: [],
     );

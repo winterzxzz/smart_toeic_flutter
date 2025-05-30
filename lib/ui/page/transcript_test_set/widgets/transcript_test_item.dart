@@ -27,7 +27,7 @@ class TranscriptTestItem extends StatelessWidget {
           if (test.id != null) {
             GoRouter.of(context).pushNamed(
               AppRouter.transcriptTestDetail,
-              extra: {'transcriptTestId': test.id},
+              extra: {'transcriptTestId': test.id, 'title': test.title},
             );
           }
         },

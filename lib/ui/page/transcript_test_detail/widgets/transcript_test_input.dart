@@ -5,6 +5,7 @@ import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/check_result_display.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/speech_test.dart';
 
 class TranscriptTestInput extends StatefulWidget {
@@ -40,7 +41,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
       },
       builder: (context, isCheck) {
         return Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
             BlocListener<TranscriptTestDetailCubit, TranscriptTestDetailState>(
               listenWhen: (previous, current) =>
@@ -71,57 +72,53 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 48,
-                  width: 300,
-                  child: ElevatedButton(
-                    onPressed: () =>
-                        _cubit.handleCheck(_transcriptController.text),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                    ),
-                    child: Text(S.current.check),
+            const SizedBox(height: 16),
+            const CheckResultDisplay(),
+            const Spacer(),
+            SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                 ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  height: 48,
-                  width: 300,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const Dialog(
-                            child: SpeechTest(),
-                          );
-                        },
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const Dialog(
+                        child: SpeechTest(),
                       );
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const FaIcon(FontAwesomeIcons.microphoneLines),
-                        const SizedBox(width: 8),
-                        Text(S.current.practice_pronoun),
-                      ],
-                    ),
-                  ),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const FaIcon(FontAwesomeIcons.microphoneLines),
+                    const SizedBox(width: 8),
+                    Text(S.current.practice_pronoun),
+                  ],
                 ),
-              ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => _cubit.handleCheck(_transcriptController.text),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                child: Text(S.current.check),
+              ),
             ),
           ],
         );

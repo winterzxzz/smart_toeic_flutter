@@ -259,7 +259,11 @@ class AppRouter {
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
         final transcriptTestId = args['transcriptTestId'] as String;
-        return TranscriptTestDetailPage(transcriptTestId: transcriptTestId);
+        final title = args['title'] as String;
+        return TranscriptTestDetailPage(
+          transcriptTestId: transcriptTestId,
+          title: title,
+        );
       },
     ),
     GoRoute(
