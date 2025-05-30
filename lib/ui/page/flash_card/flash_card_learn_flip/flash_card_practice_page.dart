@@ -68,24 +68,28 @@ class Page extends StatelessWidget {
             );
           },
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(5),
+          child: BlocBuilder<FlashCardLearnFlipCubit, FlashCardLearnFlipState>(
+            buildWhen: (previous, current) =>
+                previous.currentIndex != current.currentIndex ||
+                previous.flashCards.length != current.flashCards.length,
+            builder: (context, state) {
+              return LinearProgressIndicator(
+                minHeight: 5,
+                value: (state.currentIndex + 1) / state.flashCards.length,
+                backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(4),
+              );
+            },
+          ),
+        ),
       ),
       body: BlocBuilder<FlashCardLearnFlipCubit, FlashCardLearnFlipState>(
         builder: (context, state) {
           return SafeArea(
             child: Column(
               children: [
-                // Progress indicator
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: LinearProgressIndicator(
-                    value: (state.currentIndex + 1) / state.flashCards.length,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                // Flashcard
                 Expanded(
                   child: Center(
                     child: GestureDetector(
