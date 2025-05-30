@@ -3,12 +3,16 @@ part of 'app.dart';
 final injector = GetIt.instance;
 
 Future<void> init() async {
+  // Core dependencies
   injector
     ..registerLazySingleton<Dio>(() => DioClient.createNewDio())
     ..registerLazySingleton<SharedPreferencesHelper>(
         () => SharedPreferencesHelper())
     ..registerLazySingleton<ApiClient>(
-        () => ApiClient(injector(), baseUrl: AppConfigs.baseUrl))
+        () => ApiClient(injector(), baseUrl: AppConfigs.baseUrl));
+
+  // Repository dependencies
+  injector
     ..registerLazySingleton<TestRepository>(
         () => TestRepositoryImpl(injector()))
     ..registerLazySingleton<AuthRepository>(
@@ -19,10 +23,15 @@ Future<void> init() async {
         () => ProfileRepositoryImpl(injector()))
     ..registerLazySingleton<PaymentRepository>(
         () => PaymentRepositoryImpl(injector()))
+    ..registerLazySingleton<TranscriptTestRepository>(
+        () => TranscriptTestRepositoryImpl(injector()))
+    ..registerLazySingleton<BlogRepository>(
+        () => BlogRepositoryImpl(injector()));
+
+  // Cubit dependencies (short-lived objects)
+  injector
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
-    ..registerLazySingleton<EntrypointCubit>(() => EntrypointCubit())
-    ..registerLazySingleton<UserCubit>(() => UserCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
     ..registerFactory<FlashCardCubit>(() => FlashCardCubit(injector()))
     ..registerFactory<FlashCardDetailCubit>(
@@ -38,17 +47,19 @@ Future<void> init() async {
     ..registerFactory<CheckPaymentStatusCubit>(
         () => CheckPaymentStatusCubit(injector()))
     ..registerFactory<GetRandomWordCubit>(() => GetRandomWordCubit(injector()))
-    ..registerLazySingleton<TranscriptTestRepository>(
-        () => TranscriptTestRepositoryImpl(injector()))
     ..registerFactory<ListenCopyCubit>(() => ListenCopyCubit(injector()))
     ..registerFactory<TranscriptTestDetailCubit>(
         () => TranscriptTestDetailCubit(injector()))
-    ..registerLazySingleton<BlogRepository>(
-        () => BlogRepositoryImpl(injector()))
     ..registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(injector()))
     ..registerFactory<BlogCubit>(() => BlogCubit(injector()))
     ..registerFactory<HistoryTestCubit>(() => HistoryTestCubit(injector()));
 
+  // Singleton Cubits (long-lived objects)
+  injector
+    ..registerLazySingleton<EntrypointCubit>(() => EntrypointCubit())
+    ..registerLazySingleton<UserCubit>(() => UserCubit(injector()));
+
+  // Conditional registrations
   if (!injector.isRegistered<TestsCubit>()) {
     injector.registerLazySingleton<TestsCubit>(() => TestsCubit(injector()));
   }
