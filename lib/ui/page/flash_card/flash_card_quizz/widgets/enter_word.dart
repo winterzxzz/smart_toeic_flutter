@@ -44,7 +44,7 @@ class _EnterWordState extends State<EnterWord> {
             children: [
               TextSpan(text: S.current.enter_vietnamese_word),
               TextSpan(
-                text: "'${widget.fcLearning.flashcardId!.word}'",
+                text: " '${widget.fcLearning.flashcardId!.word}'",
                 style: const TextStyle(
                     fontWeight: FontWeight.bold, color: AppColors.error),
               ),

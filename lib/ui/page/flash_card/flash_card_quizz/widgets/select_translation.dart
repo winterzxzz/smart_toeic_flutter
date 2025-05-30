@@ -101,7 +101,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
                 text: S.current.select_meaning,
               ),
               TextSpan(
-                text: "'${widget.fcLearning.flashcardId!.word}'",
+                text: " '${widget.fcLearning.flashcardId!.word}'",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const TextSpan(text: ' ?'),

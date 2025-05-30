@@ -43,7 +43,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
             children: [
               TextSpan(text: S.current.enter_english_word),
               TextSpan(
-                text: "'${widget.fcLearning.flashcardId!.translation}'",
+                text: " '${widget.fcLearning.flashcardId!.translation}'",
                 style: const TextStyle(
                     fontWeight: FontWeight.bold, color: AppColors.error),
               ),
