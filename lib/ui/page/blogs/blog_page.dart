@@ -86,7 +86,7 @@ class _PageState extends State<Page> {
                       size: 18,
                     ),
                     filled: true,
-                    isDense: false,
+                    isDense: true,
                     fillColor: theme.cardColor,
                     hintStyle: theme.textTheme.bodyMedium,
                     border: OutlineInputBorder(
@@ -122,7 +122,7 @@ class _PageState extends State<Page> {
                   }
                   if (state.searchBlogs.isEmpty) {
                     return SliverToBoxAdapter(
-                      child: Center(child: Text(S.current.no_blogs)),
+                      child: Center(child: Text(S.current.no_data_found)),
                     );
                   }
                   return SliverList.separated(
