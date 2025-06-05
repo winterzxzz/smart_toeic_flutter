@@ -1,4 +1,4 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
@@ -18,39 +18,33 @@ class _AudioSectionState extends State<AudioSection> {
   AudioPlayer? _audioPlayer;
   Duration? _duration;
   Duration? _position;
-  bool _isPlaying = false;
+  bool _isPlaying = true;
   bool _isCompleted = false;
 
-  void initAudioPlayer() async {
-    if (_audioPlayer == null) {
-      _audioPlayer = AudioPlayer();
-      await _audioPlayer!.setSourceUrl(widget.audioUrl);
-      _duration = await _audioPlayer!.getDuration();
-      _audioPlayer!.onPositionChanged.listen((Duration p) {
-        if (mounted) {
-          if (_isCompleted) {
-            setState(() {
-              _isCompleted = false;
-              _position = p;
-            });
-          } else {
-            setState(() {
-              _position = p;
-            });
-          }
-        }
-      });
-
-      _audioPlayer!.onPlayerComplete.listen((_) {
-        if (mounted) {
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer()
+      ..setUrl(widget.audioUrl)
+      ..play()
+      ..durationStream.listen((duration) {
+        setState(() {
+          _duration = duration;
+        });
+      })
+      ..positionStream.listen((position) {
+        setState(() {
+          _position = position;
+        });
+      })
+      ..playerStateStream.listen((state) {
+        if (state.processingState == ProcessingState.completed) {
           setState(() {
             _isCompleted = true;
             _isPlaying = false;
           });
         }
       });
-      setState(() {});
-    }
   }
 
   void _handleSeekStart(double p) {
@@ -62,11 +56,32 @@ class _AudioSectionState extends State<AudioSection> {
   }
 
   void _handleSeekEnd(double p) {
-    _audioPlayer?.resume();
+    _audioPlayer?.seek(Duration(seconds: p.toInt()));
     setState(() {
-      _isPlaying = true;
       _position = Duration(seconds: p.toInt());
     });
+  }
+
+  void _handleTapPlayPause() async {
+    if (_isCompleted) {
+      setState(() {
+        _position = Duration.zero;
+        _isCompleted = false;
+        _isPlaying = true;
+      });
+      await _audioPlayer?.seek(Duration.zero);
+      await _audioPlayer?.play();
+    } else if (_isPlaying) {
+      await _audioPlayer?.pause();
+      setState(() {
+        _isPlaying = false;
+      });
+    } else {
+      await _audioPlayer?.play();
+      setState(() {
+        _isPlaying = true;
+      });
+    }
   }
 
   @override
@@ -93,7 +108,7 @@ class _AudioSectionState extends State<AudioSection> {
             children: [
               InkWell(
                 borderRadius: BorderRadius.circular(30),
-                onTap: handleTapPlayPause,
+                onTap: _handleTapPlayPause,
                 child: Container(
                   height: 56,
                   width: 56,
@@ -162,32 +177,6 @@ class _AudioSectionState extends State<AudioSection> {
         ],
       ),
     );
-  }
-
-  void handleTapPlayPause() async {
-    initAudioPlayer();
-    if (_isCompleted) {
-      await _audioPlayer?.seek(Duration.zero).then((value) {
-        setState(() {
-          _position = Duration.zero;
-          _isCompleted = false;
-          _isPlaying = true;
-        });
-      });
-    }
-    if (_isPlaying) {
-      await _audioPlayer?.pause().then((value) {
-        setState(() {
-          _isPlaying = false;
-        });
-      });
-    } else {
-      await _audioPlayer?.resume().then((value) {
-        setState(() {
-          _isPlaying = true;
-        });
-      });
-    }
   }
 }
 

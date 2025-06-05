@@ -86,6 +86,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
         return PopScope(
           canPop: false,
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: theme.appBarTheme.backgroundColor,
             body: Stack(
               alignment: Alignment.center,

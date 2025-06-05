@@ -19,13 +19,17 @@ class TranscriptTestBody extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
           BlocBuilder<TranscriptTestDetailCubit, TranscriptTestDetailState>(
+            buildWhen: (previous, current) {
+              return previous.currentIndex != current.currentIndex ||
+                  previous.transcriptTests != current.transcriptTests;
+            },
             builder: (context, state) {
               final audioUrl = state
                           .transcriptTests[state.currentIndex].audioUrl !=
                       null
                   ? '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${state.transcriptTests[state.currentIndex].audioUrl}'
                   : '';
-              return AudioSection(audioUrl: audioUrl);
+              return AudioSection(key: Key(audioUrl), audioUrl: audioUrl);
             },
           ),
           const SizedBox(height: 16),
