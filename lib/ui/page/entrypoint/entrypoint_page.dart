@@ -44,10 +44,9 @@ class _BottomTabPageState extends State<BottomTabPage>
   Future<void> initDeepLinks() async {
     // Handle links
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      debugPrint('onAppLink: $uri');
-      final path = uri.path;
+      final pathWithQuery = uri.path + (uri.hasQuery ? '?${uri.query}' : '');
       if (mounted) {
-        GoRouter.of(context).go(path);
+        GoRouter.of(context).go(pathWithQuery);
       }
     });
   }

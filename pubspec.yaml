@@ -79,6 +79,7 @@ dependencies:
   speech_to_text: ^7.0.0
   flutter_tts: ^4.2.2
   intl_utils: ^2.8.8
+  flutter_local_notifications: ^19.2.1
 
 dev_dependencies:
   flutter_test:

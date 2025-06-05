@@ -232,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "type_what_you_hear":
             MessageLookupByLibrary.simpleMessage("Type what you hear..."),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
+        "update_error": MessageLookupByLibrary.simpleMessage("Update Error"),
         "update_profile":
             MessageLookupByLibrary.simpleMessage("Update Profile"),
         "update_target_score":
