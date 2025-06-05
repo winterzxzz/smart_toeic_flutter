@@ -87,6 +87,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                 ),
                 onPressed: () {
+                  // _cubit.toggleIsShowAiVoice();
                   Utils.showModalBottomSheetForm(
                     context: context,
                     title: S.current.practice_pronoun,

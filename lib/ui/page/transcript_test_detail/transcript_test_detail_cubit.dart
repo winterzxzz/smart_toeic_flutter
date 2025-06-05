@@ -78,4 +78,8 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   void toggleIsCheck() {
     emit(state.copyWith(isCheck: !state.isCheck));
   }
+
+  void toggleIsShowAiVoice() {
+    emit(state.copyWith(isShowAiVoice: !state.isShowAiVoice));
+  }
 }

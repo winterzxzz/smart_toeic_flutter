@@ -99,6 +99,7 @@ class AppImages {
   // animations
   static const splashAnimation = 'assets/animations/splash.json';
   static const scanning = 'assets/animations/scanning.json';
+  static const aiVoice = 'assets/animations/ai_voice.json';
 
   static const profileBackground = 'assets/images/profile_background.png';
 
@@ -106,4 +107,5 @@ class AppImages {
   static const banner1 = 'assets/images/banner1.png';
   static const banner2 = 'assets/images/banner2.png';
   static const banner3 = 'assets/images/banner3.png';
+
 }
