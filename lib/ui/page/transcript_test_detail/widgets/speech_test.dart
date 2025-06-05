@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class SpeechTest extends StatefulWidget {
@@ -12,13 +9,25 @@ class SpeechTest extends StatefulWidget {
 }
 
 class _SpeechTestState extends State<SpeechTest> {
-  late SpeechToText speechToText;
+  bool isEnable = false;
+  final SpeechToText speechToText = SpeechToText();
   double level = 0.0;
 
   @override
   void initState() {
     super.initState();
-    speechToText = SpeechToText()..initialize();
+    speechToText.initialize(
+      onError: (error) {
+        debugPrint('error: $error');
+      },
+      onStatus: (status) {
+        debugPrint('status: $status');
+      },
+    ).then((value) {
+      setState(() {
+        isEnable = value;
+      });
+    });
   }
 
   @override
@@ -28,32 +37,20 @@ class _SpeechTestState extends State<SpeechTest> {
   }
 
   void _startSpeechToText() async {
+    if (!isEnable) {
+      debugPrint('SpeechToText is not initialized');
+      return;
+    }
     await speechToText.listen(
       onResult: (result) {
-        log(result.recognizedWords);
+        debugPrint('text: ${result.recognizedWords}');
       },
     );
   }
 
-  // void _stopSpeechToText() {
-  //   speechToText.stop();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Thực hành phát âm'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              GoRouter.of(context).pop();
-            },
-            icon: const Icon(Icons.close),
-          ),
-        ],
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -69,9 +66,7 @@ class _SpeechTestState extends State<SpeechTest> {
                 color: Colors.blue.withValues(alpha: level / 100),
               ),
               child: IconButton(
-                onPressed: () {
-                  _startSpeechToText();
-                },
+                onPressed: isEnable ? _startSpeechToText : null,
                 icon: const Icon(Icons.mic),
               ),
             ),
