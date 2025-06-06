@@ -135,12 +135,14 @@ class MyApp extends StatelessWidget {
         final lightColorScheme = (lightDynamic != null && isDynamicColor)
             ? lightDynamic
             : ColorScheme.fromSeed(
+                primary: primaryColor,
                 seedColor: primaryColor,
                 brightness: Brightness.light,
               );
         final darkColorScheme = (darkDynamic != null && isDynamicColor)
             ? darkDynamic
             : ColorScheme.fromSeed(
+                primary: primaryColor,
                 seedColor: primaryColor,
                 brightness: Brightness.dark,
               );

@@ -54,6 +54,7 @@ class Page extends StatelessWidget {
             AppImages.appLogo,
             width: 200,
             height: 200,
+            fit: BoxFit.cover,
           ),
         ),
       ) // This trailing comma makes auto-formatting nicer for build methods.
