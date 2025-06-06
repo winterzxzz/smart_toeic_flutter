@@ -46,56 +46,12 @@ class _SideQuestionState extends State<SideQuestion> {
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             scrollDirection: Axis.vertical,
             itemScrollController: _cubit.itemScrollController,
-            itemCount: questions.length + 1,
+            itemPositionsListener: _cubit.itemPositionListener,
+            itemCount: questions.length,
             itemBuilder: (context, index) {
-              if (index == 0) {
-                return BlocBuilder<PracticeTestCubit, PracticeTestState>(
-                  buildWhen: (previous, current) {
-                    return previous.parts != current.parts ||
-                        previous.focusPart != current.focusPart;
-                  },
-                  builder: (context, state) {
-                    return Container(
-                      height: 38,
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.parts.length,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(width: 16),
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            _cubit.setFocusPart(state.parts[index]);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: state.parts[index].numValue ==
-                                      state.focusPart.numValue
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? AppColors.backgroundDarkSub
-                                      : AppColors.backgroundLightSub,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(state.parts[index].name,
-                                style: TextStyle(
-                                    color: state.parts[index].numValue ==
-                                            state.focusPart.numValue
-                                        ? Colors.white
-                                        : Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.white
-                                            : Colors.black)),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }
-              return QuestionWidget(question: questions[index - 1]);
+              return QuestionWidget(
+                  key: Key(questions[index].id.toString()),
+                  question: questions[index]);
             },
           );
         },
