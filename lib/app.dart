@@ -131,44 +131,44 @@ class MyApp extends StatelessWidget {
     required bool isDynamicColor,
   }) {
     return DynamicColorBuilder(
-        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-      ColorScheme? lightColorScheme;
-      ColorScheme? darkColorScheme;
-      if (lightDynamic != null && darkDynamic != null && isDynamicColor) {
-        lightColorScheme = lightDynamic;
-        darkColorScheme = darkDynamic;
-      } else {
-        lightColorScheme = ColorScheme.fromSeed(
-          seedColor: primaryColor,
-          brightness: Brightness.light,
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        final lightColorScheme = (lightDynamic != null && isDynamicColor)
+            ? lightDynamic
+            : ColorScheme.fromSeed(
+                seedColor: primaryColor,
+                brightness: Brightness.light,
+              );
+        final darkColorScheme = (darkDynamic != null && isDynamicColor)
+            ? darkDynamic
+            : ColorScheme.fromSeed(
+                seedColor: primaryColor,
+                brightness: Brightness.dark,
+              );
+
+        return ToastificationWrapper(
+          child: MaterialApp.router(
+            title: AppConfigs.appName,
+            debugShowCheckedModeBanner: false,
+            themeMode: theme,
+            theme: AppThemes(
+              brightness: Brightness.light,
+            ).theme.copyWith(colorScheme: lightColorScheme),
+            darkTheme: AppThemes(
+              brightness: Brightness.dark,
+            ).theme.copyWith(colorScheme: darkColorScheme),
+            routerConfig: AppRouter.router,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              S.delegate,
+            ],
+            locale: locale,
+            supportedLocales: S.delegate.supportedLocales,
+          ),
         );
-        darkColorScheme = ColorScheme.fromSeed(
-            seedColor: primaryColor, brightness: Brightness.dark);
-      }
-      return ToastificationWrapper(
-        child: MaterialApp.router(
-          title: AppConfigs.appName,
-          debugShowCheckedModeBanner: false,
-          theme: AppThemes(
-            brightness:
-                theme == ThemeMode.dark ? Brightness.dark : Brightness.light,
-          ).theme.copyWith(
-                colorScheme: theme == ThemeMode.dark
-                    ? darkColorScheme
-                    : lightColorScheme,
-              ),
-          routerConfig: AppRouter.router,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            S.delegate,
-          ],
-          locale: locale,
-          supportedLocales: S.delegate.supportedLocales,
-        ),
-      );
-    });
+      },
+    );
   }
 
   void _hideKeyboard(BuildContext context) {

@@ -63,8 +63,8 @@ class _VoiceBarWavePainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.yellow.withOpacity(edgeFade),
-            Colors.green.withOpacity(edgeFade),
+            Colors.yellow.withValues(alpha: edgeFade),
+            Colors.green.withValues(alpha: edgeFade),
           ],
         ).createShader(barRect)
         ..style = PaintingStyle.fill;
