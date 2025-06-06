@@ -31,8 +31,8 @@ class HomeItemTask extends StatelessWidget {
             height: 90,
             width: 80,
             decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(8),
-              color: theme.appBarTheme.backgroundColor,
               boxShadow: [
                 BoxShadow(
                   color: AppColors.backgroundBlur.withValues(alpha: 0.1),
@@ -49,20 +49,22 @@ class HomeItemTask extends StatelessWidget {
                 children: [
                   const Spacer(),
                   SvgPicture.asset(
-                      width: 32,
-                      height: 32,
-                      homeItemTaskModel.image,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.primary,
-                        BlendMode.srcIn,
-                      )),
+                    width: 32,
+                    height: 32,
+                    homeItemTaskModel.image,
+                    colorFilter: ColorFilter.mode(
+                      theme.colorScheme.primary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   const Spacer(),
                   if (homeItemTaskModel.progress != null)
                     LinearProgressIndicator(
                       value: homeItemTaskModel.progress,
                       borderRadius: BorderRadius.circular(8),
-                      color: AppColors.primary,
-                      backgroundColor: AppColors.primary.withValues(alpha: 0.3),
+                      color: theme.colorScheme.primary,
+                      backgroundColor:
+                          theme.colorScheme.primary.withValues(alpha: 0.3),
                     ),
                 ],
               ),
@@ -72,9 +74,7 @@ class HomeItemTask extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           homeItemTaskModel.title,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: AppColors.textBlack,
-          ),
+          style: theme.textTheme.bodySmall,
         ),
       ],
     );

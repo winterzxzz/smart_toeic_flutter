@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/ui_models/home_item_task_model.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_item_task.dart';
 
 class HomeSectionTask extends StatelessWidget {
@@ -22,7 +21,6 @@ class HomeSectionTask extends StatelessWidget {
         Text(
           sectionTitle,
           style: theme.textTheme.titleMedium?.copyWith(
-            color: AppColors.textBlack,
             fontWeight: FontWeight.bold,
           ),
         ),

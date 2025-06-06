@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_section_task.dart';
 
@@ -42,12 +41,10 @@ class Page extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primary,
         centerTitle: true,
         title: Text(
           S.current.app_name,
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textWhite,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -60,8 +57,8 @@ class Page extends StatelessWidget {
               AppImages.icPremium,
               width: 24,
               height: 24,
-              colorFilter: const ColorFilter.mode(
-                AppColors.textWhite,
+              colorFilter: ColorFilter.mode(
+                theme.colorScheme.primary,
                 BlendMode.srcIn,
               ),
             ),
