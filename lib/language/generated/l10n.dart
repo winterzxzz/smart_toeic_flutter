@@ -1340,10 +1340,10 @@ class S {
     );
   }
 
-  /// `Matching Word`
+  /// `MatchinExplanationg Word`
   String get matching_word {
     return Intl.message(
-      'Matching Word',
+      'MatchinExplanationg Word',
       name: 'matching_word',
       desc: '',
       args: [],
@@ -1615,6 +1615,256 @@ class S {
     return Intl.message(
       'Update Error',
       name: 'update_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save_button {
+    return Intl.message(
+      'Save',
+      name: 'save_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get title {
+    return Intl.message(
+      'Title',
+      name: 'title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add new word`
+  String get add_new_word {
+    return Intl.message(
+      'Add new word',
+      name: 'add_new_word',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Practice flashcards`
+  String get practice_flashcards {
+    return Intl.message(
+      'Practice flashcards',
+      name: 'practice_flashcards',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View randomly`
+  String get view_randomly {
+    return Intl.message(
+      'View randomly',
+      name: 'view_randomly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No words in this flashcard set`
+  String get no_words_in_flash_card {
+    return Intl.message(
+      'No words in this flashcard set',
+      name: 'no_words_in_flash_card',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this flashcard?`
+  String get are_you_sure_delete_flashcard {
+    return Intl.message(
+      'Are you sure you want to delete this flashcard?',
+      name: 'are_you_sure_delete_flashcard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Translate`
+  String get translate {
+    return Intl.message(
+      'Translate',
+      name: 'translate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Definition`
+  String get definition {
+    return Intl.message(
+      'Definition',
+      name: 'definition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example Sentences`
+  String get example_sentences {
+    return Intl.message(
+      'Example Sentences',
+      name: 'example_sentences',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note`
+  String get note {
+    return Intl.message(
+      'Note',
+      name: 'note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Word`
+  String get word {
+    return Intl.message(
+      'Word',
+      name: 'word',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Meaning`
+  String get meaning {
+    return Intl.message(
+      'Meaning',
+      name: 'meaning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example`
+  String get example {
+    return Intl.message(
+      'Example',
+      name: 'example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pronunciation`
+  String get pronunciation {
+    return Intl.message(
+      'Pronunciation',
+      name: 'pronunciation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Part of speech`
+  String get part_of_speech {
+    return Intl.message(
+      'Part of speech',
+      name: 'part_of_speech',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AI is filling...`
+  String get ai_filling {
+    return Intl.message(
+      'AI is filling...',
+      name: 'ai_filling',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fill by AI`
+  String get fill_by_ai {
+    return Intl.message(
+      'Fill by AI',
+      name: 'fill_by_ai',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide Answer`
+  String get hide_answer {
+    return Intl.message(
+      'Hide Answer',
+      name: 'hide_answer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show Answer`
+  String get show_answer {
+    return Intl.message(
+      'Show Answer',
+      name: 'show_answer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Previous`
+  String get previous {
+    return Intl.message(
+      'Previous',
+      name: 'previous',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click to reveal definition`
+  String get click_to_reveal {
+    return Intl.message(
+      'Click to reveal definition',
+      name: 'click_to_reveal',
       desc: '',
       args: [],
     );

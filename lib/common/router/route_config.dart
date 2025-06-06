@@ -12,6 +12,7 @@ import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
+import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_page.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
@@ -22,7 +23,6 @@ import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_det
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_page.dart';
 import 'package:toeic_desktop/ui/page/setting/setting_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_page.dart';
-import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_practice_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_result.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_page.dart';
 import 'package:toeic_desktop/ui/page/login/login_page.dart';
@@ -52,7 +52,7 @@ class AppRouter {
               state.uri.path == modeTest ||
               state.uri.path == flashCardDetail ||
               state.uri.path == flashCardLearningDetail ||
-              state.uri.path == flashCardPractive ||
+              state.uri.path == flashCardLearnFlip ||
               state.uri.path == flashCardQuizz ||
               state.uri.path == flashCardQuizzResult ||
               state.uri.path == resultTest ||
@@ -82,7 +82,7 @@ class AppRouter {
   static const String upgradeAccount = "/upgrade-account";
   static const String flashCardDetail = "/flash-card-detail";
   static const String flashCardLearningDetail = "/flash-card-learning-detail";
-  static const String flashCardPractive = "/flash-card-practive";
+  static const String flashCardLearnFlip = "/flash-card-learn-flip";
   static const String modeTest = "/mode-test";
   static const String practiceTest = "/practice-test";
   static const String flashCardQuizz = "/flash-card-quizz";
@@ -181,13 +181,13 @@ class AppRouter {
       },
     ),
     GoRoute(
-      name: flashCardPractive,
-      path: flashCardPractive,
+      name: flashCardLearnFlip,
+      path: flashCardLearnFlip,
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
         final title = args['title'] as String;
         final flashCards = args['flashCards'] as List<FlashCard>;
-        return FlashCardPracticePage(
+        return FlashCardLearnFlipPage(
           title: title,
           flashCards: flashCards,
         );

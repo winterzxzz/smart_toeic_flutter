@@ -63,7 +63,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return BlocConsumer<TranscriptTestDetailCubit, TranscriptTestDetailState>(
       listenWhen: (previous, current) =>
           previous.loadStatus != current.loadStatus ||

@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
@@ -31,7 +32,6 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       body: BlocListener<FlashCardCubit, FlashCardState>(
         listenWhen: (previous, current) =>
@@ -49,30 +49,17 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   const SizedBox(height: 16),
-                  InkWell(
-                    onTap: () => showCreateSetFlashCardBottomSheet(context),
-                    child: Container(
-                      width: double.infinity,
-                      height: 48,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: theme.brightness == Brightness.dark
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.add, size: 16),
-                          const SizedBox(width: 8),
-                          Text(
-                            S.current.create_new_flashcard,
-                            style: theme.textTheme.titleSmall,
-                          ),
-                        ],
-                      ),
+                  CustomButton(
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const FaIcon(FontAwesomeIcons.plus, size: 16),
+                        const SizedBox(width: 8),
+                        Text(S.current.create_new_flashcard),
+                      ],
                     ),
+                    onPressed: () => showCreateSetFlashCardBottomSheet(context),
                   ),
                   const SizedBox(height: 16),
                 ]),

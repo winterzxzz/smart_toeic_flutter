@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 
 class FlashcardFront extends StatelessWidget {
   final String word;
@@ -21,12 +21,16 @@ class FlashcardFront extends StatelessWidget {
         children: [
           Text(
             word,
-            style: theme.textTheme.headlineMedium,
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: theme.colorScheme.onPrimary,
+            ),
             textAlign: TextAlign.center,
           ),
           Text(
-            'Click to reveal definition',
-            style: theme.textTheme.bodyMedium,
+            S.current.click_to_reveal,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onPrimary,
+            ),
           ),
         ],
       ),

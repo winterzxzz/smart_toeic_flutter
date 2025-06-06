@@ -29,7 +29,7 @@ class AppThemes {
   }
 
   Color get backgroundColor => brightness == Brightness.dark
-      ? AppColors.backgroundDarkSub
+      ? AppColors.backgroundDarkSub.withValues(alpha: 0.5)
       : AppColors.backgroundLightSub;
 
   Color get cardColor => brightness == Brightness.dark
@@ -175,7 +175,7 @@ class TElevatedButtonTheme {
       disabledBackgroundColor: AppColors.backgroundLight.withValues(alpha: 0.5),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       textStyle: const TextStyle(
-          color: AppColors.textBlack, fontWeight: FontWeight.w600),
+          color: AppColors.textWhite, fontWeight: FontWeight.w600),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
   );

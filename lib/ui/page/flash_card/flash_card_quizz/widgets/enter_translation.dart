@@ -4,6 +4,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 class EnterTranslation extends StatefulWidget {
@@ -18,11 +19,13 @@ class EnterTranslation extends StatefulWidget {
 class _EnterTranslationState extends State<EnterTranslation> {
   late final TextEditingController _controller;
   bool isCheck = false;
+  late final FlashCardQuizzCubit _cubit;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _cubit = context.read<FlashCardQuizzCubit>();
   }
 
   @override
@@ -33,6 +36,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       key: widget.key,
@@ -41,11 +45,16 @@ class _EnterTranslationState extends State<EnterTranslation> {
           style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              TextSpan(text: S.current.enter_english_word),
+              TextSpan(
+                text: S.current.enter_english_word,
+                style: theme.textTheme.bodyLarge,
+              ),
               TextSpan(
                 text: " '${widget.fcLearning.flashcardId!.translation}'",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, color: AppColors.error),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.error,
+                ),
               ),
               const TextSpan(text: ' ?'),
             ],
@@ -72,7 +81,8 @@ class _EnterTranslationState extends State<EnterTranslation> {
         const SizedBox(height: 32),
         SizedBox(
           width: double.infinity,
-          child: ElevatedButton(
+          height: 50,
+          child: CustomButton(
             onPressed: () {
               setState(() {
                 isCheck = true;
@@ -80,7 +90,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
               FocusScope.of(context).unfocus();
               Future.delayed(const Duration(milliseconds: 100), () {
                 if (context.mounted) {
-                  context.read<FlashCardQuizzCubit>().answer(
+                  _cubit.answer(
                       widget.fcLearning.flashcardId!.word,
                       _controller.text.toLowerCase() ==
                           widget.fcLearning.flashcardId!.word.toLowerCase());
@@ -102,7 +112,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
                   const SizedBox(height: 8),
                   Text(
                     '${S.current.answer}: ${widget.fcLearning.flashcardId!.word}',
-                    style: const TextStyle(fontSize: 18),
+                    style: theme.textTheme.bodyLarge,
                   ),
                 ],
               ],

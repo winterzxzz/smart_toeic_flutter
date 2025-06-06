@@ -4,15 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/widgets/flash_card_item_back.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/widgets/flash_card_item_front.dart';
 
-class FlashCardPracticePage extends StatelessWidget {
-  const FlashCardPracticePage({
+class FlashCardLearnFlipPage extends StatelessWidget {
+  const FlashCardLearnFlipPage({
     super.key,
     required this.title,
     required this.flashCards,
@@ -31,8 +33,21 @@ class FlashCardPracticePage extends StatelessWidget {
   }
 }
 
-class Page extends StatelessWidget {
+class Page extends StatefulWidget {
   const Page({super.key});
+
+  @override
+  State<Page> createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  late final FlashCardLearnFlipCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<FlashCardLearnFlipCubit>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +72,7 @@ class Page extends StatelessWidget {
                       (state.currentIndex + 1, state.flashCards.length),
                   builder: (context, counts) {
                     return Text(
-                      '${counts.$1}/${counts.$2} words',
+                      '${counts.$1}/${counts.$2} ${S.current.words}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textGray,
                       ),
@@ -93,8 +108,7 @@ class Page extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: GestureDetector(
-                      onTap: () =>
-                          context.read<FlashCardLearnFlipCubit>().flipCard(),
+                      onTap: () => _cubit.flipCard(),
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
@@ -105,9 +119,7 @@ class Page extends StatelessWidget {
                               : RotateSide.left,
                           onTapFlipping: false,
                           axis: FlipAxis.vertical,
-                          controller: context
-                              .read<FlashCardLearnFlipCubit>()
-                              .controller,
+                          controller: _cubit.controller,
                           frontWidget: FlashcardFront(
                             key: const ValueKey('front'),
                             word: state.flashCards[state.currentIndex].word,
@@ -127,73 +139,63 @@ class Page extends StatelessWidget {
                   child: Column(
                     children: [
                       // Show Answer button
-                      SizedBox(
-                        width: double.infinity,
-                        height: 48,
-                        child: ElevatedButton.icon(
-                          onPressed: () => context
-                              .read<FlashCardLearnFlipCubit>()
-                              .flipCard(),
-                          icon: Icon(
-                            state.isFlipped
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          label: Text(
-                            state.isFlipped ? 'Hide Answer' : 'Show Answer',
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                      CustomButton(
+                        height: 50,
+                        onPressed: () => _cubit.flipCard(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              state.isFlipped
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                             ),
-                          ),
+                            const SizedBox(width: 8),
+                            Text(
+                              state.isFlipped
+                                  ? S.current.hide_answer
+                                  : S.current.show_answer,
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
                       // Navigation buttons
                       Row(
                         children: [
                           Expanded(
-                            child: SizedBox(
-                              height: 48,
-                              child: ElevatedButton.icon(
-                                onPressed: state.currentIndex > 0
-                                    ? () => context
-                                        .read<FlashCardLearnFlipCubit>()
-                                        .previousCard()
-                                    : null,
-                                icon: const Icon(Icons.arrow_back),
-                                label: const Text('Previous'),
-                                style: ElevatedButton.styleFrom(
-                                  disabledBackgroundColor:
-                                      AppColors.gray1.withValues(alpha: 0.5),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                            child: CustomButton(
+                              height: 50,
+                              onPressed: state.currentIndex > 0
+                                  ? () => _cubit.previousCard()
+                                  : null,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.arrow_back_ios_new_rounded),
+                                  const SizedBox(width: 8),
+                                  Text(S.current.previous),
+                                ],
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              height: 48,
-                              child: ElevatedButton.icon(
-                                onPressed: state.currentIndex <
-                                        state.flashCards.length - 1
-                                    ? () => context
-                                        .read<FlashCardLearnFlipCubit>()
-                                        .nextCard()
-                                    : null,
-                                icon: const Icon(Icons.arrow_forward),
-                                label: const Text('Next'),
-                                style: ElevatedButton.styleFrom(
-                                  disabledBackgroundColor:
-                                      AppColors.gray1.withValues(alpha: 0.5),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                            child: CustomButton(
+                              height: 50,
+                              onPressed: state.currentIndex <
+                                      state.flashCards.length - 1
+                                  ? () => _cubit.nextCard()
+                                  : null,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(S.current.next),
+                                  const SizedBox(width: 8),
+                                  const Icon(Icons.arrow_forward_ios_rounded),
+                                ],
                               ),
                             ),
                           ),

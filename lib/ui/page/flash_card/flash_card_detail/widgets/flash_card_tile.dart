@@ -4,6 +4,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
@@ -118,7 +119,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                             case 'edit':
                               Utils.showModalBottomSheetForm(
                                 context: context,
-                                title: 'Edit Flashcard',
+                                title: S.current.edit,
                                 child: BlocProvider.value(
                                   value: _cubit,
                                   child: FlashCardDetailForm(
@@ -140,8 +141,8 @@ class _FlashcardTileState extends State<FlashcardTile>
                             case 'delete':
                               showConfirmDialog(
                                 context,
-                                'Delete Flashcard',
-                                'Are you sure you want to delete this flashcard?',
+                                S.current.delete,
+                                S.current.are_you_sure_delete_flashcard,
                                 () {
                                   context
                                       .read<FlashCardDetailCubit>()
@@ -164,7 +165,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'Edit',
+                                  S.current.edit,
                                   style: theme.textTheme.bodyMedium,
                                 ),
                               ],
@@ -181,7 +182,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'Delete',
+                                  S.current.delete,
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     color: theme.colorScheme.error,
                                   ),
@@ -209,7 +210,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                     children: [
                       Expanded(
                         child: Text(
-                          'Translate: ${widget.flashcard.translation}',
+                          '${S.current.translate}: ${widget.flashcard.translation}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(fontSize: 16),
@@ -234,15 +235,21 @@ class _FlashcardTileState extends State<FlashcardTile>
                       children: [
                         if (isExpanded) ...[
                           const SizedBox(height: 8),
-                          const Text(
-                            'Definition:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Text(
+                            '${S.current.definition}:',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Text(
                             widget.flashcard.definition,
                           ),
-                          const Text('Example Sentences:',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(
+                            '${S.current.example_sentences}:',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           if (widget.flashcard.exampleSentence.isNotEmpty) ...[
                             const SizedBox(height: 8),
                             ...widget.flashcard.exampleSentence
@@ -252,8 +259,12 @@ class _FlashcardTileState extends State<FlashcardTile>
                                     )),
                           ],
                           const SizedBox(height: 8),
-                          const Text('Note:',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(
+                            '${S.current.note}:',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Text(widget.flashcard.note),
                         ]
                       ],
@@ -269,16 +280,21 @@ class _FlashcardTileState extends State<FlashcardTile>
   }
 
   Widget _buildPronunciation(String pronunciation, String label) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Text(
           '$label:',
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(width: 4),
         Text(
           pronunciation,
-          style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ],
     );

@@ -120,7 +120,6 @@ class _PageState extends State<Page> {
                               state.loadStatus == LoadStatus.loading,
                           builder: (context, isLoading) {
                             return CustomButton(
-                              text: S.current.login_button,
                               onPressed: _isLoginButtonEnabled()
                                   ? () {
                                       context.read<LoginCubit>().login(
@@ -130,6 +129,7 @@ class _PageState extends State<Page> {
                                     }
                                   : null,
                               isLoading: isLoading,
+                              child: Text(S.current.login_button),
                             );
                           },
                         ),

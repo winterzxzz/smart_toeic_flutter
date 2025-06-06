@@ -113,7 +113,6 @@ class _PageState extends State<Page> {
                                 state.loadStatus == LoadStatus.loading,
                             builder: (context, isLoading) {
                               return CustomButton(
-                                text: S.current.send_button,
                                 onPressed: _isResetPasswordButtonEnabled()
                                     ? () {
                                         context
@@ -124,6 +123,7 @@ class _PageState extends State<Page> {
                                       }
                                     : null,
                                 isLoading: isLoading,
+                                child: Text(S.current.send_button),
                               );
                             },
                           ),

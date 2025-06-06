@@ -132,7 +132,6 @@ class _PageState extends State<Page> {
                               state.loadDataStatus == LoadStatus.loading,
                           builder: (context, isLoading) {
                             return CustomButton(
-                              text: S.current.register_button,
                               onPressed: _isRegisterButtonEnabled()
                                   ? () {
                                       context.read<RegisterCubit>().register(
@@ -143,6 +142,7 @@ class _PageState extends State<Page> {
                                     }
                                   : null,
                               isLoading: isLoading,
+                              child: Text(S.current.register_button),
                             );
                           },
                         ),

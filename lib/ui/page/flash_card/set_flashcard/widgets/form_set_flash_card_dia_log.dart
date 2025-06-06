@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 enum FormFlashCardType {
   create,
@@ -55,6 +57,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
   @override
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -62,9 +65,11 @@ class _FormFlashCardState extends State<FormFlashCard> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Title',
-              style: TextStyle(fontWeight: FontWeight.w500),
+            Text(
+              S.current.title,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -76,16 +81,18 @@ class _FormFlashCardState extends State<FormFlashCard> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.primary),
+                  borderSide: BorderSide(color: theme.colorScheme.primary),
                 ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Description',
-              style: TextStyle(fontWeight: FontWeight.w500),
+            Text(
+              S.current.description,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -97,7 +104,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.primary),
+                  borderSide: BorderSide(color: theme.colorScheme.primary),
                 ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -111,12 +118,12 @@ class _FormFlashCardState extends State<FormFlashCard> {
                 Expanded(
                   child: TextButton(
                     onPressed: () => GoRouter.of(context).pop(),
-                    child: const Text('Cancel'),
+                    child: Text(S.current.cancel),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: ElevatedButton(
+                  child: CustomButton(
                     onPressed: () {
                       widget.args.onSave(
                         titleController.text,
@@ -124,7 +131,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
                       );
                       GoRouter.of(context).pop();
                     },
-                    child: const Text('Save'),
+                    child: Text(S.current.save_button),
                   ),
                 ),
               ],

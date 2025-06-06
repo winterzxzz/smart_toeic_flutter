@@ -9,6 +9,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
@@ -48,6 +49,7 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: BlocConsumer<FlashCardDetailLearningCubit,
           FlashCardDetailLearningState>(
@@ -69,9 +71,7 @@ class _PageState extends State<Page> {
                   builder: (context, flashCards) {
                     return Text(
                       '${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} ${S.current.words})',
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: theme.textTheme.titleMedium,
                     );
                   },
                 ),
@@ -92,7 +92,8 @@ class _PageState extends State<Page> {
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
                       const SizedBox(height: 24),
-                      _buildActionButton(
+                      CustomButton(
+                        height: 50,
                         onPressed: () {
                           GoRouter.of(context).pushNamed(
                             AppRouter.flashCardQuizz,
@@ -102,8 +103,15 @@ class _PageState extends State<Page> {
                             },
                           );
                         },
-                        icon: Icons.play_circle_outline_rounded,
-                        label: S.current.practive_flashcard,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.play_circle_outline_rounded),
+                            const SizedBox(width: 8),
+                            Text(S.current.practive_flashcard),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 16),
                       ...state.flashCards.map((flashcard) =>
@@ -118,27 +126,7 @@ class _PageState extends State<Page> {
     );
   }
 
-  Widget _buildActionButton({
-    required VoidCallback onPressed,
-    required IconData icon,
-    required String label,
-  }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(icon),
-          const SizedBox(width: 8),
-          Text(label),
-        ],
-      ),
-    );
-  }
+
 
   void _showStatusInfo() {
     final isMobile = MediaQuery.of(context).size.width < 600;

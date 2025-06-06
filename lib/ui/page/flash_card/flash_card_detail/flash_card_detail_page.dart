@@ -5,8 +5,10 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
@@ -82,7 +84,7 @@ class _PageState extends State<Page> {
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      '${state.flashCards.length} words',
+                      '${state.flashCards.length} ${S.current.words}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textGray,
                       ),
@@ -95,7 +97,7 @@ class _PageState extends State<Page> {
                     onPressed: () {
                       Utils.showModalBottomSheetForm(
                         context: context,
-                        title: 'Add new word',
+                        title: S.current.add_new_word,
                         child: BlocProvider.value(
                           value: _cubit,
                           child: FlashCardDetailForm(
@@ -123,7 +125,7 @@ class _PageState extends State<Page> {
                         _buildActionButton(
                           context,
                           icon: Icons.play_circle_outline_rounded,
-                          label: 'Practice flashcards',
+                          label: S.current.practice_flashcards,
                           onPressed: () {
                             GoRouter.of(context).pushNamed(
                               AppRouter.flashCardQuizz,
@@ -135,10 +137,10 @@ class _PageState extends State<Page> {
                         _buildActionButton(
                           context,
                           icon: Icons.shuffle,
-                          label: 'View randomly',
+                          label: S.current.view_randomly,
                           onPressed: () {
                             GoRouter.of(context).pushNamed(
-                              AppRouter.flashCardPractive,
+                              AppRouter.flashCardLearnFlip,
                               extra: {
                                 'title': widget.title,
                                 'flashCards': _cubit.state.flashCards,
@@ -161,12 +163,13 @@ class _PageState extends State<Page> {
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   sliver: state.flashCards.isEmpty
-                      ? const SliverToBoxAdapter(
+                      ? SliverToBoxAdapter(
                           child: Center(
                             child: Column(
                               children: [
-                                SizedBox(height: 100),
-                                Text('No words in this flashcard set'),
+                                const SizedBox(height: 100),
+                                Text(S.current.no_words_in_flash_card,
+                                    style: theme.textTheme.bodyMedium),
                               ],
                             ),
                           ),
@@ -192,33 +195,15 @@ class _PageState extends State<Page> {
     required String label,
     required VoidCallback onPressed,
   }) {
-    final theme = Theme.of(context);
-    return SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 16),
-            const SizedBox(width: 12),
-            Text(
-              label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                height: 0.8,
-                color: theme.colorScheme.onPrimary,
-              ),
-            ),
-          ],
-        ),
+    return CustomButton(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 16),
+          const SizedBox(width: 12),
+          Text(label),
+        ],
       ),
     );
   }

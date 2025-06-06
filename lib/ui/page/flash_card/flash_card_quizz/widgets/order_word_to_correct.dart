@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 class OrderWordToCorrect extends StatefulWidget {
@@ -19,6 +20,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
   List<String> selectedWords = [];
   bool isCheck = false;
   bool isShowAnswer = false;
+  late final FlashCardQuizzCubit _cubit;
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
       ...widget.fcLearning.flashcardId!.exampleSentence.first.split(' ')
     ];
     shuffledWords.shuffle();
+    _cubit = context.read<FlashCardQuizzCubit>();
   }
 
   @override
@@ -36,6 +39,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,15 +72,14 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.textGray,
-                  border: Border.all(color: AppColors.textGray),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  border: Border.all(color: AppColors.gray1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   word,
-                  style: const TextStyle(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textWhite,
                   ),
                 ),
               ),
@@ -116,13 +119,13 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.textWhite,
-                    border: Border.all(color: AppColors.textWhite),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    border: Border.all(color: AppColors.gray1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     word,
-                    style: const TextStyle(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -136,12 +139,13 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
           children: [
             Expanded(
               child: SizedBox(
-                child: ElevatedButton(
+                height: 50,
+                child: CustomButton(
                   onPressed: () {
                     setState(() {
                       isCheck = true;
                     });
-                    context.read<FlashCardQuizzCubit>().answer(
+                    _cubit.answer(
                         widget.fcLearning.flashcardId!.word,
                         selectedWords.join(' ').toLowerCase() ==
                             widget.fcLearning.flashcardId!.exampleSentence.first
@@ -156,14 +160,9 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
         const SizedBox(height: 32),
         Visibility(
           visible: isCheck,
-          child: Column(
-            children: [
-              const SizedBox(height: 8),
-              Text(
-                '${S.current.answer}: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
-                style: const TextStyle(fontSize: 18),
-              ),
-            ],
+          child: Text(
+            '${S.current.answer}: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
+            style: theme.textTheme.bodyMedium,
           ),
         )
       ],

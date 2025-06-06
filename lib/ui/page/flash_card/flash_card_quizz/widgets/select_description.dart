@@ -5,6 +5,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_state.dart';
@@ -53,7 +54,7 @@ class Page extends StatelessWidget {
           return SectionQuestion(
               widgetKey: widgetKey, fcLearning: fcLearning, list: list);
         }
-        return const Center(child: Text('Loading...'));
+        return Center(child: Text(S.current.loading));
       },
     );
   }
@@ -89,6 +90,7 @@ class _SectionQuestionState extends State<SectionQuestion>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       key: widget.widgetKey,
@@ -97,12 +99,21 @@ class _SectionQuestionState extends State<SectionQuestion>
           style: const TextStyle(fontSize: 18),
           TextSpan(
             children: [
-              TextSpan(text: S.current.select_description),
+              TextSpan(
+                text: S.current.select_description,
+                style: theme.textTheme.bodyLarge,
+              ),
               TextSpan(
                 text: " '${widget.fcLearning.flashcardId!.word}'",
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.error,
+                ),
               ),
-              const TextSpan(text: ' ?'),
+              TextSpan(
+                text: ' ?',
+                style: theme.textTheme.bodyLarge,
+              ),
             ],
           ),
         ),
@@ -165,7 +176,7 @@ class _SectionQuestionState extends State<SectionQuestion>
                 const SizedBox(height: 8),
                 Text(
                   '${S.current.answer}: ${widget.fcLearning.flashcardId!.definition}',
-                  style: const TextStyle(fontSize: 18),
+                  style: theme.textTheme.bodyLarge,
                 ),
               ],
             );

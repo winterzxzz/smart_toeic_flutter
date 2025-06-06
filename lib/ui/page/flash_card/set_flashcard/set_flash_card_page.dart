@@ -57,8 +57,8 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           title: Text(S.current.set_flashcard_title),
+          centerTitle: true,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(48),
             child: TabBar(

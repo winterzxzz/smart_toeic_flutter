@@ -7,7 +7,10 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_state.dart';
 
@@ -49,6 +52,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
   late final TextEditingController noteController;
   late final TextEditingController pronunciationController;
   late final TextEditingController partOfSpeechController;
+  late final FlashCardDetailCubit _cubit;
 
   @override
   void initState() {
@@ -67,6 +71,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
         TextEditingController(text: widget.args.flashCard?.pronunciation);
     partOfSpeechController = TextEditingController(
         text: widget.args.flashCard?.partOfSpeech.join(', '));
+    _cubit = context.read<FlashCardDetailCubit>();
   }
 
   @override
@@ -92,36 +97,36 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
             child: Column(
               children: [
                 FormItem(
-                  title: 'Word',
+                  title: S.current.word,
                   controller: wordController,
                   isRequired: true,
                 ),
                 FormItem(
-                  title: 'Meaning',
+                  title: S.current.meaning,
                   controller: meaningController,
                 ),
                 FormItem(
-                  title: 'Definition',
+                  title: S.current.definition,
                   controller: definitionController,
                 ),
                 FormItem(
-                  title: 'Example 1',
+                  title: '${S.current.example} 1',
                   controller: example1SentenceController,
                 ),
                 FormItem(
-                  title: 'Example 2',
+                  title: '${S.current.example} 2',
                   controller: example2SentenceController,
                 ),
                 FormItem(
-                  title: 'Note',
+                  title: S.current.note,
                   controller: noteController,
                 ),
                 FormItem(
-                  title: 'Pronunciation',
+                  title: S.current.pronunciation,
                   controller: pronunciationController,
                 ),
                 FormItem(
-                  title: 'Part of speech',
+                  title: S.current.part_of_speech,
                   controller: partOfSpeechController,
                 ),
               ],
@@ -174,38 +179,25 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
                       selector: (state) => state.user,
                       builder: (context, user) {
                         final isPremium = user?.isPremium();
-                        return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            disabledBackgroundColor:
-                                AppColors.gray1.withValues(alpha: 0.5),
-                          ),
+                        return CustomButton(
+                          height: 50,
                           onPressed: isPremium == true
                               ? isLoading
                                   ? null
                                   : () async {
-                                      context
-                                          .read<FlashCardDetailCubit>()
-                                          .getFlashCardInforByAI(
-                                              wordController.text);
+                                      _cubit.getFlashCardInforByAI(
+                                          wordController.text);
                                     }
                               : null,
                           child: isLoading
                               ? Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Theme.of(context).brightness !=
-                                                Brightness.dark
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
+                                    const LoadingCircle(
+                                      size: 20,
                                     ),
                                     const SizedBox(width: 10),
-                                    const Text('AI is filling...'),
+                                    Text(S.current.ai_filling),
                                   ],
                                 )
                               : Row(
@@ -218,7 +210,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
                                       const FaIcon(FontAwesomeIcons.robot),
                                       const SizedBox(width: 8),
                                     ],
-                                    const Text('Fill by AI'),
+                                    Text(S.current.fill_by_ai),
                                   ],
                                 ),
                         );
@@ -229,7 +221,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: ElevatedButton(
+                child: CustomButton(
                   onPressed: () {
                     final flashCardRequest = FlashCardRequest(
                       word: wordController.text,
@@ -248,7 +240,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
                     widget.args.onSave(flashCardRequest);
                     GoRouter.of(context).pop();
                   },
-                  child: const Text('Save'),
+                  child: Text(S.current.save_button),
                 ),
               ),
             ],
@@ -272,6 +264,7 @@ class FormItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -282,9 +275,8 @@ class FormItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
-                  fontSize: 12,
                 ),
                 textAlign: TextAlign.end,
               ),
@@ -303,7 +295,7 @@ class FormItem extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.gray3),
+                borderSide: BorderSide(color: theme.colorScheme.primary),
               ),
             ),
           ),

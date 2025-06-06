@@ -33,10 +33,12 @@ class _MatchingWordState extends State<MatchingWord>
   final Map<String, AnimationController> _fadeControllers = {};
   late ConfettiController _confettiController;
   final Map<String, List<Offset>> _pieces = {};
+  late final FlashCardQuizzCubit _cubit;
 
   @override
   void initState() {
     super.initState();
+    _cubit = context.read<FlashCardQuizzCubit>();
     availableWords = List.from(widget.list)..shuffle();
     availableTranslations = List.from(widget.list)..shuffle();
 
@@ -115,11 +117,9 @@ class _MatchingWordState extends State<MatchingWord>
                   .removeWhere((e) => e.flashcardId!.word == selectedWord);
             }
             if (availableWords.isEmpty && availableTranslations.isEmpty) {
-              context.read<FlashCardQuizzCubit>().answer(word, isCorrectMatch);
+              _cubit.answer(word, isCorrectMatch);
             } else {
-              context
-                  .read<FlashCardQuizzCubit>()
-                  .answer(word, isCorrectMatch, isTrigger: false);
+              _cubit.answer(word, isCorrectMatch, isTrigger: false);
             }
             matchedPairs.add(selectedWord!);
             selectedWord = null;
