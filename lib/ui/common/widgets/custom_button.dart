@@ -36,7 +36,8 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: isLoading
               ? const LoadingCircle(
-                  size: 20,
+                  size: 16,
+                  color: AppColors.textWhite,
                 )
               : child,
         ),

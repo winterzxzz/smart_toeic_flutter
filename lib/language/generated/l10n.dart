@@ -570,6 +570,246 @@ class S {
     );
   }
 
+  /// `Choose the plan that's right for you`
+  String get choose_the_plan_that_s_right_for_you {
+    return Intl.message(
+      'Choose the plan that\'s right for you',
+      name: 'choose_the_plan_that_s_right_for_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enhance your TOEIC skills with unique features`
+  String get enhance_your_toeic_skills_with_unique_features {
+    return Intl.message(
+      'Enhance your TOEIC skills with unique features',
+      name: 'enhance_your_toeic_skills_with_unique_features',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium Account`
+  String get premium_account {
+    return Intl.message(
+      'Premium Account',
+      name: 'premium_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expiration date`
+  String get expiration_date {
+    return Intl.message(
+      'Expiration date',
+      name: 'expiration_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Renew`
+  String get renew {
+    return Intl.message(
+      'Renew',
+      name: 'renew',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free Plan`
+  String get free_plan {
+    return Intl.message(
+      'Free Plan',
+      name: 'free_plan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take TOEIC tests`
+  String get take_toeic_tests {
+    return Intl.message(
+      'Take TOEIC tests',
+      name: 'take_toeic_tests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Score and save results`
+  String get score_and_save_results {
+    return Intl.message(
+      'Score and save results',
+      name: 'score_and_save_results',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create flashcard sets`
+  String get create_flashcard_sets {
+    return Intl.message(
+      'Create flashcard sets',
+      name: 'create_flashcard_sets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Access existing flashcards`
+  String get access_existing_flashcards {
+    return Intl.message(
+      'Access existing flashcards',
+      name: 'access_existing_flashcards',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Access blog`
+  String get access_blog {
+    return Intl.message(
+      'Access blog',
+      name: 'access_blog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AI auto-fill`
+  String get ai_auto_fill {
+    return Intl.message(
+      'AI auto-fill',
+      name: 'ai_auto_fill',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AI question explanations`
+  String get ai_question_explanations {
+    return Intl.message(
+      'AI question explanations',
+      name: 'ai_question_explanations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personal analytics`
+  String get personal_analytics {
+    return Intl.message(
+      'Personal analytics',
+      name: 'personal_analytics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quizzes and reminders`
+  String get quizzes_and_reminders {
+    return Intl.message(
+      'Quizzes and reminders',
+      name: 'quizzes_and_reminders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium Plan`
+  String get premium_plan {
+    return Intl.message(
+      'Premium Plan',
+      name: 'premium_plan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock all features and enhance your TOEIC preparation experience.`
+  String get premium_plan_description {
+    return Intl.message(
+      'Unlock all features and enhance your TOEIC preparation experience.',
+      name: 'premium_plan_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Still have questions?`
+  String get still_have_questions {
+    return Intl.message(
+      'Still have questions?',
+      name: 'still_have_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact us for support`
+  String get contact_us_for_support {
+    return Intl.message(
+      'Contact us for support',
+      name: 'contact_us_for_support',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact Support`
+  String get contact_support {
+    return Intl.message(
+      'Contact Support',
+      name: 'contact_support',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact Us`
+  String get contact_us {
+    return Intl.message(
+      'Contact Us',
+      name: 'contact_us',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upgrade`
+  String get upgrade {
+    return Intl.message(
+      'Upgrade',
+      name: 'upgrade',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free`
+  String get free {
+    return Intl.message(
+      'Free',
+      name: 'free',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recommend`
+  String get recommend {
+    return Intl.message(
+      'Recommend',
+      name: 'recommend',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `minute`
   String get minute {
     return Intl.message(
@@ -1045,6 +1285,46 @@ class S {
     return Intl.message(
       'Attempt Count',
       name: 'attempt_count',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `attempts`
+  String get attempts {
+    return Intl.message(
+      'attempts',
+      name: 'attempts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `level`
+  String get level {
+    return Intl.message(
+      'level',
+      name: 'level',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `min`
+  String get min {
+    return Intl.message(
+      'min',
+      name: 'min',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last time taken`
+  String get last_time_taken {
+    return Intl.message(
+      'Last time taken',
+      name: 'last_time_taken',
       desc: '',
       args: [],
     );
@@ -1865,6 +2145,276 @@ class S {
     return Intl.message(
       'Click to reveal definition',
       name: 'click_to_reveal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Analysis Score`
+  String get analysis_score {
+    return Intl.message(
+      'Analysis Score',
+      name: 'analysis_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Overall Score`
+  String get overall_score {
+    return Intl.message(
+      'Overall Score',
+      name: 'overall_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading`
+  String get reading {
+    return Intl.message(
+      'Reading',
+      name: 'reading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listening Score`
+  String get listening_score {
+    return Intl.message(
+      'Listening Score',
+      name: 'listening_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading Score`
+  String get reading_score {
+    return Intl.message(
+      'Reading Score',
+      name: 'reading_score',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listening Score Explanation`
+  String get listening_score_explanation {
+    return Intl.message(
+      'Listening Score Explanation',
+      name: 'listening_score_explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading Score Explanation`
+  String get reading_score_explanation {
+    return Intl.message(
+      'Reading Score Explanation',
+      name: 'reading_score_explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listening Score Explanation Content`
+  String get listening_score_explanation_content {
+    return Intl.message(
+      'Listening Score Explanation Content',
+      name: 'listening_score_explanation_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accuracy by Part`
+  String get accuracy_by_part {
+    return Intl.message(
+      'Accuracy by Part',
+      name: 'accuracy_by_part',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Analysis Time`
+  String get analysis_time {
+    return Intl.message(
+      'Analysis Time',
+      name: 'analysis_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `S/Question`
+  String get time_per_question {
+    return Intl.message(
+      'S/Question',
+      name: 'time_per_question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category`
+  String get category {
+    return Intl.message(
+      'Category',
+      name: 'category',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Value`
+  String get value {
+    return Intl.message(
+      'Value',
+      name: 'value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All Parts`
+  String get all_parts {
+    return Intl.message(
+      'All Parts',
+      name: 'all_parts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category Accuracy Chart`
+  String get category_accuracy_chart {
+    return Intl.message(
+      'Category Accuracy Chart',
+      name: 'category_accuracy_chart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question Types`
+  String get question_types {
+    return Intl.message(
+      'Question Types',
+      name: 'question_types',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Count`
+  String get count {
+    return Intl.message(
+      'Count',
+      name: 'count',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to submit the test?`
+  String get are_you_sure_submit_test {
+    return Intl.message(
+      'Are you sure you want to submit the test?',
+      name: 'are_you_sure_submit_test',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get submit {
+    return Intl.message(
+      'Submit',
+      name: 'submit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please wait...`
+  String get please_wait {
+    return Intl.message(
+      'Please wait...',
+      name: 'please_wait',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submitting...`
+  String get submitting {
+    return Intl.message(
+      'Submitting...',
+      name: 'submitting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Answer`
+  String get view_answer {
+    return Intl.message(
+      'View Answer',
+      name: 'view_answer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back to test page`
+  String get back_to_test_page {
+    return Intl.message(
+      'Back to test page',
+      name: 'back_to_test_page',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Correct answer`
+  String get correct_answer {
+    return Intl.message(
+      'Correct answer',
+      name: 'correct_answer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upgrade to use AI`
+  String get upgrade_to_use_ai {
+    return Intl.message(
+      'Upgrade to use AI',
+      name: 'upgrade_to_use_ai',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create answer by AI`
+  String get create_answer_by_ai {
+    return Intl.message(
+      'Create answer by AI',
+      name: 'create_answer_by_ai',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error`
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
       desc: '',
       args: [],
     );

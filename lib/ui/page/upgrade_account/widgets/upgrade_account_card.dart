@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 class UpgradeAccountCard extends StatelessWidget {
   const UpgradeAccountCard({
@@ -112,7 +114,7 @@ class UpgradeAccountCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               features[index],
-                              style: TextStyle(
+                              style: theme.textTheme.bodyMedium!.copyWith(
                                 color: textColor,
                               ),
                             ),
@@ -128,12 +130,10 @@ class UpgradeAccountCard extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: CustomButton(
+                    height: 50,
                     onPressed: null,
-                    style: ElevatedButton.styleFrom(
-                      disabledForegroundColor: AppColors.textGray,
-                    ),
-                    child: const Text('Free'),
+                    child: Text(S.current.free),
                   ),
                 )
               else
@@ -144,9 +144,10 @@ class UpgradeAccountCard extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: CustomButton(
+                        height: 50,
                         onPressed: onPressed,
-                        child: const Text('Upgrade'),
+                        child: Text(S.current.upgrade),
                       ),
                     ),
                   ),
@@ -162,20 +163,16 @@ class UpgradeAccountCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.light
-                    ? AppColors.primary
-                    : AppColors.backgroundLight,
-                borderRadius: BorderRadius.circular(8),
+                color: theme.colorScheme.primary,
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
-                'Recommend',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 10,
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                S.current.recommend,
+                style: theme.textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 10,
+                  color: AppColors.textWhite,
+                ),
               ),
             ),
           ),

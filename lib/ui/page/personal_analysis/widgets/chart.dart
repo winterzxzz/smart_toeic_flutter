@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
 
 class StackedBarChartPage extends StatefulWidget {
@@ -14,8 +15,7 @@ class StackedBarChartPage extends StatefulWidget {
 
 class _StackedBarChartPageState extends State<StackedBarChartPage> {
   int? selectedPart;
-  late TooltipBehavior _tooltipBehavior;
-  final List<Color> colors = [
+  static const List<Color> colors = [
     Colors.orange,
     Colors.teal,
     Colors.indigo,
@@ -28,84 +28,11 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
   @override
   void initState() {
     super.initState();
-    _tooltipBehavior = TooltipBehavior(
-      enable: true,
-      canShowMarker: true,
-      header: '',
-      textStyle: const TextStyle(color: Colors.white),
-      animationDuration: 150,
-      builder: (dynamic data, dynamic point, dynamic series, dynamic pointIndex,
-          dynamic seriesIndex) {
-        return Container(
-          height: 70,
-          padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 10,
-                width: 10,
-                color: colors[seriesIndex],
-              ),
-              const SizedBox(width: 10),
-              Wrap(
-                direction: Axis.vertical,
-                spacing: 10,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Category: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: colors[seriesIndex],
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' ${point.x}',
-                          style: TextStyle(
-                            color: colors[seriesIndex],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Value: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: colors[seriesIndex],
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${point.y}%',
-                          style: TextStyle(
-                            color: colors[seriesIndex],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       child: Container(
         height: 1000,
@@ -115,21 +42,21 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
             // Dropdown filter
             CustomDropdownExample<String>(
               data: [
-                'All parts',
+                S.current.all_parts,
                 ...List.generate(
                   7,
                   (index) => 'Part ${index + 1}',
                 ),
               ],
               dataString: [
-                'All parts',
+                S.current.all_parts,
                 ...List.generate(
                   7,
                   (index) => 'Part ${index + 1}',
                 ),
               ],
               onChanged: (value) {
-                if (value == 'All parts') {
+                if (value == S.current.all_parts) {
                   setState(() {
                     selectedPart = null;
                   });
@@ -147,24 +74,26 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
                 enableSideBySideSeriesPlacement: true,
                 enableAxisAnimation: true,
                 enableMultiSelection: true,
-                title: const ChartTitle(
-                  text: 'Category Accuracy Chart',
-                  textStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                title: ChartTitle(
+                  text: S.current.category_accuracy_chart,
+                  textStyle: theme.textTheme.titleLarge,
                 ),
                 legend: const Legend(
                     isVisible: true, position: LegendPosition.bottom),
-                primaryXAxis: const CategoryAxis(
-                  title: AxisTitle(text: 'Question Types'),
+                primaryXAxis: CategoryAxis(
+                  title: AxisTitle(
+                    text: S.current.question_types,
+                    textStyle: theme.textTheme.bodyMedium,
+                  ),
                 ),
-                primaryYAxis: const NumericAxis(
-                  title: AxisTitle(text: 'Count'),
+                primaryYAxis: NumericAxis(
+                  title: AxisTitle(
+                    text: S.current.count,
+                    textStyle: theme.textTheme.bodyMedium,
+                  ),
                   interval: 25,
                 ),
                 series: _buildSeries(),
-                tooltipBehavior: _tooltipBehavior,
               ),
             ),
           ],
@@ -234,7 +163,6 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
           yValueMapper: (ChartData data, _) => data.values[index],
           color: colors[index],
           name: 'Part ${index + 1}',
-          enableTooltip: true,
         ),
       );
     }

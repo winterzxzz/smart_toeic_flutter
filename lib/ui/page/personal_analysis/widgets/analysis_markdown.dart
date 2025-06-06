@@ -20,7 +20,7 @@ class AnalysisMarkdown extends StatelessWidget {
 
     return Card(
       child: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Markdown(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

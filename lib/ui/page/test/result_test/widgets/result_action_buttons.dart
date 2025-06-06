@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 class ResultActionButtons extends StatelessWidget {
   const ResultActionButtons({super.key, required this.resultModel});
@@ -14,21 +14,22 @@ class ResultActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 18),
-            backgroundColor: AppColors.primary,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            elevation: 2,
-          ),
-          icon: const FaIcon(FontAwesomeIcons.eye, color: Colors.white),
-          label: const Text(
-            'View Answer',
-            style: TextStyle(fontSize: 16, color: Colors.white),
+        CustomButton(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const FaIcon(FontAwesomeIcons.eye),
+              const SizedBox(width: 8),
+              Text(
+                S.current.view_answer,
+              ),
+            ],
           ),
           onPressed: () {
             GoRouter.of(context).pushReplacementNamed(
@@ -44,22 +45,24 @@ class ResultActionButtons extends StatelessWidget {
           },
         ),
         const SizedBox(height: 16),
-        OutlinedButton.icon(
-          style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 18),
-            side: const BorderSide(color: AppColors.textBlack, width: 1.5),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        SizedBox(
+          height: 50,
+          child: OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: theme.colorScheme.onSurface, width: 1.5),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+            ),
+            icon: FaIcon(FontAwesomeIcons.arrowRotateLeft,
+                size: 16, color: theme.colorScheme.onSurface),
+            label: Text(
+              S.current.back_to_test_page,
+              style: theme.textTheme.bodyMedium,
+            ),
+            onPressed: () {
+              GoRouter.of(context).pop();
+            },
           ),
-          icon: const FaIcon(FontAwesomeIcons.arrowRotateLeft,
-              color: AppColors.textBlack),
-          label: const Text(
-            'Back to test page',
-            style: TextStyle(fontSize: 16, color: AppColors.textBlack),
-          ),
-          onPressed: () {
-            GoRouter.of(context).pop();
-          },
         ),
       ],
     );

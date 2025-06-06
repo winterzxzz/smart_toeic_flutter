@@ -5,9 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question_explain.dart';
@@ -24,7 +28,13 @@ class QuestionInfoWidget extends StatefulWidget {
 }
 
 class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
-  bool isLoading = false;
+  late final PracticeTestCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = context.read<PracticeTestCubit>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +90,8 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                       activeColor:
                                           Theme.of(context).colorScheme.primary,
                                       onChanged: (value) {
-                                        context
-                                            .read<PracticeTestCubit>()
-                                            .setUserAnswer(
-                                                widget.question, value!);
+                                        cubit.setUserAnswer(
+                                            widget.question, value!);
                                       },
                                     ),
                                   ),
@@ -99,9 +107,10 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   ),
                                 ),
                                 if (option.content
-                                    .toString()
-                                    .trim()
-                                    .isNotEmpty) ...[
+                                        .toString()
+                                        .trim()
+                                        .isNotEmpty &&
+                                    widget.question.part >= 3) ...[
                                   const SizedBox(width: 4),
                                   Expanded(
                                     child: Container(
@@ -184,10 +193,10 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                 children: [
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Correct answer: ${widget.question.correctAnswer}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                    '${S.current.correct_answer}: ${widget.question.correctAnswer}',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
                                       color: AppColors.success,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -207,17 +216,14 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                           GoRouter.of(context).pushNamed(
                                               AppRouter.upgradeAccount);
                                         },
-                                        child: const Text(
-                                          'Upgrade to use AI',
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        child: Text(
+                                          S.current.upgrade_to_use_ai,
+                                          style: theme.textTheme.bodyMedium,
                                         ),
                                       ),
                                       const SizedBox(height: 16),
                                       // Add upgrade button
-                                      const SizedBox(
+                                      SizedBox(
                                         width: 200,
                                         child: ElevatedButton(
                                           onPressed: null,
@@ -227,12 +233,16 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              FaIcon(
+                                              const FaIcon(
                                                 FontAwesomeIcons.robot,
                                                 size: 14,
                                               ),
-                                              SizedBox(width: 8),
-                                              Text('Tạo lời giải bằng AI'),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                S.current.create_answer_by_ai,
+                                                style:
+                                                    theme.textTheme.bodyMedium,
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -240,59 +250,50 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                     ],
                                   );
                                 } else {
-                                  return SizedBox(
-                                    width: 200,
-                                    height: 45,
-                                    child: ElevatedButton(
-                                      onPressed: isLoading
-                                          ? null
-                                          : () async {
-                                              setState(() {
-                                                isLoading = true;
-                                              });
-                                              await context
-                                                  .read<PracticeTestCubit>()
-                                                  .getExplainQuestion(
-                                                      widget.question)
-                                                  .then((_) {
-                                                setState(() {
-                                                  isLoading = false;
-                                                });
-                                              });
-                                            },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          if (isLoading)
-                                            SizedBox(
-                                              width: 20,
-                                              height: 20,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                color: Theme.of(context)
-                                                            .brightness !=
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
-                                            )
-                                          else
-                                            const FaIcon(
-                                              FontAwesomeIcons.lock,
-                                              size: 14,
+                                  return BlocSelector<PracticeTestCubit,
+                                          PracticeTestState, LoadStatus>(
+                                      selector: (state) =>
+                                          state.loadStatusExplain,
+                                      builder: (context, loadStatusExplain) {
+                                        return SizedBox(
+                                          child: CustomButton(
+                                            height: 50,
+                                            width: 200,
+                                            isLoading: loadStatusExplain ==
+                                                LoadStatus.loading,
+                                            onPressed: loadStatusExplain ==
+                                                    LoadStatus.loading
+                                                ? null
+                                                : () async {
+                                                    await cubit
+                                                        .getExplainQuestion(
+                                                            widget.question);
+                                                  },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                if (loadStatusExplain ==
+                                                    LoadStatus.loading)
+                                                  const LoadingCircle(
+                                                    size: 20,
+                                                  )
+                                                else
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.lock,
+                                                    size: 14,
+                                                  ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  S.current.create_answer_by_ai,
+                                                ),
+                                              ],
                                             ),
-                                          const SizedBox(width: 8),
-                                          const Text('Tạo lời giải bằng AI'),
-                                          const SizedBox(
-                                            height: 16,
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
+                                        );
+                                      });
                                 }
                               },
                             ),

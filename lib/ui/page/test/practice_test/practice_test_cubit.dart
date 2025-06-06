@@ -5,6 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -14,6 +15,8 @@ import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
@@ -265,8 +268,15 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     final response = await _testRepository
         .getExplainQuestion(QuestionExplainRequest(prompt: promptQuestion));
     response.fold(
-      (l) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.toString())),
+      (l) {
+        emit(state.copyWith(
+          loadStatusExplain: LoadStatus.failure,
+        ));
+        showToast(
+            title: S.current.error,
+            description: l.message,
+            type: ToastificationType.error);
+      },
       (r) {
         final newListQuestion = state.questions.map((e) {
           if (e.id == q.id) {

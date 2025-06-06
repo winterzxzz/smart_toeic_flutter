@@ -7,8 +7,6 @@ import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/full_mode_test.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/practive_test_mode.dart';
 
-
-
 class ModeTestpage extends StatefulWidget {
   const ModeTestpage({super.key, required this.test});
 
@@ -60,7 +58,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
                       '${widget.test.attemptCount} ${S.current.attempt_count}',
                       style: theme.textTheme.bodySmall,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                   ],
                   isPracticeMode
                       ? PracticeMode(testId: widget.test.id!)

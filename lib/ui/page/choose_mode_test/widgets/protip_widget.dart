@@ -14,6 +14,7 @@ class ProtipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -21,7 +22,9 @@ class ProtipWidget extends StatelessWidget {
           color: backgroundColor.withValues(alpha: 0.2)),
       child: Text(
         text,
-        style: TextStyle(color: textColor),
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: textColor,
+        ),
       ),
     );
   }

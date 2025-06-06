@@ -60,13 +60,6 @@ class _PageState extends State<Page> {
                 S.current.blogs_title,
               ),
               floating: true,
-              bottom: const PreferredSize(
-                preferredSize: Size.fromHeight(1),
-                child: Divider(
-                  height: 1,
-                  color: AppColors.gray2,
-                ),
-              ),
             ),
             SliverToBoxAdapter(
               child: Container(

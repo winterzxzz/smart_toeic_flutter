@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class AnalysisTime extends StatefulWidget {
@@ -26,39 +27,6 @@ class AnalysisTime extends StatefulWidget {
 }
 
 class _AnalysisTimeState extends State<AnalysisTime> {
-  BarChartGroupData generateBarGroup(
-    int x,
-    Color color,
-    double value,
-    double shadowValue,
-  ) {
-    final theme = Theme.of(context);
-    return BarChartGroupData(
-      x: x,
-      barRods: [
-        BarChartRodData(
-          toY: value,
-          color: color,
-          width: 10,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(6),
-            topRight: Radius.circular(6),
-          ),
-        ),
-        BarChartRodData(
-          toY: shadowValue,
-          color: theme.primaryColor.withValues(alpha: .8),
-          width: 10,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(6),
-            topRight: Radius.circular(6),
-          ),
-        ),
-      ],
-      showingTooltipIndicators: touchedGroupIndex == x ? [0] : [],
-    );
-  }
-
   int touchedGroupIndex = -1;
 
   @override
@@ -66,11 +34,11 @@ class _AnalysisTimeState extends State<AnalysisTime> {
     final theme = Theme.of(context);
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Text(
-              'Phân tích Thời gian (s/câu)',
+              '${S.current.analysis_time} (${S.current.time_per_question})',
               style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 20),
@@ -83,7 +51,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                     show: true,
                     border: Border.symmetric(
                       horizontal: BorderSide(
-                        color: AppColors.border.withValues(alpha: 0.2),
+                        color: theme.colorScheme.primary.withValues(alpha: 0.2),
                       ),
                     ),
                   ),
@@ -112,7 +80,10 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                             axisSide: meta.axisSide,
                             child: Text(
                               widget.parts[index],
-                              style: theme.textTheme.bodyMedium,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 8,
+                              ),
                             ),
                           );
                         },
@@ -158,9 +129,9 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                             fontWeight: FontWeight.bold,
                             color: rod.color,
                             fontSize: 18,
-                            shadows: const [
+                            shadows: [
                               Shadow(
-                                color: Colors.deepOrangeAccent,
+                                color: theme.colorScheme.primary,
                                 blurRadius: 12,
                               )
                             ],
@@ -189,6 +160,39 @@ class _AnalysisTimeState extends State<AnalysisTime> {
           ],
         ),
       ),
+    );
+  }
+
+  BarChartGroupData generateBarGroup(
+    int x,
+    Color color,
+    double value,
+    double shadowValue,
+  ) {
+    final theme = Theme.of(context);
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          toY: value,
+          color: color,
+          width: 10,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(6),
+            topRight: Radius.circular(6),
+          ),
+        ),
+        BarChartRodData(
+          toY: shadowValue,
+          color: theme.colorScheme.primary.withValues(alpha: .8),
+          width: 10,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(6),
+            topRight: Radius.circular(6),
+          ),
+        ),
+      ],
+      showingTooltipIndicators: touchedGroupIndex == x ? [0] : [],
     );
   }
 }

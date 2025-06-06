@@ -4,7 +4,6 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -37,12 +36,6 @@ class Page extends StatelessWidget {
             title: Text(S.current.history_test),
             floating: true,
             leading: const LeadingBackButton(),
-            bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(1),
-              child: Divider(
-                color: AppColors.gray2,
-              ),
-            ),
           ),
           BlocConsumer<HistoryTestCubit, HistoryTestState>(
             listener: (context, state) {

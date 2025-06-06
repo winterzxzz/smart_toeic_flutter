@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 
 class AnalysisScore extends StatefulWidget {
   const AnalysisScore({
@@ -26,15 +27,15 @@ class _AnalysisScoreState extends State<AnalysisScore> {
         child: Column(
           children: [
             Text(
-              'Phân tích Điểm số',
+              S.current.analysis_score,
               style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
-            _buildScoreRow('Overall Score', widget.overallScore, 990),
+            _buildScoreRow(S.current.overall_score, widget.overallScore, 990),
             const SizedBox(height: 8),
-            _buildScoreRow('Listening', widget.listenScore, 495),
+            _buildScoreRow(S.current.listening, widget.listenScore, 495),
             const SizedBox(height: 8),
-            _buildScoreRow('Reading', widget.readScore, 495),
+            _buildScoreRow(S.current.reading, widget.readScore, 495),
           ],
         ),
       ),
@@ -68,9 +69,9 @@ class _AnalysisScoreState extends State<AnalysisScore> {
         const SizedBox(height: 5),
         LinearProgressIndicator(
           value: score / maxScore,
-          backgroundColor: Colors.grey[300],
+          backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.3),
           minHeight: 20,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             bottomLeft: Radius.circular(10),

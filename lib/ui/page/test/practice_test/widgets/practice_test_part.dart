@@ -30,6 +30,7 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -47,12 +48,12 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
             crossAxisCount: 4,
             crossAxisSpacing: 8.0,
             mainAxisSpacing: 8.0,
-            mainAxisExtent: 40,
+            mainAxisExtent: 50,
           ),
           itemCount: widget.questions.length,
           itemBuilder: (context, index) {
             final isAnswered = widget.questions[index].userAnswer != null;
-            return InkWell(
+            return GestureDetector(
               onTap: () {
                 _cubit.setFocusQuestion(widget.questions[index]);
               },
@@ -61,13 +62,9 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
                     previous.questionsResult != current.questionsResult ||
                     previous.testShow != current.testShow,
                 builder: (context, state) {
-                  Color color = Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.backgroundDarkSub
-                      : AppColors.backgroundLightSub;
+                  Color color = theme.cardColor;
                   if (state.testShow == TestShow.test) {
-                    color = isAnswered
-                        ? Theme.of(context).colorScheme.primary
-                        : color;
+                    color = isAnswered ? theme.colorScheme.primary : color;
                   } else {
                     for (var questionResult in state.questionsResult) {
                       if (questionResult.questionNum ==
@@ -80,15 +77,34 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
                     }
                   }
                   return Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                    child: Icon(
-                      isAnswered ? Icons.check_circle : Icons.circle_outlined,
-                      size: 20,
-                      color: isAnswered ? Colors.white : null,
+                    color: Colors.transparent,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 30,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: color,
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              isAnswered
+                                  ? Icons.check_circle
+                                  : Icons.circle_outlined,
+                              size: 20,
+                              color: isAnswered ? Colors.white : null,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          widget.questions[index].id.toString(),
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
                     ),
                   );
                 },

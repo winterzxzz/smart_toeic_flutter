@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -42,7 +43,7 @@ class _PageState extends State<Page> {
   @override
   void initState() {
     super.initState();
-    analysisCubit = injector<AnalysisCubit>();
+    analysisCubit = context.read<AnalysisCubit>();
   }
 
   @override
@@ -111,13 +112,14 @@ class _PageState extends State<Page> {
                           builder: (context, user) {
                             final isPremium = user?.isPremium();
                             return SizedBox(
+                              height: 50,
                               width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  disabledForegroundColor:
-                                      Theme.of(context).primaryColor,
-                                ),
-                                onPressed: isPremium == true
+                              child: CustomButton(
+                                isLoading: state.suggestForStudyStatus ==
+                                    LoadStatus.loading,
+                                onPressed: isPremium == true ||
+                                        state.suggestForStudyStatus ==
+                                            LoadStatus.success
                                     ? () {
                                         analysisCubit.fetchSuggestForStudy();
                                       }

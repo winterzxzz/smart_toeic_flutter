@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
-import 'package:toeic_desktop/ui/page/test/practice_test/widgets/audio_section.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question_info_widget.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/widgets/test_audio_section.dart';
 
 class QuestionWidget extends StatelessWidget {
   const QuestionWidget({
@@ -17,7 +17,8 @@ class QuestionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (question.audio != null) AudioSection(audioUrl: question.audio!),
+          if (question.audio != null)
+            TestAudioSection(audioUrl: question.audio!),
           if (question.paragraph != null)
             Container(
               margin: const EdgeInsets.only(bottom: 8),

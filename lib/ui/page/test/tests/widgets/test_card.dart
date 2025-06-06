@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/time_utils.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 
@@ -22,14 +23,17 @@ class TestCard extends StatelessWidget {
     final theme = Theme.of(context);
     final tags = [
       if (test.duration != null)
-        TagWidget(icon: FontAwesomeIcons.clock, text: "${test.duration} min"),
+        TagWidget(
+            icon: FontAwesomeIcons.clock,
+            text: "${test.duration} ${S.current.min}"),
       if (test.difficulty != null)
         TagWidget(
-            icon: FontAwesomeIcons.turnUp, text: "level: ${test.difficulty}"),
+            icon: FontAwesomeIcons.turnUp,
+            text: "${S.current.level}: ${test.difficulty}"),
       if (userAttempt.count != null)
         TagWidget(
             icon: FontAwesomeIcons.fileLines,
-            text: "${userAttempt.count} attempts"),
+            text: "${userAttempt.count} ${S.current.attempts}"),
     ];
 
     return Card(
@@ -76,7 +80,7 @@ class TestCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        'Last time taken ${TimeUtils.timeAgo(test.updatedAt ?? test.createdAt!)}',
+                        '${S.current.last_time_taken} ${TimeUtils.timeAgo(test.updatedAt ?? test.createdAt!)}',
                         style: const TextStyle(
                           color: AppColors.success,
                           fontWeight: FontWeight.w500,

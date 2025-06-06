@@ -23,13 +23,14 @@ class AnalysisCubit extends Cubit<AnalysisState> {
   }
 
   Future<void> fetchSuggestForStudy() async {
-    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    emit(state.copyWith(suggestForStudyStatus: LoadStatus.loading));
     final result = await profileRepository.getSuggestForStudy();
     result.fold(
-        (l) => emit(
-            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
-        (r) {
-      emit(state.copyWith(loadStatus: LoadStatus.success, suggestForStudy: r));
+        (l) => emit(state.copyWith(
+            suggestForStudyStatus: LoadStatus.failure,
+            message: l.message)), (r) {
+      emit(state.copyWith(
+          suggestForStudyStatus: LoadStatus.success, suggestForStudy: r));
       _scrollToTheEnd();
     });
   }

@@ -52,8 +52,9 @@ class TextFieldHeading extends StatelessWidget {
               border: const OutlineInputBorder(
                 borderSide: BorderSide(width: 1, color: AppColors.textGray),
               ),
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(width: 1, color: AppColors.primary),
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                    BorderSide(width: 1, color: theme.colorScheme.primary),
               ),
             ),
           ),

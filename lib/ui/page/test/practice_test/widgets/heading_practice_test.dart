@@ -15,8 +15,11 @@ class HeadingPracticeTest extends StatelessWidget {
         return state.title;
       },
       builder: (context, title) {
+        final theme = Theme.of(context);
         return Text(title,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ));
       },
     );
   }

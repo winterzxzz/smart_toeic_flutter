@@ -4,6 +4,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/protip_widget.dart';
 
 class FullTestMode extends StatelessWidget {
@@ -27,23 +28,20 @@ class FullTestMode extends StatelessWidget {
             backgroundColor: Colors.yellowAccent,
             textColor: Colors.orange,
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: 150,
-            child: ElevatedButton(
-              onPressed: () {
-                GoRouter.of(context)
-                    .pushReplacementNamed(AppRouter.practiceTest, extra: {
-                  'testShow': TestShow.test,
-                  'testId': testId,
-                  'parts':
-                      Constants.parts.map((part) => part.partEnum).toList(),
-                  'duration': const Duration(minutes: 120),
-                });
-              },
-              child: Text(
-                S.current.start_test.toUpperCase(),
-              ),
+          const SizedBox(height: 8),
+          CustomButton(
+            height: 50,
+            onPressed: () {
+              GoRouter.of(context)
+                  .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                'testShow': TestShow.test,
+                'testId': testId,
+                'parts': Constants.parts.map((part) => part.partEnum).toList(),
+                'duration': const Duration(minutes: 120),
+              });
+            },
+            child: Text(
+              S.current.start_test,
             ),
           ),
           const SizedBox(height: 16),

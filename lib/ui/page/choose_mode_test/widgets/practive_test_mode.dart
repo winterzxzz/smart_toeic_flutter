@@ -5,6 +5,8 @@ import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/protip_widget.dart';
 import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/question_parts.dart';
@@ -27,8 +29,9 @@ class _PracticeModeState extends State<PracticeMode> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProtipWidget(
             text: S.current.practive_part_tips,
@@ -37,7 +40,7 @@ class _PracticeModeState extends State<PracticeMode> {
         const SizedBox(height: 16),
         Text(
           S.current.select_part_to_practice,
-          style: const TextStyle(fontSize: 14),
+          style: theme.textTheme.bodyMedium,
         ),
         ...Constants.parts.map((part) => QuestionPart(
             part: part,
@@ -52,11 +55,6 @@ class _PracticeModeState extends State<PracticeMode> {
               setState(() {});
             })),
         const SizedBox(height: 16),
-        Text(
-          '${S.current.limit_time} (${S.current.limit_time_hint})',
-          style: const TextStyle(fontSize: 14),
-        ),
-        const SizedBox(height: 16),
         CustomDropdownExample<String>(
           data: Constants.timeLimit,
           dataString: Constants.timeLimit,
@@ -65,10 +63,18 @@ class _PracticeModeState extends State<PracticeMode> {
             setState(() {});
           },
         ),
+        const SizedBox(height: 8),
+        Text(
+          '${S.current.limit_time} (${S.current.limit_time_hint})',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: AppColors.textGray,
+            fontSize: 10,
+          ),
+        ),
         const SizedBox(height: 16),
         SizedBox(
-          width: 150,
-          child: ElevatedButton(
+          child: CustomButton(
+            height: 50,
             onPressed: selectedParts.isEmpty
                 ? null
                 : () {
@@ -83,11 +89,8 @@ class _PracticeModeState extends State<PracticeMode> {
                           ConstantsExtension.getTimeLimit(duration ?? ''),
                     });
                   },
-            style: ElevatedButton.styleFrom(
-              disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
-            ),
             child: Text(
-              S.current.practice_button.toUpperCase(),
+              S.current.practice_button,
             ),
           ),
         ),

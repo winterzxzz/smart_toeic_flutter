@@ -22,6 +22,7 @@ class QuestionPart extends StatefulWidget {
 class _QuestionPartState extends State<QuestionPart> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,8 +55,9 @@ class _QuestionPartState extends State<QuestionPart> {
             (index) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.blue.withValues(alpha: 0.1),
-                border: Border.all(color: Colors.blue.withValues(alpha: 0.1)),
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                border: Border.all(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1)),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(

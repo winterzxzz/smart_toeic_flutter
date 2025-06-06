@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 
 class AnalysisPercentage extends StatefulWidget {
   const AnalysisPercentage({
@@ -24,7 +25,7 @@ class _AnalysisPercentageState extends State<AnalysisPercentage> {
         child: Column(
           children: [
             Text(
-              'Độ chính xác theo Phần(%)',
+              S.current.accuracy_by_part,
               style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
@@ -49,7 +50,8 @@ class _AnalysisPercentageState extends State<AnalysisPercentage> {
                           ];
                           return Text(
                             titles[value.toInt() - 1],
-                            style: theme.textTheme.bodySmall,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w600, fontSize: 8),
                           );
                         },
                         reservedSize: 30,
@@ -93,11 +95,11 @@ class _AnalysisPercentageState extends State<AnalysisPercentage> {
           toY: y,
           gradient: LinearGradient(
             colors: [
-              theme.primaryColor,
-              theme.primaryColor.withValues(alpha: .8)
+              theme.colorScheme.primary,
+              theme.colorScheme.primary.withValues(alpha: .8)
             ],
           ),
-          width: 25,
+          width: 20,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(6),
             topRight: Radius.circular(6),

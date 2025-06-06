@@ -105,12 +105,12 @@ class SettingPage extends StatelessWidget {
                             spacing: 8,
                             runSpacing: 8,
                             children: <Color>[
+                              const Color(0xff26A69A),
                               const Color(0xffEF5350),
                               const Color(0xff3498db),
                               const Color(0xffF06292),
                               const Color(0xff9575CD),
                               const Color(0xff26C6DA),
-                              const Color(0xff26A69A),
                               const Color(0xffFFF176),
                               const Color(0xffFF9800),
                             ]
