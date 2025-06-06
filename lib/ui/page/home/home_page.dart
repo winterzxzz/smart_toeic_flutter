@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -39,6 +40,7 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -73,12 +75,24 @@ class Page extends StatelessWidget {
             children: [
               const SizedBox(height: 8),
               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                constraints: BoxConstraints(
+                  maxHeight: size.width * 0.6,
+                  maxWidth: size.width,
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(AppImages.banner1),
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    viewportFraction: 1,
+                  ),
+                  items: [
+                    Image.asset(AppImages.banner1),
+                    Image.asset(AppImages.banner2),
+                    Image.asset(AppImages.banner3),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),
