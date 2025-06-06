@@ -33,12 +33,12 @@ class AppThemes {
       : AppColors.backgroundLightSub;
 
   Color get cardColor => brightness == Brightness.dark
-      ? AppColors.backgroundDark
+      ? AppColors.backgroundDarkSub.withValues(alpha: 0.5)
       : AppColors.backgroundLight;
 
   Color get appbarColor => brightness == Brightness.dark
-      ? AppColors.backgroundDark
-      : AppColors.backgroundLight;
+      ? AppColors.appBarDark
+      : AppColors.appBarLight;
 
   Color get iconColor =>
       brightness == Brightness.dark ? AppColors.textWhite : AppColors.textBlack;

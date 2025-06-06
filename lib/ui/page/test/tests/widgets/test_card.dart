@@ -38,7 +38,7 @@ class TestCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-            color: isAttempted ? AppColors.success : Colors.transparent,
+            color: isAttempted ? theme.colorScheme.primary : Colors.transparent,
             width: 1),
       ),
       child: InkWell(

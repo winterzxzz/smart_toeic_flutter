@@ -31,14 +31,15 @@ class _CustomDropdownExampleState<T> extends State<CustomDropdownExample<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).brightness == Brightness.dark
-        ? AppColors.backgroundDark
-        : AppColors.backgroundLight;
+    final theme = Theme.of(context);
+    final color = theme.brightness == Brightness.dark
+        ? AppColors.appBarDark
+        : AppColors.appBarLight;
     return CustomDropdown<T>(
       items: widget.data,
       hintText: widget.dataString.first,
       decoration: CustomDropdownDecoration(
-        closedBorder: Border.all(color: AppColors.gray1),
+        closedBorder: Border.all(color: theme.colorScheme.primary),
         closedFillColor: color,
         expandedFillColor: color,
         headerStyle: const TextStyle(
