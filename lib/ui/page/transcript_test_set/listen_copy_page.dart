@@ -50,7 +50,7 @@ class _PageState extends State<Page> {
         // Make sure state isn't null
         return Scaffold(
           endDrawer: Drawer(
-            backgroundColor: theme.cardColor,
+            backgroundColor: theme.scaffoldBackgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),

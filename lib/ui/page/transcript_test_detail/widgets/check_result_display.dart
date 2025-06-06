@@ -19,7 +19,7 @@ class CheckResultDisplay extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: theme.scaffoldBackgroundColor,
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: BlocSelector<TranscriptTestDetailCubit,
@@ -40,7 +40,7 @@ class CheckResultDisplay extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: theme.scaffoldBackgroundColor,
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child:

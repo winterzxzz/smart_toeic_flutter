@@ -35,6 +35,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocSelector<TranscriptTestDetailCubit, TranscriptTestDetailState,
         bool>(
       selector: (state) {
@@ -64,11 +65,15 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                   hintText: S.current.type_what_you_hear,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.inputBorder),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.focusBorder),
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    ),
                   ),
                 ),
               ),

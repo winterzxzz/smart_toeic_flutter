@@ -87,7 +87,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
           canPop: false,
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: theme.appBarTheme.backgroundColor,
             body: Stack(
               alignment: Alignment.center,
               children: [
