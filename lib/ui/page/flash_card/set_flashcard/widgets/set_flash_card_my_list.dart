@@ -31,6 +31,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: BlocListener<FlashCardCubit, FlashCardState>(
         listenWhen: (previous, current) =>
@@ -55,21 +56,19 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                       height: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: theme.brightness == Brightness.dark
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onPrimary,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.add, color: Colors.white, size: 16),
+                          const Icon(Icons.add, size: 16),
                           const SizedBox(width: 8),
                           Text(
                             S.current.create_new_flashcard,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: theme.textTheme.titleSmall,
                           ),
                         ],
                       ),

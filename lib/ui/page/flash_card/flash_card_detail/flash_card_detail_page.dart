@@ -211,10 +211,11 @@ class _PageState extends State<Page> {
             Text(
               label,
               style: theme.textTheme.bodyMedium?.copyWith(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  height: 0.8),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                height: 0.8,
+                color: theme.colorScheme.onPrimary,
+              ),
             ),
           ],
         ),

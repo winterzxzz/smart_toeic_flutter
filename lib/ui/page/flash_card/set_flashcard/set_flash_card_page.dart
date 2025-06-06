@@ -51,6 +51,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return DefaultTabController(
       animationDuration: const Duration(milliseconds: 200),
       length: 2,
@@ -64,8 +65,8 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
               controller: _tabController,
               dividerHeight: 0,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: Theme.of(context).primaryColor,
-              labelColor: Theme.of(context).primaryColor,
+              indicatorColor: theme.colorScheme.primary,
+              labelColor: theme.colorScheme.primary,
               unselectedLabelColor: Colors.grey,
               tabs: [
                 Tab(

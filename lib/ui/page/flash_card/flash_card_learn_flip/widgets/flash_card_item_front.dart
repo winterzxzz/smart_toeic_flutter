@@ -11,7 +11,7 @@ class FlashcardFront extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(16),
       ),
       alignment: Alignment.center,
@@ -21,16 +21,12 @@ class FlashcardFront extends StatelessWidget {
         children: [
           Text(
             word,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: AppColors.textWhite,
-            ),
+            style: theme.textTheme.headlineMedium,
             textAlign: TextAlign.center,
           ),
           Text(
             'Click to reveal definition',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textWhite,
-            ),
+            style: theme.textTheme.bodyMedium,
           ),
         ],
       ),

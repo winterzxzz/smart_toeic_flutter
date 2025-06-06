@@ -9,11 +9,12 @@ class FlashcardBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary, width: 2),
+        border: Border.all(color: theme.colorScheme.primary, width: 2),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -60,7 +61,8 @@ class FlashcardBack extends StatelessWidget {
                     Expanded(
                       child: Text(
                         example,
-                        style: const TextStyle(fontSize: 16, color: Colors.black87),
+                        style: const TextStyle(
+                            fontSize: 16, color: Colors.black87),
                       ),
                     ),
                   ],
