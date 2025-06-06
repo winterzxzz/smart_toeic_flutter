@@ -83,6 +83,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return OrientationBuilder(
       builder: (context, orientation) {
         return BlocBuilder<EntrypointCubit, EntrypointState>(
@@ -145,8 +146,7 @@ class _PageState extends State<Page> {
                 visible: orientation == Orientation.portrait,
                 child: BottomNavigationBar(
                   useLegacyColorScheme: true,
-                  backgroundColor: AppColors.backgroundLight,
-                  selectedItemColor: AppColors.primary,
+                  selectedItemColor: theme.colorScheme.primary,
                   unselectedItemColor: AppColors.gray3,
                   selectedLabelStyle: const TextStyle(
                     fontSize: 12,
@@ -172,8 +172,8 @@ class _PageState extends State<Page> {
                         height: 20,
                         colorFilter: state.currentIndex ==
                                 Constants.bottomTabs.indexOf(tab)
-                            ? const ColorFilter.mode(
-                                AppColors.primary,
+                            ? ColorFilter.mode(
+                                theme.colorScheme.primary,
                                 BlendMode.srcIn,
                               )
                             : const ColorFilter.mode(
