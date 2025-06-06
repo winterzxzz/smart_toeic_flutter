@@ -48,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "analysis_time": MessageLookupByLibrary.simpleMessage("Analysis Time"),
         "analysis_your_score":
             MessageLookupByLibrary.simpleMessage("Analysis Your Score"),
+        "analysis_your_score_success": MessageLookupByLibrary.simpleMessage(
+            "Analysis your score successfully"),
         "answer": MessageLookupByLibrary.simpleMessage("Answer"),
         "app_name": MessageLookupByLibrary.simpleMessage("Smart TOEIC Prep"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
@@ -321,6 +323,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "studying": MessageLookupByLibrary.simpleMessage("Studying"),
         "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "submitting": MessageLookupByLibrary.simpleMessage("Submitting..."),
+        "success": MessageLookupByLibrary.simpleMessage("Success"),
         "system_mode": MessageLookupByLibrary.simpleMessage("System Mode"),
         "take_toeic_tests":
             MessageLookupByLibrary.simpleMessage("Take TOEIC tests"),

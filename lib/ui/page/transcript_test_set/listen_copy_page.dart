@@ -50,7 +50,7 @@ class _PageState extends State<Page> {
         // Make sure state isn't null
         return Scaffold(
           endDrawer: Drawer(
-            backgroundColor: theme.scaffoldBackgroundColor,
+            backgroundColor: theme.appBarTheme.backgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),

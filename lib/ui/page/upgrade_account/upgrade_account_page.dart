@@ -42,7 +42,7 @@ class _PageState extends State<Page> {
   @override
   void initState() {
     super.initState();
-    _upgradeAccountCubit = injector<UpgradeAccountCubit>();
+    _upgradeAccountCubit = context.read<UpgradeAccountCubit>();
   }
 
   @override
@@ -177,6 +177,8 @@ class _PageState extends State<Page> {
                                   width: double.infinity,
                                   child: CustomButton(
                                     height: 50,
+                                    isLoading:
+                                        state.loadStatus == LoadStatus.loading,
                                     onPressed: () {
                                       _upgradeAccountCubit.upgradeAccount();
                                     },

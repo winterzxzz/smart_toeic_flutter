@@ -62,7 +62,8 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
                     previous.questionsResult != current.questionsResult ||
                     previous.testShow != current.testShow,
                 builder: (context, state) {
-                  Color color = theme.cardColor;
+                  Color color =
+                      theme.colorScheme.primary.withValues(alpha: 0.2);
                   if (state.testShow == TestShow.test) {
                     color = isAnswered ? theme.colorScheme.primary : color;
                   } else {

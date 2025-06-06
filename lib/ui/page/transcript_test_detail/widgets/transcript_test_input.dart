@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/check_result_display.dart';
@@ -64,14 +66,14 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                   hintText: S.current.type_what_you_hear,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    borderSide: const BorderSide(
+                      color: AppColors.textGray,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      color: theme.colorScheme.primary,
                     ),
                   ),
                 ),
@@ -109,19 +111,10 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
               ),
             ),
             const SizedBox(height: 12),
-            SizedBox(
+            CustomButton(
               height: 50,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => _cubit.handleCheck(_transcriptController.text),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                ),
-                child: Text(S.current.check),
-              ),
+              onPressed: () => _cubit.handleCheck(_transcriptController.text),
+              child: Text(S.current.check),
             ),
           ],
         );

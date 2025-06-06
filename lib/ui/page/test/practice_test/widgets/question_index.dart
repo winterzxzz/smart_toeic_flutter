@@ -24,7 +24,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       child: SafeArea(
         child: Container(
-          color: theme.scaffoldBackgroundColor,
+          color: theme.appBarTheme.backgroundColor,
           height: double.infinity,
           padding: const EdgeInsets.all(16),
           child: BlocBuilder<PracticeTestCubit, PracticeTestState>(

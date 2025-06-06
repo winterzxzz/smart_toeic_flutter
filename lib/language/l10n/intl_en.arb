@@ -241,5 +241,7 @@
     "correct_answer": "Correct answer", 
     "upgrade_to_use_ai": "Upgrade to use AI", 
     "create_answer_by_ai": "Create answer by AI", 
-    "error": "Error"
+    "error": "Error",
+    "success": "Success", 
+    "analysis_your_score_success": "Analysis your score successfully"
 }

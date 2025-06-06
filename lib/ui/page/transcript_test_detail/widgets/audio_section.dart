@@ -32,6 +32,11 @@ class _AudioSectionState extends State<AudioSection> {
           _duration = duration;
         });
       })
+      ..playingStream.listen((playing) {
+        setState(() {
+          _isPlaying = playing;
+        });
+      })
       ..positionStream.listen((position) {
         setState(() {
           _position = position;
@@ -57,6 +62,7 @@ class _AudioSectionState extends State<AudioSection> {
 
   void _handleSeekEnd(double p) {
     _audioPlayer?.seek(Duration(seconds: p.toInt()));
+    _audioPlayer?.play();
     setState(() {
       _position = Duration(seconds: p.toInt());
     });
@@ -71,16 +77,12 @@ class _AudioSectionState extends State<AudioSection> {
       });
       await _audioPlayer?.seek(Duration.zero);
       await _audioPlayer?.play();
-    } else if (_isPlaying) {
-      await _audioPlayer?.pause();
-      setState(() {
-        _isPlaying = false;
-      });
     } else {
-      await _audioPlayer?.play();
-      setState(() {
-        _isPlaying = true;
-      });
+      if (_isPlaying && _audioPlayer?.playing == true) {
+        await _audioPlayer?.pause();
+      } else {
+        await _audioPlayer?.play();
+      }
     }
   }
 
@@ -98,7 +100,7 @@ class _AudioSectionState extends State<AudioSection> {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: theme.primaryColor,
+        color: theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Stack(
@@ -113,9 +115,7 @@ class _AudioSectionState extends State<AudioSection> {
                   height: 56,
                   width: 56,
                   decoration: BoxDecoration(
-                    color: theme.brightness == Brightness.dark
-                        ? AppColors.backgroundDark
-                        : AppColors.backgroundLight,
+                    color: AppColors.textWhite,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   alignment: Alignment.center,

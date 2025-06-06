@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
-import 'package:toeic_desktop/ui/page/test/practice_test/widgets/audio_section.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/audio_section.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/transcript_test_input.dart';

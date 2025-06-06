@@ -2419,6 +2419,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Success`
+  String get success {
+    return Intl.message(
+      'Success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Analysis your score successfully`
+  String get analysis_your_score_success {
+    return Intl.message(
+      'Analysis your score successfully',
+      name: 'analysis_your_score_success',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
