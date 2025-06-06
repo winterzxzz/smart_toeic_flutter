@@ -73,7 +73,6 @@ class _PageState extends State<Page> {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           body: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
