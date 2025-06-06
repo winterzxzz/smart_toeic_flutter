@@ -32,6 +32,7 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocConsumer<UpgradeAccountCubit, UpgradeAccountState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.loading) {
@@ -65,9 +66,9 @@ class Page extends StatelessWidget {
                   Center(
                     child: Text(
                       'Choose the plan that\'s right for you',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -76,9 +77,9 @@ class Page extends StatelessWidget {
                     child: Text(
                       'Enhance your TOEIC skills with unique features',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textGray,
-                          ),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textGray,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -91,10 +92,12 @@ class Page extends StatelessWidget {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 24),
                         decoration: BoxDecoration(
-                          color: AppColors.success.withValues(alpha: 0.1),
+                          color:
+                              theme.colorScheme.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: AppColors.success.withValues(alpha: 0.3),
+                            color: theme.colorScheme.primary
+                                .withValues(alpha: 0.3),
                           ),
                         ),
                         child: Padding(
@@ -104,20 +107,18 @@ class Page extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.star,
-                                    color: AppColors.success,
+                                    color: theme.colorScheme.primary,
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
                                     'Premium Account',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                          color: AppColors.success,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -125,7 +126,9 @@ class Page extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: theme.colorScheme.primary.withValues(
+                                    alpha: 0.1,
+                                  ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
@@ -143,9 +146,7 @@ class Page extends StatelessWidget {
                                                   .format(expiredDate);
                                           return Text(
                                             'Expiration date: $expiredDateString',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
+                                            style: theme.textTheme.bodyMedium,
                                           );
                                         },
                                       ),
@@ -162,8 +163,16 @@ class Page extends StatelessWidget {
                                         .read<UpgradeAccountCubit>()
                                         .upgradeAccount();
                                   },
-                                  icon: const Icon(Icons.refresh),
-                                  label: const Text('Renew'),
+                                  icon: Icon(
+                                    Icons.refresh,
+                                    color: theme.textTheme.bodyMedium?.color,
+                                  ),
+                                  label: Text(
+                                    'Renew',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12),
@@ -252,34 +261,43 @@ class Page extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.grey[50],
+                      color: theme.cardColor,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
                       children: [
                         Text(
                           'Still have questions?',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Contact us for support',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textGray,
-                                  ),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: AppColors.textGray,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton.icon(
                           onPressed: () {
                             // Handle contact support action
+                            // send email to support@toeic.com
+                            _launchUrl(
+                                'mailto:winter@toeic.com?subject=Support&body=I have a question about the TOEIC app');
                           },
-                          icon: const Icon(Icons.support_agent),
-                          label: const Text('Contact Support'),
+                          icon: Icon(
+                            Icons.support_agent,
+                            color: theme.textTheme.bodyMedium?.color,
+                          ),
+                          label: Text(
+                            'Contact Support',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 24,

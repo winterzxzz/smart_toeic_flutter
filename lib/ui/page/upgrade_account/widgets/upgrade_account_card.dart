@@ -23,19 +23,19 @@ class UpgradeAccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor =
-        Theme.of(context).brightness == Brightness.light
-            ? AppColors.backgroundLight
-            : AppColors.backgroundDark;
-    final Color textColor = Theme.of(context).brightness == Brightness.light
+    final theme = Theme.of(context);
+    final Color backgroundColor = theme.brightness == Brightness.light
+        ? AppColors.backgroundLight
+        : AppColors.backgroundDarkSub;
+    final Color textColor = theme.brightness == Brightness.light
         ? AppColors.textBlack
         : AppColors.textWhite;
-    final inactiveBorderColor = Theme.of(context).brightness == Brightness.light
+    final inactiveBorderColor = theme.brightness == Brightness.light
         ? Colors.grey[300]!
         : Colors.grey[600]!;
-    final activeBorderColor = Theme.of(context).brightness == Brightness.light
-        ? AppColors.primary
-        : AppColors.backgroundLight;
+    final activeBorderColor = theme.brightness == Brightness.light
+        ? theme.colorScheme.primary
+        : theme.colorScheme.primary;
     final Color borderColor =
         isCurrentPlan ? activeBorderColor : inactiveBorderColor;
     BoxBorder border = isCurrentPlan
