@@ -61,7 +61,8 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
             ],
           ),
           const SizedBox(height: 16),
-          Text(S.current.reading_target_score, style: theme.textTheme.bodyMedium),
+          Text(S.current.reading_target_score,
+              style: theme.textTheme.bodyMedium),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -71,8 +72,9 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
                   value: readingScore.toDouble(),
                   min: 0,
                   max: 450,
-                  inactiveColor: theme.primaryColor.withValues(alpha: 0.3),
-                  activeColor: theme.primaryColor,
+                  inactiveColor:
+                      theme.colorScheme.primary.withValues(alpha: 0.3),
+                  activeColor: theme.colorScheme.primary,
                   label: readingScore.toString(),
                   onChanged: (double value) {
                     setState(() {
@@ -92,7 +94,8 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
             ],
           ),
           const SizedBox(height: 16),
-          Text(S.current.listening_target_score, style: theme.textTheme.bodyMedium),
+          Text(S.current.listening_target_score,
+              style: theme.textTheme.bodyMedium),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -102,8 +105,9 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
                   value: listeningScore.toDouble(),
                   min: 0,
                   max: 450,
-                  inactiveColor: theme.primaryColor.withValues(alpha: 0.3),
-                  activeColor: theme.primaryColor,
+                  inactiveColor:
+                      theme.colorScheme.primary.withValues(alpha: 0.3),
+                  activeColor: theme.colorScheme.primary,
                   label: listeningScore.toString(),
                   onChanged: (double value) {
                     setState(() {
@@ -151,13 +155,11 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
                   child: updateTargetScoreStatus == LoadStatus.loading
                       ? const LoadingCircle(
                           size: 20,
-                          color: Colors.white,
                         )
                       : Text(
                           S.current.update,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: Colors.white,
                           ),
                         ),
                 ),

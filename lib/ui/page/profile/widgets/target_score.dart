@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class TargetScoreWidget extends StatelessWidget {
@@ -45,10 +44,8 @@ class TargetScoreWidget extends StatelessWidget {
         const SizedBox(height: 4),
         LinearProgressIndicator(
           borderRadius: BorderRadius.circular(8),
-          backgroundColor: Colors.grey,
-          color: theme.brightness == Brightness.dark
-              ? Colors.white
-              : theme.primaryColor,
+          backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+          color: theme.colorScheme.primary,
           minHeight: 5,
           value: targetScore != null ? targetScore! / 450 : 0,
         ),

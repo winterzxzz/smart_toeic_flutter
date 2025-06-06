@@ -283,13 +283,11 @@ class _PageState extends State<Page> {
                             child: updateStatus == LoadStatus.loading
                                 ? const LoadingCircle(
                                     size: 20,
-                                    color: Colors.white,
                                   )
                                 : Text(
                                     S.current.update_profile,
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
                                     ),
                                   ),
                           ),
