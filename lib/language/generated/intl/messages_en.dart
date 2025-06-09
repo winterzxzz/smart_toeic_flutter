@@ -132,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please input Email"),
         "empty_password_error":
             MessageLookupByLibrary.simpleMessage("Please input password"),
+        "english": MessageLookupByLibrary.simpleMessage("English"),
         "enhance_your_toeic_skills_with_unique_features":
             MessageLookupByLibrary.simpleMessage(
                 "Enhance your TOEIC skills with unique features"),
@@ -177,6 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Email format is incorrect"),
         "invalid_password_error": MessageLookupByLibrary.simpleMessage(
             "Password must have text, number and special character"),
+        "language": MessageLookupByLibrary.simpleMessage("Language"),
         "last_studied": MessageLookupByLibrary.simpleMessage("Last Studied"),
         "last_time_taken":
             MessageLookupByLibrary.simpleMessage("Last time taken"),
@@ -360,6 +362,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "value": MessageLookupByLibrary.simpleMessage("Value"),
         "very_easy_to_remember":
             MessageLookupByLibrary.simpleMessage("Very Easy to Remember"),
+        "vietnamese": MessageLookupByLibrary.simpleMessage("Tiếng Việt"),
         "view_answer": MessageLookupByLibrary.simpleMessage("View Answer"),
         "view_randomly": MessageLookupByLibrary.simpleMessage("View randomly"),
         "what_is_your_confidence_level": MessageLookupByLibrary.simpleMessage(

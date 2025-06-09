@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
+import 'package:toeic_desktop/data/models/enums/language.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
@@ -72,7 +73,41 @@ class SettingPage extends StatelessWidget {
                 );
               },
             ),
-            AppStyle.vGap12,
+            Padding(
+              padding: AppStyle.edgeInsetsA12,
+              child: Text(S.current.language),
+            ),
+            BlocSelector<AppSettingCubit, AppSettingState, Language>(
+              selector: (state) {
+                return state.language;
+              },
+              builder: (context, language) {
+                return SettingsCard(
+                  child: Column(
+                    children: [
+                      RadioListTile<Language>(
+                        title: Text(S.current.english),
+                        value: Language.english,
+                        groupValue: language,
+                        onChanged: (e) {
+                          injector<AppSettingCubit>()
+                              .changeLanguage(language: e!);
+                        },
+                      ),
+                      RadioListTile<Language>(
+                        title: Text(S.current.vietnamese),
+                        value: Language.vietnamese,
+                        groupValue: language,
+                        onChanged: (e) {
+                          injector<AppSettingCubit>()
+                              .changeLanguage(language: e!);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
             Padding(
               padding: AppStyle.edgeInsetsA12,
               child: Text(

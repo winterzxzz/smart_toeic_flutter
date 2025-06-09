@@ -243,5 +243,8 @@
     "create_answer_by_ai": "Create answer by AI", 
     "error": "Error",
     "success": "Success", 
-    "analysis_your_score_success": "Analysis your score successfully"
+    "analysis_your_score_success": "Analysis your score successfully",
+    "language": "Language",
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
 }
