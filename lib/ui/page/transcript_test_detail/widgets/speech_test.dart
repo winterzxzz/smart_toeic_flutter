@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'voice_wave.dart';
 
 class SpeechTest extends StatefulWidget {
-  const SpeechTest({super.key});
+  const SpeechTest({super.key, required this.onSave});
+
+  final Function(String) onSave;
 
   @override
   State<SpeechTest> createState() => _SpeechTestState();
@@ -67,12 +71,14 @@ class _SpeechTestState extends State<SpeechTest> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const Spacer(),
             const Text('Kiểm tra phát âm'),
             const SizedBox(height: 32),
             Container(
@@ -80,11 +86,15 @@ class _SpeechTestState extends State<SpeechTest> {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blue.withValues(alpha: levels.last / 100),
+                color: isEnable ? theme.colorScheme.primary : null,
               ),
               child: IconButton(
                 onPressed: isEnable ? _startSpeechToText : null,
-                icon: const Icon(Icons.mic),
+                icon: Icon(
+                  Icons.mic,
+                  size: 32,
+                  color: isEnable ? theme.colorScheme.onPrimary : null,
+                ),
               ),
             ),
             VoiceWave(levels: levels),
@@ -98,6 +108,18 @@ class _SpeechTestState extends State<SpeechTest> {
                   textAlign: TextAlign.center,
                 ),
               ),
+            const Spacer(),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: CustomButton(
+                onPressed: () {
+                  widget.onSave(recognizedText);
+                  GoRouter.of(context).pop(recognizedText);
+                },
+                child: const Text('Save'),
+              ),
+            ),
+            const SizedBox(height: 32),
           ],
         ),
       ),

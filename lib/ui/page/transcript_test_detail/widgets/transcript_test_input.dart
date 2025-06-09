@@ -97,7 +97,11 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                   Utils.showModalBottomSheetForm(
                     context: context,
                     title: S.current.practice_pronoun,
-                    child: const SpeechTest(),
+                    child: SpeechTest(
+                      onSave: (value) {
+                        _cubit.handleCheck(value);
+                      },
+                    ),
                   );
                 },
                 child: Row(
