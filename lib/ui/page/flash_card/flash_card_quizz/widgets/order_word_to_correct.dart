@@ -72,15 +72,14 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  color: theme.colorScheme.primary,
                   border: Border.all(color: AppColors.gray1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   word,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontWeight: FontWeight.bold, color: AppColors.textWhite),
                 ),
               ),
             );
@@ -119,7 +118,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                    color: theme.colorScheme.primary,
                     border: Border.all(color: AppColors.gray1),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -127,6 +126,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                     word,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: AppColors.textWhite,
                     ),
                   ),
                 ),

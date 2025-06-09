@@ -122,26 +122,24 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                   opacity: state.isAnimating ? 0.5 : 1,
                   child: Align(
                     alignment: Alignment.center,
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0.0, 0.1),
-                              end: Offset.zero,
-                            ).animate(animation),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isSmallScreen ? 16 : 32,
+                        vertical: isSmallScreen ? 8 : 16,
+                      ),
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        transitionBuilder: (child, animation) {
+                          final inAnimation = Tween<Offset>(
+                            begin: const Offset(1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation);
+
+                          return SlideTransition(
+                            position: inAnimation,
                             child: child,
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: isSmallScreen ? 16 : 32,
-                          vertical: isSmallScreen ? 8 : 16,
-                        ),
+                          );
+                        },
                         child: Builder(
                           key: ValueKey(
                               '${state.typeQuizzIndex}-${state.currentIndex}'),

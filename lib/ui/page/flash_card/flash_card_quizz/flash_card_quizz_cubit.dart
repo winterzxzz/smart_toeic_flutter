@@ -94,7 +94,7 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
       }
       return e;
     }).toList()));
-    triggerAnimation(true, isShowAnimation: false);
+    next();
   }
 
   void answer(String word, bool isCorrect, {bool isTrigger = true}) {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:confetti/confetti.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
@@ -147,6 +146,7 @@ class _MatchingWordState extends State<MatchingWord>
     required bool isSelected,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context);
     return AnimatedBuilder(
       animation: _shakeController,
       builder: (context, child) {
@@ -166,7 +166,7 @@ class _MatchingWordState extends State<MatchingWord>
                       width: 10,
                       height: 10,
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: theme.colorScheme.primary,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -202,7 +202,7 @@ class _MatchingWordState extends State<MatchingWord>
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.white,
+          color: isSelected ? theme.colorScheme.primary : Colors.white,
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -211,7 +211,9 @@ class _MatchingWordState extends State<MatchingWord>
           // to capitalize first letter
           text.capitalizeFirst,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: isSelected ? AppColors.textWhite : AppColors.textBlack,
+            color: isSelected
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
         ),

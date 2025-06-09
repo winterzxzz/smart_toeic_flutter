@@ -114,7 +114,11 @@ class _PageState extends State<Page> {
                   ),
                 ],
               ),
-              if (state.loadStatus == LoadStatus.success)
+              if (state.loadStatus == LoadStatus.loading)
+                const SliverFillRemaining(
+                  child: LoadingCircle(),
+                )
+              else ...[
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -153,13 +157,6 @@ class _PageState extends State<Page> {
                     ),
                   ),
                 ),
-
-              // Content
-              if (state.loadStatus == LoadStatus.loading)
-                const SliverFillRemaining(
-                  child: LoadingCircle(),
-                )
-              else if (state.loadStatus == LoadStatus.success)
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   sliver: state.flashCards.isEmpty
@@ -182,6 +179,7 @@ class _PageState extends State<Page> {
                           itemCount: state.flashCards.length,
                         ),
                 ),
+              ]
             ],
           );
         },

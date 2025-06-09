@@ -90,7 +90,7 @@ class _EnterWordState extends State<EnterWord> {
                 isCheck = true;
               });
               FocusScope.of(context).unfocus();
-              Future.delayed(const Duration(milliseconds: 100), () {
+              Future.delayed(const Duration(milliseconds: 200), () {
                 if (context.mounted) {
                   _cubit.answer(
                       widget.fcLearning.flashcardId!.word,

@@ -81,10 +81,12 @@ class _SectionQuestionState extends State<SectionQuestion>
   String? selectedAnswer;
   bool isCheck = false;
   late List<String> shuffledList;
+  late final FlashCardQuizzCubit _cubit;
 
   @override
   void initState() {
     super.initState();
+    _cubit = context.read<FlashCardQuizzCubit>();
     shuffledList = List.from(widget.list)..shuffle();
   }
 
@@ -128,7 +130,7 @@ class _SectionQuestionState extends State<SectionQuestion>
                     selectedAnswer = level;
                     isCheck = true;
                   });
-                  context.read<FlashCardQuizzCubit>().answer(
+                  _cubit.answer(
                       widget.fcLearning.flashcardId!.word,
                       level.toLowerCase() ==
                           widget.fcLearning.flashcardId!.definition
@@ -152,7 +154,7 @@ class _SectionQuestionState extends State<SectionQuestion>
                             selectedAnswer = level;
                             isCheck = true;
                           });
-                          context.read<FlashCardQuizzCubit>().answer(
+                          _cubit.answer(
                               widget.fcLearning.flashcardId!.word,
                               level.toLowerCase() ==
                                   widget.fcLearning.flashcardId!.definition
