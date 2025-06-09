@@ -14,6 +14,7 @@ class SharedPreferencesHelper {
   static const _theme = 'theme';
   static const _isUseBiometric = 'is_use_biometric';
   static const _cookie = 'cookie';
+  static const _primaryColor = 'primary_color';
 
   static Future<bool> isOnboarded() async {
     try {
@@ -67,6 +68,18 @@ class SharedPreferencesHelper {
   static Future<void> setIsUseBiometric(bool isUseBiometric) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_isUseBiometric, isUseBiometric);
+  }
+
+  static Future<Color> getPrimaryColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final primaryColor =
+        prefs.getInt(_primaryColor) ?? const Color(0xff26A69A).toARGB32();
+    return Color(primaryColor);
+  }
+
+  static Future<void> setPrimaryColor(Color primaryColor) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_primaryColor, primaryColor.toARGB32());
   }
 
   // Test

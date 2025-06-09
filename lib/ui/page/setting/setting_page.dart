@@ -153,7 +153,7 @@ class SettingPage extends StatelessWidget {
                                   (e) => GestureDetector(
                                     onTap: () {
                                       injector<AppSettingCubit>()
-                                          .changePrimanyColor(color: e);
+                                          .changePrimaryColor(color: e);
                                     },
                                     child: Container(
                                       width: 36,

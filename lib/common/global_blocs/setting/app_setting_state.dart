@@ -7,7 +7,7 @@ class AppSettingState extends Equatable {
   final Size windowSize;
   final List<String> navigationHistory;
   final String currentPath;
-    final Color primaryColor;
+  final Color primaryColor;
   final bool isDynamicColor;
 
   const AppSettingState({
@@ -17,7 +17,7 @@ class AppSettingState extends Equatable {
     this.windowSize = const Size(1280, 720),
     this.navigationHistory = const [],
     this.currentPath = '',
-    this.primaryColor = const Color(0xffEF5350),
+    this.primaryColor = const Color(0xff26A69A),
     this.isDynamicColor = false,
   });
 
@@ -55,3 +55,4 @@ class AppSettingState extends Equatable {
     );
   }
 }
+

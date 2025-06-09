@@ -15,11 +15,13 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     final currentLanguage = await SharedPreferencesHelper.getCurrentLanguage();
     final themeMode = await SharedPreferencesHelper.getTheme();
     final isUseBiometric = await SharedPreferencesHelper.getIsUseBiometric();
+    final primaryColor = await SharedPreferencesHelper.getPrimaryColor();
 
     emit(state.copyWith(
       language: currentLanguage,
       themeMode: themeMode,
       isUseBiometric: isUseBiometric,
+      primaryColor: primaryColor,
     ));
   }
 
@@ -66,7 +68,8 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     emit(state.copyWith(currentPath: path));
   }
 
-  void changePrimanyColor({required Color color}) {
+  void changePrimaryColor({required Color color}) async {
+    await SharedPreferencesHelper.setPrimaryColor(color);
     emit(state.copyWith(primaryColor: color));
   }
 
