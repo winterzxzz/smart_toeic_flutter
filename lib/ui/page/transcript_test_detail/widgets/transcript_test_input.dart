@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/check_result_display.dart';
-import 'package:toeic_desktop/ui/page/transcript_test_detail/widgets/speech_test.dart';
 
 class TranscriptTestInput extends StatefulWidget {
   const TranscriptTestInput({super.key});
@@ -93,16 +91,16 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                 ),
                 onPressed: () {
-                  // _cubit.toggleIsShowAiVoice();
-                  Utils.showModalBottomSheetForm(
-                    context: context,
-                    title: S.current.practice_pronoun,
-                    child: SpeechTest(
-                      onSave: (value) {
-                        _cubit.handleCheck(value);
-                      },
-                    ),
-                  );
+                  _cubit.toggleIsShowAiVoice();
+                  // Utils.showModalBottomSheetForm(
+                  //   context: context,
+                  //   title: S.current.practice_pronoun,
+                  //   child: SpeechTest(
+                  //     onSave: (value) {
+                  //       _cubit.handleCheck(value);
+                  //     },
+                  //   ),
+                  // );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

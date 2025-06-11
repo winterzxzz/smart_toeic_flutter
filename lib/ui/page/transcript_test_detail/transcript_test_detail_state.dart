@@ -13,6 +13,7 @@ class TranscriptTestDetailState extends Equatable {
   final bool isCorrect;
   final String userInput;
   final bool isShowAiVoice;
+  final bool isInitSpeechToText;
 
   const TranscriptTestDetailState({
     required this.loadStatus,
@@ -24,6 +25,7 @@ class TranscriptTestDetailState extends Equatable {
     required this.isCorrect,
     required this.userInput,
     required this.isShowAiVoice,
+    required this.isInitSpeechToText,
   });
 
   // initstate
@@ -38,6 +40,7 @@ class TranscriptTestDetailState extends Equatable {
       isCorrect: false,
       userInput: '',
       isShowAiVoice: false,
+      isInitSpeechToText: false,
     );
   }
 
@@ -52,6 +55,7 @@ class TranscriptTestDetailState extends Equatable {
     bool? isCorrect,
     String? userInput,
     bool? isShowAiVoice,
+    bool? isInitSpeechToText,
   }) {
     return TranscriptTestDetailState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -63,6 +67,7 @@ class TranscriptTestDetailState extends Equatable {
       isCorrect: isCorrect ?? this.isCorrect,
       userInput: userInput ?? this.userInput,
       isShowAiVoice: isShowAiVoice ?? this.isShowAiVoice,
+      isInitSpeechToText: isInitSpeechToText ?? this.isInitSpeechToText,
     );
   }
 
@@ -77,5 +82,6 @@ class TranscriptTestDetailState extends Equatable {
         isCorrect,
         userInput,
         isShowAiVoice,
+        isInitSpeechToText,
       ];
 }
