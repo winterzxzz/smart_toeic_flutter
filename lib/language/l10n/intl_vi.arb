@@ -238,6 +238,13 @@
     "success": "Thành công",
     "analysis_your_score_success": "Phân tích điểm thành công",
     "language": "Ngôn ngữ",
-    "english": "Tiếng Anh",
-    "vietnamese": "Tiếng Việt"
+    "english": "English",
+    "vietnamese": "Tiếng Việt", 
+    "home": "Trang chủ",
+    "test_practice": "Thi luyện",
+    "flashcards": "Thẻ từ",
+    "blog": "Blog",
+    "account": "Tài khoản",
+    "settings": "Cài đặt"
+
 }

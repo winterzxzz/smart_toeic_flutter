@@ -246,5 +246,11 @@
     "analysis_your_score_success": "Analysis your score successfully",
     "language": "Language",
     "english": "English",
-    "vietnamese": "Tiếng Việt"
+    "vietnamese": "Tiếng Việt", 
+    "home": "Home",
+    "test_practice": "Test Practice",
+    "flashcards": "Flashcards",
+    "blog": "Blog",
+    "account": "Account",
+    "settings": "Settings"
 }

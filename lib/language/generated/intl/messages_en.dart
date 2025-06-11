@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "access_blog": MessageLookupByLibrary.simpleMessage("Access blog"),
         "access_existing_flashcards":
             MessageLookupByLibrary.simpleMessage("Access existing flashcards"),
+        "account": MessageLookupByLibrary.simpleMessage("Account"),
         "accuracy_by_part":
             MessageLookupByLibrary.simpleMessage("Accuracy by Part"),
         "add_new_word": MessageLookupByLibrary.simpleMessage("Add new word"),
@@ -66,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Back to test page"),
         "bio_hint": MessageLookupByLibrary.simpleMessage("Enter your bio"),
         "bio_label": MessageLookupByLibrary.simpleMessage("Bio"),
+        "blog": MessageLookupByLibrary.simpleMessage("Blog"),
         "blogs": MessageLookupByLibrary.simpleMessage("Blogs"),
         "blogs_title": MessageLookupByLibrary.simpleMessage("Blogs"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -172,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide_answer": MessageLookupByLibrary.simpleMessage("Hide Answer"),
         "history": MessageLookupByLibrary.simpleMessage("History"),
         "history_test": MessageLookupByLibrary.simpleMessage("History Test"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "invalid_confirm_password_error": MessageLookupByLibrary.simpleMessage(
             "Confirm password must have text, number and special character"),
         "invalid_email_error":
@@ -334,6 +337,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "test_listening":
             MessageLookupByLibrary.simpleMessage("Test Listening"),
         "test_online": MessageLookupByLibrary.simpleMessage("Test Online"),
+        "test_practice": MessageLookupByLibrary.simpleMessage("Test Practice"),
         "tests": MessageLookupByLibrary.simpleMessage("Tests"),
         "theme_color": MessageLookupByLibrary.simpleMessage("Theme Color"),
         "time_per_question": MessageLookupByLibrary.simpleMessage("S/Question"),

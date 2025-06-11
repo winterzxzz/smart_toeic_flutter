@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "access_blog": MessageLookupByLibrary.simpleMessage("Xem blog"),
         "access_existing_flashcards":
             MessageLookupByLibrary.simpleMessage("Xem thẻ từ có sẵn"),
+        "account": MessageLookupByLibrary.simpleMessage("Tài khoản"),
         "accuracy_by_part":
             MessageLookupByLibrary.simpleMessage("Độ chính xác theo phần"),
         "add_new_word": MessageLookupByLibrary.simpleMessage("Thêm từ mới"),
@@ -67,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Về trang thi"),
         "bio_hint": MessageLookupByLibrary.simpleMessage("Nhập giới thiệu"),
         "bio_label": MessageLookupByLibrary.simpleMessage("Giới thiệu"),
+        "blog": MessageLookupByLibrary.simpleMessage("Blog"),
         "blogs": MessageLookupByLibrary.simpleMessage("Blog"),
         "blogs_title": MessageLookupByLibrary.simpleMessage("Blog"),
         "cancel": MessageLookupByLibrary.simpleMessage("Hủy"),
@@ -128,7 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vui lòng nhập email"),
         "empty_password_error":
             MessageLookupByLibrary.simpleMessage("Vui lòng nhập mật khẩu"),
-        "english": MessageLookupByLibrary.simpleMessage("Tiếng Anh"),
+        "english": MessageLookupByLibrary.simpleMessage("English"),
         "enhance_your_toeic_skills_with_unique_features":
             MessageLookupByLibrary.simpleMessage(
                 "Nâng cao TOEIC với tính năng đặc biệt"),
@@ -164,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hide_answer": MessageLookupByLibrary.simpleMessage("Ẩn đáp án"),
         "history": MessageLookupByLibrary.simpleMessage("Lịch sử"),
         "history_test": MessageLookupByLibrary.simpleMessage("Lịch sử thi"),
+        "home": MessageLookupByLibrary.simpleMessage("Trang chủ"),
         "invalid_confirm_password_error": MessageLookupByLibrary.simpleMessage(
             "Nhập lại mật khẩu cần chữ, số, ký tự đặc biệt"),
         "invalid_email_error":
@@ -317,6 +320,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "test": MessageLookupByLibrary.simpleMessage("Bài thi"),
         "test_listening": MessageLookupByLibrary.simpleMessage("Thi nghe"),
         "test_online": MessageLookupByLibrary.simpleMessage("Thi online"),
+        "test_practice": MessageLookupByLibrary.simpleMessage("Thi luyện"),
         "tests": MessageLookupByLibrary.simpleMessage("Bài thi"),
         "theme_color": MessageLookupByLibrary.simpleMessage("Màu chủ đề"),
         "time_per_question": MessageLookupByLibrary.simpleMessage("Giây/câu"),

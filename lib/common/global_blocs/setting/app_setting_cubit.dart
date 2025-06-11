@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 
 import '../../configs/app_configs.dart';
 import '../../../data/database/share_preferences_helper.dart';
@@ -17,6 +18,10 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     final isUseBiometric = await SharedPreferencesHelper.getIsUseBiometric();
     final primaryColor = await SharedPreferencesHelper.getPrimaryColor();
 
+    if (currentLanguage != null) {
+      S.load(Locale(currentLanguage.code));
+    }
+
     emit(state.copyWith(
       language: currentLanguage,
       themeMode: themeMode,
@@ -27,6 +32,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
 
   void changeLanguage({required Language language}) async {
     await SharedPreferencesHelper.setCurrentLanguage(language);
+    S.load(Locale(language.code));
     emit(state.copyWith(
       language: language,
     ));
