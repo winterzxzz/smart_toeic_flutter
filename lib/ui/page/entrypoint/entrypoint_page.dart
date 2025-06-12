@@ -144,47 +144,50 @@ class _PageState extends State<Page> {
               ),
               bottomNavigationBar: Visibility(
                 visible: orientation == Orientation.portrait,
-                child: BottomNavigationBar(
-                  useLegacyColorScheme: true,
-                  selectedItemColor: theme.colorScheme.primary,
-                  unselectedItemColor: AppColors.gray3,
-                  selectedLabelStyle: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  unselectedLabelStyle: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  showUnselectedLabels: true,
-                  iconSize: 20,
-                  currentIndex: state.currentIndex,
-                  onTap: (index) {
-                    _entrypointCubit.changeCurrentIndex(index);
-                  },
-                  items: Constants.bottomTabs.map((tab) {
-                    return BottomNavigationBarItem(
-                      icon: SvgPicture.asset(
-                        state.currentIndex == Constants.bottomTabs.indexOf(tab)
-                            ? tab.iconFill
-                            : tab.iconOutline,
-                        width: 20,
-                        height: 20,
-                        colorFilter: state.currentIndex ==
-                                Constants.bottomTabs.indexOf(tab)
-                            ? ColorFilter.mode(
-                                theme.colorScheme.primary,
-                                BlendMode.srcIn,
-                              )
-                            : const ColorFilter.mode(
-                                AppColors.gray3,
-                                BlendMode.srcIn,
-                              ),
-                      ),
-                      label: tab.title,
-                    );
-                  }).toList(),
-                ),
+                child: Builder(builder: (context) {
+                  final bottomTabs = Constants.bottomTabs;
+                  return BottomNavigationBar(
+                    useLegacyColorScheme: true,
+                    selectedItemColor: theme.colorScheme.primary,
+                    unselectedItemColor: AppColors.gray3,
+                    selectedLabelStyle: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    unselectedLabelStyle: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    showUnselectedLabels: true,
+                    iconSize: 20,
+                    currentIndex: state.currentIndex,
+                    onTap: (index) {
+                      _entrypointCubit.changeCurrentIndex(index);
+                    },
+                    items: bottomTabs.map((tab) {
+                      return BottomNavigationBarItem(
+                        icon: SvgPicture.asset(
+                          state.currentIndex == bottomTabs.indexOf(tab)
+                              ? tab.iconFill
+                              : tab.iconOutline,
+                          width: 20,
+                          height: 20,
+                          colorFilter:
+                              state.currentIndex == bottomTabs.indexOf(tab)
+                                  ? ColorFilter.mode(
+                                      theme.colorScheme.primary,
+                                      BlendMode.srcIn,
+                                    )
+                                  : const ColorFilter.mode(
+                                      AppColors.gray3,
+                                      BlendMode.srcIn,
+                                    ),
+                        ),
+                        label: tab.title,
+                      );
+                    }).toList(),
+                  );
+                }),
               ),
             );
           },
