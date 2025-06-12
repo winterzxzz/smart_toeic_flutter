@@ -90,7 +90,6 @@ class AppNavigator {
     void Function()? onTap,
   }) {
     context.loaderOverlay.show(widgetBuilder: (progress) {
-      final theme = Theme.of(context);
       final size = MediaQuery.sizeOf(context);
       return Container(
         width: double.infinity,
@@ -100,14 +99,6 @@ class AppNavigator {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(),
-            if (message != null) const SizedBox(height: 16),
-            if (message != null)
-              Text(
-                message,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.textWhite,
-                ),
-              ),
             GestureDetector(
               onTap: () {
                 context.loaderOverlay.hide();

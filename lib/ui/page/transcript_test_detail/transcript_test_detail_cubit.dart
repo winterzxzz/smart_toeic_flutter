@@ -15,6 +15,8 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
 
   Timer? _animationTimer;
 
+  Timer? _showAiVoiceTimer;
+
   TranscriptTestDetailCubit({
     required TranscriptTestRepository transcriptTestRepository,
     required TranscriptCheckerService transcriptCheckerService,
@@ -24,6 +26,18 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
 
   void safeEmit(TranscriptTestDetailState newState) {
     if (!isClosed) emit(newState);
+  }
+
+  void initShowAiVoiceTimer() {
+    _showAiVoiceTimer?.cancel();
+    _showAiVoiceTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      emit(state.copyWith(isShowAiVoice: false));
+    });
+  }
+
+  void cancelShowAiVoiceTimer() {
+    stopListening();
+    _showAiVoiceTimer?.cancel();
   }
 
   Future<void> getTranscriptTestDetail(String transcriptTestId) async {
@@ -92,9 +106,11 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   void toggleIsShowAiVoice() async {
     if (state.isShowAiVoice) {
       await cancelListening();
+      cancelShowAiVoiceTimer();
     } else {
       await startListening().then((_) {
         emit(state.copyWith(isShowAiVoice: true));
+        initShowAiVoiceTimer();
       });
     }
   }
@@ -103,7 +119,7 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
     await speechToText.initialize(
       finalTimeout: const Duration(seconds: 10),
       onError: (error) {
-        stopListening();
+        //    stopListening();
       },
     );
     emit(state.copyWith(isInitSpeechToText: true));
@@ -130,7 +146,9 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       onResult: (result) {
         emit(state.copyWith(
           userInput: result.recognizedWords,
+          isShowAiVoice: false,
         ));
+        cancelShowAiVoiceTimer();
       },
     );
   }

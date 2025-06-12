@@ -1,6 +1,9 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
+import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
 class AudioSection extends StatefulWidget {
   const AudioSection({
@@ -95,86 +98,95 @@ class _AudioSectionState extends State<AudioSection> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      height: 60,
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(50),
-      ),
-      child: Stack(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: _handleTapPlayPause,
-                child: Container(
-                  height: 56,
-                  width: 56,
-                  decoration: BoxDecoration(
-                    color: AppColors.textWhite,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    _isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Colors.black,
-                    size: 28,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    trackHeight: 4,
-                    thumbShape: const RoundSliderThumbShape(
-                      enabledThumbRadius: 8,
-                    ),
-                    overlayShape: const RoundSliderOverlayShape(
-                      overlayRadius: 16,
-                    ),
-                  ),
-                  child: Slider(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    activeColor: AppColors.textWhite,
-                    inactiveColor: AppColors.gray1,
-                    min: 0,
-                    max: _duration?.inSeconds.toDouble() ?? 0,
-                    value: _position?.inSeconds.toDouble() ?? 0,
-                    onChangeStart: _handleSeekStart,
-                    onChanged: _handleSeekUpdate,
-                    onChangeEnd: _handleSeekEnd,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-            ],
-          ),
-          Positioned(
-            top: 10,
-            left: 78,
-            right: 16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocListener<TranscriptTestDetailCubit, TranscriptTestDetailState>(
+      listenWhen: (previous, current) =>
+          previous.isShowAiVoice != current.isShowAiVoice,
+      listener: (context, state) {
+        if (state.isShowAiVoice) {
+          _audioPlayer?.pause();
+        }
+      },
+      child: Container(
+        height: 60,
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primary,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Stack(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  formatDuration(_position ?? Duration.zero),
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(fontSize: 10, color: Colors.white),
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: _handleTapPlayPause,
+                  child: Container(
+                    height: 56,
+                    width: 56,
+                    decoration: BoxDecoration(
+                      color: AppColors.textWhite,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      _isPlaying ? Icons.pause : Icons.play_arrow,
+                      color: Colors.black,
+                      size: 28,
+                    ),
+                  ),
                 ),
-                Text(
-                  formatDuration(_duration ?? Duration.zero),
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(fontSize: 10, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: 4,
+                      thumbShape: const RoundSliderThumbShape(
+                        enabledThumbRadius: 8,
+                      ),
+                      overlayShape: const RoundSliderOverlayShape(
+                        overlayRadius: 16,
+                      ),
+                    ),
+                    child: Slider(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      activeColor: AppColors.textWhite,
+                      inactiveColor: AppColors.gray1,
+                      min: 0,
+                      max: _duration?.inSeconds.toDouble() ?? 0,
+                      value: _position?.inSeconds.toDouble() ?? 0,
+                      onChangeStart: _handleSeekStart,
+                      onChanged: _handleSeekUpdate,
+                      onChangeEnd: _handleSeekEnd,
+                    ),
+                  ),
                 ),
+                const SizedBox(width: 8),
               ],
             ),
-          )
-        ],
+            Positioned(
+              top: 10,
+              left: 78,
+              right: 16,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    formatDuration(_position ?? Duration.zero),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(fontSize: 10, color: Colors.white),
+                  ),
+                  Text(
+                    formatDuration(_duration ?? Duration.zero),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(fontSize: 10, color: Colors.white),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
