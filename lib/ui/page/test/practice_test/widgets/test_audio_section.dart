@@ -101,7 +101,7 @@ class _TestAudioSectionState extends State<TestAudioSection> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      height: 60,
+      height: 44,
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
@@ -117,8 +117,8 @@ class _TestAudioSectionState extends State<TestAudioSection> {
                 borderRadius: BorderRadius.circular(30),
                 onTap: _handleTapPlayPause,
                 child: Container(
-                  height: 56,
-                  width: 56,
+                  height: 40,
+                  width: 40,
                   decoration: BoxDecoration(
                     color: AppColors.textWhite,
                     borderRadius: BorderRadius.circular(30),
@@ -133,52 +133,48 @@ class _TestAudioSectionState extends State<TestAudioSection> {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    trackHeight: 4,
-                    thumbShape: const RoundSliderThumbShape(
-                      enabledThumbRadius: 8,
+                child: Row(
+                  children: [
+                    Text(
+                      formatDuration(_position ?? Duration.zero),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(fontSize: 10, color: Colors.white),
                     ),
-                    overlayShape: const RoundSliderOverlayShape(
-                      overlayRadius: 16,
+                    Expanded(
+                      child: SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: 4,
+                          thumbShape: const RoundSliderThumbShape(
+                            enabledThumbRadius: 6,
+                          ),
+                          overlayShape: const RoundSliderOverlayShape(
+                            overlayRadius: 16,
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                        ),
+                        child: Slider(
+                          activeColor: AppColors.textWhite,
+                          inactiveColor: AppColors.gray1,
+                          min: 0,
+                          max: _duration?.inSeconds.toDouble() ?? 0,
+                          value: _position?.inSeconds.toDouble() ?? 0,
+                          onChangeStart: _handleSeekStart,
+                          onChanged: _handleSeekUpdate,
+                          onChangeEnd: _handleSeekEnd,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Slider(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    activeColor: AppColors.textWhite,
-                    inactiveColor: AppColors.gray1,
-                    min: 0,
-                    max: _duration?.inSeconds.toDouble() ?? 0,
-                    value: _position?.inSeconds.toDouble() ?? 0,
-                    onChangeStart: _handleSeekStart,
-                    onChanged: _handleSeekUpdate,
-                    onChangeEnd: _handleSeekEnd,
-                  ),
+                    Text(
+                      formatDuration(_duration ?? Duration.zero),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(fontSize: 10, color: Colors.white),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(width: 8),
             ],
           ),
-          Positioned(
-            top: 10,
-            left: 78,
-            right: 16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  formatDuration(_position ?? Duration.zero),
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(fontSize: 10, color: Colors.white),
-                ),
-                Text(
-                  formatDuration(_duration ?? Duration.zero),
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(fontSize: 10, color: Colors.white),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );

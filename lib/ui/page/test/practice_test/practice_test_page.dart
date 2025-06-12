@@ -104,6 +104,7 @@ class _PageState extends State<Page> {
           canPop: widget.testShow == TestShow.test ? false : true,
           child: SafeArea(
             child: Scaffold(
+              backgroundColor: const Color(0xFFFAFAFA),
               endDrawer: const QuestionIndex(),
               body: BlocBuilder<PracticeTestCubit, PracticeTestState>(
                 buildWhen: (previous, current) =>
@@ -137,17 +138,16 @@ class _PageState extends State<Page> {
                         ),
                         automaticallyImplyLeading: false,
                         toolbarHeight: 55,
-                        floating: true,
+                        backgroundColor: const Color(0xFFFAFAFA),
+                        pinned: true,
                         title: const HeadingPracticeTest(),
                         actions: [
-                          Builder(
-                            builder: (context) => IconButton(
-                              icon: const Icon(Icons.menu),
-                              onPressed: () {
-                                Scaffold.of(context).openEndDrawer();
-                              },
-                            ),
-                          ),
+                          IconButton(
+                            icon: const Icon(Icons.menu),
+                            onPressed: () {
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                          )
                         ],
                       ),
                       SliverPersistentHeader(
@@ -160,7 +160,7 @@ class _PageState extends State<Page> {
                       ),
                       SliverPadding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 16),
+                            horizontal: 16, vertical: 12),
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
@@ -238,34 +238,43 @@ class _PartSelectorHeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final theme = Theme.of(context);
     return Container(
-      color: theme.appBarTheme.backgroundColor,
+      color: const Color(0xFFFAFAFA),
       height: 50,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 2, top: 2),
-        itemCount: parts.length,
-        separatorBuilder: (context, index) => const SizedBox(width: 16),
-        itemBuilder: (context, index) => InkWell(
-          onTap: () => onTap(parts[index]),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: parts[index].numValue == focusPart.numValue
-                  ? theme.colorScheme.primary
-                  : theme.brightness == Brightness.dark
-                      ? AppColors.backgroundDarkSub
-                      : AppColors.backgroundLightSub,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(parts[index].name,
-                style: TextStyle(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding:
+                  const EdgeInsets.only(left: 8, right: 8, bottom: 4, top: 4),
+              itemCount: parts.length,
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
+              itemBuilder: (context, index) => InkWell(
+                onTap: () => onTap(parts[index]),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(
                     color: parts[index].numValue == focusPart.numValue
-                        ? Colors.white
+                        ? theme.colorScheme.primary
                         : theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black)),
+                            ? AppColors.backgroundDarkSub
+                            : AppColors.backgroundLightSub,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(parts[index].name,
+                      style: TextStyle(
+                          color: parts[index].numValue == focusPart.numValue
+                              ? Colors.white
+                              : theme.brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black)),
+                ),
+              ),
+            ),
           ),
-        ),
+          const SizedBox(height: 4),
+        ],
       ),
     );
   }

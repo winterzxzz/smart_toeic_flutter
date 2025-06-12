@@ -17,8 +17,6 @@ class QuestionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (question.audio != null)
-            TestAudioSection(audioUrl: question.audio!),
           if (question.paragraph != null)
             Container(
               margin: const EdgeInsets.only(bottom: 8),
@@ -36,6 +34,8 @@ class QuestionWidget extends StatelessWidget {
                 ),
               ),
             ),
+          if (question.audio != null)
+            TestAudioSection(audioUrl: question.audio!),
           if (question.image != null) ...[
             Container(
               constraints: const BoxConstraints(maxWidth: 500),

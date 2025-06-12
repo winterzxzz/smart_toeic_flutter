@@ -31,9 +31,9 @@ class _QuestionPartState extends State<QuestionPart> {
             Transform.scale(
               scale: 1.1,
               child: Checkbox(
-                activeColor: AppColors.primary,
-                shape: const CircleBorder(
-                  side: BorderSide(color: AppColors.primary, width: 1),
+                activeColor: theme.colorScheme.primary,
+                shape: CircleBorder(
+                  side: BorderSide(color: theme.colorScheme.primary, width: 1),
                 ),
                 value: widget.isSelected,
                 onChanged: (value) {

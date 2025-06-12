@@ -143,6 +143,9 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       ),
       localeId: 'en_US',
       listenFor: const Duration(seconds: 30),
+      onSoundLevelChange: (level) {
+        debugPrint('winter-onSoundLevelChange: $level');
+      },
       onResult: (result) {
         emit(state.copyWith(
           userInput: result.recognizedWords,
