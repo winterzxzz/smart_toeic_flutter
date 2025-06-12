@@ -20,14 +20,14 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
     required TranscriptCheckerService transcriptCheckerService,
   })  : _transcriptTestRepository = transcriptTestRepository,
         _transcriptCheckerService = transcriptCheckerService,
-        super(TranscriptTestDetailState.initial()) {
-    initSpeechToText();
+        super(TranscriptTestDetailState.initial());
+
+  void safeEmit(TranscriptTestDetailState newState) {
+    if (!isClosed) emit(newState);
   }
 
   Future<void> getTranscriptTestDetail(String transcriptTestId) async {
-    Future.microtask(() {
-      emit(state.copyWith(loadStatus: LoadStatus.loading));
-    });
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
     final transcriptTestDetail = await _transcriptTestRepository
         .getTranscriptTestDetail(transcriptTestId);
     transcriptTestDetail.fold(
@@ -62,6 +62,7 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   }
 
   void handleCheck(String userInput) {
+    debugPrint('winter-handleCheck userInput: $userInput');
     final currentTranscriptQuestion = state.transcriptTests[state.currentIndex];
     final result = _transcriptCheckerService.checkTranscription(
       userInput: userInput,
@@ -73,14 +74,15 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       checkResults: result.results,
       isCorrect: result.isAllCorrect,
       userInput: userInput,
+      isShowAiVoice: false,
     ));
 
-    _animationTimer?.cancel();
-    _animationTimer = Timer(const Duration(seconds: 3), () {
-      if (state.isCorrect) {
+    if (state.isCorrect) {
+      _animationTimer?.cancel();
+      _animationTimer = Timer(const Duration(seconds: 3), () {
         nextTranscriptTest();
-      }
-    });
+      });
+    }
   }
 
   void toggleIsCheck() {
@@ -89,9 +91,7 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
 
   void toggleIsShowAiVoice() async {
     if (state.isShowAiVoice) {
-      await cancelListening().then((_) {
-        emit(state.copyWith(isShowAiVoice: false));
-      });
+      await cancelListening();
     } else {
       await startListening().then((_) {
         emit(state.copyWith(isShowAiVoice: true));
@@ -105,18 +105,8 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       onError: (error) {
         stopListening();
       },
-      onStatus: (status) {
-        debugPrint('winter-status: $status');
-        _handleSpeechStatus(status);
-      },
     );
     emit(state.copyWith(isInitSpeechToText: true));
-  }
-
-  void _handleSpeechStatus(String status) {
-    if (status == 'done' || status == 'notListening') {
-      stopListening();
-    }
   }
 
   Future<void> cancelListening() async {
@@ -125,6 +115,9 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   }
 
   Future<void> startListening() async {
+    if (!state.isInitSpeechToText) {
+      await initSpeechToText();
+    }
     await speechToText.listen(
       listenOptions: SpeechListenOptions(
         sampleRate: 44100,
@@ -135,13 +128,23 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
       localeId: 'en_US',
       listenFor: const Duration(seconds: 30),
       onResult: (result) {
-        handleCheck(result.recognizedWords);
+        emit(state.copyWith(
+          userInput: result.recognizedWords,
+        ));
       },
     );
   }
 
   Future<void> stopListening() async {
+    debugPrint('winter-stopListening stopListening');
     await speechToText.stop();
-    emit(state.copyWith(isShowAiVoice: false));
+    safeEmit(state.copyWith(isShowAiVoice: false));
+  }
+
+  @override
+  Future<void> close() {
+    speechToText.cancel();
+    _animationTimer?.cancel();
+    return super.close();
   }
 }

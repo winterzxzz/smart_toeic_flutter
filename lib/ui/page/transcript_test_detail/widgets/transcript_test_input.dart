@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
@@ -50,6 +51,8 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
               listener: (context, state) {
                 if (state.userInput.isEmpty) {
                   _transcriptController.clear();
+                } else {
+                  _transcriptController.text = state.userInput;
                 }
               },
               child: TextField(
@@ -80,35 +83,41 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
             const SizedBox(height: 16),
             const CheckResultDisplay(),
             const Spacer(),
-            SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            BlocListener<TranscriptTestDetailCubit, TranscriptTestDetailState>(
+              listenWhen: (previous, current) =>
+                  previous.isShowAiVoice != current.isShowAiVoice,
+              listener: (context, state) {
+                if (state.isShowAiVoice) {
+                  AppNavigator(context: context).showAiVoiceOverlay(
+                    onTap: () {
+                      _cubit.toggleIsShowAiVoice();
+                    },
+                  );
+                } else {
+                  AppNavigator(context: context).hideAiVoiceOverlay();
+                }
+              },
+              child: SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                ),
-                onPressed: () {
-                  _cubit.toggleIsShowAiVoice();
-                  // Utils.showModalBottomSheetForm(
-                  //   context: context,
-                  //   title: S.current.practice_pronoun,
-                  //   child: SpeechTest(
-                  //     onSave: (value) {
-                  //       _cubit.handleCheck(value);
-                  //     },
-                  //   ),
-                  // );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const FaIcon(FontAwesomeIcons.microphoneLines),
-                    const SizedBox(width: 8),
-                    Text(S.current.practice_pronoun),
-                  ],
+                  onPressed: () {
+                    _cubit.toggleIsShowAiVoice();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const FaIcon(FontAwesomeIcons.microphoneLines),
+                      const SizedBox(width: 8),
+                      Text(S.current.practice_pronoun),
+                    ],
+                  ),
                 ),
               ),
             ),

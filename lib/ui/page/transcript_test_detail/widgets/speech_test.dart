@@ -14,7 +14,8 @@ class SpeechTest extends StatefulWidget {
 }
 
 class _SpeechTestState extends State<SpeechTest> {
-  bool isEnable = false;
+  bool isInitialized = false;
+  bool isRecording = false;
   final SpeechToText speechToText = SpeechToText();
   static const int barCount = 48;
   List<double> levels = List.filled(barCount, 0.0);
@@ -27,15 +28,26 @@ class _SpeechTestState extends State<SpeechTest> {
         .initialize(
       finalTimeout: const Duration(seconds: 10),
       onError: (error) {
+        if (!mounted) return;
+        setState(() {
+          isRecording = false;
+        });
         debugPrint('error: $error');
       },
       onStatus: (status) {
+        if (!mounted) return;
+        if (status == 'done' || status == 'notListening') {
+          setState(() {
+            isRecording = false;
+          });
+        }
         debugPrint('status: $status');
       },
     )
         .then((value) {
+      if (!mounted) return;
       setState(() {
-        isEnable = value;
+        isInitialized = value;
       });
     });
   }
@@ -47,18 +59,20 @@ class _SpeechTestState extends State<SpeechTest> {
   }
 
   void _startSpeechToText() async {
-    if (!isEnable) {
+    if (!isInitialized) {
       debugPrint('SpeechToText is not initialized');
       return;
     }
     await speechToText.listen(
       onResult: (result) {
+        if (!mounted) return;
         setState(() {
           recognizedText += ' ${result.recognizedWords}';
         });
         debugPrint('text: ${result.recognizedWords}');
       },
       onSoundLevelChange: (level) {
+        if (!mounted) return;
         setState(() {
           levels.add(level);
           if (levels.length > barCount) {
@@ -66,7 +80,21 @@ class _SpeechTestState extends State<SpeechTest> {
           }
         });
       },
-    );
+    ).then((value) {
+      if (!mounted) return;
+      setState(() {
+        isRecording = true;
+      });
+    });
+  }
+
+  void _stopSpeechToText() async {
+    await speechToText.stop().then((value) {
+      if (!mounted) return;
+      setState(() {
+        isRecording = false;
+      });
+    });
   }
 
   @override
@@ -86,14 +114,14 @@ class _SpeechTestState extends State<SpeechTest> {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isEnable ? theme.colorScheme.primary : null,
+                color: isRecording ? theme.colorScheme.primary : null,
               ),
               child: IconButton(
-                onPressed: isEnable ? _startSpeechToText : null,
+                onPressed: isRecording ? _stopSpeechToText : _startSpeechToText,
                 icon: Icon(
                   Icons.mic,
                   size: 32,
-                  color: isEnable ? theme.colorScheme.onPrimary : null,
+                  color: isRecording ? theme.colorScheme.onPrimary : null,
                 ),
               ),
             ),

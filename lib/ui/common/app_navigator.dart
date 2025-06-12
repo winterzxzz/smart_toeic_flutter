@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:lottie/lottie.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 
 import 'app_colors.dart';
 import 'app_text_styles.dart';
@@ -80,6 +82,52 @@ class AppNavigator {
   }
 
   void hideLoadingOverlay() {
+    context.loaderOverlay.hide();
+  }
+
+  void showAiVoiceOverlay({
+    String? message = "Press when done...",
+    void Function()? onTap,
+  }) {
+    context.loaderOverlay.show(widgetBuilder: (progress) {
+      final theme = Theme.of(context);
+      final size = MediaQuery.sizeOf(context);
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: AppColors.backgroundBlur,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Spacer(),
+            if (message != null) const SizedBox(height: 16),
+            if (message != null)
+              Text(
+                message,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: AppColors.textWhite,
+                ),
+              ),
+            GestureDetector(
+              onTap: () {
+                context.loaderOverlay.hide();
+                onTap?.call();
+              },
+              child: SizedBox(
+                height: 100,
+                width: 100,
+                child: Lottie.asset(AppImages.aiVoice,
+                    fit: BoxFit.cover, repeat: true),
+              ),
+            ),
+            SizedBox(height: size.height * 0.1),
+          ],
+        ),
+      );
+    });
+  }
+
+  void hideAiVoiceOverlay() {
     context.loaderOverlay.hide();
   }
 
