@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class QuestionPart extends StatefulWidget {
   final PartModel part;

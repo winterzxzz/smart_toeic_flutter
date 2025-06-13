@@ -31,13 +31,13 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   void initShowAiVoiceTimer() {
     _showAiVoiceTimer?.cancel();
     _showAiVoiceTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      emit(state.copyWith(isShowAiVoice: false));
+      stopListening();
     });
   }
 
   void cancelShowAiVoiceTimer() {
-    stopListening();
     _showAiVoiceTimer?.cancel();
+    _showAiVoiceTimer = null;
   }
 
   Future<void> getTranscriptTestDetail(String transcriptTestId) async {
@@ -117,7 +117,7 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
 
   Future<void> initSpeechToText() async {
     await speechToText.initialize(
-      finalTimeout: const Duration(seconds: 10),
+      finalTimeout: const Duration(seconds: 30),
       onError: (error) {
         //    stopListening();
       },
@@ -139,19 +139,24 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
         sampleRate: 44100,
         listenMode: ListenMode.dictation,
         partialResults: false,
-        cancelOnError: true,
+        cancelOnError: false,
       ),
       localeId: 'en_US',
-      listenFor: const Duration(seconds: 30),
+      listenFor: const Duration(seconds: 60),
+      pauseFor: const Duration(seconds: 10),
       onSoundLevelChange: (level) {
-        debugPrint('winter-onSoundLevelChange: $level');
+        if (level >= 3 &&
+            _showAiVoiceTimer != null &&
+            _showAiVoiceTimer!.isActive) {
+          debugPrint('winter-onSoundLevelChange: cancelShowAiVoiceTimer');
+          cancelShowAiVoiceTimer();
+        }
       },
       onResult: (result) {
         emit(state.copyWith(
           userInput: result.recognizedWords,
           isShowAiVoice: false,
         ));
-        cancelShowAiVoiceTimer();
       },
     );
   }

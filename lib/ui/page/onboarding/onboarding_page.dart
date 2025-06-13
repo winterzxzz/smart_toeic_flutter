@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
-import 'package:toeic_desktop/data/models/ui_models/service_item.dart';
-import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/common/app_images.dart';
-import 'package:toeic_desktop/ui/common/app_text_styles.dart';
+import 'package:toeic_desktop/ui/page/onboarding/widgets/onboarding_content.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -36,8 +32,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -53,7 +49,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               },
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return const OnboardingContentFirst();
+                  return const OnboardingContent();
                 } else {
                   return OnboardingContent(item: Constants.services[index - 1]);
                 }
@@ -74,15 +70,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primary, width: 2),
+                        border: Border.all(
+                            color: theme.colorScheme.primary, width: 2),
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
-                      child: const Icon(
+                      child: Icon(
                         Icons.arrow_back_ios,
-                        color: AppColors.primary,
                         weight: 2,
                         size: 16,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                   )
@@ -99,8 +96,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: index == _currentPage
-                            ? AppColors.primary
-                            : AppColors.primary.withValues(alpha: 0.2),
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.primary.withValues(alpha: 0.2),
                       ),
                     );
                   }),
@@ -168,87 +165,5 @@ class _OnboardingPageState extends State<OnboardingPage> {
         GoRouter.of(context).goNamed(AppRouter.login);
       }
     });
-  }
-}
-
-class OnboardingContentFirst extends StatelessWidget {
-  const OnboardingContentFirst({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Hero(
-          tag: 'app_logo',
-          child: Image.asset(
-            AppImages
-                .appLogo, // Replace with your onboarding illustration asset
-            width: 180,
-            height: 180,
-            fit: BoxFit.contain,
-          ),
-        ),
-        const SizedBox(height: 32),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            S.current.onboarding_title,
-            style: AppTextStyle.blackS18Bold.copyWith(fontSize: 22),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            S.current.onboarding_description,
-            style: AppTextStyle.grayS16,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class OnboardingContent extends StatelessWidget {
-  const OnboardingContent({
-    super.key,
-    required this.item,
-  });
-
-  final ServiceItem item;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FaIcon(
-          item.icon,
-          size: 180,
-          color: AppColors.primary,
-        ),
-        const SizedBox(height: 32),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            item.title,
-            style: AppTextStyle.blackS18Bold.copyWith(fontSize: 22),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            item.desciption,
-            style: AppTextStyle.grayS16,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
   }
 }
