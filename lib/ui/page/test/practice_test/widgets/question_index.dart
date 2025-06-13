@@ -25,7 +25,6 @@ class _QuestionIndexState extends State<QuestionIndex> {
       child: SafeArea(
         child: Container(
           color: theme.appBarTheme.backgroundColor,
-          height: double.infinity,
           padding: const EdgeInsets.all(16),
           child: BlocBuilder<PracticeTestCubit, PracticeTestState>(
             buildWhen: (previous, current) =>
@@ -33,39 +32,24 @@ class _QuestionIndexState extends State<QuestionIndex> {
                 previous.questions != current.questions ||
                 previous.testShow != current.testShow,
             builder: (context, state) {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ...state.parts.map(
-                      (part) {
-                        if (state.questions
-                            .where((question) => question.part == part.numValue)
-                            .isNotEmpty) {
-                          return Column(
-                            children: [
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              PracticeTestPart(
-                                title: part.name,
-                                questions: state.questions
-                                    .where((question) =>
-                                        question.part == part.numValue)
-                                    .toList(),
-                              ),
-                            ],
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                  ],
-                ),
+              final partsWithQuestions = state.parts
+                  .where((part) => state.questions
+                      .any((question) => question.part == part.numValue))
+                  .toList();
+              return ListView.separated(
+                itemCount: partsWithQuestions.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
+                itemBuilder: (context, index) {
+                  final part = partsWithQuestions[index];
+                  final questions = state.questions
+                      .where((question) => question.part == part.numValue)
+                      .toList();
+                  return PracticeTestPart(
+                    title: part.name,
+                    questions: questions,
+                  );
+                },
               );
             },
           ),

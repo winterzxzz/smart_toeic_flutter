@@ -104,7 +104,6 @@ class _PageState extends State<Page> {
           canPop: widget.testShow == TestShow.test ? false : true,
           child: SafeArea(
             child: Scaffold(
-              backgroundColor: const Color(0xFFFAFAFA),
               endDrawer: const QuestionIndex(),
               body: BlocBuilder<PracticeTestCubit, PracticeTestState>(
                 buildWhen: (previous, current) =>
@@ -138,8 +137,7 @@ class _PageState extends State<Page> {
                         ),
                         automaticallyImplyLeading: false,
                         toolbarHeight: 55,
-                        backgroundColor: const Color(0xFFFAFAFA),
-                        pinned: true,
+                        floating: true,
                         title: const HeadingPracticeTest(),
                         actions: [
                           IconButton(
@@ -238,7 +236,7 @@ class _PartSelectorHeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final theme = Theme.of(context);
     return Container(
-      color: const Color(0xFFFAFAFA),
+      color: theme.appBarTheme.backgroundColor,
       height: 50,
       child: Column(
         children: [
