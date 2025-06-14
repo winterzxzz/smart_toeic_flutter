@@ -51,7 +51,6 @@
   <img src="assets/images/readme/suggest_by_ai.jpg" width="300"/>
   <img src="assets/images/readme/ui_practice_test.jpg" width="300"/>
   <img src="assets/images/readme/upgrade_account.jpg" width="300"/>
-  <img src="assets/images/readme/upgrade_account.jpg" width="300"/>
 </p>
 
 ---
