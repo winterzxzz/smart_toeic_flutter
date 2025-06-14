@@ -1620,10 +1620,10 @@ class S {
     );
   }
 
-  /// `MatchinExplanationg Word`
+  /// `Matching Word`
   String get matching_word {
     return Intl.message(
-      'MatchinExplanationg Word',
+      'Matching Word',
       name: 'matching_word',
       desc: '',
       args: [],

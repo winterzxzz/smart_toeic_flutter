@@ -211,8 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_title":
             MessageLookupByLibrary.simpleMessage("Welcome to Smart TOEIC Prep"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
-        "matching_word":
-            MessageLookupByLibrary.simpleMessage("MatchinExplanationg Word"),
+        "matching_word": MessageLookupByLibrary.simpleMessage("Matching Word"),
         "meaning": MessageLookupByLibrary.simpleMessage("Meaning"),
         "min": MessageLookupByLibrary.simpleMessage("min"),
         "mini_exam": MessageLookupByLibrary.simpleMessage("Mini-Exam"),
