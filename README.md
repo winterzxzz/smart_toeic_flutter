@@ -2,6 +2,8 @@
 
 **Smart Toeic Prep** is a powerful and intelligent TOEIC preparation app that simulates real tests and uses AI to help users optimize their study strategy. Built with Flutter and BLoC architecture, the app provides rich functionality, detailed performance insights, and an interactive learning experience.
 
+---
+
 ## 🧠 Features
 
 - 🎯 **Real TOEIC Test Simulations**  
