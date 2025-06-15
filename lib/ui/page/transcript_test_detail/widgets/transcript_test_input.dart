@@ -90,7 +90,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                 if (state.isShowAiVoice) {
                   AppNavigator(context: context).showAiVoiceOverlay(
                     onTap: () {
-                      _cubit.toggleIsShowAiVoice();
+                      _cubit.stopListeningVosk();
                     },
                   );
                 } else {
@@ -108,7 +108,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                   ),
                   onPressed: () {
-                    _cubit.toggleIsShowAiVoice();
+                    _cubit.startListeningVosk();
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

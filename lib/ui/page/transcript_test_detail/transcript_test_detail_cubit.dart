@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,11 +8,13 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
 import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
+import 'package:toeic_desktop/vosk_service.dart';
 
 class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   final TranscriptTestRepository _transcriptTestRepository;
   final TranscriptCheckerService _transcriptCheckerService;
   final SpeechToText speechToText = SpeechToText();
+  final VoskService _voskService;
 
   Timer? _animationTimer;
 
@@ -20,8 +23,10 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   TranscriptTestDetailCubit({
     required TranscriptTestRepository transcriptTestRepository,
     required TranscriptCheckerService transcriptCheckerService,
+    required VoskService voskService,
   })  : _transcriptTestRepository = transcriptTestRepository,
         _transcriptCheckerService = transcriptCheckerService,
+        _voskService = voskService,
         super(TranscriptTestDetailState.initial());
 
   void safeEmit(TranscriptTestDetailState newState) {
@@ -165,6 +170,20 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
     debugPrint('winter-stopListening stopListening');
     await speechToText.stop();
     safeEmit(state.copyWith(isShowAiVoice: false));
+  }
+
+  Future<void> startListeningVosk() async {
+    safeEmit(state.copyWith(isShowAiVoice: true));
+    await _voskService.startListening();
+  }
+
+  Future<void> stopListeningVosk() async {
+    safeEmit(state.copyWith(isShowAiVoice: false));
+    final result = await _voskService.stopListening();
+    debugPrint('VoskManager: $result');
+    // convert result from json to string
+    final resultString = jsonDecode(result);
+    safeEmit(state.copyWith(userInput: resultString['text']));
   }
 
   @override

@@ -26,7 +26,8 @@ Future<void> init() async {
     ..registerLazySingleton<TranscriptTestRepository>(
         () => TranscriptTestRepositoryImpl(injector()))
     ..registerLazySingleton<BlogRepository>(
-        () => BlogRepositoryImpl(injector()));
+        () => BlogRepositoryImpl(injector()))
+    ..registerLazySingleton<VoskService>(() => VoskService());
 
   // Cubit dependencies (short-lived objects)
   injector
@@ -54,6 +55,7 @@ Future<void> init() async {
         () => TranscriptTestDetailCubit(
               transcriptTestRepository: injector(),
               transcriptCheckerService: injector(),
+              voskService: injector(),
             ))
     ..registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(injector()))
     ..registerFactory<BlogCubit>(() => BlogCubit(injector()))

@@ -39,6 +39,10 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    aaptOptions {
+        noCompress += "model"
+    }
 }
 
 flutter {
@@ -47,5 +51,7 @@ flutter {
 
 
 dependencies {
+    implementation("com.alphacephei:vosk-android:0.3.32")
+    implementation("net.java.dev.jna:jna:5.6.0@aar")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4") // Ensure it's in the correct config
 }
