@@ -2,42 +2,35 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
+import 'package:toeic_desktop/data/services/stt_service.dart';
 import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
 class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   final TranscriptTestRepository _transcriptTestRepository;
   final TranscriptCheckerService _transcriptCheckerService;
-  final SpeechToText speechToText = SpeechToText();
+  final SpeechService _speechService;
 
   Timer? _animationTimer;
-
-  Timer? _showAiVoiceTimer;
+  StreamSubscription<SpeechStatus>? _statusSubscription;
 
   TranscriptTestDetailCubit({
     required TranscriptTestRepository transcriptTestRepository,
     required TranscriptCheckerService transcriptCheckerService,
+    required SpeechService speechService,
   })  : _transcriptTestRepository = transcriptTestRepository,
         _transcriptCheckerService = transcriptCheckerService,
-        super(TranscriptTestDetailState.initial());
-
-  void safeEmit(TranscriptTestDetailState newState) {
-    if (!isClosed) emit(newState);
-  }
-
-  void initShowAiVoiceTimer() {
-    _showAiVoiceTimer?.cancel();
-    _showAiVoiceTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      stopListening();
+        _speechService = speechService,
+        super(TranscriptTestDetailState.initial()) {
+    _statusSubscription = _speechService.statusStream.listen((status) {
+      if (status == SpeechStatus.error) {
+        onErrorStt(status);
+      } else {
+        onStatusStt(status);
+      }
     });
-  }
-
-  void cancelShowAiVoiceTimer() {
-    _showAiVoiceTimer?.cancel();
-    _showAiVoiceTimer = null;
   }
 
   Future<void> getTranscriptTestDetail(String transcriptTestId) async {
@@ -106,70 +99,48 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   void toggleIsShowAiVoice() async {
     if (state.isShowAiVoice) {
       await cancelListening();
-      cancelShowAiVoiceTimer();
     } else {
       await startListening().then((_) {
         emit(state.copyWith(isShowAiVoice: true));
-        initShowAiVoiceTimer();
       });
     }
   }
 
-  Future<void> initSpeechToText() async {
-    await speechToText.initialize(
-      finalTimeout: const Duration(seconds: 30),
-      onError: (error) {
-        //    stopListening();
-      },
-    );
-    emit(state.copyWith(isInitSpeechToText: true));
+  void onStatusStt(SpeechStatus status) {
+    debugPrint('winter-onStatus: $status');
+  }
+
+  void onErrorStt(SpeechStatus error) {
+    stopListening();
+    debugPrint('winter-onError: $error');
   }
 
   Future<void> cancelListening() async {
-    await speechToText.cancel();
+    _speechService.cancelListening();
     emit(state.copyWith(isShowAiVoice: false));
   }
 
   Future<void> startListening() async {
-    if (!state.isInitSpeechToText) {
-      await initSpeechToText();
+    if (!_speechService.isInitialized) {
+      await _speechService.initialize();
     }
-    await speechToText.listen(
-      listenOptions: SpeechListenOptions(
-        sampleRate: 44100,
-        listenMode: ListenMode.dictation,
-        partialResults: false,
-        cancelOnError: false,
-      ),
-      localeId: 'en_US',
-      listenFor: const Duration(seconds: 60),
-      pauseFor: const Duration(seconds: 10),
-      onSoundLevelChange: (level) {
-        if (level >= 3 &&
-            _showAiVoiceTimer != null &&
-            _showAiVoiceTimer!.isActive) {
-          debugPrint('winter-onSoundLevelChange: cancelShowAiVoiceTimer');
-          cancelShowAiVoiceTimer();
-        }
-      },
-      onResult: (result) {
-        emit(state.copyWith(
-          userInput: result.recognizedWords,
-          isShowAiVoice: false,
-        ));
-      },
-    );
+    _speechService.startListening(onResult);
+  }
+
+  void onResult(String result) {
+    debugPrint('winter-onResult: $result');
+    emit(state.copyWith(userInput: result, isShowAiVoice: false));
   }
 
   Future<void> stopListening() async {
-    debugPrint('winter-stopListening stopListening');
-    await speechToText.stop();
-    safeEmit(state.copyWith(isShowAiVoice: false));
+    _speechService.stopListening();
+    emit(state.copyWith(isShowAiVoice: false));
   }
 
   @override
   Future<void> close() {
-    speechToText.cancel();
+    _statusSubscription?.cancel();
+    _speechService.cancelListening();
     _animationTimer?.cancel();
     return super.close();
   }
