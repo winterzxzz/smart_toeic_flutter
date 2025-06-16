@@ -166,7 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "free_plan": MessageLookupByLibrary.simpleMessage("Free Plan"),
         "full": MessageLookupByLibrary.simpleMessage("Full"),
         "full_mode_tips": MessageLookupByLibrary.simpleMessage(
-            "Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi."),
+            "Tip: The form of partial practice and choosing the appropriate time will help you focus on solving the correct questions instead of being under pressure to complete the test."),
         "google": MessageLookupByLibrary.simpleMessage("Google"),
         "great": MessageLookupByLibrary.simpleMessage("Great!"),
         "hard_to_remember":
@@ -258,7 +258,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "practive_flashcard":
             MessageLookupByLibrary.simpleMessage("Practive Flashcard"),
         "practive_part_tips": MessageLookupByLibrary.simpleMessage(
-            "Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi."),
+            "Tip: The form of partial practice and choosing the appropriate time will help you focus on solving the correct questions instead of being under pressure to complete the test."),
         "premium": MessageLookupByLibrary.simpleMessage("Premium"),
         "premium_account":
             MessageLookupByLibrary.simpleMessage("Premium Account"),

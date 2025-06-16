@@ -1350,10 +1350,10 @@ class S {
     );
   }
 
-  /// `Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.`
+  /// `Tip: The form of partial practice and choosing the appropriate time will help you focus on solving the correct questions instead of being under pressure to complete the test.`
   String get practive_part_tips {
     return Intl.message(
-      'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+      'Tip: The form of partial practice and choosing the appropriate time will help you focus on solving the correct questions instead of being under pressure to complete the test.',
       name: 'practive_part_tips',
       desc: '',
       args: [],
@@ -1390,10 +1390,10 @@ class S {
     );
   }
 
-  /// `Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.`
+  /// `Tip: The form of partial practice and choosing the appropriate time will help you focus on solving the correct questions instead of being under pressure to complete the test.`
   String get full_mode_tips {
     return Intl.message(
-      'Pro tips: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi.',
+      'Tip: The form of partial practice and choosing the appropriate time will help you focus on solving the correct questions instead of being under pressure to complete the test.',
       name: 'full_mode_tips',
       desc: '',
       args: [],

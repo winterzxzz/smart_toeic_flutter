@@ -160,7 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "free_plan": MessageLookupByLibrary.simpleMessage("Gói miễn phí"),
         "full": MessageLookupByLibrary.simpleMessage("Đầy đủ"),
         "full_mode_tips": MessageLookupByLibrary.simpleMessage(
-            "Mẹo: Luyện từng phần giúp tập trung hơn."),
+            "Mẹo: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi."),
         "google": MessageLookupByLibrary.simpleMessage("Google"),
         "great": MessageLookupByLibrary.simpleMessage("Tuyệt vời!"),
         "hard_to_remember": MessageLookupByLibrary.simpleMessage("Khó nhớ"),
@@ -251,7 +251,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "practive_flashcard":
             MessageLookupByLibrary.simpleMessage("Luyện thẻ từ"),
         "practive_part_tips": MessageLookupByLibrary.simpleMessage(
-            "Mẹo: Luyện từng phần giúp tập trung hơn."),
+            "Mẹo: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi."),
         "premium": MessageLookupByLibrary.simpleMessage("Nâng cấp"),
         "premium_account":
             MessageLookupByLibrary.simpleMessage("Tài khoản nâng cấp"),
