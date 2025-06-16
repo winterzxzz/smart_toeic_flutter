@@ -20,7 +20,8 @@ class SetFlashCardLearningItem extends StatelessWidget {
     final tags = [
       TagWidget(
         icon: FontAwesomeIcons.bookBookmark,
-        text: '${flashcard.setFlashcardId.numberOfFlashcards} ${S.current.flashcards.toLowerCase()}',
+        text:
+            '${flashcard.setFlashcardId.numberOfFlashcards} ${S.current.flashcards.toLowerCase()}',
       ),
       TagWidget(
         icon: FontAwesomeIcons.calendar,
@@ -66,22 +67,23 @@ class SetFlashCardLearningItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.error,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      '${_getNumberOfQuestionsReview(flashcard)} ${S.current.to_reviews}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
+                  if (_getNumberOfQuestionsReview(flashcard) > 0)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.error,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ),
-                  )
+                      child: Text(
+                        '${_getNumberOfQuestionsReview(flashcard)} ${S.current.to_reviews}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
                 ],
               ),
               Text(
