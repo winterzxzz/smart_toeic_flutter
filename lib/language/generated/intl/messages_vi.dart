@@ -146,6 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "example_sentences": MessageLookupByLibrary.simpleMessage("Câu ví dụ"),
         "exit": MessageLookupByLibrary.simpleMessage("Thoát"),
         "expiration_date": MessageLookupByLibrary.simpleMessage("Ngày hết hạn"),
+        "explanation": MessageLookupByLibrary.simpleMessage("Giải thích"),
         "facebook": MessageLookupByLibrary.simpleMessage("Facebook"),
         "fill_by_ai": MessageLookupByLibrary.simpleMessage("Điền bằng AI"),
         "filter": MessageLookupByLibrary.simpleMessage("Lọc"),

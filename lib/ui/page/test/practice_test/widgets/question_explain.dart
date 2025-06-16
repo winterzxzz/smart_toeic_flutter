@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_explain.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class ExplanationUI extends StatelessWidget {
   const ExplanationUI({super.key, required this.questionExplain});
@@ -8,14 +10,17 @@ class ExplanationUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Explanations:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          Text(
+            S.current.explanation,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 4),
           // Cards
@@ -51,7 +56,8 @@ class ExplanationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isCorrect ? Colors.green.shade100 : Colors.red.shade100;
+    final theme = Theme.of(context);
+    final color = isCorrect ? theme.colorScheme.primary : AppColors.error;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 2),
@@ -66,15 +72,17 @@ class ExplanationCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
+              style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                color: AppColors.textWhite,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               description,
-              style: const TextStyle(fontSize: 14),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textWhite,
+              ),
             ),
           ],
         ),

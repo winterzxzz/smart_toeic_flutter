@@ -152,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "exit": MessageLookupByLibrary.simpleMessage("Exit"),
         "expiration_date":
             MessageLookupByLibrary.simpleMessage("Expiration date"),
+        "explanation": MessageLookupByLibrary.simpleMessage("Explanation"),
         "facebook": MessageLookupByLibrary.simpleMessage("Facebook"),
         "fill_by_ai": MessageLookupByLibrary.simpleMessage("Fill by AI"),
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),

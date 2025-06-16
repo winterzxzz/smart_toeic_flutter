@@ -252,5 +252,6 @@
     "flashcards": "Flashcards",
     "blog": "Blog",
     "account": "Account",
-    "settings": "Settings"
+    "settings": "Settings", 
+    "explanation": "Explanation"
 }
