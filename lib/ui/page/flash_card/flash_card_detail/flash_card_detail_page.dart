@@ -103,6 +103,7 @@ class _PageState extends State<Page> {
                           child: FlashCardDetailForm(
                             args: FlashCardDetailFormArgs(
                               type: FlashCardDetailFormType.create,
+                              setFlashcardId: widget.setId,
                               onSave: (flashCardRequest) {
                                 _cubit.createFlashCard(flashCardRequest);
                               },

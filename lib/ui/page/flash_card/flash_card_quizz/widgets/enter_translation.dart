@@ -105,7 +105,7 @@ class _EnterTranslationState extends State<EnterTranslation> {
         if (isCheck)
           Builder(builder: (context) {
             final isCorrect = _controller.text.toLowerCase() ==
-                widget.fcLearning.flashcardId!.word.toLowerCase();
+                (widget.fcLearning.flashcardId!.word).toLowerCase();
             return Column(
               children: [
                 if (!isCorrect) ...[

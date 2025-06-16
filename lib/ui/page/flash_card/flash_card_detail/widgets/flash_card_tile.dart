@@ -201,7 +201,8 @@ class _FlashcardTileState extends State<FlashcardTile>
                 children: [
                   Row(
                     children: [
-                      _buildPronunciation(widget.flashcard.pronunciation, 'UK'),
+                      _buildPronunciation(
+                          widget.flashcard.pronunciation, 'UK'),
                     ],
                   ),
                   const SizedBox(height: 8),

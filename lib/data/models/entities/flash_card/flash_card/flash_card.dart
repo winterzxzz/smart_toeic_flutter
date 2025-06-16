@@ -16,7 +16,7 @@ String flashCardToJson(List<FlashCard> data) =>
 @JsonSerializable()
 class FlashCard {
   @JsonKey(name: "setFlashcardId")
-  String setFlashcardId;
+  String? setFlashcardId;
   @JsonKey(name: "word")
   String word;
   @JsonKey(name: "translation")

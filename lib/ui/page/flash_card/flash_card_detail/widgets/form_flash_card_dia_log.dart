@@ -22,11 +22,13 @@ enum FlashCardDetailFormType {
 class FlashCardDetailFormArgs {
   final FlashCardDetailFormType type;
   final FlashCard? flashCard;
+  final String? setFlashcardId;
   final Function(FlashCardRequest) onSave;
 
   const FlashCardDetailFormArgs({
     required this.type,
     this.flashCard,
+    this.setFlashcardId,
     required this.onSave,
   });
 }
@@ -235,7 +237,9 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
                       partOfSpeech: partOfSpeechController.text.split(', '),
                       pronunciation: pronunciationController.text,
                       setFlashcardId:
-                          widget.args.flashCard?.setFlashcardId ?? '',
+                          widget.args.type == FlashCardDetailFormType.create
+                              ? widget.args.setFlashcardId ?? ''
+                              : widget.args.flashCard?.setFlashcardId ?? '',
                     );
                     widget.args.onSave(flashCardRequest);
                     GoRouter.of(context).pop();

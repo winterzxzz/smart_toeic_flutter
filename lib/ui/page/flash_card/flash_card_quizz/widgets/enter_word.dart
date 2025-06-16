@@ -95,8 +95,7 @@ class _EnterWordState extends State<EnterWord> {
                   _cubit.answer(
                       widget.fcLearning.flashcardId!.word,
                       _controller.text.toLowerCase() ==
-                          widget.fcLearning.flashcardId!.translation
-                              .toLowerCase());
+                          (widget.fcLearning.flashcardId!.translation).toLowerCase());
                 }
               });
             },

@@ -136,7 +136,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                               .isNotEmpty ??
                           false) ...[
                         const SizedBox(height: 8),
-                        ...(widget.flashcard.flashcardId?.exampleSentence ?? [])
+                        ...widget.flashcard.flashcardId!.exampleSentence
                             .map((example) => Text(
                                   '- $example',
                                   style: TextStyle(color: Colors.grey[700]),
