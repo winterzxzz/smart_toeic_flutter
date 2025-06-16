@@ -253,5 +253,7 @@
     "blog": "Blog",
     "account": "Account",
     "settings": "Settings", 
-    "explanation": "Explanation"
+    "explanation": "Explanation", 
+    "delete_flashcard": "Delete Flashcard",
+    "edit_flashcard_set": "Edit Flashcard Set"
 }

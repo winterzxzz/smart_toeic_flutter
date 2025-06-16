@@ -112,6 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "decay_score": MessageLookupByLibrary.simpleMessage("Điểm giảm dần"),
         "definition": MessageLookupByLibrary.simpleMessage("Định nghĩa"),
         "delete": MessageLookupByLibrary.simpleMessage("Xóa"),
+        "delete_flashcard": MessageLookupByLibrary.simpleMessage("Xóa thẻ từ"),
         "description": MessageLookupByLibrary.simpleMessage("Mô tả"),
         "display_theme": MessageLookupByLibrary.simpleMessage("Giao diện"),
         "dont_have_account":
@@ -119,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "dynamic_color": MessageLookupByLibrary.simpleMessage("Màu động"),
         "easy_to_remember": MessageLookupByLibrary.simpleMessage("Dễ nhớ"),
         "edit": MessageLookupByLibrary.simpleMessage("Sửa"),
+        "edit_flashcard_set":
+            MessageLookupByLibrary.simpleMessage("Sửa bộ thẻ từ"),
         "email_exist_error":
             MessageLookupByLibrary.simpleMessage("Email không tồn tại"),
         "email_hint": MessageLookupByLibrary.simpleMessage("Nhập email"),

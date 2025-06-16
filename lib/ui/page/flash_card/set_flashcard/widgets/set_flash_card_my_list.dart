@@ -56,7 +56,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                       children: [
                         const FaIcon(FontAwesomeIcons.plus, size: 16),
                         const SizedBox(width: 8),
-                        Text(S.current.create_new_flashcard),
+                        Text(S.current.create_flashcard_sets),
                       ],
                     ),
                     onPressed: () => showCreateSetFlashCardBottomSheet(context),
@@ -105,7 +105,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
   void showCreateSetFlashCardBottomSheet(BuildContext context) {
     Utils.showModalBottomSheetForm(
       context: context,
-      title: S.current.create_new_flashcard_set,
+      title: S.current.create_flashcard_sets,
       child: FormFlashCard(
         args: FormFlashCardArgs(
           type: FormFlashCardType.create,

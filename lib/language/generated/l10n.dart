@@ -2519,6 +2519,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Delete Flashcard`
+  String get delete_flashcard {
+    return Intl.message(
+      'Delete Flashcard',
+      name: 'delete_flashcard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Flashcard Set`
+  String get edit_flashcard_set {
+    return Intl.message(
+      'Edit Flashcard Set',
+      name: 'edit_flashcard_set',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

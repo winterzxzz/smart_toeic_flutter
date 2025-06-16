@@ -246,6 +246,8 @@
     "blog": "Blog",
     "account": "Tài khoản",
     "settings": "Cài đặt",
-    "explanation": "Giải thích"
+    "explanation": "Giải thích",
+    "delete_flashcard": "Xóa thẻ từ",
+    "edit_flashcard_set": "Sửa bộ thẻ từ"
 
 }

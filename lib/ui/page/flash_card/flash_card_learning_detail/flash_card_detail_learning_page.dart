@@ -95,7 +95,7 @@ class _PageState extends State<Page> {
                       CustomButton(
                         height: 50,
                         onPressed: () {
-                          GoRouter.of(context).pushNamed(
+                          GoRouter.of(context).pushReplacementNamed(
                             AppRouter.flashCardQuizz,
                             extra: {
                               'id':
@@ -125,8 +125,6 @@ class _PageState extends State<Page> {
       ),
     );
   }
-
-
 
   void _showStatusInfo() {
     final isMobile = MediaQuery.of(context).size.width < 600;

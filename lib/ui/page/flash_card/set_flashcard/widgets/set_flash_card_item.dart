@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
@@ -90,8 +91,8 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                         case 'delete':
                           showConfirmDialog(
                             context,
-                            'Delete Flashcard',
-                            'Are you sure you want to delete this flashcard?',
+                            S.current.delete,
+                            S.current.are_you_sure_delete_flashcard,
                             () {
                               _cubit.deleteFlashCardSet(widget.flashcard.id);
                             },
@@ -110,7 +111,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Edit',
+                              S.current.edit,
                               style: theme.textTheme.bodyMedium,
                             ),
                           ],
@@ -127,7 +128,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Delete',
+                              S.current.delete,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.colorScheme.error,
                               ),
@@ -168,7 +169,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
   void showEditSetFlashCardBottomSheet(BuildContext context) {
     Utils.showModalBottomSheetForm(
       context: context,
-      title: 'Edit flashcard set',
+      title: S.current.edit_flashcard_set,
       child: FormFlashCard(
         args: FormFlashCardArgs(
           title: widget.flashcard.title,

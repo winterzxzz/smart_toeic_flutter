@@ -114,6 +114,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "decay_score": MessageLookupByLibrary.simpleMessage("Decay Score"),
         "definition": MessageLookupByLibrary.simpleMessage("Definition"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "delete_flashcard":
+            MessageLookupByLibrary.simpleMessage("Delete Flashcard"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "display_theme": MessageLookupByLibrary.simpleMessage("Display Theme"),
         "dont_have_account":
@@ -122,6 +124,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "easy_to_remember":
             MessageLookupByLibrary.simpleMessage("Easy to Remember"),
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+        "edit_flashcard_set":
+            MessageLookupByLibrary.simpleMessage("Edit Flashcard Set"),
         "email_exist_error":
             MessageLookupByLibrary.simpleMessage("Email does not exist"),
         "email_hint": MessageLookupByLibrary.simpleMessage("Enter your email"),
