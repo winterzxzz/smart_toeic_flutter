@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
@@ -59,12 +57,8 @@ class AppRouter {
               state.uri.path == upgradeAccount) {
             return login;
           }
-          injector<AppSettingCubit>()
-              .addNavigationHistory(path: state.uri.path);
-
           return null;
         }
-        injector<AppSettingCubit>().addNavigationHistory(path: state.uri.path);
         return null;
       },
       initialLocation: splash);
