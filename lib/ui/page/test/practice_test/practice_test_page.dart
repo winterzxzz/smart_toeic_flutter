@@ -130,7 +130,9 @@ class _PageState extends State<Page> {
                               S.current.are_you_sure_exit,
                               () {
                                 GoRouter.of(context).pop();
-                                GoRouter.of(context).pop();
+                                if (widget.testShow == TestShow.test) {
+                                  GoRouter.of(context).pop();
+                                }
                               },
                             );
                           },

@@ -250,19 +250,25 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                     ],
                                   );
                                 } else {
-                                  return BlocSelector<PracticeTestCubit,
-                                          PracticeTestState, LoadStatus>(
-                                      selector: (state) =>
-                                          state.loadStatusExplain,
-                                      builder: (context, loadStatusExplain) {
+                                  return BlocBuilder<PracticeTestCubit,
+                                          PracticeTestState>(
+                                      buildWhen: (previous, current) =>
+                                          previous.loadStatusExplain !=
+                                              current.loadStatusExplain ||
+                                          previous.loadingExplainQuestionId !=
+                                              current.loadingExplainQuestionId,
+                                      builder: (context, state) {
+                                        final isLoading = state
+                                                    .loadStatusExplain ==
+                                                LoadStatus.loading &&
+                                            state.loadingExplainQuestionId ==
+                                                widget.question.id;
                                         return SizedBox(
                                           child: CustomButton(
                                             height: 50,
                                             width: 200,
-                                            isLoading: loadStatusExplain ==
-                                                LoadStatus.loading,
-                                            onPressed: loadStatusExplain ==
-                                                    LoadStatus.loading
+                                            isLoading: isLoading,
+                                            onPressed: isLoading
                                                 ? null
                                                 : () async {
                                                     await cubit
@@ -275,8 +281,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                if (loadStatusExplain ==
-                                                    LoadStatus.loading)
+                                                if (isLoading)
                                                   const LoadingCircle(
                                                     size: 20,
                                                   )
@@ -297,11 +302,13 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                 }
                               },
                             ),
-                            if (widget.question.questionExplain != null)
+                            if (widget.question.questionExplain != null) ...[
+                              const SizedBox(height: 8),
                               ExplanationUI(
                                 questionExplain:
                                     widget.question.questionExplain!,
                               )
+                            ]
                           ]);
                     }
                   },

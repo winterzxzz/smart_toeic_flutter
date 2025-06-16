@@ -26,6 +26,8 @@ class PracticeTestState extends Equatable {
 
   final ResultModel? resultModel;
 
+  final int loadingExplainQuestionId;
+
   const PracticeTestState({
     required this.loadStatus,
     required this.loadStatusSubmit,
@@ -44,6 +46,7 @@ class PracticeTestState extends Equatable {
     required this.isShowQuestionIndex,
     required this.loadStatusExplain,
     required this.resultModel,
+    required this.loadingExplainQuestionId,
   });
 
   // init state
@@ -67,6 +70,7 @@ class PracticeTestState extends Equatable {
       loadStatusExplain: LoadStatus.initial,
       isShowQuestionIndex: false,
       resultModel: null,
+      loadingExplainQuestionId: -1,
     );
   }
 
@@ -90,6 +94,7 @@ class PracticeTestState extends Equatable {
     bool? isShowQuestionIndex,
     LoadStatus? loadStatusSubmit,
     ResultModel? resultModel,
+    int? loadingExplainQuestionId,
   }) {
     return PracticeTestState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -109,6 +114,8 @@ class PracticeTestState extends Equatable {
       isShowQuestionIndex: isShowQuestionIndex ?? this.isShowQuestionIndex,
       loadStatusSubmit: loadStatusSubmit ?? this.loadStatusSubmit,
       resultModel: resultModel ?? this.resultModel,
+      loadingExplainQuestionId:
+          loadingExplainQuestionId ?? this.loadingExplainQuestionId,
     );
   }
 
@@ -133,5 +140,6 @@ class PracticeTestState extends Equatable {
         isShowQuestionIndex,
         loadStatusSubmit,
         resultModel,
+        loadingExplainQuestionId,
       ];
 }

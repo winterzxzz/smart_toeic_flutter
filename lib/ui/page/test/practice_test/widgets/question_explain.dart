@@ -8,9 +8,8 @@ class ExplanationUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -18,7 +17,7 @@ class ExplanationUI extends StatelessWidget {
             'Explanations:',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           // Cards
           ...questionExplain.options.map((e) {
             final isCorrect = e.label == questionExplain.correctAnswer;
@@ -55,7 +54,7 @@ class ExplanationCard extends StatelessWidget {
     final color = isCorrect ? Colors.green.shade100 : Colors.red.shade100;
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 6),
+      margin: const EdgeInsets.symmetric(vertical: 2),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: color,

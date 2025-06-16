@@ -255,7 +255,10 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   }
 
   Future<void> getExplainQuestion(QuestionModel q) async {
-    emit(state.copyWith(loadStatusExplain: LoadStatus.loading));
+    emit(state.copyWith(
+      loadStatusExplain: LoadStatus.loading,
+      loadingExplainQuestionId: q.id,
+    ));
     final promptQuestion = Question(
         id: q.id,
         number: q.id,
