@@ -91,7 +91,7 @@ class _PageState extends State<Page> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       CustomButton(
                         height: 50,
                         onPressed: () {
@@ -113,7 +113,7 @@ class _PageState extends State<Page> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
                       ...state.flashCards.map((flashcard) =>
                           FlashCardLearningTile(flashcard: flashcard)),
                     ]),
