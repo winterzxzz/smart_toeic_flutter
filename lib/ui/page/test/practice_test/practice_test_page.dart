@@ -18,21 +18,31 @@ import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question_index.
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question.dart';
 
-class PracticeTestPage extends StatefulWidget {
-  const PracticeTestPage({
-    super.key,
+class PracticeTestArgs {
+  final String title;
+  final TestShow testShow;
+  final List<PartEnum> parts;
+  final Duration duration;
+  final String testId;
+  final String? resultId;
+
+  PracticeTestArgs({
+    required this.title,
     required this.testShow,
     required this.parts,
     required this.duration,
     required this.testId,
     this.resultId,
   });
+}
 
-  final TestShow testShow;
-  final List<PartEnum> parts;
-  final Duration duration;
-  final String testId;
-  final String? resultId;
+class PracticeTestPage extends StatefulWidget {
+  const PracticeTestPage({
+    super.key,
+    required this.args,
+  });
+
+  final PracticeTestArgs args;
 
   @override
   State<PracticeTestPage> createState() => _PracticeTestPageState();
@@ -42,10 +52,9 @@ class _PracticeTestPageState extends State<PracticeTestPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => injector<PracticeTestCubit>()
-        ..initPracticeTest(widget.testShow, widget.parts, widget.duration,
-            widget.testId, widget.resultId),
-      child: Page(testShow: widget.testShow),
+      create: (context) =>
+          injector<PracticeTestCubit>()..initPracticeTest(widget.args),
+      child: Page(testShow: widget.args.testShow),
     );
   }
 }
@@ -114,10 +123,6 @@ class _PageState extends State<Page> {
                   final questions = state.questions
                       .where((q) => q.part == state.focusPart.numValue)
                       .toList();
-
-                  if (questions.isEmpty) {
-                    return const SizedBox.shrink();
-                  }
                   return CustomScrollView(
                     slivers: [
                       SliverAppBar(

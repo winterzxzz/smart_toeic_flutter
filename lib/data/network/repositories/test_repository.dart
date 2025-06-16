@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
@@ -83,7 +82,16 @@ class TestRepositoryImpl extends TestRepository {
       String testId) async {
     try {
       final response = await _apiClient.getDetailTest(testId);
-      return Right(response.map((e) => e.toQuestionModel()).toList());
+      final validQuestions = response
+          .where((q) {
+            final idStr = q.id?.toString().trim() ?? '';
+            final hasValidId = idStr.isNotEmpty;
+            final hasOptions = q.options.isNotEmpty;
+            return hasValidId || hasOptions;
+          })
+          .map((e) => e.toQuestionModel())
+          .toList();
+      return Right(validQuestions);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));
     }

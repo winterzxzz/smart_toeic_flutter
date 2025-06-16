@@ -140,6 +140,5 @@ class PracticeTestState extends Equatable {
         isShowQuestionIndex,
         loadStatusSubmit,
         resultModel,
-        loadingExplainQuestionId,
       ];
 }

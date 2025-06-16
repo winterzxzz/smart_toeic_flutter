@@ -15,9 +15,11 @@ class PracticeMode extends StatefulWidget {
   const PracticeMode({
     super.key,
     required this.testId,
+    required this.title,
   });
 
   final String testId;
+  final String title;
 
   @override
   State<PracticeMode> createState() => _PracticeModeState();
@@ -82,6 +84,7 @@ class _PracticeModeState extends State<PracticeMode> {
                     sortedParts.sort((a, b) => a.index - b.index);
                     GoRouter.of(context)
                         .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                      'title': widget.title,
                       'testShow': TestShow.test,
                       'testId': widget.testId,
                       'parts': sortedParts,

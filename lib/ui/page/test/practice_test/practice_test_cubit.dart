@@ -17,6 +17,7 @@ import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
+import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_page.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
@@ -62,16 +63,16 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     });
   }
 
-  void initPracticeTest(TestShow testShow, List<PartEnum> parts,
-      Duration duration, String testId, String? resultId) async {
+  void initPracticeTest(PracticeTestArgs args) async {
     emit(state.copyWith(
-        testShow: testShow,
-        parts: parts,
-        duration: duration,
-        focusPart: parts.first,
-        testId: testId));
-    await getPracticeTestDetail(testId, parts, resultId);
-    if (testShow == TestShow.test) {
+        title: args.title,
+        testShow: args.testShow,
+        parts: args.parts,
+        duration: args.duration,
+        focusPart: args.parts.first,
+        testId: args.testId));
+    await getPracticeTestDetail(args.testId, args.parts, args.resultId);
+    if (args.testShow == TestShow.test) {
       _startTimer();
     }
   }
@@ -266,7 +267,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         option2: q.option2,
         option3: q.option3,
         option4: q.option4,
-        correctanswer: q.getCorrectAnswer(),
+        correctanswer: q.correctAnswer,
         options: q.options);
     final response = await _testRepository
         .getExplainQuestion(QuestionExplainRequest(prompt: promptQuestion));

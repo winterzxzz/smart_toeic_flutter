@@ -85,7 +85,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   height: 40,
                                   child: Center(
                                     child: Radio<String>(
-                                      value: option.id?.name ?? '',
+                                      value: option.id ?? '',
                                       groupValue: widget.question.userAnswer,
                                       activeColor:
                                           Theme.of(context).colorScheme.primary,
@@ -100,7 +100,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   margin: const EdgeInsets.only(top: 10),
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    '${option.id?.name}. ',
+                                    '${option.id ?? ''}. ',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -140,10 +140,9 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                               (index) {
                                 final option = widget.question.options[index];
                                 Color? color;
-                                if (questionResult?.useranswer ==
-                                    option.id?.name) {
+                                if (questionResult?.useranswer == option.id) {
                                   if (questionResult?.correctanswer ==
-                                      option.id?.name) {
+                                      option.id) {
                                     color = Colors.green.withValues(alpha: 0.5);
                                   } else {
                                     color = Colors.red.withValues(alpha: 0.5);
@@ -156,7 +155,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                       width: 40,
                                       height: 40,
                                       child: Radio<String>(
-                                        value: option.id?.name ?? '',
+                                        value: option.id ?? '',
                                         groupValue: questionResult?.useranswer,
                                         activeColor: Colors.red,
                                         onChanged: null,
@@ -168,7 +167,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                         color: color,
                                       ),
                                       child: Text(
-                                        '${option.id?.name}.',
+                                        '${option.id}.',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),

@@ -61,8 +61,14 @@ class _ModeTestpageState extends State<ModeTestpage> {
                     const SizedBox(height: 8),
                   ],
                   isPracticeMode
-                      ? PracticeMode(testId: widget.test.id!)
-                      : FullTestMode(testId: widget.test.id!),
+                      ? PracticeMode(
+                          testId: widget.test.id!,
+                          title: widget.test.title!,
+                        )
+                      : FullTestMode(
+                          testId: widget.test.id!,
+                          title: widget.test.title!,
+                        ),
                 ],
               ),
             ),

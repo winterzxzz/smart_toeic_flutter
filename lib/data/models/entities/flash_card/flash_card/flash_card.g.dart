@@ -7,7 +7,7 @@ part of 'flash_card.dart';
 // **************************************************************************
 
 FlashCard _$FlashCardFromJson(Map<String, dynamic> json) => FlashCard(
-      setFlashcardId: json['setFlashcardId'] as String,
+      setFlashcardId: json['setFlashcardId'] as String?,
       word: json['word'] as String,
       translation: json['translation'] as String,
       definition: json['definition'] as String,

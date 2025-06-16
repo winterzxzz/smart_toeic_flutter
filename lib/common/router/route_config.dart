@@ -215,17 +215,14 @@ class AppRouter {
       path: practiceTest,
       builder: (context, state) {
         final args = state.extra as Map<String, dynamic>;
-        final testShow = args['testShow'] as TestShow;
-        final parts = args['parts'] as List<PartEnum>;
-        final duration = args['duration'] as Duration;
-        final testId = args['testId'] as String;
-        final resultId = args['resultId'] as String?;
-        return PracticeTestPage(
-            testShow: testShow,
-            parts: parts,
-            duration: duration,
-            testId: testId,
-            resultId: resultId);
+        final practiceTestArgs = PracticeTestArgs(
+          title: args['title'] as String,
+          testShow: args['testShow'] as TestShow,
+          parts: args['parts'] as List<PartEnum>,
+          duration: args['duration'] as Duration,
+          testId: args['testId'] as String,
+        );
+        return PracticeTestPage(args: practiceTestArgs);
       },
     ),
     GoRoute(

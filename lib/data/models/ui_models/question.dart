@@ -39,20 +39,6 @@ class QuestionModel {
     this.questionExplain,
   });
 
-  Correctanswer getCorrectAnswer() {
-    switch (correctAnswer) {
-      case 'A':
-        return Correctanswer.A;
-      case 'B':
-        return Correctanswer.B;
-      case 'C':
-        return Correctanswer.C;
-      case 'D':
-        return Correctanswer.D;
-      default:
-        return Correctanswer.A;
-    }
-  } 
 
   // copy with
   QuestionModel copyWith({

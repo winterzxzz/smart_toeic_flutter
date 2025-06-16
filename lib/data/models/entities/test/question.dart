@@ -2,6 +2,7 @@
 //
 //     final question = questionFromJson(jsonString);
 
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 
@@ -9,8 +10,15 @@ import 'package:toeic_desktop/data/models/ui_models/question.dart';
 
 part 'question.g.dart';
 
-List<Question> questionFromJson(String str) =>
-    List<Question>.from(json.decode(str).map((x) => Question.fromJson(x)));
+List<Question> questionFromJson(String str) => List<Question>.from(
+      json
+          .decode(str)
+          .where((x) => x["id"] != "" || (x["options"] as List).isNotEmpty)
+          .map((x) {
+        debugPrint(x["id"]);
+        return Question.fromJson(x);
+      }),
+    );
 
 String questionToJson(List<Question> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -18,29 +26,29 @@ String questionToJson(List<Question> data) =>
 @JsonSerializable()
 class Question {
   @JsonKey(name: "id")
-  final int? id;
+  dynamic id;
   @JsonKey(name: "number")
-  final int? number;
+  int? number;
   @JsonKey(name: "image")
-  final String? image;
+  String? image;
   @JsonKey(name: "audio")
   final String? audio;
   @JsonKey(name: "paragraph")
   final String? paragraph;
   @JsonKey(name: "option1")
-  final dynamic option1;
+  dynamic option1;
   @JsonKey(name: "option2")
-  final dynamic option2;
+  dynamic option2;
   @JsonKey(name: "option3")
-  final dynamic option3;
+  dynamic option3;
   @JsonKey(name: "option4")
-  final dynamic option4;
+  dynamic option4;
   @JsonKey(name: "correctanswer")
-  final Correctanswer? correctanswer;
+  String? correctanswer;
   @JsonKey(name: "options")
-  final List<Option>? options;
+  List<Option> options;
   @JsonKey(name: "question")
-  final String? question;
+  String? question;
 
   Question({
     this.id,
@@ -53,30 +61,31 @@ class Question {
     this.option3,
     this.option4,
     this.correctanswer,
-    this.options,
+    this.options = const [],
     this.question,
   });
   QuestionModel toQuestionModel() {
     int part;
-
-    if (number! >= 1 && number! <= 3) {
+    if (number == null) {
+      part = 0;
+    } else if (number! >= 1 && number! <= 6) {
       part = 1;
-    } else if (number! >= 4 && number! <= 14) {
+    } else if (number! >= 7 && number! <= 31) {
       part = 2;
-    } else if (number! >= 15 && number! <= 32) {
+    } else if (number! >= 32 && number! <= 70) {
       part = 3;
-    } else if (number! >= 33 && number! <= 50) {
+    } else if (number! >= 71 && number! <= 100) {
       part = 4;
-    } else if (number! >= 51 && number! <= 64) {
+    } else if (number! >= 101 && number! <= 130) {
       part = 5;
-    } else if (number! >= 65 && number! <= 73) {
+    } else if (number! >= 131 && number! <= 160) {
       part = 6;
     } else {
       part = 7;
     }
 
     return QuestionModel(
-      id: id!,
+      id: id,
       image: image,
       audio: audio,
       paragraph: paragraph,
@@ -85,8 +94,8 @@ class Question {
       option2: option2.toString(),
       option3: option3.toString(),
       option4: option4.toString(),
-      options: options ?? [],
-      correctAnswer: correctanswer?.value ?? '',
+      options: options,
+      correctAnswer: correctanswer ?? '',
       part: part,
       userAnswer: null,
     );
@@ -98,32 +107,10 @@ class Question {
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 }
 
-enum Correctanswer {
-  @JsonValue("A")
-  A,
-  @JsonValue("B")
-  B,
-  @JsonValue("C")
-  C,
-  @JsonValue("D")
-  D
-}
-
-extension CorrectanswerExtension on Correctanswer {
-  String get value => correctanswerValues.reverse[this]!;
-}
-
-final correctanswerValues = EnumValues({
-  "A": Correctanswer.A,
-  "B": Correctanswer.B,
-  "C": Correctanswer.C,
-  "D": Correctanswer.D
-});
-
 @JsonSerializable()
 class Option {
   @JsonKey(name: "id")
-  final Correctanswer? id;
+  final String? id;
   @JsonKey(name: "content")
   final dynamic content;
 

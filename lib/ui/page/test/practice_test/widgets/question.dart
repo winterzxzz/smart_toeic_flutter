@@ -35,13 +35,7 @@ class QuestionWidget extends StatelessWidget {
               ),
             ),
           if (question.audio != null) ...[
-            if (question.part == 3 || question.part == 4)
-              if (question.id % 3 == 0)
-                TestAudioSection(audioUrl: question.audio!)
-              else
-                const SizedBox.shrink()
-            else
-              TestAudioSection(audioUrl: question.audio!),
+            TestAudioSection(audioUrl: question.audio!),
           ],
           if (question.image != null) ...[
             Container(

@@ -11,9 +11,11 @@ class FullTestMode extends StatelessWidget {
   const FullTestMode({
     super.key,
     required this.testId,
+    required this.title,
   });
 
   final String testId;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class FullTestMode extends StatelessWidget {
             onPressed: () {
               GoRouter.of(context)
                   .pushReplacementNamed(AppRouter.practiceTest, extra: {
+                'title': title,
                 'testShow': TestShow.test,
                 'testId': testId,
                 'parts': Constants.parts.map((part) => part.partEnum).toList(),

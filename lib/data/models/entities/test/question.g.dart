@@ -7,7 +7,7 @@ part of 'question.dart';
 // **************************************************************************
 
 Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
-      id: (json['id'] as num?)?.toInt(),
+      id: json['id'],
       number: (json['number'] as num?)?.toInt(),
       image: json['image'] as String?,
       audio: json['audio'] as String?,
@@ -16,11 +16,11 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
       option2: json['option2'],
       option3: json['option3'],
       option4: json['option4'],
-      correctanswer:
-          $enumDecodeNullable(_$CorrectanswerEnumMap, json['correctanswer']),
+      correctanswer: json['correctanswer'] as String?,
       options: (json['options'] as List<dynamic>?)
-          ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
-          .toList(),
+              ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       question: json['question'] as String?,
     );
 
@@ -34,24 +34,17 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'option2': instance.option2,
       'option3': instance.option3,
       'option4': instance.option4,
-      'correctanswer': _$CorrectanswerEnumMap[instance.correctanswer],
+      'correctanswer': instance.correctanswer,
       'options': instance.options,
       'question': instance.question,
     };
 
-const _$CorrectanswerEnumMap = {
-  Correctanswer.A: 'A',
-  Correctanswer.B: 'B',
-  Correctanswer.C: 'C',
-  Correctanswer.D: 'D',
-};
-
 Option _$OptionFromJson(Map<String, dynamic> json) => Option(
-      id: $enumDecodeNullable(_$CorrectanswerEnumMap, json['id']),
+      id: json['id'] as String?,
       content: json['content'],
     );
 
 Map<String, dynamic> _$OptionToJson(Option instance) => <String, dynamic>{
-      'id': _$CorrectanswerEnumMap[instance.id],
+      'id': instance.id,
       'content': instance.content,
     };
