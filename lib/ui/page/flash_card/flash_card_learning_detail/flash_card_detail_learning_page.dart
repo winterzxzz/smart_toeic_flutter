@@ -103,7 +103,7 @@ class _PageState extends State<Page> {
                             },
                           );
                         },
-                        child: Row(
+                      child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [

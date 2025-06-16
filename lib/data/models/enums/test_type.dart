@@ -1,5 +1,3 @@
-import 'package:toeic_desktop/language/generated/l10n.dart';
-
 enum TestType {
   all,
   exam,
@@ -10,11 +8,11 @@ extension TestTypeExtension on TestType {
   String get name {
     switch (this) {
       case TestType.all:
-        return S.current.all;
+        return 'All';
       case TestType.exam:
-        return S.current.exam;
+        return 'Exam';
       case TestType.miniExam:
-        return S.current.mini_exam;
+        return 'Mini-Exam';
     }
   }
 }

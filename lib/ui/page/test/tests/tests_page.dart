@@ -41,6 +41,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: BlocConsumer<TestsCubit, TestsState>(
         listener: (context, state) {
@@ -53,7 +54,10 @@ class _PageState extends State<Page> {
             slivers: [
               SliverAppBar(
                 floating: true,
-                title: Text(S.current.tests),
+                title: Text(
+                  S.current.tests,
+                  style: theme.textTheme.titleMedium,
+                ),
                 actions: [
                   Container(
                     margin: const EdgeInsets.only(right: 8),
