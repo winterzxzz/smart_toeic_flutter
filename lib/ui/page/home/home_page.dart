@@ -44,12 +44,7 @@ class Page extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          S.current.app_name,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        title: Text(S.current.app_name, style: theme.textTheme.titleMedium),
         actions: [
           IconButton(
             onPressed: () {

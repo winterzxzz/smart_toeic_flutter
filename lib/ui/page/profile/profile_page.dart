@@ -76,7 +76,10 @@ class _PageState extends State<Page> {
           slivers: [
             SliverAppBar(
               floating: true,
-              title: Text(S.current.profile),
+              title: Text(
+                S.current.profile,
+                style: theme.textTheme.titleMedium,
+              ),
               actions: [
                 PopupMenuButton(
                   color: theme.appBarTheme.backgroundColor,

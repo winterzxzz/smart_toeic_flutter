@@ -58,6 +58,7 @@ class _PageState extends State<Page> {
             SliverAppBar(
               title: Text(
                 S.current.blogs_title,
+                style: theme.textTheme.titleMedium,
               ),
               floating: true,
             ),

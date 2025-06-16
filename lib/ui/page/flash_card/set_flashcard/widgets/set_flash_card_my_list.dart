@@ -32,6 +32,8 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    final theme = Theme.of(context);
     return Scaffold(
       body: BlocListener<FlashCardCubit, FlashCardState>(
         listenWhen: (previous, current) =>
