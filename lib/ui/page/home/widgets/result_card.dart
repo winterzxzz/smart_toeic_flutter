@@ -50,6 +50,7 @@ class ExamResultCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           GoRouter.of(context).pushNamed(AppRouter.practiceTest, extra: {
+            'title': result.testId.title,
             'testShow': TestShow.result,
             'resultId': result.id,
             'parts': result.parts.map((part) => part.partValue).toList(),
