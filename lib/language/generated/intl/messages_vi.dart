@@ -33,9 +33,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "ai_filling": MessageLookupByLibrary.simpleMessage("AI đang điền..."),
         "ai_question_explanations":
             MessageLookupByLibrary.simpleMessage("AI giải thích câu hỏi"),
-        "ai_render": MessageLookupByLibrary.simpleMessage("AI Hỗ trợ"),
+        "ai_render": MessageLookupByLibrary.simpleMessage("AI Render"),
         "ai_render_description": MessageLookupByLibrary.simpleMessage(
-            "Công cụ AI nâng cao luyện TOEIC."),
+            "Công cụ AI nâng cao giúp luyện thi TOEIC hiệu quả."),
         "all": MessageLookupByLibrary.simpleMessage("Tất cả"),
         "all_parts": MessageLookupByLibrary.simpleMessage("Tất cả phần"),
         "already_have_account":
@@ -55,12 +55,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "answer": MessageLookupByLibrary.simpleMessage("Đáp án"),
         "app_name": MessageLookupByLibrary.simpleMessage("Smart TOEIC Prep"),
         "are_you_sure": MessageLookupByLibrary.simpleMessage("Bạn chắc chắn?"),
-        "are_you_sure_delete_flashcard":
-            MessageLookupByLibrary.simpleMessage("Bạn chắc chắn xóa thẻ này?"),
+        "are_you_sure_delete_flashcard": MessageLookupByLibrary.simpleMessage(
+            "Bạn chắc chắn muốn xóa Flashcard?"),
         "are_you_sure_exit":
             MessageLookupByLibrary.simpleMessage("Bạn chắc chắn muốn thoát?"),
         "are_you_sure_submit_test":
-            MessageLookupByLibrary.simpleMessage("Bạn chắc chắn nộp bài?"),
+            MessageLookupByLibrary.simpleMessage("Bạn chắc chắn muốn nộp bài?"),
         "attempt_count": MessageLookupByLibrary.simpleMessage("Số lần làm"),
         "attempts": MessageLookupByLibrary.simpleMessage("lần"),
         "back_to_login": MessageLookupByLibrary.simpleMessage("Về đăng nhập"),
@@ -92,7 +92,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm_password_match_error":
             MessageLookupByLibrary.simpleMessage("Mật khẩu không khớp"),
         "congratulations": MessageLookupByLibrary.simpleMessage("Chúc mừng!"),
-        "contact_support": MessageLookupByLibrary.simpleMessage("Hỗ trợ"),
+        "contact_support":
+            MessageLookupByLibrary.simpleMessage("Liên hệ hỗ trợ"),
         "contact_us": MessageLookupByLibrary.simpleMessage("Liên hệ"),
         "contact_us_for_support":
             MessageLookupByLibrary.simpleMessage("Liên hệ hỗ trợ"),
@@ -149,9 +150,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "fill_by_ai": MessageLookupByLibrary.simpleMessage("Điền bằng AI"),
         "filter": MessageLookupByLibrary.simpleMessage("Lọc"),
         "finish": MessageLookupByLibrary.simpleMessage("Kết thúc"),
-        "flashcards": MessageLookupByLibrary.simpleMessage("Thẻ từ"),
+        "flashcards": MessageLookupByLibrary.simpleMessage("Flashcards"),
         "flashcards_description": MessageLookupByLibrary.simpleMessage(
-            "Thẻ từ giúp học từ vựng hiệu quả."),
+            "Flashcards tương tác giúp tăng từ vựng nhanh."),
         "follow_system": MessageLookupByLibrary.simpleMessage("Theo hệ thống"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("Quên mật khẩu?"),
@@ -168,11 +169,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "history_test": MessageLookupByLibrary.simpleMessage("Lịch sử thi"),
         "home": MessageLookupByLibrary.simpleMessage("Trang chủ"),
         "invalid_confirm_password_error": MessageLookupByLibrary.simpleMessage(
-            "Nhập lại mật khẩu cần chữ, số, ký tự đặc biệt"),
+            "Nhập lại mật khẩu cần chữ, số và ký tự đặc biệt"),
         "invalid_email_error":
             MessageLookupByLibrary.simpleMessage("Email không hợp lệ"),
         "invalid_password_error": MessageLookupByLibrary.simpleMessage(
-            "Mật khẩu cần chữ, số, ký tự đặc biệt"),
+            "Mật khẩu cần chữ, số và ký tự đặc biệt"),
         "language": MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
         "last_studied": MessageLookupByLibrary.simpleMessage("Học lần cuối"),
         "last_time_taken":
@@ -185,17 +186,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Để trống nếu không giới hạn"),
         "listening": MessageLookupByLibrary.simpleMessage("Nghe"),
         "listening_current":
-            MessageLookupByLibrary.simpleMessage("Điểm nghe hiện tại"),
-        "listening_score": MessageLookupByLibrary.simpleMessage("Điểm nghe"),
+            MessageLookupByLibrary.simpleMessage("Điểm Listening hiện tại"),
+        "listening_score":
+            MessageLookupByLibrary.simpleMessage("Điểm Listening"),
         "listening_score_explanation":
-            MessageLookupByLibrary.simpleMessage("Giải thích điểm nghe"),
+            MessageLookupByLibrary.simpleMessage("Giải thích điểm Listening"),
         "listening_score_explanation_content":
             MessageLookupByLibrary.simpleMessage(
-                "Nội dung giải thích điểm nghe"),
+                "Nội dung giải thích điểm Listening"),
         "listening_target":
-            MessageLookupByLibrary.simpleMessage("Mục tiêu nghe"),
+            MessageLookupByLibrary.simpleMessage("Mục tiêu Listening"),
         "listening_target_score":
-            MessageLookupByLibrary.simpleMessage("Điểm mục tiêu nghe"),
+            MessageLookupByLibrary.simpleMessage("Điểm Listening mục tiêu"),
         "loading": MessageLookupByLibrary.simpleMessage("Đang tải..."),
         "login_button": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
         "login_description": MessageLookupByLibrary.simpleMessage(
@@ -226,7 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "onboarding_title":
             MessageLookupByLibrary.simpleMessage("Cảm ơn bạn đã tin tưởng"),
         "order_word_to_correct":
-            MessageLookupByLibrary.simpleMessage("Sắp xếp đúng"),
+            MessageLookupByLibrary.simpleMessage("Sắp xếp từ đúng"),
         "overall_score": MessageLookupByLibrary.simpleMessage("Tổng điểm"),
         "part_of_speech": MessageLookupByLibrary.simpleMessage("Loại từ"),
         "password_hint": MessageLookupByLibrary.simpleMessage("Nhập mật khẩu"),
@@ -235,12 +237,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mật khẩu 6-30 ký tự"),
         "personal_analytics":
             MessageLookupByLibrary.simpleMessage("Phân tích cá nhân"),
-        "please_wait": MessageLookupByLibrary.simpleMessage("Vui lòng đợi..."),
-        "practice": MessageLookupByLibrary.simpleMessage("Luyện tập"),
+        "please_wait": MessageLookupByLibrary.simpleMessage("Vui lòng chờ..."),
+        "practice": MessageLookupByLibrary.simpleMessage("Practice"),
         "practice_button": MessageLookupByLibrary.simpleMessage("Luyện tập"),
-        "practice_exams": MessageLookupByLibrary.simpleMessage("Thi thử"),
-        "practice_exams_description":
-            MessageLookupByLibrary.simpleMessage("Thi thử TOEIC sát thực tế."),
+        "practice_exams":
+            MessageLookupByLibrary.simpleMessage("Practice Exams"),
+        "practice_exams_description": MessageLookupByLibrary.simpleMessage(
+            "Đề thi TOEIC thực tế để luyện tập."),
         "practice_flashcards":
             MessageLookupByLibrary.simpleMessage("Luyện thẻ từ"),
         "practice_pronoun":
@@ -256,7 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "premium_plan_description":
             MessageLookupByLibrary.simpleMessage("Mở khóa toàn bộ tính năng."),
         "previous": MessageLookupByLibrary.simpleMessage("Trước"),
-        "profile": MessageLookupByLibrary.simpleMessage("Hồ sơ"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "pronunciation": MessageLookupByLibrary.simpleMessage("Phát âm"),
         "question": MessageLookupByLibrary.simpleMessage("Câu hỏi"),
         "question_list":
@@ -266,13 +269,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Câu hỏi & nhắc nhở"),
         "read_more": MessageLookupByLibrary.simpleMessage("Xem thêm"),
         "reading_current":
-            MessageLookupByLibrary.simpleMessage("Điểm đọc hiện tại"),
-        "reading_score": MessageLookupByLibrary.simpleMessage("Điểm đọc"),
+            MessageLookupByLibrary.simpleMessage("Điểm Reading hiện tại"),
+        "reading_score": MessageLookupByLibrary.simpleMessage("Điểm Reading"),
         "reading_score_explanation":
-            MessageLookupByLibrary.simpleMessage("Giải thích điểm đọc"),
-        "reading_target": MessageLookupByLibrary.simpleMessage("Mục tiêu đọc"),
+            MessageLookupByLibrary.simpleMessage("Giải thích điểm Reading"),
+        "reading_target":
+            MessageLookupByLibrary.simpleMessage("Mục tiêu Reading"),
         "reading_target_score":
-            MessageLookupByLibrary.simpleMessage("Điểm mục tiêu đọc"),
+            MessageLookupByLibrary.simpleMessage("Điểm Reading mục tiêu"),
         "recommend": MessageLookupByLibrary.simpleMessage("Đề xuất"),
         "register_button": MessageLookupByLibrary.simpleMessage("Đăng ký"),
         "register_description": MessageLookupByLibrary.simpleMessage(
@@ -285,9 +289,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Đặt lại mật khẩu"),
         "result": MessageLookupByLibrary.simpleMessage("Kết quả"),
         "result_analysis":
-            MessageLookupByLibrary.simpleMessage("Phân tích kết quả"),
+            MessageLookupByLibrary.simpleMessage("Result Analysis"),
         "result_analysis_description": MessageLookupByLibrary.simpleMessage(
-            "Phân tích điểm mạnh/yếu của bạn."),
+            "Phân tích chi tiết kết quả thi TOEIC."),
         "return_to_home": MessageLookupByLibrary.simpleMessage("Về trang chủ"),
         "save_button": MessageLookupByLibrary.simpleMessage("Lưu"),
         "score_and_save_results":
@@ -310,7 +314,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "still_have_questions":
             MessageLookupByLibrary.simpleMessage("Cần hỗ trợ?"),
         "studying": MessageLookupByLibrary.simpleMessage("Đang học"),
-        "submit": MessageLookupByLibrary.simpleMessage("Nộp bài"),
+        "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "submitting": MessageLookupByLibrary.simpleMessage("Đang nộp..."),
         "success": MessageLookupByLibrary.simpleMessage("Thành công"),
         "system_mode": MessageLookupByLibrary.simpleMessage("Tự động"),
@@ -340,7 +344,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "update_profile":
             MessageLookupByLibrary.simpleMessage("Cập nhật hồ sơ"),
         "update_target_score":
-            MessageLookupByLibrary.simpleMessage("Cập nhật mục tiêu"),
+            MessageLookupByLibrary.simpleMessage("Cập nhật mục tiêu điểm"),
         "upgrade": MessageLookupByLibrary.simpleMessage("Nâng cấp"),
         "upgrade_account":
             MessageLookupByLibrary.simpleMessage("Nâng cấp tài khoản"),
@@ -349,11 +353,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "value": MessageLookupByLibrary.simpleMessage("Giá trị"),
         "very_easy_to_remember":
             MessageLookupByLibrary.simpleMessage("Rất dễ nhớ"),
-        "vietnamese": MessageLookupByLibrary.simpleMessage("Tiếng Việt"),
+        "vietnamese": MessageLookupByLibrary.simpleMessage("Vietnamese"),
         "view_answer": MessageLookupByLibrary.simpleMessage("Xem đáp án"),
         "view_randomly": MessageLookupByLibrary.simpleMessage("Xem ngẫu nhiên"),
         "what_is_your_confidence_level":
-            MessageLookupByLibrary.simpleMessage("Mức tự tin của bạn?"),
+            MessageLookupByLibrary.simpleMessage("Bạn tự tin mức nào?"),
         "word": MessageLookupByLibrary.simpleMessage("Từ"),
         "word_learned": MessageLookupByLibrary.simpleMessage("Từ đã học"),
         "words": MessageLookupByLibrary.simpleMessage("từ"),
@@ -362,8 +366,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bạn trả lời đúng!"),
         "you_answered_incorrectly":
             MessageLookupByLibrary.simpleMessage("Bạn trả lời sai!"),
-        "you_matched_correct_all_words":
-            MessageLookupByLibrary.simpleMessage("Bạn đã ghép đúng tất cả!"),
+        "you_matched_correct_all_words": MessageLookupByLibrary.simpleMessage(
+            "Bạn đã ghép đúng! Tiếp tục các dạng khác!"),
         "your_account_has_been_successfully_upgraded":
             MessageLookupByLibrary.simpleMessage(
                 "Tài khoản đã nâng cấp thành công.")
