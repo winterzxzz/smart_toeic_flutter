@@ -137,7 +137,10 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
 
                           return SlideTransition(
                             position: inAnimation,
-                            child: child,
+                            child: FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            ),
                           );
                         },
                         child: Builder(

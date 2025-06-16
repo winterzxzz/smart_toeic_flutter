@@ -33,7 +33,7 @@ Future<void> init() async {
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
-    ..registerFactory<FlashCardCubit>(() => FlashCardCubit(injector()))
+    ..registerLazySingleton<FlashCardCubit>(() => FlashCardCubit(injector()))
     ..registerFactory<FlashCardDetailCubit>(
         () => FlashCardDetailCubit(injector()))
     ..registerFactory<FlashCardLearnFlipCubit>(() => FlashCardLearnFlipCubit())

@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
+import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 
 class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
   final FlashCardRespository _flashCardRepository;
@@ -145,12 +147,15 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
     rs.fold(
         (l) => emit(
             state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
-        (r) => emit(state.copyWith(
-              isFinish: true,
-              flashCardQuizzScoreRequest: newFlashCardQuizzScoreRequest,
-              loadStatus: LoadStatus.success,
-              message: 'Kết thúc bài kiểm tra',
-            )));
+        (r) {
+      injector<FlashCardCubit>().fetchFlashCardSetsLearning();
+      emit(state.copyWith(
+        isFinish: true,
+        flashCardQuizzScoreRequest: newFlashCardQuizzScoreRequest,
+        loadStatus: LoadStatus.success,
+        message: 'Kết thúc bài kiểm tra',
+      ));
+    });
   }
 
   void triggerAnimation(bool isCorrect, {bool isShowAnimation = true}) {
