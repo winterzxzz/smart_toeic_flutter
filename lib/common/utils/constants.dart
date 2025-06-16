@@ -46,85 +46,85 @@ class Constants {
     'No limit',
   ];
 
-  static List<PartModel> parts = [
-    PartModel(
-      partEnum: PartEnum.part1,
-      numberOfQuestions: 6,
-      tags: [
-        "Photographs",
-        "Identify actions",
-        "Describe scenes",
-      ],
-    ),
-    PartModel(
-      partEnum: PartEnum.part2,
-      numberOfQuestions: 25,
-      tags: [
-        "Question-Response",
-        "Short answers",
-        "Yes/No questions",
-        "Wh- questions",
-      ],
-    ),
-    PartModel(
-      partEnum: PartEnum.part3,
-      numberOfQuestions: 39,
-      tags: [
-        "Conversations",
-        "Multiple speakers",
-        "Purpose",
-        "Detail",
-        "Inference",
-        "Speaker's attitude",
-        "Chart/Visual reference",
-      ],
-    ),
-    PartModel(
-      partEnum: PartEnum.part4,
-      numberOfQuestions: 30,
-      tags: [
-        "Talks",
-        "Single speaker",
-        "Main idea",
-        "Details",
-        "Charts/Visuals",
-        "Inference",
-      ],
-    ),
-    PartModel(
-      partEnum: PartEnum.part5,
-      numberOfQuestions: 30,
-      tags: [
-        "Incomplete Sentences",
-        "Grammar",
-        "Vocabulary",
-      ],
-    ),
-    PartModel(
-      partEnum: PartEnum.part6,
-      numberOfQuestions: 16,
-      tags: [
-        "Text Completion",
-        "Passages",
-        "Cohesion",
-        "Grammar",
-        "Vocabulary",
-      ],
-    ),
-    PartModel(
-      partEnum: PartEnum.part7,
-      numberOfQuestions: 54,
-      tags: [
-        "Reading Comprehension",
-        "Single passage",
-        "Double passage",
-        "Triple passage",
-        "Main idea",
-        "Details",
-        "Inference",
-      ],
-    ),
-  ];
+  static List<PartModel> get parts => [
+        PartModel(
+          partEnum: PartEnum.part1,
+          numberOfQuestions: 6,
+          tags: [
+            S.current.photographs,
+            S.current.identify_actions,
+            S.current.describe_scenes,
+          ],
+        ),
+        PartModel(
+          partEnum: PartEnum.part2,
+          numberOfQuestions: 25,
+          tags: [
+            S.current.question_response,
+            S.current.short_answers,
+            S.current.yes_no_questions,
+            S.current.wh_questions,
+          ],
+        ),
+        PartModel(
+          partEnum: PartEnum.part3,
+          numberOfQuestions: 39,
+          tags: [
+            S.current.conversations,
+            S.current.multiple_speakers,
+            S.current.purpose,
+            S.current.details,
+            S.current.inference,
+            S.current.speaker_attitude,
+            S.current.chart_visual_reference,
+          ],
+        ),
+        PartModel(
+          partEnum: PartEnum.part4,
+          numberOfQuestions: 30,
+          tags: [
+            S.current.talks,
+            S.current.single_speaker,
+            S.current.main_idea,
+            S.current.details,
+            S.current.charts_visuals,
+            S.current.inference,
+          ],
+        ),
+        PartModel(
+          partEnum: PartEnum.part5,
+          numberOfQuestions: 30,
+          tags: [
+            S.current.incomplete_sentences,
+            S.current.grammar,
+            S.current.vocabulary,
+          ],
+        ),
+        PartModel(
+          partEnum: PartEnum.part6,
+          numberOfQuestions: 16,
+          tags: [
+            S.current.text_completion,
+            S.current.passages,
+            S.current.cohesion,
+            S.current.grammar,
+            S.current.vocabulary,
+          ],
+        ),
+        PartModel(
+          partEnum: PartEnum.part7,
+          numberOfQuestions: 54,
+          tags: [
+            S.current.reading_comprehension,
+            S.current.single_passage,
+            S.current.double_passage,
+            S.current.triple_passage,
+            S.current.main_idea,
+            S.current.details,
+            S.current.inference,
+          ],
+        ),
+      ];
 
   static List<BottomTabModel> get bottomTabs => [
         BottomTabModel(

@@ -3,9 +3,9 @@ import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/mode_test.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
-import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
-import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/full_mode_test.dart';
-import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/practive_test_mode.dart';
+import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/custom_drop_down.dart';
+import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/full_mode_test.dart';
+import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/practive_test_mode.dart';
 
 class ModeTestpage extends StatefulWidget {
   const ModeTestpage({super.key, required this.test});

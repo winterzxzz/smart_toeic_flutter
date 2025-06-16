@@ -76,6 +76,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "category": MessageLookupByLibrary.simpleMessage("Category"),
         "category_accuracy_chart":
             MessageLookupByLibrary.simpleMessage("Category Accuracy Chart"),
+        "chart_visual_reference":
+            MessageLookupByLibrary.simpleMessage("Chart/Visual reference"),
+        "charts_visuals":
+            MessageLookupByLibrary.simpleMessage("Charts/Visuals"),
         "check": MessageLookupByLibrary.simpleMessage("Check"),
         "checking_payment_status":
             MessageLookupByLibrary.simpleMessage("Checking Payment Status..."),
@@ -86,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Click to reveal definition"),
         "click_to_start_test":
             MessageLookupByLibrary.simpleMessage("Click to start test"),
+        "cohesion": MessageLookupByLibrary.simpleMessage("Cohesion"),
         "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
         "confirm_password_length_error": MessageLookupByLibrary.simpleMessage(
             "Confirm password must have 6-30 characters"),
@@ -98,6 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contact_us": MessageLookupByLibrary.simpleMessage("Contact Us"),
         "contact_us_for_support":
             MessageLookupByLibrary.simpleMessage("Contact us for support"),
+        "conversations": MessageLookupByLibrary.simpleMessage("Conversations"),
         "correct": MessageLookupByLibrary.simpleMessage("Correct!"),
         "correct_answer":
             MessageLookupByLibrary.simpleMessage("Correct answer"),
@@ -116,10 +122,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "delete_flashcard":
             MessageLookupByLibrary.simpleMessage("Delete Flashcard"),
+        "describe_scenes":
+            MessageLookupByLibrary.simpleMessage("Describe scenes"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "details": MessageLookupByLibrary.simpleMessage("Details"),
         "display_theme": MessageLookupByLibrary.simpleMessage("Display Theme"),
         "dont_have_account":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
+        "double_passage":
+            MessageLookupByLibrary.simpleMessage("Double passage"),
         "dynamic_color": MessageLookupByLibrary.simpleMessage("Dynamic Color"),
         "easy_to_remember":
             MessageLookupByLibrary.simpleMessage("Easy to Remember"),
@@ -173,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "full_mode_tips": MessageLookupByLibrary.simpleMessage(
             "Tip: The form of partial practice and choosing the appropriate time will help you focus on solving the correct questions instead of being under pressure to complete the test."),
         "google": MessageLookupByLibrary.simpleMessage("Google"),
+        "grammar": MessageLookupByLibrary.simpleMessage("Grammar"),
         "great": MessageLookupByLibrary.simpleMessage("Great!"),
         "hard_to_remember":
             MessageLookupByLibrary.simpleMessage("Hard to Remember"),
@@ -180,6 +192,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "history": MessageLookupByLibrary.simpleMessage("History"),
         "history_test": MessageLookupByLibrary.simpleMessage("History Test"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "identify_actions":
+            MessageLookupByLibrary.simpleMessage("Identify actions"),
+        "incomplete_sentences":
+            MessageLookupByLibrary.simpleMessage("Incomplete Sentences"),
+        "inference": MessageLookupByLibrary.simpleMessage("Inference"),
         "invalid_confirm_password_error": MessageLookupByLibrary.simpleMessage(
             "Confirm password must have text, number and special character"),
         "invalid_email_error":
@@ -216,12 +233,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_title":
             MessageLookupByLibrary.simpleMessage("Welcome to Smart TOEIC Prep"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+        "main_idea": MessageLookupByLibrary.simpleMessage("Main idea"),
         "matching_word": MessageLookupByLibrary.simpleMessage("Matching Word"),
         "meaning": MessageLookupByLibrary.simpleMessage("Meaning"),
         "min": MessageLookupByLibrary.simpleMessage("min"),
         "mini_exam": MessageLookupByLibrary.simpleMessage("Mini-Exam"),
         "minute": MessageLookupByLibrary.simpleMessage("minute"),
         "minutes": MessageLookupByLibrary.simpleMessage("minutes"),
+        "multiple_speakers":
+            MessageLookupByLibrary.simpleMessage("Multiple speakers"),
         "my_list": MessageLookupByLibrary.simpleMessage("My List"),
         "name_hint": MessageLookupByLibrary.simpleMessage("Enter your name"),
         "name_label": MessageLookupByLibrary.simpleMessage("Name"),
@@ -242,6 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "overall_score": MessageLookupByLibrary.simpleMessage("Overall Score"),
         "part_of_speech":
             MessageLookupByLibrary.simpleMessage("Part of speech"),
+        "passages": MessageLookupByLibrary.simpleMessage("Passages"),
         "password_hint":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
         "password_label": MessageLookupByLibrary.simpleMessage("Password"),
@@ -249,6 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Password must have 6-30 characters"),
         "personal_analytics":
             MessageLookupByLibrary.simpleMessage("Personal analytics"),
+        "photographs": MessageLookupByLibrary.simpleMessage("Photographs"),
         "please_wait": MessageLookupByLibrary.simpleMessage("Please wait..."),
         "practice": MessageLookupByLibrary.simpleMessage("Practice"),
         "practice_button": MessageLookupByLibrary.simpleMessage("Practice"),
@@ -273,14 +295,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "previous": MessageLookupByLibrary.simpleMessage("Previous"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "pronunciation": MessageLookupByLibrary.simpleMessage("Pronunciation"),
+        "purpose": MessageLookupByLibrary.simpleMessage("Purpose"),
         "question": MessageLookupByLibrary.simpleMessage("Question"),
         "question_list": MessageLookupByLibrary.simpleMessage("Question List"),
+        "question_response":
+            MessageLookupByLibrary.simpleMessage("Question-Response"),
         "question_types":
             MessageLookupByLibrary.simpleMessage("Question Types"),
         "quizzes_and_reminders":
             MessageLookupByLibrary.simpleMessage("Quizzes and reminders"),
         "read_more": MessageLookupByLibrary.simpleMessage("Read More"),
         "reading": MessageLookupByLibrary.simpleMessage("Reading"),
+        "reading_comprehension":
+            MessageLookupByLibrary.simpleMessage("Reading Comprehension"),
         "reading_current":
             MessageLookupByLibrary.simpleMessage("Reading Current"),
         "reading_score": MessageLookupByLibrary.simpleMessage("Reading Score"),
@@ -323,7 +350,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "set_flashcard_title":
             MessageLookupByLibrary.simpleMessage("Set Flashcard"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "short_answers": MessageLookupByLibrary.simpleMessage("Short answers"),
         "show_answer": MessageLookupByLibrary.simpleMessage("Show Answer"),
+        "single_passage":
+            MessageLookupByLibrary.simpleMessage("Single passage"),
+        "single_speaker":
+            MessageLookupByLibrary.simpleMessage("Single speaker"),
+        "speaker_attitude":
+            MessageLookupByLibrary.simpleMessage("Speaker\'s attitude"),
         "start_test": MessageLookupByLibrary.simpleMessage("Start Test"),
         "status_explanation":
             MessageLookupByLibrary.simpleMessage("Status Explanation"),
@@ -336,6 +370,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "system_mode": MessageLookupByLibrary.simpleMessage("System Mode"),
         "take_toeic_tests":
             MessageLookupByLibrary.simpleMessage("Take TOEIC tests"),
+        "talks": MessageLookupByLibrary.simpleMessage("Talks"),
         "target_score": MessageLookupByLibrary.simpleMessage("Target Score"),
         "test": MessageLookupByLibrary.simpleMessage("Test"),
         "test_listening":
@@ -343,6 +378,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "test_online": MessageLookupByLibrary.simpleMessage("Test Online"),
         "test_practice": MessageLookupByLibrary.simpleMessage("Test Practice"),
         "tests": MessageLookupByLibrary.simpleMessage("Tests"),
+        "text_completion":
+            MessageLookupByLibrary.simpleMessage("Text Completion"),
         "theme_color": MessageLookupByLibrary.simpleMessage("Theme Color"),
         "time_per_question": MessageLookupByLibrary.simpleMessage("S/Question"),
         "title": MessageLookupByLibrary.simpleMessage("Title"),
@@ -352,6 +389,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "transcript_test":
             MessageLookupByLibrary.simpleMessage("Transcript Test"),
         "translate": MessageLookupByLibrary.simpleMessage("Translate"),
+        "triple_passage":
+            MessageLookupByLibrary.simpleMessage("Triple passage"),
         "try_again": MessageLookupByLibrary.simpleMessage("Try Again"),
         "try_harder": MessageLookupByLibrary.simpleMessage("Try Harder!"),
         "type_what_you_hear":
@@ -373,11 +412,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "vietnamese": MessageLookupByLibrary.simpleMessage("Tiếng Việt"),
         "view_answer": MessageLookupByLibrary.simpleMessage("View Answer"),
         "view_randomly": MessageLookupByLibrary.simpleMessage("View randomly"),
+        "vocabulary": MessageLookupByLibrary.simpleMessage("Vocabulary"),
+        "wh_questions": MessageLookupByLibrary.simpleMessage("Wh- questions"),
         "what_is_your_confidence_level": MessageLookupByLibrary.simpleMessage(
             "What is your confidence level?"),
         "word": MessageLookupByLibrary.simpleMessage("Word"),
         "word_learned": MessageLookupByLibrary.simpleMessage("Word Learned"),
         "words": MessageLookupByLibrary.simpleMessage("words"),
+        "yes_no_questions":
+            MessageLookupByLibrary.simpleMessage("Yes/No questions"),
         "you": MessageLookupByLibrary.simpleMessage("You"),
         "you_answered_correctly":
             MessageLookupByLibrary.simpleMessage("You answered correctly!"),

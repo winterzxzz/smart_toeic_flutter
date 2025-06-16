@@ -28,7 +28,7 @@ import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_page.dart
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_page.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_page.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
-import 'package:toeic_desktop/ui/page/choose_mode_test/mode_test_page.dart';
+import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/mode_test_page.dart';
 import 'package:toeic_desktop/ui/page/test/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
 

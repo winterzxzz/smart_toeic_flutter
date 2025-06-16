@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/page/choose_mode_test/widgets/custom_drop_down.dart';
+import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/custom_drop_down.dart';
 
 class StackedBarChartPage extends StatefulWidget {
   const StackedBarChartPage({super.key, required this.categoryAccuracys});

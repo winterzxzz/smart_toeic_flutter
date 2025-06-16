@@ -77,6 +77,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "category": MessageLookupByLibrary.simpleMessage("Danh mục"),
         "category_accuracy_chart":
             MessageLookupByLibrary.simpleMessage("Biểu đồ độ chính xác"),
+        "chart_visual_reference":
+            MessageLookupByLibrary.simpleMessage("Biểu đồ/Hình ảnh"),
+        "charts_visuals":
+            MessageLookupByLibrary.simpleMessage("Biểu đồ/Hình ảnh"),
         "check": MessageLookupByLibrary.simpleMessage("Kiểm tra"),
         "checking_payment_status":
             MessageLookupByLibrary.simpleMessage("Đang kiểm tra thanh toán..."),
@@ -86,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bấm để xem định nghĩa"),
         "click_to_start_test":
             MessageLookupByLibrary.simpleMessage("Bấm để bắt đầu thi"),
+        "cohesion": MessageLookupByLibrary.simpleMessage("Liên kết"),
         "confirm": MessageLookupByLibrary.simpleMessage("Xác nhận"),
         "confirm_password_length_error": MessageLookupByLibrary.simpleMessage(
             "Nhập lại mật khẩu 6-30 ký tự"),
@@ -97,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contact_us": MessageLookupByLibrary.simpleMessage("Liên hệ"),
         "contact_us_for_support":
             MessageLookupByLibrary.simpleMessage("Liên hệ hỗ trợ"),
+        "conversations": MessageLookupByLibrary.simpleMessage("Hội thoại"),
         "correct": MessageLookupByLibrary.simpleMessage("Đúng!"),
         "correct_answer": MessageLookupByLibrary.simpleMessage("Đáp án đúng"),
         "count": MessageLookupByLibrary.simpleMessage("Số lượng"),
@@ -113,10 +119,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "definition": MessageLookupByLibrary.simpleMessage("Định nghĩa"),
         "delete": MessageLookupByLibrary.simpleMessage("Xóa"),
         "delete_flashcard": MessageLookupByLibrary.simpleMessage("Xóa thẻ từ"),
+        "describe_scenes": MessageLookupByLibrary.simpleMessage("Mô tả cảnh"),
         "description": MessageLookupByLibrary.simpleMessage("Mô tả"),
+        "details": MessageLookupByLibrary.simpleMessage("Chi tiết"),
         "display_theme": MessageLookupByLibrary.simpleMessage("Giao diện"),
         "dont_have_account":
             MessageLookupByLibrary.simpleMessage("Chưa có tài khoản?"),
+        "double_passage": MessageLookupByLibrary.simpleMessage("Bài viết"),
         "dynamic_color": MessageLookupByLibrary.simpleMessage("Màu động"),
         "easy_to_remember": MessageLookupByLibrary.simpleMessage("Dễ nhớ"),
         "edit": MessageLookupByLibrary.simpleMessage("Sửa"),
@@ -166,12 +175,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "full_mode_tips": MessageLookupByLibrary.simpleMessage(
             "Mẹo: Hình thức luyện tập từng phần và chọn mức thời gian phù hợp sẽ giúp bạn tập trung vào giải đúng các câu hỏi thay vì phải chịu áp lực hoàn thành bài thi."),
         "google": MessageLookupByLibrary.simpleMessage("Google"),
+        "grammar": MessageLookupByLibrary.simpleMessage("Ngữ pháp"),
         "great": MessageLookupByLibrary.simpleMessage("Tuyệt vời!"),
         "hard_to_remember": MessageLookupByLibrary.simpleMessage("Khó nhớ"),
         "hide_answer": MessageLookupByLibrary.simpleMessage("Ẩn đáp án"),
         "history": MessageLookupByLibrary.simpleMessage("Lịch sử"),
         "history_test": MessageLookupByLibrary.simpleMessage("Lịch sử thi"),
         "home": MessageLookupByLibrary.simpleMessage("Trang chủ"),
+        "identify_actions":
+            MessageLookupByLibrary.simpleMessage("Nhận dạng hành động"),
+        "incomplete_sentences":
+            MessageLookupByLibrary.simpleMessage("Câu không hoàn chỉnh"),
+        "inference": MessageLookupByLibrary.simpleMessage("Suy luận"),
         "invalid_confirm_password_error": MessageLookupByLibrary.simpleMessage(
             "Nhập lại mật khẩu cần chữ, số và ký tự đặc biệt"),
         "invalid_email_error":
@@ -209,12 +224,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_title": MessageLookupByLibrary.simpleMessage(
             "Chào mừng đến TOEIC Thông Minh"),
         "logout": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
+        "main_idea": MessageLookupByLibrary.simpleMessage("Ý chính"),
         "matching_word": MessageLookupByLibrary.simpleMessage("Ghép từ"),
         "meaning": MessageLookupByLibrary.simpleMessage("Nghĩa"),
         "min": MessageLookupByLibrary.simpleMessage("phút"),
         "mini_exam": MessageLookupByLibrary.simpleMessage("Thi nhanh"),
         "minute": MessageLookupByLibrary.simpleMessage("phút"),
         "minutes": MessageLookupByLibrary.simpleMessage("phút"),
+        "multiple_speakers":
+            MessageLookupByLibrary.simpleMessage("Nhiều người nói"),
         "my_list": MessageLookupByLibrary.simpleMessage("Danh sách của tôi"),
         "name_hint": MessageLookupByLibrary.simpleMessage("Nhập tên"),
         "name_label": MessageLookupByLibrary.simpleMessage("Tên"),
@@ -235,12 +253,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sắp xếp từ đúng"),
         "overall_score": MessageLookupByLibrary.simpleMessage("Tổng điểm"),
         "part_of_speech": MessageLookupByLibrary.simpleMessage("Loại từ"),
+        "passages": MessageLookupByLibrary.simpleMessage("Bài viết"),
         "password_hint": MessageLookupByLibrary.simpleMessage("Nhập mật khẩu"),
         "password_label": MessageLookupByLibrary.simpleMessage("Mật khẩu"),
         "password_length_error":
             MessageLookupByLibrary.simpleMessage("Mật khẩu 6-30 ký tự"),
         "personal_analytics":
             MessageLookupByLibrary.simpleMessage("Phân tích cá nhân"),
+        "photographs": MessageLookupByLibrary.simpleMessage("Hình ảnh"),
         "please_wait": MessageLookupByLibrary.simpleMessage("Vui lòng chờ..."),
         "practice": MessageLookupByLibrary.simpleMessage("Practice"),
         "practice_button": MessageLookupByLibrary.simpleMessage("Luyện tập"),
@@ -265,13 +285,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "previous": MessageLookupByLibrary.simpleMessage("Trước"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "pronunciation": MessageLookupByLibrary.simpleMessage("Phát âm"),
+        "purpose": MessageLookupByLibrary.simpleMessage("Mục đích"),
         "question": MessageLookupByLibrary.simpleMessage("Câu hỏi"),
         "question_list":
             MessageLookupByLibrary.simpleMessage("Danh sách câu hỏi"),
+        "question_response":
+            MessageLookupByLibrary.simpleMessage("Câu hỏi-Trả lời"),
         "question_types": MessageLookupByLibrary.simpleMessage("Loại câu hỏi"),
         "quizzes_and_reminders":
             MessageLookupByLibrary.simpleMessage("Câu hỏi & nhắc nhở"),
         "read_more": MessageLookupByLibrary.simpleMessage("Xem thêm"),
+        "reading_comprehension":
+            MessageLookupByLibrary.simpleMessage("Đọc hiểu"),
         "reading_current":
             MessageLookupByLibrary.simpleMessage("Điểm Reading hiện tại"),
         "reading_score": MessageLookupByLibrary.simpleMessage("Điểm Reading"),
@@ -311,7 +336,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "set_flashcard_title":
             MessageLookupByLibrary.simpleMessage("Bộ thẻ từ"),
         "settings": MessageLookupByLibrary.simpleMessage("Cài đặt"),
+        "short_answers":
+            MessageLookupByLibrary.simpleMessage("Câu trả lời ngắn"),
         "show_answer": MessageLookupByLibrary.simpleMessage("Hiện đáp án"),
+        "single_passage": MessageLookupByLibrary.simpleMessage("Bài viết"),
+        "single_speaker": MessageLookupByLibrary.simpleMessage("Người nói"),
+        "speaker_attitude":
+            MessageLookupByLibrary.simpleMessage("Tình cảm của người nói"),
         "start_test": MessageLookupByLibrary.simpleMessage("Bắt đầu thi"),
         "status_explanation":
             MessageLookupByLibrary.simpleMessage("Giải thích trạng thái"),
@@ -324,12 +355,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "system_mode": MessageLookupByLibrary.simpleMessage("Tự động"),
         "take_toeic_tests":
             MessageLookupByLibrary.simpleMessage("Làm bài TOEIC"),
+        "talks": MessageLookupByLibrary.simpleMessage("Hội thoại"),
         "target_score": MessageLookupByLibrary.simpleMessage("Mục tiêu điểm"),
         "test": MessageLookupByLibrary.simpleMessage("Bài thi"),
         "test_listening": MessageLookupByLibrary.simpleMessage("Thi nghe"),
         "test_online": MessageLookupByLibrary.simpleMessage("Thi online"),
         "test_practice": MessageLookupByLibrary.simpleMessage("Thi luyện"),
         "tests": MessageLookupByLibrary.simpleMessage("Bài thi"),
+        "text_completion":
+            MessageLookupByLibrary.simpleMessage("Hoàn thành văn bản"),
         "theme_color": MessageLookupByLibrary.simpleMessage("Màu chủ đề"),
         "time_per_question": MessageLookupByLibrary.simpleMessage("Giây/câu"),
         "title": MessageLookupByLibrary.simpleMessage("Tiêu đề"),
@@ -339,6 +373,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transcript_test":
             MessageLookupByLibrary.simpleMessage("Bản ghi bài thi"),
         "translate": MessageLookupByLibrary.simpleMessage("Dịch"),
+        "triple_passage": MessageLookupByLibrary.simpleMessage("Bài viết"),
         "try_again": MessageLookupByLibrary.simpleMessage("Thử lại"),
         "try_harder": MessageLookupByLibrary.simpleMessage("Cố gắng hơn!"),
         "type_what_you_hear":
@@ -360,11 +395,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "vietnamese": MessageLookupByLibrary.simpleMessage("Vietnamese"),
         "view_answer": MessageLookupByLibrary.simpleMessage("Xem đáp án"),
         "view_randomly": MessageLookupByLibrary.simpleMessage("Xem ngẫu nhiên"),
+        "vocabulary": MessageLookupByLibrary.simpleMessage("Từ vựng"),
+        "wh_questions":
+            MessageLookupByLibrary.simpleMessage("Câu hỏi có đáp án"),
         "what_is_your_confidence_level":
             MessageLookupByLibrary.simpleMessage("Bạn tự tin mức nào?"),
         "word": MessageLookupByLibrary.simpleMessage("Từ"),
         "word_learned": MessageLookupByLibrary.simpleMessage("Từ đã học"),
         "words": MessageLookupByLibrary.simpleMessage("từ"),
+        "yes_no_questions":
+            MessageLookupByLibrary.simpleMessage("Câu hỏi có đáp án"),
         "you": MessageLookupByLibrary.simpleMessage("Bạn"),
         "you_answered_correctly":
             MessageLookupByLibrary.simpleMessage("Bạn trả lời đúng!"),

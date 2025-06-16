@@ -2539,6 +2539,286 @@ class S {
       args: [],
     );
   }
+
+  /// `Photographs`
+  String get photographs {
+    return Intl.message(
+      'Photographs',
+      name: 'photographs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Identify actions`
+  String get identify_actions {
+    return Intl.message(
+      'Identify actions',
+      name: 'identify_actions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Describe scenes`
+  String get describe_scenes {
+    return Intl.message(
+      'Describe scenes',
+      name: 'describe_scenes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question-Response`
+  String get question_response {
+    return Intl.message(
+      'Question-Response',
+      name: 'question_response',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Short answers`
+  String get short_answers {
+    return Intl.message(
+      'Short answers',
+      name: 'short_answers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes/No questions`
+  String get yes_no_questions {
+    return Intl.message(
+      'Yes/No questions',
+      name: 'yes_no_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wh- questions`
+  String get wh_questions {
+    return Intl.message(
+      'Wh- questions',
+      name: 'wh_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conversations`
+  String get conversations {
+    return Intl.message(
+      'Conversations',
+      name: 'conversations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Multiple speakers`
+  String get multiple_speakers {
+    return Intl.message(
+      'Multiple speakers',
+      name: 'multiple_speakers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purpose`
+  String get purpose {
+    return Intl.message(
+      'Purpose',
+      name: 'purpose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inference`
+  String get inference {
+    return Intl.message(
+      'Inference',
+      name: 'inference',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speaker's attitude`
+  String get speaker_attitude {
+    return Intl.message(
+      'Speaker\'s attitude',
+      name: 'speaker_attitude',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chart/Visual reference`
+  String get chart_visual_reference {
+    return Intl.message(
+      'Chart/Visual reference',
+      name: 'chart_visual_reference',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Talks`
+  String get talks {
+    return Intl.message(
+      'Talks',
+      name: 'talks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Single speaker`
+  String get single_speaker {
+    return Intl.message(
+      'Single speaker',
+      name: 'single_speaker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main idea`
+  String get main_idea {
+    return Intl.message(
+      'Main idea',
+      name: 'main_idea',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Charts/Visuals`
+  String get charts_visuals {
+    return Intl.message(
+      'Charts/Visuals',
+      name: 'charts_visuals',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incomplete Sentences`
+  String get incomplete_sentences {
+    return Intl.message(
+      'Incomplete Sentences',
+      name: 'incomplete_sentences',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grammar`
+  String get grammar {
+    return Intl.message(
+      'Grammar',
+      name: 'grammar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vocabulary`
+  String get vocabulary {
+    return Intl.message(
+      'Vocabulary',
+      name: 'vocabulary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text Completion`
+  String get text_completion {
+    return Intl.message(
+      'Text Completion',
+      name: 'text_completion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passages`
+  String get passages {
+    return Intl.message(
+      'Passages',
+      name: 'passages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reading Comprehension`
+  String get reading_comprehension {
+    return Intl.message(
+      'Reading Comprehension',
+      name: 'reading_comprehension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Single passage`
+  String get single_passage {
+    return Intl.message(
+      'Single passage',
+      name: 'single_passage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Double passage`
+  String get double_passage {
+    return Intl.message(
+      'Double passage',
+      name: 'double_passage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Triple passage`
+  String get triple_passage {
+    return Intl.message(
+      'Triple passage',
+      name: 'triple_passage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get details {
+    return Intl.message(
+      'Details',
+      name: 'details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cohesion`
+  String get cohesion {
+    return Intl.message(
+      'Cohesion',
+      name: 'cohesion',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
