@@ -35,6 +35,7 @@ class ResultActionButtons extends StatelessWidget {
             GoRouter.of(context).pushReplacementNamed(
               AppRouter.practiceTest,
               extra: {
+                'title': resultModel.testName,
                 'testShow': TestShow.result,
                 'resultId': resultModel.resultId,
                 'parts': resultModel.parts,

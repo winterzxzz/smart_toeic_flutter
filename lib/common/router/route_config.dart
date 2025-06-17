@@ -221,6 +221,7 @@ class AppRouter {
           parts: args['parts'] as List<PartEnum>,
           duration: args['duration'] as Duration,
           testId: args['testId'] as String,
+          resultId: args['resultId'] as String?,
         );
         return PracticeTestPage(args: practiceTestArgs);
       },

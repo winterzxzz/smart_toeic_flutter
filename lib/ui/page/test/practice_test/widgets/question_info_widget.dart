@@ -185,8 +185,8 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                 );
                               },
                             ),
-                            if (questionResult?.correctanswer !=
-                                    questionResult?.useranswer ||
+                            if (questionResult?.correctanswer.trim() !=
+                                    questionResult?.useranswer.trim() ||
                                 questionResult == null)
                               Column(
                                 children: [
