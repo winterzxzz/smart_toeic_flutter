@@ -84,9 +84,24 @@ class Page extends StatelessWidget {
                     viewportFraction: 1,
                   ),
                   items: [
-                    Image.asset(AppImages.banner1),
-                    Image.asset(AppImages.banner2),
-                    Image.asset(AppImages.banner3),
+                    Image.asset(
+                      width: size.width,
+                      height: size.width * 0.6,
+                      AppImages.banner1,
+                      fit: BoxFit.cover,
+                    ),
+                    Image.asset(
+                      width: size.width,
+                      height: size.width * 0.6,
+                      AppImages.banner2,
+                      fit: BoxFit.cover,
+                    ),
+                    Image.asset(
+                      width: size.width,
+                      height: size.width * 0.6,
+                      AppImages.banner3,
+                      fit: BoxFit.cover,
+                    ),
                   ],
                 ),
               ),
@@ -112,3 +127,4 @@ class Page extends StatelessWidget {
     );
   }
 }
+
