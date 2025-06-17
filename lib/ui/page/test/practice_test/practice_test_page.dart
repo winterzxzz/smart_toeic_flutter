@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -123,8 +124,8 @@ class _PageState extends State<Page> {
                   final questions = state.questions
                       .where((q) => q.part == state.focusPart.numValue)
                       .toList();
-                  return CustomScrollView(
-                    slivers: [
+                  return NestedScrollView(
+                    headerSliverBuilder: (context, innerBoxScrolled) => [
                       SliverAppBar(
                         leading: LeadingBackButton(
                           isClose: true,
@@ -163,19 +164,20 @@ class _PageState extends State<Page> {
                           onTap: (part) => _cubit.setFocusPart(part),
                         ),
                       ),
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              return QuestionWidget(question: questions[index]);
-                            },
-                            childCount: questions.length,
-                          ),
-                        ),
-                      ),
                     ],
+                    body: ScrollablePositionedList.builder(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 16),
+                      scrollDirection: Axis.vertical,
+                      itemScrollController: _cubit.itemScrollController,
+                      itemPositionsListener: _cubit.itemPositionListener,
+                      itemCount: questions.length,
+                      itemBuilder: (context, index) {
+                        return QuestionWidget(
+                            key: Key(questions[index].id.toString()),
+                            question: questions[index]);
+                      },
+                    ),
                   );
                 },
               ),
