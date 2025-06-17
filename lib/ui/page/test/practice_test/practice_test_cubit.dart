@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -23,15 +23,13 @@ import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dar
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final TestRepository _testRepository;
 
-  late ItemScrollController itemScrollController;
-  late ItemPositionsListener itemPositionListener;
+  final listController = ListController();
+  final scrollController = ScrollController();
   late Duration currentTime;
   late Timer timer;
   final AudioPlayer audioPlayer = AudioPlayer();
 
   PracticeTestCubit(this._testRepository) : super(PracticeTestState.initial()) {
-    itemScrollController = ItemScrollController();
-    itemPositionListener = ItemPositionsListener.create();
     currentTime = Duration.zero;
   }
 
@@ -50,10 +48,16 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   }
 
   Future<void> _scrollToQuestion(int index) async {
-    await itemScrollController.scrollTo(
-      index: index + 1,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
+    animateToItem(index);
+  }
+
+  void animateToItem(int index) {
+    listController.animateToItem(
+      index: index,
+      scrollController: scrollController,
+      alignment: 0.1,
+      duration: (estimatedDistance) => const Duration(milliseconds: 250),
+      curve: (estimatedDistance) => Curves.easeInOut,
     );
   }
 
