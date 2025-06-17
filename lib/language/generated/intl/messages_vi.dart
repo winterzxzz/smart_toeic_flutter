@@ -262,7 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Phân tích cá nhân"),
         "photographs": MessageLookupByLibrary.simpleMessage("Hình ảnh"),
         "please_wait": MessageLookupByLibrary.simpleMessage("Vui lòng chờ..."),
-        "practice": MessageLookupByLibrary.simpleMessage("Practice"),
+        "practice": MessageLookupByLibrary.simpleMessage("Luyện tập"),
         "practice_button": MessageLookupByLibrary.simpleMessage("Luyện tập"),
         "practice_exams":
             MessageLookupByLibrary.simpleMessage("Practice Exams"),
