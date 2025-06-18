@@ -1,3 +1,5 @@
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:io';
@@ -5,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:toeic_desktop/common/router/route_config.dart';
 
 class NotiService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -14,15 +17,13 @@ class NotiService {
 
   bool get isInitialized => _isInitialized;
 
+  Future<void> initTimeZone() async {
+    tz.initializeTimeZones();
+  }
+
   // INITIALIZE
   Future<void> initialize() async {
     if (_isInitialized) return;
-    tz.initializeTimeZones();
-    final String currentTimeZone = DateTime.now().timeZoneName;
-    tz.setLocalLocation(tz.getLocation(currentTimeZone));
-
-    await requestNotificationPermission();
-
     // prepare android init settings
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -98,25 +99,78 @@ class NotiService {
   }
 
   // SCHEDULE NOTIFICATION
-  Future<void> scheduleDailyNotification(DateTime selectedTime) async {
-    if (selectedTime.isBefore(DateTime.now())) {
-      selectedTime = selectedTime.add(const Duration(days: 1));
-    }
-    final tz.TZDateTime scheduledTime =
-        tz.TZDateTime.from(selectedTime, tz.local);
-
+  Future<void> scheduleDailyNotification({
+    required String title,
+    required String body,
+    required int hour,
+    required int minute,
+  }) async {
     try {
+      await cancelAllNotifications();
+      await requestAlarmPermission();
+      final tz.TZDateTime scheduledDate = _nextInstanceOfTime(hour, minute);
+
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        "notification title",
-        "notification body",
-        scheduledTime,
+        1,
+        title,
+        body,
+        scheduledDate,
         noficationDetails(),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
       );
-      debugPrint('Notification scheduled successfully');
     } catch (e) {
       debugPrint('Error scheduling notification: $e');
     }
+  }
+
+  tz.TZDateTime _nextInstanceOfTime(int hour, int minute) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledTime =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+    if (scheduledTime.isBefore(now)) {
+      scheduledTime = scheduledTime.add(const Duration(days: 1));
+    }
+    debugPrint('Scheduled Time: ${scheduledTime.toIso8601String()}');
+    return scheduledTime;
+  }
+
+  Future<void> requestAlarmPermission() async {
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt >= 31) {
+        final PermissionStatus status =
+            await Permission.scheduleExactAlarm.status;
+        if (!status.isGranted) {
+          const intent = AndroidIntent(
+            action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
+            flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
+          );
+          await intent.launch();
+          // Show dialog to user
+          showDialog(
+            context: AppRouter.navigationKey.currentContext!,
+            builder: (context) => AlertDialog(
+              title: const Text('Permission Required'),
+              content: const Text(
+                'Please enable "Schedule Exact Alarm" permission in the settings, then return to the app.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }
