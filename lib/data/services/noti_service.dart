@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class NotiService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -14,6 +17,9 @@ class NotiService {
   // INITIALIZE
   Future<void> initialize() async {
     if (_isInitialized) return;
+    tz.initializeTimeZones();
+    final String currentTimeZone = DateTime.now().timeZoneName;
+    tz.setLocalLocation(tz.getLocation(currentTimeZone));
 
     await requestNotificationPermission();
 
@@ -89,5 +95,28 @@ class NotiService {
       noficationDetails(),
       payload: payload,
     );
+  }
+
+  // SCHEDULE NOTIFICATION
+  Future<void> scheduleDailyNotification(DateTime selectedTime) async {
+    if (selectedTime.isBefore(DateTime.now())) {
+      selectedTime = selectedTime.add(const Duration(days: 1));
+    }
+    final tz.TZDateTime scheduledTime =
+        tz.TZDateTime.from(selectedTime, tz.local);
+
+    try {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        "notification title",
+        "notification body",
+        scheduledTime,
+        noficationDetails(),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      );
+      debugPrint('Notification scheduled successfully');
+    } catch (e) {
+      debugPrint('Error scheduling notification: $e');
+    }
   }
 }
