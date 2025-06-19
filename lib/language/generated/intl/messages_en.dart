@@ -116,6 +116,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create New Flashcard"),
         "create_new_flashcard_set":
             MessageLookupByLibrary.simpleMessage("Create New Flashcard Set"),
+        "daily_reminder":
+            MessageLookupByLibrary.simpleMessage("Daily Reminder"),
+        "daily_reminder_description":
+            MessageLookupByLibrary.simpleMessage("Check the app today!"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "decay_score": MessageLookupByLibrary.simpleMessage("Decay Score"),
         "definition": MessageLookupByLibrary.simpleMessage("Definition"),
@@ -349,6 +353,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "set_flashcard": MessageLookupByLibrary.simpleMessage("Set Flashcard"),
         "set_flashcard_title":
             MessageLookupByLibrary.simpleMessage("Set Flashcard"),
+        "set_time": MessageLookupByLibrary.simpleMessage("Set Time"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "short_answers": MessageLookupByLibrary.simpleMessage("Short answers"),
         "show_answer": MessageLookupByLibrary.simpleMessage("Show Answer"),

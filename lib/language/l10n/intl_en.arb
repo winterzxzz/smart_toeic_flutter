@@ -284,5 +284,8 @@
     "triple_passage": "Triple passage",
     "main_idea": "Main idea",
     "details": "Details",
-    "cohesion": "Cohesion"
+    "cohesion": "Cohesion", 
+    "daily_reminder": "Daily Reminder",
+    "daily_reminder_description": "Check the app today!", 
+    "set_time": "Set Time"
 }

@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
-import 'package:toeic_desktop/data/services/noti_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
@@ -202,37 +203,106 @@ class _SettingPageState extends State<SettingPage> {
                 );
               },
             ),
-            const Padding(
+            Padding(
               padding: AppStyle.edgeInsetsA12,
               child: Text(
-                'Daily Reminder',
+                S.current.daily_reminder,
               ),
             ),
-            SettingsCard(
-              child: Column(
-                children: [
-                  SettingsSwitch(
-                    value: false,
-                    title: '15:00',
-                    onChanged: (val) {
-                      if (val) {
-                        final now =
-                            DateTime.now().add(const Duration(minutes: 1));
-                        final hour = now.hour;
-                        final minute = now.minute;
-                        NotiService().scheduleDailyNotification(
-                          title: 'Daily Reminder',
-                          body: 'Check the app today!',
-                          hour: hour,
-                          minute: minute,
-                        );
-                      }
-                    },
+            BlocBuilder<AppSettingCubit, AppSettingState>(
+              buildWhen: (previous, current) {
+                return previous.isDailyReminder != current.isDailyReminder ||
+                    previous.dailyReminderTime != current.dailyReminderTime;
+              },
+              builder: (context, state) {
+                return SettingsCard(
+                  child: Column(
+                    children: [
+                      SettingsSwitch(
+                        value: state.isDailyReminder,
+                        title: state.dailyReminderTime,
+                        onChanged: (val) {
+                          appSettingCubit.changeDailyReminder(
+                              isDailyReminder: val);
+                        },
+                      ),
+                      if (state.isDailyReminder) ...[
+                        AppStyle.divider,
+                        Container(
+                          margin: AppStyle.edgeInsetsA12,
+                          child: CustomButton(
+                            onPressed: () => _showTimePicker(
+                                context, state.dailyReminderTime),
+                            child: Text(S.current.set_time),
+                          ),
+                        ),
+                      ]
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ));
+  }
+
+  void _showTimePicker(BuildContext context, String currentTime) {
+    final timeParts = currentTime.split(':');
+    final initialTime = DateTime(
+      0,
+      1,
+      1,
+      int.parse(timeParts[0]),
+      int.parse(timeParts[1]),
+    );
+    DateTime selectedTime = initialTime;
+
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return SizedBox(
+          height: 350,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 300,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  use24hFormat: true,
+                  initialDateTime: initialTime,
+                  onDateTimeChanged: (DateTime dateTime) {
+                    selectedTime = dateTime;
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      GoRouter.of(ctx).pop();
+                    },
+                    child: Text(S.current.cancel),
+                  ),
+                  const SizedBox(width: 16),
+                  TextButton(
+                    onPressed: () {
+                      final formatted =
+                          '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
+                      appSettingCubit.changeDailyReminderTime(
+                        dailyReminderTime: formatted,
+                      );
+                      GoRouter.of(ctx).pop();
+                    },
+                    child: Text(S.current.save_button),
+                  ),
+                  const SizedBox(width: 16),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

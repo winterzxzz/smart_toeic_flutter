@@ -2819,6 +2819,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Daily Reminder`
+  String get daily_reminder {
+    return Intl.message(
+      'Daily Reminder',
+      name: 'daily_reminder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check the app today!`
+  String get daily_reminder_description {
+    return Intl.message(
+      'Check the app today!',
+      name: 'daily_reminder_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set Time`
+  String get set_time {
+    return Intl.message(
+      'Set Time',
+      name: 'set_time',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -114,6 +114,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tạo thẻ từ mới"),
         "create_new_flashcard_set":
             MessageLookupByLibrary.simpleMessage("Tạo bộ thẻ từ mới"),
+        "daily_reminder":
+            MessageLookupByLibrary.simpleMessage("Nhắc nhở hàng ngày"),
+        "daily_reminder_description": MessageLookupByLibrary.simpleMessage(
+            "Kiểm tra ứng dụng hàng ngày!"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Tối"),
         "decay_score": MessageLookupByLibrary.simpleMessage("Điểm giảm dần"),
         "definition": MessageLookupByLibrary.simpleMessage("Định nghĩa"),
@@ -335,6 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "set_flashcard": MessageLookupByLibrary.simpleMessage("Bộ thẻ từ"),
         "set_flashcard_title":
             MessageLookupByLibrary.simpleMessage("Bộ thẻ từ"),
+        "set_time": MessageLookupByLibrary.simpleMessage("Chọn thời gian"),
         "settings": MessageLookupByLibrary.simpleMessage("Cài đặt"),
         "short_answers":
             MessageLookupByLibrary.simpleMessage("Câu trả lời ngắn"),
