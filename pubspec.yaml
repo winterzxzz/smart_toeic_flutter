@@ -85,6 +85,7 @@ dependencies:
   super_sliver_list: ^0.4.1
   android_intent_plus: ^5.3.0
   timezone: ^0.9.4
+  flutter_timezone: ^4.1.1
 
 dev_dependencies:
   flutter_test:

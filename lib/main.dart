@@ -11,7 +11,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesHelper().initialize();
   await init();
-  await NotiService().initTimeZone();
   await NotiService().initialize();
 
   runApp(const MyApp());

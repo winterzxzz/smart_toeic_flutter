@@ -207,12 +207,20 @@ class _SettingPageState extends State<SettingPage> {
               margin: const EdgeInsets.symmetric(horizontal: 16),
               child: CustomButton(
                 onPressed: () {
+                  // now
+                  final now = DateTime.now().add(const Duration(minutes: 1));
+                  final hour = now.hour;
+                  final minute = now.minute;
                   NotiService().scheduleDailyNotification(
                     title: 'Daily Reminder',
                     body: 'Check the app today!',
-                    hour: 15,
-                    minute: 45,
+                    hour: hour,
+                    minute: minute,
                   );
+                  // NotiService().showFlutterNotification(
+                  //   title: 'Daily Reminder',
+                  //   content: 'Check the app today!',
+                  // );
                 },
                 child: const Text('Schedule Notification'),
               ),
