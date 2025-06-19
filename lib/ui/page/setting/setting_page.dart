@@ -202,29 +202,36 @@ class _SettingPageState extends State<SettingPage> {
                 );
               },
             ),
-            const SizedBox(height: 16),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: CustomButton(
-                onPressed: () {
-                  // now
-                  final now = DateTime.now().add(const Duration(minutes: 1));
-                  final hour = now.hour;
-                  final minute = now.minute;
-                  NotiService().scheduleDailyNotification(
-                    title: 'Daily Reminder',
-                    body: 'Check the app today!',
-                    hour: hour,
-                    minute: minute,
-                  );
-                  // NotiService().showFlutterNotification(
-                  //   title: 'Daily Reminder',
-                  //   content: 'Check the app today!',
-                  // );
-                },
-                child: const Text('Schedule Notification'),
+            const Padding(
+              padding: AppStyle.edgeInsetsA12,
+              child: Text(
+                'Daily Reminder',
               ),
-            )
+            ),
+            SettingsCard(
+              child: Column(
+                children: [
+                  SettingsSwitch(
+                    value: false,
+                    title: '15:00',
+                    onChanged: (val) {
+                      if (val) {
+                        final now =
+                            DateTime.now().add(const Duration(minutes: 1));
+                        final hour = now.hour;
+                        final minute = now.minute;
+                        NotiService().scheduleDailyNotification(
+                          title: 'Daily Reminder',
+                          body: 'Check the app today!',
+                          hour: hour,
+                          minute: minute,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ));
   }
