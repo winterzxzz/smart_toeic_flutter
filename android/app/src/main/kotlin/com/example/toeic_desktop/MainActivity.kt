@@ -2,56 +2,44 @@ package com.example.toeic_desktop
 
 import android.content.Intent
 import android.os.Bundle
+import android.net.Uri
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+// Log
+import android.util.Log
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.example.toeic_desktop/widget_navigation"
-    private var methodChannel: MethodChannel? = null
-    
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        super.configureFlutterEngine(flutterEngine)
-        
-        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
-        methodChannel?.setMethodCallHandler { call, result ->
-            when (call.method) {
-                "getInitialRoute" -> {
-                    val route = intent.getStringExtra("route")
-                    val tabIndex = intent.getIntExtra("tab_index", -1)
-                    
-                    if (route != null) {
-                        val data = mapOf(
-                            "route" to route,
-                            "tab_index" to tabIndex
-                        )
-                        result.success(data)
-                        // Clear the intent data so it doesn't trigger again
-                        intent.removeExtra("route")
-                        intent.removeExtra("tab_index")
-                    } else {
-                        result.success(null)
-                    }
-                }
-                else -> result.notImplemented()
-            }
-        }
+
+    companion object {
+        private const val CHANNEL = "com.example.toeic_desktop/deeplink"
     }
-    
+
+    private var initialLink: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        handleIntent(intent)
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        
-        // Handle new intent when app is already running
-        val route = intent.getStringExtra("route")
-        val tabIndex = intent.getIntExtra("tab_index", -1)
-        
-        if (route != null && methodChannel != null) {
-            val data = mapOf(
-                "route" to route,
-                "tab_index" to tabIndex
-            )
-            methodChannel?.invokeMethod("navigateFromWidget", data)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        // Handle deeplink from widget parameters (Glance actionParametersOf)
+        intent.getStringExtra("deep_link")?.let { deepLink ->
+            Log.d("MainActivity", "Widget deeplink from extra received: $deepLink")
+            sendDeepLinkToFlutter(deepLink)
+            return
+        }
+    }
+
+    private fun sendDeepLinkToFlutter(deepLink: String) {
+        flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
+            MethodChannel(messenger, CHANNEL).invokeMethod("onDeepLinkReceived", deepLink)
         }
     }
 }

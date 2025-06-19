@@ -1,7 +1,7 @@
 package com.example.toeic_desktop
 
 import android.content.ComponentName
-import androidx.glance.action.mutableActionParametersOf
+import androidx.glance.action.actionParametersOf
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
@@ -31,8 +31,7 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionStartActivity
 
 
-val RouteKey = ActionParameters.Key<String>("route")
-val TabIndexKey = ActionParameters.Key<Int>("tab_index")
+val DeepLinkKey = ActionParameters.Key<String>("deep_link")
 
 class TOEICGlanceWidget : GlanceAppWidget() {
 
@@ -50,9 +49,8 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 .clickable(
                     actionStartActivity(
                         componentName = ComponentName(context, MainActivity::class.java),
-                        parameters = mutableActionParametersOf(
-                            RouteKey to "/bottom-tab",
-                            TabIndexKey to 0
+                        parameters = actionParametersOf(
+                            DeepLinkKey to "toeic://winter-toeic.com/bottom-tab"
                         )
                     )
                 )

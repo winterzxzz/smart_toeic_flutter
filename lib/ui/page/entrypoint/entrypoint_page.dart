@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -27,10 +28,19 @@ class _BottomTabPageState extends State<BottomTabPage>
     with TickerProviderStateMixin {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
+  static const String _channel = 'com.example.toeic_desktop/deeplink';
+  static const platform = MethodChannel(_channel);
 
   @override
   void initState() {
     super.initState();
+    platform.setMethodCallHandler((call) async {
+      debugPrint('MainActivity-onDeepLinkReceived: ${call.method}');
+      if (call.method == 'onDeepLinkReceived') {
+        final uri = Uri.parse(call.arguments);
+        handleDeepLink(uri);
+      }
+    });
     _appLinks = AppLinks();
     initDeepLinks();
   }
@@ -44,11 +54,26 @@ class _BottomTabPageState extends State<BottomTabPage>
   Future<void> initDeepLinks() async {
     // Handle links
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      final pathWithQuery = uri.path + (uri.hasQuery ? '?${uri.query}' : '');
-      if (mounted) {
-        GoRouter.of(context).go(pathWithQuery);
-      }
+      handleDeepLink(uri);
     });
+  }
+
+  void handleDeepLink(Uri uri) {
+    if (!mounted) return;
+
+    String path = uri.path;
+    String? query = uri.hasQuery ? uri.query : null;
+
+    // Convert custom scheme to router path
+    if (uri.scheme == 'test' && uri.host == 'winter-toeic.com') {
+      // For our custom deeplinks, navigate to the path directly
+      final pathWithQuery = path + (query != null ? '?$query' : '');
+      GoRouter.of(context).go(pathWithQuery);
+    } else {
+      // For other links, navigate to the path as is
+      final pathWithQuery = path + (query != null ? '?$query' : '');
+      GoRouter.of(context).go(pathWithQuery);
+    }
   }
 
   @override

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_widget/home_widget.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
-import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/setting_card.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/settting_switch.dart';
@@ -202,17 +200,7 @@ class _SettingPageState extends State<SettingPage> {
                 );
               },
             ),
-            CustomButton(
-              onPressed: () {
-                _updateWidget();
-              },
-              child: const Text('Update Widget'),
-            )
           ],
         ));
-  }
-
-  Future<void> _updateWidget() async {
-    await HomeWidget.updateWidget(name: 'TOEICGlanceWidget');
   }
 }
