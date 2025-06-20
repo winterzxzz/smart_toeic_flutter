@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
@@ -155,46 +156,38 @@ class _SettingPageState extends State<SettingPage> {
                           child: Wrap(
                             spacing: 8,
                             runSpacing: 8,
-                            children: <Color>[
-                              const Color(0xff26A69A),
-                              const Color(0xffEF5350),
-                              const Color(0xff3498db),
-                              const Color(0xffF06292),
-                              const Color(0xff9575CD),
-                              const Color(0xff26C6DA),
-                              const Color(0xffFFF176),
-                              const Color(0xffFF9800),
-                            ]
-                                .map(
-                                  (e) => GestureDetector(
-                                    onTap: () {
-                                      appSettingCubit.changePrimaryColor(
-                                          color: e);
-                                    },
-                                    child: Container(
-                                      width: 36,
-                                      height: 36,
-                                      decoration: BoxDecoration(
-                                        color: e,
-                                        borderRadius: AppStyle.radius4,
-                                        border: Border.all(
-                                          color: Colors.grey
-                                              .withValues(alpha: 0.2),
-                                          width: 1,
-                                        ),
+                            children: Constants.primaryColorsHex.map(
+                              (e) {
+                                final color = Color(int.parse('0xff$e'));
+                                return GestureDetector(
+                                  onTap: () {
+                                    appSettingCubit.changePrimaryColor(
+                                        color: color, hexColor: e);
+                                  },
+                                  child: Container(
+                                    width: 36,
+                                    height: 36,
+                                    decoration: BoxDecoration(
+                                      color: color,
+                                      borderRadius: AppStyle.radius4,
+                                      border: Border.all(
+                                        color:
+                                            Colors.grey.withValues(alpha: 0.2),
+                                        width: 1,
                                       ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.check,
-                                          color: state.primaryColor == e
-                                              ? Colors.white
-                                              : Colors.transparent,
-                                        ),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.check,
+                                        color: state.primaryColor == color
+                                            ? Colors.white
+                                            : Colors.transparent,
                                       ),
                                     ),
                                   ),
-                                )
-                                .toList(),
+                                );
+                              },
+                            ).toList(),
                           ),
                         ),
                     ],

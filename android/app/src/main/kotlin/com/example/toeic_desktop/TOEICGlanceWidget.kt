@@ -29,6 +29,11 @@ import androidx.glance.text.FontWeight
 import androidx.glance.action.clickable
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionStartActivity
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.updateAll
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 val DeepLinkKey = ActionParameters.Key<String>("deep_link")
@@ -43,11 +48,13 @@ class TOEICGlanceWidget : GlanceAppWidget() {
 
     @Composable
     private fun TOEICWidgetContent(context: Context) {
+        val prefs = context.getSharedPreferences("toeic_prefs", Context.MODE_PRIVATE)
+        val colorHex = prefs.getString("bg_color", "#26A69A")!!
+        val bgColor = Color(android.graphics.Color.parseColor(colorHex))
         Box(
             modifier = GlanceModifier
                 .fillMaxSize()
-                // Hex Color
-                .background(ColorProvider(day = Color(0xFF26A69A), night = Color(0xFF26A69A)))
+                .background(ColorProvider(day = bgColor, night = bgColor))
                 .clickable(
                     actionStartActivity<MainActivity>(
                         actionParametersOf(DeepLinkKey to "test://winter-toeic.com/bottom-tab")
@@ -79,6 +86,16 @@ class TOEICGlanceWidget : GlanceAppWidget() {
             }
         }
     }
+
+    fun updateTOEICGlanceWidget(context: Context) {
+        CoroutineScope(Dispatchers.Default).launch {
+            val glanceIds = GlanceAppWidgetManager(context).getGlanceIds(TOEICGlanceWidget::class.java)
+            glanceIds.forEach { glanceId ->
+                TOEICGlanceWidget().update(context, glanceId)
+            }
+        }
+    }
+    
 }
 
 class TOEICGlanceWidgetReceiver : GlanceAppWidgetReceiver() {
