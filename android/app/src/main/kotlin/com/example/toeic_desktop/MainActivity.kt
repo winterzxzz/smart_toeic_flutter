@@ -9,9 +9,11 @@ import io.flutter.plugin.common.MethodChannel
 import android.util.Log
 import android.content.Context
 import android.content.ComponentName
-import com.example.toeic_desktop.TOEICGlanceWidget
-
-
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.action.actionParametersOf
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : FlutterActivity() {
 
@@ -23,25 +25,30 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WIDGET_CHANNEL).setMethodCallHandler {
-            call, result ->
-            if (call.method == "updateWidgetColor") {
-                val colorHex = call.argument<String>("colorHex") ?: "0xff26A69A"
-                updateWidgetColorAndRefresh(colorHex)
-                result.success(null)
-            } else {
-                result.notImplemented()
+        
+        // Set up widget channel for Flutter to update widget colors
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WIDGET_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "updateWidgetColor" -> {
+                    val colorHex = call.argument<String>("colorHex") ?: "#26A69A"
+                    Log.d("MainActivity", "Flutter requested widget color update: $colorHex")
+                    updateWidgetColorAndRefresh(colorHex)
+                    result.success("Widget color updated to $colorHex")
+                }
+                else -> {
+                    result.notImplemented()
+                }
             }
         }
     }
 
     override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
         val destination = intent.extras?.getString(DEEPLINK_KEY)
         if (destination != null) {
             sendDeepLinkToFlutter(destination)
         }
     }
-
 
     private fun sendDeepLinkToFlutter(deepLink: String) {
         flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
@@ -50,9 +57,23 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun updateWidgetColorAndRefresh(colorHex: String) {
-        val sharedPref = applicationContext.getSharedPreferences("toeic_prefs", Context.MODE_PRIVATE)
-        sharedPref.edit().putString("bg_color", colorHex).apply()
-        val glanceWidget = TOEICGlanceWidget()
-        glanceWidget.updateTOEICGlanceWidget(applicationContext)
+        CoroutineScope(Dispatchers.Default).launch {
+            try {
+                val glanceAppWidgetManager = GlanceAppWidgetManager(applicationContext)
+                val glanceIds = glanceAppWidgetManager.getGlanceIds(TOEICGlanceWidget::class.java)
+                
+                
+                glanceIds.forEach { glanceId ->
+                    val callback = TOEICGlanceActionCallback()
+                    callback.onAction(
+                        applicationContext,
+                        glanceId,
+                        actionParametersOf(ColorKey to colorHex)
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error updating widget color: ${e.message}", e)
+            }
+        }
     }
 }
