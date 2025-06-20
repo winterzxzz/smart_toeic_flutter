@@ -59,4 +59,8 @@ dependencies {
     implementation("androidx.glance:glance-appwidget:1.1.1")
     implementation("androidx.glance:glance-material3:1.1.1")
     implementation("androidx.compose.ui:ui:1.5.1")
+    
+    // WorkManager dependencies
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.work:work-multiprocess:2.9.0")
 }

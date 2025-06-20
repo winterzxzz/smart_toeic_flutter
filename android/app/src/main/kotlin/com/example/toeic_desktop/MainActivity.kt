@@ -99,6 +99,25 @@ class MainActivity : FlutterActivity() {
                     updateWidgetColorAndRefresh(colorHex)
                     result.success("Widget color updated to $colorHex")
                 }
+                "scheduleWidgetUpdateAfter2Minutes" -> {
+                    val colorHex = call.argument<String>("colorHex")
+                    val colorList = call.argument<List<String>>("colorList")
+                    val updateType = call.argument<String>("updateType") ?: "color"
+                    WidgetWorkScheduler.scheduleWidgetUpdateAfter2Minutes(this, colorHex, colorList, updateType)
+                    result.success("Widget update scheduled after 2 minutes")
+                }
+                "scheduleWidgetUpdateAfterDelay" -> {
+                    val delayMinutes = call.argument<Int>("delayMinutes")?.toLong() ?: 2L
+                    val colorHex = call.argument<String>("colorHex")
+                    val colorList = call.argument<List<String>>("colorList")
+                    val updateType = call.argument<String>("updateType") ?: "color"
+                    WidgetWorkScheduler.scheduleWidgetUpdateAfterDelay(this, delayMinutes, colorHex, colorList, updateType)
+                    result.success("Widget update scheduled after $delayMinutes minutes")
+                }
+                "cancelWidgetUpdates" -> {
+                    WidgetWorkScheduler.cancelAllWidgetUpdates(this)
+                    result.success("All widget updates cancelled")
+                }
                 else -> {
                     result.notImplemented()
                 }
