@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.first
 // Enhanced ColorPreferences with immediate update support
 object ColorPreferences {
     private val Context.dataStore by preferencesDataStore(name = "widget_prefs")
-    
+
     val COLOR_KEY = stringPreferencesKey("widget_color_hex")
     val COLOR_INT_KEY = intPreferencesKey("widget_color_int")
-
+    
     // Set color using hex string and update widget immediately
     suspend fun setColorHex(context: Context, colorHex: String) {
         // Save to DataStore
@@ -28,7 +28,7 @@ object ColorPreferences {
         prefs.edit().putString("bg_color", colorHex).apply()
         
         // Update widget immediately
-        TOEICGlanceWidget.updateTOEICGlanceWidget(context)
+        TOEICGlanceWidget.updateColorAndRefresh(context, colorHex)
     }
     
     // Set color using integer and update widget immediately
