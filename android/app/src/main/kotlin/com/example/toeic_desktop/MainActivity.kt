@@ -14,6 +14,8 @@ import androidx.glance.action.actionParametersOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.glance.appwidget.state.updateAppWidgetState
+import androidx.glance.appwidget.updateAll
 
 class MainActivity : FlutterActivity() {
 
@@ -31,7 +33,6 @@ class MainActivity : FlutterActivity() {
             when (call.method) {
                 "updateWidgetColor" -> {
                     val colorHex = call.argument<String>("colorHex") ?: "#26A69A"
-                    Log.d("MainActivity", "Flutter requested widget color update: $colorHex")
                     updateWidgetColorAndRefresh(colorHex)
                     result.success("Widget color updated to $colorHex")
                 }
@@ -62,15 +63,12 @@ class MainActivity : FlutterActivity() {
                 val glanceAppWidgetManager = GlanceAppWidgetManager(applicationContext)
                 val glanceIds = glanceAppWidgetManager.getGlanceIds(TOEICGlanceWidget::class.java)
                 
-                
                 glanceIds.forEach { glanceId ->
-                    val callback = TOEICGlanceActionCallback()
-                    callback.onAction(
-                        applicationContext,
-                        glanceId,
-                        actionParametersOf(ColorKey to colorHex)
-                    )
+                    updateAppWidgetState(applicationContext, glanceId) { prefs ->
+                        prefs[ColorPreferences.COLOR_KEY] = colorHex
+                    }
                 }
+                TOEICGlanceWidget().updateAll(applicationContext)
             } catch (e: Exception) {
                 Log.e("MainActivity", "Error updating widget color: ${e.message}", e)
             }

@@ -61,6 +61,6 @@ object WidgetColorManager {
         prefs.edit().putString("bg_color", colorHex).apply()
         
         // Update widget
-        TOEICGlanceWidget.updateTOEICGlanceWidget(context)
+        TOEICGlanceWidget.updateColorAndRefresh(context, colorHex)
     }
 }

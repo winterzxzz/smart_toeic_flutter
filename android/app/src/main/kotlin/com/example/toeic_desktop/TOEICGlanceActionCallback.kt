@@ -36,7 +36,7 @@ class TOEICGlanceActionCallback: ActionCallback {
             ColorPreferences.setColorHex(context, colorHex)
             
             // Update the widget immediately
-            TOEICGlanceWidget.updateTOEICGlanceWidget(context)
+            TOEICGlanceWidget.updateColorAndRefresh(context, colorHex)
         }
     }
 }

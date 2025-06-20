@@ -27,27 +27,38 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.util.Log
-import com.example.toeic_desktop.ColorPreferences
+import androidx.glance.appwidget.SizeMode
+import androidx.glance.state.PreferencesGlanceStateDefinition
+import androidx.glance.state.GlanceStateDefinition
+import androidx.datastore.preferences.core.Preferences
+import androidx.glance.currentState
+
+
+
 
 class TOEICGlanceWidget : GlanceAppWidget() {
-    
+
+    override val sizeMode = SizeMode.Exact
+
+    override var stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        
         provideContent {
-            TOEICWidgetContent(context)
+            val prefs = currentState<Preferences>()
+            val colorHex = prefs[ColorPreferences.COLOR_KEY] ?: "#26A69A"
+            TOEICWidgetContent(context, colorHex)
         }
     }
 
     @Composable
-    private fun TOEICWidgetContent(context: Context) {
-        val colorHex = ColorPreferences.getColorHexImmediate(context)
-        
-        Log.d("TOEICGlanceWidget", "Widget recomposing with colorHex: $colorHex")
+    private fun TOEICWidgetContent(context: Context, colorHex: String) {
         
         val bgColor = try {
             Color(android.graphics.Color.parseColor(colorHex))
         } catch (e: Exception) {
             Log.e("TOEICGlanceWidget", "Invalid color format: $colorHex, using default")
-            Color(android.graphics.Color.parseColor("#26A69A"))
+            Color(android.graphics.Color.parseColor("#26A69A")) // Default color
         }
         
         Box(
@@ -78,7 +89,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                     )
                 )
                 Text(
-                    text = "The coldest season of the year, occurring between autumn and spring, typically characterized by cold temperatures, shorter days, and in many regions, snowfall.",
+                    text = "The coldest season of the year... $colorHex",
                     style = TextStyle(
                         fontSize = 14.sp,
                         color = ColorProvider(day = Color.White, night = Color.White)
@@ -89,40 +100,23 @@ class TOEICGlanceWidget : GlanceAppWidget() {
     }
 
     companion object {
-        // Method 1: Update all widgets immediately
-        fun updateTOEICGlanceWidget(context: Context) {
-            Log.d("TOEICGlanceWidget", "updateTOEICGlanceWidget called")
+        // Call this whenever you want to update the widget
+        fun updateWidgetImmediately(context: Context) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val widget = TOEICGlanceWidget()
-                    widget.updateAll(context)
-                    Log.d("TOEICGlanceWidget", "Widget updateAll completed")
+                    TOEICGlanceWidget().updateAll(context)
                 } catch (e: Exception) {
-                    Log.e("TOEICGlanceWidget", "Error updating widget: ${e.message}", e)
                 }
             }
         }
-        
-        // Method 2: Update specific widget by ID
-        suspend fun updateWidget(context: Context, glanceId: GlanceId) {
-            try {
-                val widget = TOEICGlanceWidget()
-                widget.update(context, glanceId)
-                Log.d("TOEICGlanceWidget", "Single widget updated for ID: $glanceId")
-            } catch (e: Exception) {
-                Log.e("TOEICGlanceWidget", "Error updating single widget: ${e.message}", e)
-            }
-        }
-        
-        // Method 3: Update color and refresh immediately
+
+        // Call this when color changes
         fun updateColorAndRefresh(context: Context, colorHex: String) {
-            Log.d("TOEICGlanceWidget", "Updating color to: $colorHex")
-            
-            // Save color to SharedPreferences
+            // Save to SharedPreferences
             ColorPreferences.setColorHexImmediate(context, colorHex)
             
-            // Immediately update all widgets
-            updateTOEICGlanceWidget(context)
+            // Trigger immediate widget update
+            updateWidgetImmediately(context)
         }
     }
 }
