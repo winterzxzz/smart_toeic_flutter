@@ -27,7 +27,9 @@ Future<void> init() async {
         () => TranscriptTestRepositoryImpl(injector()))
     ..registerLazySingleton<BlogRepository>(
         () => BlogRepositoryImpl(injector()))
-    ..registerLazySingleton<SpeechService>(() => SpeechService());
+    ..registerLazySingleton<SpeechService>(() => SpeechService())
+    ..registerLazySingleton<UpdateHomeWidgetService>(
+        () => UpdateHomeWidgetService());
 
   // Cubit dependencies (short-lived objects)
   injector
@@ -76,6 +78,8 @@ Future<void> init() async {
   }
 
   if (!injector.isRegistered<AppSettingCubit>()) {
-    injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit());
+    injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit(
+          updateHomeWidgetService: injector(),
+        ));
   }
 }

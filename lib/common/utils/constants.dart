@@ -198,6 +198,17 @@ class Constants {
           onNavigate: (context) => GoRouter.of(context).push(AppRouter.setting),
         ),
       ];
+
+  static List<String> get primaryColorsHex => [
+        '26A69A',
+        'EF5350',
+        '3498db',
+        'F06292',
+        '9575CD',
+        '26C6DA',
+        'FFF176',
+        'FF9800',
+      ];
 }
 
 extension ConstantsExtension on Constants {
