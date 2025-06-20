@@ -47,11 +47,8 @@ class TOEICGlanceWidget : GlanceAppWidget() {
             modifier = GlanceModifier
                 .fillMaxSize()
                 .clickable(
-                    actionStartActivity(
-                        componentName = ComponentName(context, MainActivity::class.java),
-                        parameters = actionParametersOf(
-                            DeepLinkKey to "toeic://winter-toeic.com/bottom-tab"
-                        )
+                    actionStartActivity<MainActivity>(
+                        actionParametersOf(DeepLinkKey to "test://winter-toeic.com/bottom-tab")
                     )
                 )
         ) {

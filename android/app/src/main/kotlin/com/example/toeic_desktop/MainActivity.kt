@@ -6,36 +6,22 @@ import android.net.Uri
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-// Log
 import android.util.Log
 
 class MainActivity : FlutterActivity() {
 
     companion object {
         private const val CHANNEL = "com.example.toeic_desktop/deeplink"
-    }
-
-    private var initialLink: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        handleIntent(intent)
+        private const val DEEPLINK_KEY = "deep_link"
     }
 
     override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        handleIntent(intent)
-    }
-
-    private fun handleIntent(intent: Intent) {
-        // Handle deeplink from widget parameters (Glance actionParametersOf)
-        intent.getStringExtra("deep_link")?.let { deepLink ->
-            Log.d("MainActivity", "Widget deeplink from extra received: $deepLink")
-            sendDeepLinkToFlutter(deepLink)
-            return
+        val destination = intent.extras?.getString(DEEPLINK_KEY)
+        if (destination != null) {
+            sendDeepLinkToFlutter(destination)
         }
     }
+
 
     private fun sendDeepLinkToFlutter(deepLink: String) {
         flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
