@@ -46,21 +46,14 @@ class TOEICGlanceWidget : GlanceAppWidget() {
         Box(
             modifier = GlanceModifier
                 .fillMaxSize()
+                // Hex Color
+                .background(ColorProvider(day = Color(0xFF26A69A), night = Color(0xFF26A69A)))
                 .clickable(
                     actionStartActivity<MainActivity>(
                         actionParametersOf(DeepLinkKey to "test://winter-toeic.com/bottom-tab")
                     )
                 )
         ) {
-            // Background image
-            Image(
-                provider = ImageProvider(R.drawable.bg_flashcard),
-                contentDescription = "Background",
-                modifier = GlanceModifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-
-            // Overlay content
             Column(
                 modifier = GlanceModifier
                     .fillMaxSize()
@@ -69,7 +62,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "TOEIC Practice",
+                    text = "Winter",
                     style = TextStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
@@ -77,10 +70,10 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                     )
                 )
                 Text(
-                    text = "Tap to start learning",
+                    text = "The coldest season of the year, occurring between autumn and spring, typically characterized by cold temperatures, shorter days, and in many regions, snowfall.",
                     style = TextStyle(
                         fontSize = 14.sp,
-                        color = ColorProvider(day = Color.LightGray, night = Color.LightGray)
+                        color = ColorProvider(day = Color.White, night = Color.White)
                     )
                 )
             }
