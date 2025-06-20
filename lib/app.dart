@@ -18,6 +18,7 @@ import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
 import 'package:toeic_desktop/data/services/stt_service.dart';
 import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/data/services/update_glance_widget.dart';
+import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
