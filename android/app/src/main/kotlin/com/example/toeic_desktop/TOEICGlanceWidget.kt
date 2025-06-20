@@ -89,7 +89,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                     )
                 )
                 Text(
-                    text = "The coldest season of the year... $colorHex",
+                    text = "The coldest season of the year, typically bringing snow, frost, and shorter daylight hours.",
                     style = TextStyle(
                         fontSize = 14.sp,
                         color = ColorProvider(day = Color.White, night = Color.White)
