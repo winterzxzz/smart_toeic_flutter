@@ -35,7 +35,6 @@ class _BottomTabPageState extends State<BottomTabPage>
   void initState() {
     super.initState();
     platform.setMethodCallHandler((call) async {
-      debugPrint('MainActivity-onDeepLinkReceived: ${call.method}');
       if (call.method == 'onDeepLinkReceived') {
         final uri = Uri.parse(call.arguments);
         handleDeepLink(uri);
@@ -52,7 +51,6 @@ class _BottomTabPageState extends State<BottomTabPage>
   }
 
   Future<void> initDeepLinks() async {
-    // Handle links
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       handleDeepLink(uri);
     });
@@ -60,17 +58,9 @@ class _BottomTabPageState extends State<BottomTabPage>
 
   void handleDeepLink(Uri uri) {
     if (!mounted) return;
-
     String path = uri.path;
     String? query = uri.hasQuery ? uri.query : null;
-
-    // Convert custom scheme to router path
     if (uri.scheme == 'test' && uri.host == 'winter-toeic.com') {
-      // For our custom deeplinks, navigate to the path directly
-      final pathWithQuery = path + (query != null ? '?$query' : '');
-      GoRouter.of(context).go(pathWithQuery);
-    } else {
-      // For other links, navigate to the path as is
       final pathWithQuery = path + (query != null ? '?$query' : '');
       GoRouter.of(context).go(pathWithQuery);
     }
