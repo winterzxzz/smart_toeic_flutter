@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
+import com.example.toeic_desktop.ColorPreferences
 
 class TOEICGlanceActionCallback: ActionCallback {
     override suspend fun onAction(
@@ -32,8 +33,7 @@ class TOEICGlanceActionCallback: ActionCallback {
             Log.d("TOEICGlanceActionCallback", "Updating widget color: $colorHex")
             
             // Save color to SharedPreferences for immediate widget access
-            val prefs = context.getSharedPreferences("toeic_prefs", Context.MODE_PRIVATE)
-            prefs.edit().putString("bg_color", colorHex).apply()
+            ColorPreferences.setColorHex(context, colorHex)
             
             // Update the widget immediately
             TOEICGlanceWidget.updateTOEICGlanceWidget(context)

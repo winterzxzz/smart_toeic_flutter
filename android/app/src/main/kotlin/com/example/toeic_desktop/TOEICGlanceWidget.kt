@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.util.Log
+import com.example.toeic_desktop.ColorPreferences
 
 class TOEICGlanceWidget : GlanceAppWidget() {
     
@@ -38,8 +39,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
 
     @Composable
     private fun TOEICWidgetContent(context: Context) {
-        val prefs = context.getSharedPreferences("toeic_prefs", Context.MODE_PRIVATE)
-        val colorHex = prefs.getString("bg_color", "#26A69A") ?: "#26A69A"
+        val colorHex = ColorPreferences.getColorHexImmediate(context)
         
         Log.d("TOEICGlanceWidget", "Widget recomposing with colorHex: $colorHex")
         
@@ -119,8 +119,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
             Log.d("TOEICGlanceWidget", "Updating color to: $colorHex")
             
             // Save color to SharedPreferences
-            val prefs = context.getSharedPreferences("toeic_prefs", Context.MODE_PRIVATE)
-            prefs.edit().putString("bg_color", colorHex).apply()
+            ColorPreferences.setColorHexImmediate(context, colorHex)
             
             // Immediately update all widgets
             updateTOEICGlanceWidget(context)
