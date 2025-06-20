@@ -46,4 +46,15 @@ object ColorPreferences {
         val prefs = context.dataStore.data.first()
         return prefs[COLOR_INT_KEY] ?: android.graphics.Color.parseColor("#26A69A")
     }
+    
+    // Non-suspend methods for immediate access using SharedPreferences
+    fun getColorHexImmediate(context: Context): String {
+        val prefs = context.getSharedPreferences("toeic_prefs", Context.MODE_PRIVATE)
+        return prefs.getString("bg_color", "#26A69A") ?: "#26A69A"
+    }
+    
+    fun setColorHexImmediate(context: Context, colorHex: String) {
+        val prefs = context.getSharedPreferences("toeic_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putString("bg_color", colorHex).apply()
+    }
 }
