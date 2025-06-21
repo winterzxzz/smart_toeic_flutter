@@ -44,10 +44,17 @@ class _PageState extends State<Page> {
     final theme = Theme.of(context);
     return Scaffold(
       body: BlocConsumer<TestsCubit, TestsState>(
+        listenWhen: (previous, current) {
+          return previous.loadStatus != current.loadStatus;
+        },
         listener: (context, state) {
           if (state.loadStatus == LoadStatus.failure) {
             AppNavigator(context: context).error(state.message);
           }
+        },
+        buildWhen: (previous, current) {
+          return previous.filteredTests != current.filteredTests ||
+              previous.loadStatus != current.loadStatus;
         },
         builder: (context, state) {
           return CustomScrollView(
@@ -88,6 +95,7 @@ class _PageState extends State<Page> {
                         const SizedBox(height: 16),
                     itemBuilder: (context, index) {
                       return TestCard(
+                        key: ValueKey(state.filteredTests[index].id),
                         test: state.filteredTests[index],
                       );
                     },
