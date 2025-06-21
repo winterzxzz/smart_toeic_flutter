@@ -7,7 +7,7 @@ class WidgetService {
       MethodChannel('com.example.toeic_desktop/widget');
 
   /// Update widget color immediately
-  static Future<String?> updateWidgetColor(String colorHex) async {
+  Future<String?> updateWidgetColor(String colorHex) async {
     try {
       final String? result = await _channel.invokeMethod('updateWidgetColor', {
         'colorHex': colorHex,
@@ -20,7 +20,7 @@ class WidgetService {
   }
 
   /// Periodic widget update after 2 minutes
-  static Future<String?> schedulePeriodicWidgetUpdate({
+  Future<String?> schedulePeriodicWidgetUpdate({
     required FlashCardShowInWidgetList flashCardShowInWidgetList,
   }) async {
     try {
@@ -37,7 +37,7 @@ class WidgetService {
   }
 
   /// Cancel all scheduled widget updates
-  static Future<String?> cancelWidgetUpdates() async {
+  Future<String?> cancelWidgetUpdates() async {
     try {
       final String? result = await _channel.invokeMethod('cancelWidgetUpdates');
       return result;

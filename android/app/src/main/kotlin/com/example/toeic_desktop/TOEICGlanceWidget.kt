@@ -131,13 +131,13 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                     modifier = GlanceModifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    verticalAlignment = Alignment.Top,
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "No flash card",
+                        text = "No flashcard",
                         style = TextStyle(
-                            fontSize = 14.sp,
+                            fontSize = 16.sp,
                             color = ColorProvider(day = Color.White, night = Color.White)
                         )
                     )

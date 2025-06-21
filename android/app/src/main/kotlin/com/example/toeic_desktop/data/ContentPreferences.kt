@@ -46,4 +46,10 @@ object ContentPreferences {
         val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
         prefs.edit().putInt(CURRENT_FLASH_CARD_INDEX_KEY.name, index).apply()
     }
+
+    // clear all data
+    fun clearAllData(context: Context) {
+        val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        prefs.edit().remove(CONTENT_KEY.name).remove(CURRENT_FLASH_CARD_INDEX_KEY.name).apply()
+    }
 }
