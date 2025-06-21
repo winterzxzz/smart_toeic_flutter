@@ -6,6 +6,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
+import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
 import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';

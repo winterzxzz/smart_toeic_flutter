@@ -21,6 +21,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateAll
+import com.google.gson.Gson
+import com.example.toeic_desktop.model.FlashCard
+import com.example.toeic_desktop.data.ContentPreferences
+import com.example.toeic_desktop.data.ColorPreferences
+
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "exact_alarm_channel"
@@ -100,10 +105,20 @@ class MainActivity : FlutterActivity() {
                     result.success("Widget color updated to $colorHex")
                 }
                 "schedulePeriodicWidgetUpdate" -> {
-                    val colorHex = call.argument<String>("colorHex")
-                    val colorList = call.argument<List<String>>("colorList")
-                    val updateType = call.argument<String>("updateType") ?: "color"
-                    WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, 15, colorHex, colorList)
+                    val data = call.argument<HashMap<String, Any>>("flashCardShowInWidgetList")
+                    if(data != null) {
+                        val list = data["flashCardShowInWidgetList"] as? List<HashMap<String, String>>
+                        if(list != null) {
+                            val flashcards = list.map {
+                                FlashCard(
+                                    word = it["word"] ?: "",
+                                    definition = it["definition"] ?: ""
+                                )
+                            }
+                            ContentPreferences.saveFlashCards(this, flashcards)
+                            WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, 2)
+                        }
+                    }
                     result.success("Widget update scheduled after 15 minutes")
                 }
                 "cancelWidgetUpdates" -> {

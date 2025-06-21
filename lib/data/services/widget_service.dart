@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
 
 class WidgetService {
   static const MethodChannel _channel =
@@ -20,16 +21,13 @@ class WidgetService {
 
   /// Periodic widget update after 2 minutes
   static Future<String?> schedulePeriodicWidgetUpdate({
-    String? colorHex,
-    List<String>? colorList,
-    String updateType = 'color',
+    required FlashCardShowInWidgetList flashCardShowInWidgetList,
   }) async {
     try {
+      final json = flashCardShowInWidgetList.toJson();
       final String? result =
           await _channel.invokeMethod('schedulePeriodicWidgetUpdate', {
-        if (colorHex != null) 'colorHex': colorHex,
-        if (colorList != null) 'colorList': colorList,
-        'updateType': updateType,
+        'flashCardShowInWidgetList': json,
       });
       return result;
     } on PlatformException catch (e) {

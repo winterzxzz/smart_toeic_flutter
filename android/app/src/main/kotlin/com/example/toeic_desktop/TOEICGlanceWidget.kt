@@ -32,6 +32,10 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.state.GlanceStateDefinition
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.currentState
+import com.google.gson.Gson
+import com.example.toeic_desktop.data.ColorPreferences
+import com.example.toeic_desktop.data.ContentPreferences
+import com.example.toeic_desktop.model.FlashCard
 
 
 
@@ -46,13 +50,19 @@ class TOEICGlanceWidget : GlanceAppWidget() {
         
         provideContent {
             val prefs = currentState<Preferences>()
-            val colorHex = prefs[ColorPreferences.COLOR_KEY] ?: "#26A69A"
-            TOEICWidgetContent(context, colorHex)
+            val colorHex = prefs[ColorPreferences.COLOR_KEY] ?: "#26A69A" 
+            val flashCardJson = prefs[ContentPreferences.CONTENT_KEY] ?: ""
+            val flashCard = if(flashCardJson.isNotEmpty()) {
+                Gson().fromJson(flashCardJson, FlashCard::class.java)
+            } else {
+                null
+            }
+            TOEICWidgetContent(context, colorHex, flashCard)
         }
     }
 
     @Composable
-    private fun TOEICWidgetContent(context: Context, colorHex: String) {
+    private fun TOEICWidgetContent(context: Context, colorHex: String, flashCard: FlashCard?) {
         
         val bgColor = try {
             val colorString = if (colorHex.startsWith("#")) colorHex else "#$colorHex"
@@ -74,6 +84,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                     )
                 )
         ) {
+            if(flashCard != null) {
             Column(
                 modifier = GlanceModifier
                     .fillMaxSize()
@@ -82,7 +93,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Winter",
+                    text = flashCard.word,
                     style = TextStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
@@ -90,12 +101,29 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                     )
                 )
                 Text(
-                    text = "The coldest season of the year, typically bringing snow, frost, and shorter daylight hours.",
+                    text = flashCard.definition,
                     style = TextStyle(
                         fontSize = 14.sp,
                         color = ColorProvider(day = Color.White, night = Color.White)
                     )
                 )
+                }
+            } else {
+                Column(
+                    modifier = GlanceModifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "No flash card",
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = ColorProvider(day = Color.White, night = Color.White)
+                        )
+                    )
+                }
             }
         }
     }
