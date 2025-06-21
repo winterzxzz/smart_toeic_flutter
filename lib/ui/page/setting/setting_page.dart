@@ -195,13 +195,27 @@ class _SettingPageState extends State<SettingPage> {
                 );
               },
             ),
-            CustomButton(
-              onPressed: () {
-                WidgetService.scheduleWidgetUpdateAfter2Minutes(
-                    colorList: Constants.primaryColorsHex);
-              },
-              child: const Text('Schedule widget update'),
-            )
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  CustomButton(
+                    onPressed: () {
+                      WidgetService.schedulePeriodicWidgetUpdate(
+                          colorList: Constants.primaryColorsHex);
+                    },
+                    child: const Text('Schedule widget update'),
+                  ),
+                  const SizedBox(height: 16),
+                  CustomButton(
+                    onPressed: () {
+                      WidgetService.cancelWidgetUpdates();
+                    },
+                    child: const Text('Cancel widget update'),
+                  ),
+                ],
+              ),
+            ),
           ],
         ));
   }

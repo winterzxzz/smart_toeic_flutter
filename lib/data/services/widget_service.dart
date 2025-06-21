@@ -18,37 +18,15 @@ class WidgetService {
     }
   }
 
-  /// Schedule widget update after 2 minutes
-  static Future<String?> scheduleWidgetUpdateAfter2Minutes({
+  /// Periodic widget update after 2 minutes
+  static Future<String?> schedulePeriodicWidgetUpdate({
     String? colorHex,
     List<String>? colorList,
     String updateType = 'color',
   }) async {
     try {
       final String? result =
-          await _channel.invokeMethod('scheduleWidgetUpdateAfter2Minutes', {
-        if (colorHex != null) 'colorHex': colorHex,
-        if (colorList != null) 'colorList': colorList,
-        'updateType': updateType,
-      });
-      return result;
-    } on PlatformException catch (e) {
-      debugPrint("Failed to schedule widget update: '${e.message}'.");
-      return null;
-    }
-  }
-
-  /// Schedule widget update after custom delay
-  static Future<String?> scheduleWidgetUpdateAfterDelay({
-    required int delayMinutes,
-    String? colorHex,
-    List<String>? colorList,
-    String updateType = 'color',
-  }) async {
-    try {
-      final String? result =
-          await _channel.invokeMethod('scheduleWidgetUpdateAfterDelay', {
-        'delayMinutes': delayMinutes,
+          await _channel.invokeMethod('schedulePeriodicWidgetUpdate', {
         if (colorHex != null) 'colorHex': colorHex,
         if (colorList != null) 'colorList': colorList,
         'updateType': updateType,
