@@ -16,24 +16,21 @@ class SettingsSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SwitchListTile(
       title: Text(
         title,
-        style: Theme.of(context).textTheme.bodyLarge,
+        style: theme.textTheme.bodyLarge,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: AppStyle.radius8,
       ),
       trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
-      //visualDensity: VisualDensity.compact,
       contentPadding: AppStyle.edgeInsetsL16.copyWith(right: 8),
       subtitle: subtitle != null
           ? Text(
               subtitle!,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(color: Colors.grey),
+              style: theme.textTheme.bodySmall!.copyWith(color: Colors.grey),
             )
           : null,
       value: value,

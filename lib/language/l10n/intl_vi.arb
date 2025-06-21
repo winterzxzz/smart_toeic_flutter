@@ -278,5 +278,8 @@
     "triple_passage": "Bài viết",
     "main_idea": "Ý chính",
     "details": "Chi tiết",
-    "cohesion": "Liên kết"
+    "cohesion": "Liên kết",
+    "daily_reminder": "Nhắc nhở hàng ngày",
+    "daily_reminder_description": "Kiểm tra ứng dụng hàng ngày!",
+    "set_time": "Chọn thời gian"
 }

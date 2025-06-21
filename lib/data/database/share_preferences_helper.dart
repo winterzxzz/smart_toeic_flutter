@@ -15,6 +15,8 @@ class SharedPreferencesHelper {
   static const _isUseBiometric = 'is_use_biometric';
   static const _cookie = 'cookie';
   static const _primaryColor = 'primary_color';
+  static const _isDailyReminder = 'is_daily_reminder';
+  static const _dailyReminderTime = 'daily_reminder_time';
 
   static Future<bool> isOnboarded() async {
     try {
@@ -82,7 +84,25 @@ class SharedPreferencesHelper {
     await prefs.setInt(_primaryColor, primaryColor.toARGB32());
   }
 
-  // Test
+  static Future<bool> getIsDailyReminder() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isDailyReminder) ?? false;
+  }
+
+  static Future<void> setIsDailyReminder(bool isDailyReminder) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_isDailyReminder, isDailyReminder);
+  }
+
+  static Future<String> getDailyReminderTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_dailyReminderTime) ?? '10:00';
+  }
+
+  static Future<void> setDailyReminderTime(String dailyReminderTime) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_dailyReminderTime, dailyReminderTime);
+  }
 
   SharedPreferencesHelper._();
 
