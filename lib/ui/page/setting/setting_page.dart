@@ -4,6 +4,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
+import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
 import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
@@ -202,7 +203,22 @@ class _SettingPageState extends State<SettingPage> {
                   CustomButton(
                     onPressed: () {
                       WidgetService.schedulePeriodicWidgetUpdate(
-                          colorList: Constants.primaryColorsHex);
+                          flashCardShowInWidgetList:
+                              const FlashCardShowInWidgetList(
+                                  flashCardShowInWidgetList: [
+                            FlashCardShowInWidget(
+                                word: 'Spring',
+                                definition:
+                                    'The season of new beginnings, typically bringing warmer weather, blooming flowers, and increased outdoor activities.'),
+                            FlashCardShowInWidget(
+                                word: 'Winter',
+                                definition:
+                                    'The coldest season of the year, typically bringing snow, frost, and shorter daylight hours.'),
+                            FlashCardShowInWidget(
+                                word: 'Summer',
+                                definition:
+                                    'The hottest season of the year, typically bringing warm weather, longer daylight hours, and increased outdoor activities.'),
+                          ]));
                     },
                     child: const Text('Schedule widget update'),
                   ),

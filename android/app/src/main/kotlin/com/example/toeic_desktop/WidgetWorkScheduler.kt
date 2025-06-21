@@ -7,9 +7,15 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.toeic_desktop.data.ContentPreferences
+import com.example.toeic_desktop.model.FlashCard
+
+
+
+
+
 
 object WidgetWorkScheduler {
-
 
     /**
      * Schedule periodic widget updates (minimum 15 minutes for WorkManager)
@@ -17,16 +23,9 @@ object WidgetWorkScheduler {
     fun schedulePeriodicWidgetUpdate(
         context: Context,
         intervalMinutes: Long = 15,
-        colorHex: String? = null,
-        colorList: List<String>? = null
     ) {
         val inputData = Data.Builder().apply {
-            colorHex?.let { putString("colorHex", it) }
-            colorList?.let { 
-                putStringArray("colorList", it.toTypedArray())
-                putInt("colorCount", it.size)
-            }
-            putString("updateType", "color")
+            putString("updateType", "content")
         }.build()
 
         val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, TimeUnit.MINUTES)
@@ -42,7 +41,7 @@ object WidgetWorkScheduler {
                 workRequest
             )
 
-        Log.d("WidgetWorkScheduler", "Scheduled periodic widget update every $intervalMinutes minutes with ${colorList?.size ?: 1} colors")
+        Log.d("WidgetWorkScheduler", "Scheduled periodic widget update every $intervalMinutes minutes")
     }
 
     /**

@@ -63,4 +63,6 @@ dependencies {
     // WorkManager dependencies
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.work:work-multiprocess:2.9.0")
+
+    implementation("com.google.code.gson:gson:2.10.1")
 }

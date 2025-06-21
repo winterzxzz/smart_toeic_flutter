@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
-import com.example.toeic_desktop.ColorPreferences
 
 class TOEICGlanceActionCallback: ActionCallback {
     override suspend fun onAction(
@@ -15,7 +14,6 @@ class TOEICGlanceActionCallback: ActionCallback {
         parameters: ActionParameters
     ) {
         val deepLink = parameters[DeepLinkKey]
-        val colorHex = parameters[ColorKey]
         
         // Handle deep link
         if (deepLink != null) {
@@ -26,17 +24,6 @@ class TOEICGlanceActionCallback: ActionCallback {
                 putExtra("deep_link", deepLink)
             }
             context.startActivity(intent)
-        }
-        
-        // Handle color update
-        if (colorHex != null) {
-            Log.d("TOEICGlanceActionCallback", "Updating widget color: $colorHex")
-            
-            // Save color to SharedPreferences for immediate widget access
-            ColorPreferences.setColorHex(context, colorHex)
-            
-            // Update the widget immediately
-            TOEICGlanceWidget.updateColorAndRefresh(context, colorHex)
         }
     }
 }
