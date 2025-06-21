@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:toastification/toastification.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -20,6 +21,7 @@ import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_page.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
+import 'package:toeic_desktop/ui/page/test/tests/tests_cubit.dart';
 
 class PracticeTestCubit extends Cubit<PracticeTestState> {
   final TestRepository _testRepository;
@@ -262,6 +264,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
           readingScore: readingScore,
           duration: totalDurationDoIt,
         );
+        injector<TestsCubit>().updateLastStudiedAt(state.testId);
         emit(state.copyWith(
           loadStatusSubmit: LoadStatus.success,
           resultModel: resultModel,

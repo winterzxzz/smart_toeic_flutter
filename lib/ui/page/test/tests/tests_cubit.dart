@@ -44,4 +44,25 @@ class TestsCubit extends Cubit<TestsState> {
       ));
     }
   }
+
+  void updateLastStudiedAt(String testId) {
+    final newTests = state.tests.map((test) {
+      if (test.id == testId) {
+        return test.copyWith(updatedAt: DateTime.now());
+      }
+      return test;
+    }).toList();
+
+    final newFilteredTests = state.filteredTests.map((test) {
+      if (test.id == testId) {
+        return test.copyWith(updatedAt: DateTime.now());
+      }
+      return test;
+    }).toList();
+
+    emit(state.copyWith(
+      tests: newTests,
+      filteredTests: newFilteredTests,
+    ));
+  }
 }
