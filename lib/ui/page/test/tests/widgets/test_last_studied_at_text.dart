@@ -35,7 +35,7 @@ class _TestLastStudiedAtTimeTextState extends State<TestLastStudiedAtTimeText> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    _timer = Timer.periodic(const Duration(minutes: 5), (timer) {
       if (mounted) {
         setState(() {});
       }
