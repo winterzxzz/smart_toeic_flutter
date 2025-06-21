@@ -116,7 +116,7 @@ class MainActivity : FlutterActivity() {
                                 )
                             }
                             ContentPreferences.saveFlashCards(this, flashcards)
-                            WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, 2)
+                            WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, 15)
                         }
                     }
                     result.success("Widget update scheduled after 15 minutes")

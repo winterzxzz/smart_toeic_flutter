@@ -15,6 +15,7 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.Box
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
+import androidx.glance.layout.ContentScale
 import androidx.glance.color.ColorProvider
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
@@ -23,6 +24,8 @@ import androidx.glance.action.clickable
 import androidx.glance.action.actionParametersOf
 import androidx.glance.appwidget.updateAll
 import androidx.glance.appwidget.action.actionRunCallback
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -84,6 +87,21 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                     )
                 )
         ) {
+
+            Image(
+                provider = ImageProvider(R.drawable.bg_flashcard),
+                contentDescription = "Background",
+                modifier = GlanceModifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+            )
+
+            Box(
+                modifier = GlanceModifier
+                    .fillMaxSize()
+                    .background(ColorProvider(day = Color(0xAA000000), night = Color(0xAA000000))) // semi-transparent black
+            ) {}
+
+            
             if(flashCard != null) {
             Column(
                 modifier = GlanceModifier
@@ -92,21 +110,21 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = flashCard.word,
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = ColorProvider(day = Color.White, night = Color.White)
+                    Text(
+                        text = flashCard.word,
+                        style = TextStyle(
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = ColorProvider(day = Color.White, night = Color.White)
+                        )
                     )
-                )
-                Text(
-                    text = flashCard.definition,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        color = ColorProvider(day = Color.White, night = Color.White)
+                    Text(
+                        text = flashCard.definition,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = ColorProvider(day = Color.White, night = Color.White)
+                        )
                     )
-                )
                 }
             } else {
                 Column(
