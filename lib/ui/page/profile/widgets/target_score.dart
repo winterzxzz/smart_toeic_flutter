@@ -4,10 +4,12 @@ class TargetScoreWidget extends StatelessWidget {
   const TargetScoreWidget({
     super.key,
     required this.title,
+    this.currentScore,
     this.targetScore,
   });
 
   final String title;
+  final int? currentScore;
   final int? targetScore;
 
   @override
@@ -27,13 +29,13 @@ class TargetScoreWidget extends StatelessWidget {
             ),
             Text.rich(
               TextSpan(
-                text: '${targetScore ?? 0}',
+                text: '${currentScore ?? 0}',
                 style: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
                 children: [
                   TextSpan(
-                    text: '/450',
+                    text: '/${targetScore ?? 0}',
                     style: theme.textTheme.bodySmall,
                   )
                 ],
@@ -47,7 +49,7 @@ class TargetScoreWidget extends StatelessWidget {
           backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.3),
           color: theme.colorScheme.primary,
           minHeight: 5,
-          value: targetScore != null ? targetScore! / 450 : 0,
+          value: currentScore != null ? currentScore! / (targetScore ?? 0) : 0,
         ),
       ],
     );

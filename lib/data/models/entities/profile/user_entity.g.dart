@@ -20,6 +20,9 @@ UserEntity _$UserEntityFromJson(Map<String, dynamic> json) => UserEntity(
       targetScore: json['targetScore'] == null
           ? null
           : TargetScore.fromJson(json['targetScore'] as Map<String, dynamic>),
+      actualScore: json['actualScore'] == null
+          ? null
+          : TargetScore.fromJson(json['actualScore'] as Map<String, dynamic>),
       bio: json['bio'] as String,
       id: json['id'] as String,
     );
@@ -37,6 +40,7 @@ Map<String, dynamic> _$UserEntityToJson(UserEntity instance) =>
       'role': instance.role,
       'upgradeExpiredDate': instance.upgradeExpiredDate,
       'targetScore': instance.targetScore,
+      'actualScore': instance.actualScore,
       'bio': instance.bio,
       'id': instance.id,
     };

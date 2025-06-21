@@ -36,6 +36,8 @@ class UserEntity {
   String? upgradeExpiredDate;
   @JsonKey(name: "targetScore")
   TargetScore? targetScore;
+  @JsonKey(name: "actualScore")
+  TargetScore? actualScore;
   @JsonKey(name: "bio")
   String bio;
   @JsonKey(name: "id")
@@ -53,6 +55,7 @@ class UserEntity {
     required this.role,
     this.upgradeExpiredDate,
     this.targetScore,
+    this.actualScore,
     required this.bio,
     required this.id,
   });
@@ -75,6 +78,7 @@ class UserEntity {
     String? role,
     String? upgradeExpiredDate,
     TargetScore? targetScore,
+    TargetScore? actualScore,
     String? bio,
     String? id,
   }) {
@@ -90,6 +94,7 @@ class UserEntity {
       role: role ?? this.role,
       upgradeExpiredDate: upgradeExpiredDate ?? this.upgradeExpiredDate,
       targetScore: targetScore ?? this.targetScore,
+      actualScore: actualScore ?? this.actualScore,
       bio: bio ?? this.bio,
       id: id ?? this.id,
     );

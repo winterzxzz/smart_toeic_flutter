@@ -213,7 +213,7 @@ class _PageState extends State<Page> {
                   children: [
                     const AvatarHeading(),
                     const ProfileDivider(
-                      height: 16,
+                      height: 24,
                     ),
                     TextFieldHeading(
                       controller: emailController,
@@ -237,7 +237,7 @@ class _PageState extends State<Page> {
                       maxLines: 3,
                     ),
                     const ProfileDivider(
-                      height: 16,
+                      height: 24,
                     ),
                     BlocSelector<UserCubit, UserState, UserEntity?>(
                       selector: (state) {
@@ -248,21 +248,23 @@ class _PageState extends State<Page> {
                           children: [
                             TargetScoreWidget(
                               title:
-                                  '${S.current.reading_target} / ${S.current.reading_current}',
+                                  '${S.current.reading_current} / ${S.current.reading_target}',
                               targetScore: user?.targetScore?.reading,
+                              currentScore: user?.actualScore?.reading,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 24),
                             TargetScoreWidget(
                               title:
-                                  '${S.current.listening_target} / ${S.current.listening_current}',
+                                  '${S.current.listening_current} / ${S.current.listening_target}',
                               targetScore: user?.targetScore?.listening,
+                              currentScore: user?.actualScore?.listening,
                             ),
                           ],
                         );
                       },
                     ),
                     const ProfileDivider(
-                      height: 16,
+                      height: 24,
                     ),
                     BlocSelector<UserCubit, UserState, LoadStatus?>(
                       selector: (state) {
