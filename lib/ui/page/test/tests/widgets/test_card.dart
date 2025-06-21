@@ -7,6 +7,7 @@ import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
+import 'package:toeic_desktop/ui/page/test/tests/widgets/test_last_studied_at_text.dart';
 
 class TestCard extends StatelessWidget {
   const TestCard({
@@ -79,13 +80,9 @@ class TestCard extends StatelessWidget {
                             : Colors.grey[400],
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Text(
-                        '${S.current.last_time_taken} ${TimeUtils.timeAgo(test.updatedAt ?? test.createdAt!)}',
-                        style: const TextStyle(
-                          color: AppColors.success,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 10,
-                        ),
+                      child: TestLastStudiedAtTimeText(
+                        updatedAt: test.updatedAt,
+                        createdAt: test.createdAt,
                       ),
                     ),
                 ],
