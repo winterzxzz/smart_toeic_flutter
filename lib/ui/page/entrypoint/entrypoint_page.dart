@@ -37,7 +37,7 @@ class _BottomTabPageState extends State<BottomTabPage>
     platform.setMethodCallHandler((call) async {
       if (call.method == 'onDeepLinkReceived') {
         final uri = Uri.parse(call.arguments);
-        handleDeepLink(uri);
+        handleDeepLink(uri, isFromWidget: true);
       }
     });
     _appLinks = AppLinks();
@@ -56,13 +56,16 @@ class _BottomTabPageState extends State<BottomTabPage>
     });
   }
 
-  void handleDeepLink(Uri uri) {
+  void handleDeepLink(Uri uri, {bool isFromWidget = false}) {
     if (!mounted) return;
     String path = uri.path;
     String? query = uri.hasQuery ? uri.query : null;
     if (uri.scheme == 'test' && uri.host == 'winter-toeic.com') {
       final pathWithQuery = path + (query != null ? '?$query' : '');
       GoRouter.of(context).go(pathWithQuery);
+      if (isFromWidget) {
+        injector<EntrypointCubit>().changeCurrentIndex(2);
+      }
     }
   }
 
