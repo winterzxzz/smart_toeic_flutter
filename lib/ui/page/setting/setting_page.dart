@@ -4,11 +4,8 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
-import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
-import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
-import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/setting_card.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/settting_switch.dart';
@@ -195,42 +192,6 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 );
               },
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  CustomButton(
-                    onPressed: () {
-                      WidgetService.schedulePeriodicWidgetUpdate(
-                          flashCardShowInWidgetList:
-                              const FlashCardShowInWidgetList(
-                                  flashCardShowInWidgetList: [
-                            FlashCardShowInWidget(
-                                word: 'Spring',
-                                definition:
-                                    'The season of new beginnings, typically bringing warmer weather, blooming flowers, and increased outdoor activities.'),
-                            FlashCardShowInWidget(
-                                word: 'Winter',
-                                definition:
-                                    'The coldest season of the year, typically bringing snow, frost, and shorter daylight hours.'),
-                            FlashCardShowInWidget(
-                                word: 'Summer',
-                                definition:
-                                    'The hottest season of the year, typically bringing warm weather, longer daylight hours, and increased outdoor activities.'),
-                          ]));
-                    },
-                    child: const Text('Schedule widget update'),
-                  ),
-                  const SizedBox(height: 16),
-                  CustomButton(
-                    onPressed: () {
-                      WidgetService.cancelWidgetUpdates();
-                    },
-                    child: const Text('Cancel widget update'),
-                  ),
-                ],
-              ),
             ),
           ],
         ));

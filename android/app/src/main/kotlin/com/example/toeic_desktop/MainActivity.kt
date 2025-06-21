@@ -60,6 +60,7 @@ class MainActivity : FlutterActivity() {
                 }
                 "cancelWidgetUpdates" -> {
                     WidgetWorkScheduler.cancelAllWidgetUpdates(this)
+                    ContentPreferences.clearAllData(this)
                     result.success("All widget updates cancelled")
                 }
                 else -> {

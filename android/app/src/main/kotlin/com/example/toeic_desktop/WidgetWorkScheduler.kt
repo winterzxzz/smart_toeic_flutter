@@ -29,9 +29,8 @@ object WidgetWorkScheduler {
         }.build()
 
         val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, TimeUnit.MINUTES)
-            .setInitialDelay(30, TimeUnit.SECONDS)
+            .setInitialDelay(5, TimeUnit.SECONDS)
             .setInputData(inputData)
-            .addTag("widget_update_periodic")
             .build()
 
         WorkManager.getInstance(context)
@@ -48,7 +47,6 @@ object WidgetWorkScheduler {
      * Cancel all scheduled widget update work
      */
     fun cancelAllWidgetUpdates(context: Context) {
-        WorkManager.getInstance(context).cancelAllWorkByTag("widget_update_periodic")
         WorkManager.getInstance(context).cancelUniqueWork(WidgetUpdateWorker.PERIODIC_UPDATE_WORK)
         Log.d("WidgetWorkScheduler", "Cancelled all widget update work")
     }

@@ -2,29 +2,48 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
+import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
+import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'flash_card_detail_state.dart';
 
 class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
   final FlashCardRespository _flashCardRespository;
-  FlashCardDetailCubit(this._flashCardRespository)
-      : super(FlashCardDetailState.initial());
+  final WidgetService _widgetService;
+  FlashCardDetailCubit({
+    required FlashCardRespository flashCardRespository,
+    required WidgetService widgetService,
+  })  : _flashCardRespository = flashCardRespository,
+        _widgetService = widgetService,
+        super(FlashCardDetailState.initial());
 
   Future<void> fetchFlashCards(String setId) async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final response = await _flashCardRespository.getFlashCards(setId);
     await Future.delayed(const Duration(seconds: 1));
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.toString(),
-      )),
-      (r) => emit(state.copyWith(
+        (l) => emit(state.copyWith(
+              loadStatus: LoadStatus.failure,
+              message: l.toString(),
+            )), (r) {
+      emit(state.copyWith(
         loadStatus: LoadStatus.success,
         flashCards: r,
-      )),
-    );
+      ));
+      final List<FlashCardShowInWidget> listOfFlashCardShowInWidget = r
+          .map((e) => FlashCardShowInWidget(
+                word: e.word,
+                definition: e.definition,
+              ))
+          .toList();
+      final flashCardShowInWidgetList = FlashCardShowInWidgetList(
+        flashCardShowInWidgetList: listOfFlashCardShowInWidget,
+      );
+      _widgetService.cancelWidgetUpdates();
+      _widgetService.schedulePeriodicWidgetUpdate(
+          flashCardShowInWidgetList: flashCardShowInWidgetList);
+    });
   }
 
   Future<void> createFlashCard(FlashCardRequest flashCardRequest) async {
