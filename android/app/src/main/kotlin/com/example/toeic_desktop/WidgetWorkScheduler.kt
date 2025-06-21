@@ -10,74 +10,6 @@ import kotlinx.coroutines.launch
 
 object WidgetWorkScheduler {
 
-    /**
-     * Schedule a one-time widget update after 2 minutes
-     */
-    fun scheduleWidgetUpdateAfter2Minutes(
-        context: Context,
-        colorHex: String? = null,
-        colorList: List<String>? = null,
-        updateType: String = "color"
-    ) {
-        val inputData = Data.Builder().apply {
-            colorHex?.let { putString("colorHex", it) }
-            colorList?.let { 
-                putStringArray("colorList", it.toTypedArray())
-                putInt("colorCount", it.size)
-            }
-            putString("updateType", updateType)
-        }.build()
-
-        val workRequest = OneTimeWorkRequestBuilder<WidgetUpdateWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES)
-            .setInputData(inputData)
-            .addTag("widget_update_2min")
-            .build()
-
-        WorkManager.getInstance(context)
-            .enqueueUniqueWork(
-                WidgetUpdateWorker.WORK_NAME,
-                ExistingWorkPolicy.REPLACE,
-                workRequest
-            )
-
-        Log.d("WidgetWorkScheduler", "Scheduled widget update after 2 minutes with ${colorList?.size ?: 1} colors")
-    }
-
-    /**
-     * Schedule a one-time widget update with custom delay
-     */
-    fun scheduleWidgetUpdateAfterDelay(
-        context: Context,
-        delayMinutes: Long,
-        colorHex: String? = null,
-        colorList: List<String>? = null,
-        updateType: String = "color"
-    ) {
-        val inputData = Data.Builder().apply {
-            colorHex?.let { putString("colorHex", it) }
-            colorList?.let { 
-                putStringArray("colorList", it.toTypedArray())
-                putInt("colorCount", it.size)
-            }
-            putString("updateType", updateType)
-        }.build()
-
-        val workRequest = OneTimeWorkRequestBuilder<WidgetUpdateWorker>()
-            .setInitialDelay(delayMinutes, TimeUnit.MINUTES)
-            .setInputData(inputData)
-            .addTag("widget_update_custom")
-            .build()
-
-        WorkManager.getInstance(context)
-            .enqueueUniqueWork(
-                "${WidgetUpdateWorker.WORK_NAME}_$delayMinutes",
-                ExistingWorkPolicy.REPLACE,
-                workRequest
-            )
-
-        Log.d("WidgetWorkScheduler", "Scheduled widget update after $delayMinutes minutes with ${colorList?.size ?: 1} colors")
-    }
 
     /**
      * Schedule periodic widget updates (minimum 15 minutes for WorkManager)
@@ -94,17 +26,18 @@ object WidgetWorkScheduler {
                 putStringArray("colorList", it.toTypedArray())
                 putInt("colorCount", it.size)
             }
-            putString("updateType", "content")
+            putString("updateType", "color")
         }.build()
 
         val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, TimeUnit.MINUTES)
+            .setInitialDelay(30, TimeUnit.SECONDS)
             .setInputData(inputData)
             .addTag("widget_update_periodic")
             .build()
 
         WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(
-                "periodic_widget_update",
+                WidgetUpdateWorker.PERIODIC_UPDATE_WORK,
                 ExistingPeriodicWorkPolicy.REPLACE,
                 workRequest
             )
@@ -116,12 +49,8 @@ object WidgetWorkScheduler {
      * Cancel all scheduled widget update work
      */
     fun cancelAllWidgetUpdates(context: Context) {
-        WorkManager.getInstance(context).cancelAllWorkByTag("widget_update_2min")
-        WorkManager.getInstance(context).cancelAllWorkByTag("widget_update_custom")
         WorkManager.getInstance(context).cancelAllWorkByTag("widget_update_periodic")
-        WorkManager.getInstance(context).cancelUniqueWork(WidgetUpdateWorker.WORK_NAME)
-        WorkManager.getInstance(context).cancelUniqueWork("periodic_widget_update")
-        
+        WorkManager.getInstance(context).cancelUniqueWork(WidgetUpdateWorker.PERIODIC_UPDATE_WORK)
         Log.d("WidgetWorkScheduler", "Cancelled all widget update work")
     }
 

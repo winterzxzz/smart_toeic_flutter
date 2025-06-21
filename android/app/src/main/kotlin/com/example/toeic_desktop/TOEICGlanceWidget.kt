@@ -55,7 +55,8 @@ class TOEICGlanceWidget : GlanceAppWidget() {
     private fun TOEICWidgetContent(context: Context, colorHex: String) {
         
         val bgColor = try {
-            Color(android.graphics.Color.parseColor(colorHex))
+            val colorString = if (colorHex.startsWith("#")) colorHex else "#$colorHex"
+            Color(android.graphics.Color.parseColor(colorString))
         } catch (e: Exception) {
             Log.e("TOEICGlanceWidget", "Invalid color format: $colorHex, using default")
             Color(android.graphics.Color.parseColor("#26A69A")) // Default color
