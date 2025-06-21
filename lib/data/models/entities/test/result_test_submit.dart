@@ -14,40 +14,40 @@ String resultTestSubmitToJson(ResultTestSubmit data) => json.encode(data.toJson(
 @JsonSerializable()
 class ResultTestSubmit {
     @JsonKey(name: "userId")
-    String userId;
+    String? userId;
     @JsonKey(name: "testId")
-    String testId;
+    String? testId;
     @JsonKey(name: "testType")
-    String testType;
+    String? testType;
     @JsonKey(name: "numberOfQuestions")
-    int numberOfQuestions;
+    int? numberOfQuestions;
     @JsonKey(name: "numberOfUserAnswers")
-    int numberOfUserAnswers;
+    int? numberOfUserAnswers;
     @JsonKey(name: "numberOfCorrectAnswers")
-    int numberOfCorrectAnswers;
+    int? numberOfCorrectAnswers;
     @JsonKey(name: "secondTime")
-    int secondTime;
+    int? secondTime;
     @JsonKey(name: "parts")
-    List<dynamic> parts;
+    List<dynamic>? parts;
     @JsonKey(name: "createdAt")
-    DateTime createdAt;
+    DateTime? createdAt;
     @JsonKey(name: "updatedAt")
-    DateTime updatedAt;
+    DateTime? updatedAt;
     @JsonKey(name: "id")
-    String id;
+    String? id;
 
     ResultTestSubmit({
-        required this.userId,
-        required this.testId,
-        required this.testType,
-        required this.numberOfQuestions,
-        required this.numberOfUserAnswers,
-        required this.numberOfCorrectAnswers,
-        required this.secondTime,
-        required this.parts,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.id,
+        this.userId,
+        this.testId,
+        this.testType,
+        this.numberOfQuestions,
+        this.numberOfUserAnswers,
+        this.numberOfCorrectAnswers,
+        this.secondTime,
+        this.parts,
+        this.createdAt,
+        this.updatedAt,
+        this.id,
     });
 
     factory ResultTestSubmit.fromJson(Map<String, dynamic> json) => _$ResultTestSubmitFromJson(json);

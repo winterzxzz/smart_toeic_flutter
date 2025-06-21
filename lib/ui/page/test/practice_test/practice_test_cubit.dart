@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:toastification/toastification.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -179,23 +180,44 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   }
 
   void submitTest() async {
-    if (state.loadStatusSubmit == LoadStatus.loading ||
-        state.loadStatusSubmit == LoadStatus.success) {
+    if (state.loadStatusSubmit == LoadStatus.loading) {
       return;
     }
     emit(state.copyWith(loadStatusSubmit: LoadStatus.loading));
+    // get total questions
     final totalQuestions = state.questions.length;
+
+    // get answerd questions
     final answerdQuestions = state.answers;
+
+    // total listening and reading answerd questions
+    final listeningAnswerdQuestions =
+        answerdQuestions.where((question) => question.isListening()).toList();
+    final readingAnswerdQuestions =
+        answerdQuestions.where((question) => question.isReading()).toList();
+
     final totalAnswerdQuestions = answerdQuestions.length;
-    final totalCorrectQuestions = answerdQuestions
+
+    // get total correct questions
+    final totalCorrectListeningQuestions = listeningAnswerdQuestions
         .where((question) => question.correctAnswer == question.userAnswer)
         .toList()
         .length;
+    final totalCorrectReadingQuestions = readingAnswerdQuestions
+        .where((question) => question.correctAnswer == question.userAnswer)
+        .toList()
+        .length;
+
+    final totalCorrectQuestions =
+        totalCorrectListeningQuestions + totalCorrectReadingQuestions;
+
     final incorrectQuestions = totalAnswerdQuestions - totalCorrectQuestions;
     final notAnswerQuestions = totalQuestions - totalAnswerdQuestions;
 
-    final listeningScore = totalCorrectQuestions * 10;
-    final readingScore = totalCorrectQuestions * 10;
+    final listeningScore =
+        Constants.listeningScore[totalCorrectListeningQuestions] ?? 5;
+    final readingScore =
+        Constants.readingScore[totalCorrectReadingQuestions] ?? 5;
     final overallScore = listeningScore + readingScore;
     final totalDurationDoIt = currentTime;
 
@@ -227,7 +249,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       )),
       (r) async {
         final resultModel = ResultModel(
-          resultId: r.id,
+          resultId: r.id ?? '',
           testId: state.testId,
           parts: state.parts,
           testName: state.title,

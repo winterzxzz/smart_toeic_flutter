@@ -39,6 +39,19 @@ class QuestionModel {
     this.questionExplain,
   });
 
+  bool isReading() {
+    if (part >= 1 && part <= 4) {
+      return true;
+    }
+    return false;
+  }
+
+  bool isListening() {
+    if (part >= 5 && part <= 7) {
+      return true;
+    }
+    return false;
+  }
 
   // copy with
   QuestionModel copyWith({
