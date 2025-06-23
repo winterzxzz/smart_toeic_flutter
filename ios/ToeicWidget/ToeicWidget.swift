@@ -9,49 +9,73 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
+    func placeholder(in context: Context) -> FlashcardEntry {
+        FlashcardEntry(date: Date(), flashcard: sampleFlashCards.first!)
     }
 
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> FlashcardEntry {
+        FlashcardEntry(date: Date(), flashcard: sampleFlashCards.first!)
     }
     
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<FlashcardEntry> {
         let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
+        var entries: [FlashcardEntry] = []
+        let flashcardsCount = sampleFlashCards.count
+
+        for i in 0..<flashcardsCount {
+            let entryDate = Calendar.current.date(byAdding: .minute, value: i * 15, to: currentDate)!
+            let entry = FlashcardEntry(date: entryDate, flashcard: sampleFlashCards[i])
             entries.append(entry)
         }
 
         return Timeline(entries: entries, policy: .atEnd)
     }
-
-//    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct FlashcardEntry: TimelineEntry {
     let date: Date
-    let configuration: ConfigurationAppIntent
+    let flashcard: FlashCard
 }
 
-struct ToeicWidgetEntryView : View {
+struct FlashCard: Codable, Identifiable {
+    var id = UUID()
+    let word: String
+    let definition: String
+}
+
+let sampleFlashCards: [FlashCard] = [
+    FlashCard(word: "Aberration", definition: "A departure from what is normal or expected."),
+    FlashCard(word: "Benevolent", definition: "Well meaning and kindly."),
+    FlashCard(word: "Cacophony", definition: "A harsh, discordant mixture of sounds."),
+    FlashCard(word: "Debilitate", definition: "To make someone weak and infirm."),
+    FlashCard(word: "Ebullient", definition: "Cheerful and full of energy.")
+]
+
+struct ToeicWidgetEntryView: View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+        ZStack {
+            
+        
+            VStack(alignment: .leading, spacing: 4) {
+                Text(entry.flashcard.word)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
 
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+                Text(entry.flashcard.definition)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(LinearGradient(colors: [Color.orange.opacity(0.3), Color.pink.opacity(0.1)], startPoint: .top, endPoint: .bottom))
+        .cornerRadius(16)
     }
 }
 
@@ -62,27 +86,24 @@ struct ToeicWidget: Widget {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             ToeicWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
+        }.disableContentMarginsIfNeeded()
+        .supportedFamilies([.systemMedium, .systemLarge])
+    }
+}
+
+extension WidgetConfiguration {
+    func disableContentMarginsIfNeeded() -> some WidgetConfiguration {
+        if #available(iOSApplicationExtension 17.0, *) {
+            return self.contentMarginsDisabled()
+        } else {
+            return self
         }
     }
 }
 
-extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
-        return intent
-    }
-    
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
-        return intent
-    }
-}
-
-#Preview(as: .systemSmall) {
+#Preview(as: .systemMedium) {
     ToeicWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+    FlashcardEntry(date: .now, flashcard: sampleFlashCards[0])
+    FlashcardEntry(date: .now, flashcard: sampleFlashCards[1])
 }
