@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/services/noti_service.dart';
-import 'package:toeic_desktop/data/services/update_glance_widget.dart';
+import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 
 import '../../configs/app_configs.dart';
@@ -12,9 +12,9 @@ import '../../../data/models/enums/language.dart';
 part 'app_setting_state.dart';
 
 class AppSettingCubit extends Cubit<AppSettingState> {
-  final UpdateHomeWidgetService updateHomeWidgetService;
+  final WidgetService widgetService;
   AppSettingCubit({
-    required this.updateHomeWidgetService,
+    required this.widgetService,
   }) : super(const AppSettingState());
 
   Future<void> getInitialSetting() async {
@@ -54,7 +54,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
   void changePrimaryColor(
       {required Color color, required String hexColor}) async {
     await SharedPreferencesHelper.setPrimaryColor(color);
-    // await updateHomeWidgetService.updateColor('#$hexColor');
+    await widgetService.updateWidgetColor('#$hexColor');
     emit(state.copyWith(primaryColor: color));
   }
 

@@ -11,6 +11,18 @@ class WidgetService {
   /// Update widget color immediately
   Future<String?> updateWidgetColor(String colorHex) async {
     if (Platform.isAndroid) {
+      return null;
+      // try {
+      //   final String? result =
+      //       await _channel.invokeMethod('updateWidgetColor', {
+      //     'colorHex': colorHex,
+      //   });
+      //   return result;
+      // } on PlatformException catch (e) {
+      //   debugPrint("Failed to update widget color: '${e.message}'.");
+      //   return null;
+      // }
+    } else {
       try {
         final String? result =
             await _channel.invokeMethod('updateWidgetColor', {
@@ -22,7 +34,6 @@ class WidgetService {
         return null;
       }
     }
-    return null;
   }
 
   /// Periodic widget update after 2 minutes
