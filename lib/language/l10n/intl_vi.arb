@@ -281,5 +281,12 @@
     "cohesion": "Liên kết",
     "daily_reminder": "Nhắc nhở hàng ngày",
     "daily_reminder_description": "Kiểm tra ứng dụng hàng ngày!",
-    "set_time": "Chọn thời gian"
+    "set_time": "Chọn thời gian", 
+    "difficulty_rate": "Mức độ khó",
+    "time": "Thời gian",
+    "number_of_questions": "Số câu hỏi",
+    "number_of_correct_answers": "Số câu trả lời đúng",
+    "number_of_wrong_answers": "Số câu trả lời sai",
+    "accuracy_rate": "Tỷ lệ chính xác",
+    "quiz_result": "Kết quả câu hỏi"
 }

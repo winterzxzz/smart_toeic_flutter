@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("Tài khoản"),
         "accuracy_by_part":
             MessageLookupByLibrary.simpleMessage("Độ chính xác theo phần"),
+        "accuracy_rate":
+            MessageLookupByLibrary.simpleMessage("Tỷ lệ chính xác"),
         "add_new_word": MessageLookupByLibrary.simpleMessage("Thêm từ mới"),
         "ai_auto_fill": MessageLookupByLibrary.simpleMessage("AI tự động điền"),
         "ai_filling": MessageLookupByLibrary.simpleMessage("AI đang điền..."),
@@ -126,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "describe_scenes": MessageLookupByLibrary.simpleMessage("Mô tả cảnh"),
         "description": MessageLookupByLibrary.simpleMessage("Mô tả"),
         "details": MessageLookupByLibrary.simpleMessage("Chi tiết"),
+        "difficulty_rate": MessageLookupByLibrary.simpleMessage("Mức độ khó"),
         "display_theme": MessageLookupByLibrary.simpleMessage("Giao diện"),
         "dont_have_account":
             MessageLookupByLibrary.simpleMessage("Chưa có tài khoản?"),
@@ -249,6 +252,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_words_in_flash_card":
             MessageLookupByLibrary.simpleMessage("Không có từ trong bộ thẻ"),
         "note": MessageLookupByLibrary.simpleMessage("Ghi chú"),
+        "number_of_correct_answers":
+            MessageLookupByLibrary.simpleMessage("Số câu trả lời đúng"),
+        "number_of_questions":
+            MessageLookupByLibrary.simpleMessage("Số câu hỏi"),
+        "number_of_wrong_answers":
+            MessageLookupByLibrary.simpleMessage("Số câu trả lời sai"),
         "onboarding_description": MessageLookupByLibrary.simpleMessage(
             "Ứng dụng luyện TOEIC tốt nhất"),
         "onboarding_title":
@@ -296,6 +305,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question_response":
             MessageLookupByLibrary.simpleMessage("Câu hỏi-Trả lời"),
         "question_types": MessageLookupByLibrary.simpleMessage("Loại câu hỏi"),
+        "quiz_result": MessageLookupByLibrary.simpleMessage("Kết quả câu hỏi"),
         "quizzes_and_reminders":
             MessageLookupByLibrary.simpleMessage("Câu hỏi & nhắc nhở"),
         "read_more": MessageLookupByLibrary.simpleMessage("Xem thêm"),
@@ -370,6 +380,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "text_completion":
             MessageLookupByLibrary.simpleMessage("Hoàn thành văn bản"),
         "theme_color": MessageLookupByLibrary.simpleMessage("Màu chủ đề"),
+        "time": MessageLookupByLibrary.simpleMessage("Thời gian"),
         "time_per_question": MessageLookupByLibrary.simpleMessage("Giây/câu"),
         "title": MessageLookupByLibrary.simpleMessage("Tiêu đề"),
         "to_reviews": MessageLookupByLibrary.simpleMessage("Cần ôn tập"),

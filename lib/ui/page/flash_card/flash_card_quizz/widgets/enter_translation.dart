@@ -65,7 +65,6 @@ class _EnterTranslationState extends State<EnterTranslation> {
           controller: _controller,
           textAlign: TextAlign.center,
           inputFormatters: [CapitalizeFirstLetterFormatter()],
-          autofocus: true,
           decoration: InputDecoration(
             hintText: S.current.enter_english_word,
             enabledBorder: OutlineInputBorder(

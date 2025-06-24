@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("Account"),
         "accuracy_by_part":
             MessageLookupByLibrary.simpleMessage("Accuracy by Part"),
+        "accuracy_rate": MessageLookupByLibrary.simpleMessage("Accuracy Rate"),
         "add_new_word": MessageLookupByLibrary.simpleMessage("Add new word"),
         "ai_auto_fill": MessageLookupByLibrary.simpleMessage("AI auto-fill"),
         "ai_filling": MessageLookupByLibrary.simpleMessage("AI is filling..."),
@@ -130,6 +131,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Describe scenes"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "details": MessageLookupByLibrary.simpleMessage("Details"),
+        "difficulty_rate":
+            MessageLookupByLibrary.simpleMessage("Difficulty Rate"),
         "display_theme": MessageLookupByLibrary.simpleMessage("Display Theme"),
         "dont_have_account":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
@@ -257,6 +260,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_words_in_flash_card": MessageLookupByLibrary.simpleMessage(
             "No words in this flashcard set"),
         "note": MessageLookupByLibrary.simpleMessage("Note"),
+        "number_of_correct_answers":
+            MessageLookupByLibrary.simpleMessage("Number of Correct Answers"),
+        "number_of_questions":
+            MessageLookupByLibrary.simpleMessage("Number of Questions"),
+        "number_of_wrong_answers":
+            MessageLookupByLibrary.simpleMessage("Number of Wrong Answers"),
         "onboarding_description": MessageLookupByLibrary.simpleMessage(
             "The best app for TOEIC test-takers"),
         "onboarding_title": MessageLookupByLibrary.simpleMessage(
@@ -306,6 +315,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Question-Response"),
         "question_types":
             MessageLookupByLibrary.simpleMessage("Question Types"),
+        "quiz_result": MessageLookupByLibrary.simpleMessage("Quiz Result"),
         "quizzes_and_reminders":
             MessageLookupByLibrary.simpleMessage("Quizzes and reminders"),
         "read_more": MessageLookupByLibrary.simpleMessage("Read More"),
@@ -386,6 +396,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "text_completion":
             MessageLookupByLibrary.simpleMessage("Text Completion"),
         "theme_color": MessageLookupByLibrary.simpleMessage("Theme Color"),
+        "time": MessageLookupByLibrary.simpleMessage("Time"),
         "time_per_question": MessageLookupByLibrary.simpleMessage("S/Question"),
         "title": MessageLookupByLibrary.simpleMessage("Title"),
         "to_reviews": MessageLookupByLibrary.simpleMessage("to reviews"),

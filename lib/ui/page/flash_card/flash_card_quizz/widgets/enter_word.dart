@@ -66,7 +66,6 @@ class _EnterWordState extends State<EnterWord> {
         TextField(
           controller: _controller,
           textAlign: TextAlign.center,
-          autofocus: true,
           inputFormatters: [CapitalizeFirstLetterFormatter()],
           decoration: InputDecoration(
             hintText: S.current.enter_vietnamese_word,
