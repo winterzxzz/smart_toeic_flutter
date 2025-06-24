@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import flutter_local_notifications
+import WidgetKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -26,7 +27,36 @@ import flutter_local_notifications
         } else {
           result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid arguments", details: nil))
         }
-      } else {
+      }
+        else if call.method == "schedulePeriodicWidgetUpdate" {
+            if let args = call.arguments as? [String: Any],
+               let flashcardData = args["flashCardShowInWidgetList"] as? [String: Any],
+               let flashcardList = flashcardData["flashCardShowInWidgetList"] as? [[String: String]] {
+
+                let userDefaults = UserDefaults(suiteName: "group.winterzxzz")
+                let encoder = JSONEncoder()
+                
+                let flashcards = flashcardList.compactMap { dict -> FlashCard? in
+                    guard let word = dict["word"], let definition = dict["definition"] else { return nil }
+                    return FlashCard(word: word, definition: definition)
+                }
+
+                print("flashcards: \(flashcards)")
+                
+                if let encoded = try? encoder.encode(flashcards) {
+                    userDefaults?.set(encoded, forKey: "flashcards")
+                    userDefaults?.synchronize()
+                }
+
+                // load widget
+                WidgetCenter.shared.reloadAllTimelines()
+                result("Widget data updated successfully")
+                
+            } else {
+                result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid arguments", details: nil))
+            }
+        }
+        else {
         result(FlutterMethodNotImplemented)
       }
     }

@@ -40,20 +40,18 @@ class WidgetService {
   Future<String?> schedulePeriodicWidgetUpdate({
     required FlashCardShowInWidgetList flashCardShowInWidgetList,
   }) async {
-    if (Platform.isAndroid) {
-      try {
-        final json = flashCardShowInWidgetList.toJson();
-        final String? result =
-            await _channel.invokeMethod('schedulePeriodicWidgetUpdate', {
-          'flashCardShowInWidgetList': json,
-        });
-        return result;
-      } on PlatformException catch (e) {
-        debugPrint("Failed to schedule widget update: '${e.message}'.");
-        return null;
-      }
+    try {
+      final json = flashCardShowInWidgetList.toJson();
+      final String? result =
+          await _channel.invokeMethod('schedulePeriodicWidgetUpdate', {
+        'flashCardShowInWidgetList': json,
+      });
+      debugPrint("Schedule widget update: $result");
+      return result;
+    } on PlatformException catch (e) {
+      debugPrint("Failed to schedule widget update: '${e.message}'.");
+      return null;
     }
-    return null;
   }
 
   /// Cancel all scheduled widget updates

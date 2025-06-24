@@ -7,28 +7,58 @@
 
 import WidgetKit
 import SwiftUI
+import UIKit
+
+// MARK: - Timeline Provider
 
 struct Provider: AppIntentTimelineProvider {
+    private let userDefaults = UserDefaults(suiteName: "group.winterzxzz")
+    
     func placeholder(in context: Context) -> FlashcardEntry {
-        FlashcardEntry(date: Date(), flashcard: sampleFlashCards.first!)
+        FlashcardEntry(date: Date(), flashcard: FlashCard(word: "No Data", definition: "Open the app to load flashcards."))
     }
-
+    
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> FlashcardEntry {
-        FlashcardEntry(date: Date(), flashcard: sampleFlashCards.first!)
+        FlashcardEntry(date: Date(), flashcard: FlashCard(word: "No Data", definition: "Open the app to load flashcards."))
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<FlashcardEntry> {
+        print("📆 Widget timeline requested")
         let currentDate = Date()
+        let flashcards = loadFlashcards()
+        print("📦 Flashcards loaded in widget: \(flashcards.count)")
         var entries: [FlashcardEntry] = []
-        let flashcardsCount = sampleFlashCards.count
-
-        for i in 0..<flashcardsCount {
+        
+        guard !flashcards.isEmpty else {
+            let fallbackEntry = FlashcardEntry(date: currentDate, flashcard: FlashCard(word: "No Data", definition: "Open the app to load flashcards."))
+            return Timeline(entries: [fallbackEntry], policy: .never)
+        }
+        
+        for i in 0..<flashcards.count {
             let entryDate = Calendar.current.date(byAdding: .minute, value: i * 15, to: currentDate)!
-            let entry = FlashcardEntry(date: entryDate, flashcard: sampleFlashCards[i])
+            let entry = FlashcardEntry(date: entryDate, flashcard: flashcards[i])
             entries.append(entry)
         }
+        
+        return Timeline(entries: entries, policy: .after(entries.last!.date))
+    }
+    
+    // Load flashcards from shared App Group UserDefaults
+    private func loadFlashcards() -> [FlashCard] {
+        if let data = userDefaults?.data(forKey: "flashcards") {
+            print("📦 Data found in UserDefaults")
 
-        return Timeline(entries: entries, policy: .atEnd)
+            if let decoded = try? JSONDecoder().decode([FlashCard].self, from: data) {
+                print("✅ Successfully decoded flashcards: \(decoded.count) items")
+                return decoded
+            } else {
+                print("❌ Failed to decode flashcards")
+            }
+        } else {
+            print("🚫 No data found for key 'flashcards'")
+        }
+
+        return []
     }
 }
 
@@ -37,45 +67,41 @@ struct FlashcardEntry: TimelineEntry {
     let flashcard: FlashCard
 }
 
-struct FlashCard: Codable, Identifiable {
-    var id = UUID()
-    let word: String
-    let definition: String
-}
-
-let sampleFlashCards: [FlashCard] = [
-    FlashCard(word: "Aberration", definition: "A departure from what is normal or expected."),
-    FlashCard(word: "Benevolent", definition: "Well meaning and kindly."),
-    FlashCard(word: "Cacophony", definition: "A harsh, discordant mixture of sounds."),
-    FlashCard(word: "Debilitate", definition: "To make someone weak and infirm."),
-    FlashCard(word: "Ebullient", definition: "Cheerful and full of energy.")
-]
+// MARK: - Widget View
 
 struct ToeicWidgetEntryView: View {
-    var entry: Provider.Entry
+    var entry: FlashcardEntry
 
     var body: some View {
         ZStack {
-            
-        
             VStack(alignment: .leading, spacing: 4) {
-                Text(entry.flashcard.word)
+                Text(entry.flashcard.word.capitalizedFirst)
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
                     .lineLimit(1)
 
-                Text(entry.flashcard.definition)
+                Text(entry.flashcard.definition.capitalizedFirst)
                     .font(.body)
                     .foregroundColor(.secondary)
-                    .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(3)
             }
             .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(LinearGradient(colors: [Color.orange.opacity(0.3), Color.pink.opacity(0.1)], startPoint: .top, endPoint: .bottom))
+        .background(
+            LinearGradient(colors: [Color.orange.opacity(0.3), Color.pink.opacity(0.1)],
+                           startPoint: .top, endPoint: .bottom)
+        )
         .cornerRadius(16)
+    }
+}
+
+extension String {
+    var capitalizedFirst: String {
+        guard let first = self.first else { return self }
+        return first.uppercased() + self.dropFirst()
     }
 }
 
@@ -104,6 +130,5 @@ extension WidgetConfiguration {
 #Preview(as: .systemMedium) {
     ToeicWidget()
 } timeline: {
-    FlashcardEntry(date: .now, flashcard: sampleFlashCards[0])
-    FlashcardEntry(date: .now, flashcard: sampleFlashCards[1])
+    FlashcardEntry(date: .now, flashcard: FlashCard(word: "winter", definition: "the coldest season of the year, in the northern hemisphere from December to February and in the southern hemisphere from June to August, characterized by shorter days and lower temperatures."))
 }
