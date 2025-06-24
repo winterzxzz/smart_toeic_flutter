@@ -91,7 +91,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
           },
           builder: (context, isPremium) {
             return Positioned(
-              top: -24,
+              top: -28,
               left: 0,
               right: 0,
               child: SvgPicture.asset(
