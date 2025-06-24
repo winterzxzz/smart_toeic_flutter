@@ -12,8 +12,11 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.Box
+import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.layout.ContentScale
 import androidx.glance.color.ColorProvider
@@ -82,14 +85,14 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 .clickable(
                     actionRunCallback<TOEICGlanceActionCallback>(
                         actionParametersOf(
-                            DeepLinkKey to "test://winter-toeic.com/bottom-tab"
+                            DeepLinkKey to "test://winter-toeic.com/bottom-tab?isFromWidget=true"
                         )
                     )
                 )
         ) {
 
             Image(
-                provider = ImageProvider(R.drawable.bg_flashcard),
+                provider = ImageProvider(R.drawable.banner),
                 contentDescription = "Background",
                 modifier = GlanceModifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
@@ -110,6 +113,12 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Row(
+                    modifier = GlanceModifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
                         text = flashCard.word,
                         style = TextStyle(
@@ -119,25 +128,42 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                         )
                     )
                     Text(
-                        text = flashCard.definition,
+                        text = flashCard.pronunciation,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = ColorProvider(day = Color.White, night = Color.White)
+                        ),
+                        modifier = GlanceModifier.padding(start = 8.dp)
+                    )
+                }
+                Text(
+                        text = "(${flashCard.partOfSpeech}) ${flashCard.definition}",
                         style = TextStyle(
                             fontSize = 14.sp,
                             color = ColorProvider(day = Color.White, night = Color.White)
                         )
-                    )
-                }
+                )
+            }
             } else {
                 Column(
-                    modifier = GlanceModifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                modifier = GlanceModifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                     Text(
-                        text = "No flashcard",
+                        text = "No data",
                         style = TextStyle(
-                            fontSize = 16.sp,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = ColorProvider(day = Color.White, night = Color.White)
+                        )
+                    )
+                    Text(
+                        text = "Open the app to load flashcards.",
+                        style = TextStyle(
+                            fontSize = 14.sp,
                             color = ColorProvider(day = Color.White, night = Color.White)
                         )
                     )

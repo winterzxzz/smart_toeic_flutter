@@ -72,7 +72,9 @@ class MainActivity : FlutterActivity() {
                                 val flashcards = list.map {
                                     FlashCard(
                                         word = it["word"] ?: "",
-                                        definition = it["definition"] ?: ""
+                                        definition = it["definition"] ?: "",
+                                        pronunciation = it["pronunciation"] ?: "",
+                                        partOfSpeech = it["partOfSpeech"] ?: ""
                                     )
                                 }
                                 ContentPreferences.saveFlashCards(this, flashcards)

@@ -28,8 +28,6 @@ Future<void> init() async {
     ..registerLazySingleton<BlogRepository>(
         () => BlogRepositoryImpl(injector()))
     ..registerLazySingleton<SpeechService>(() => SpeechService())
-    ..registerLazySingleton<UpdateHomeWidgetService>(
-        () => UpdateHomeWidgetService())
     ..registerLazySingleton<WidgetService>(() => WidgetService());
 
   // Cubit dependencies (short-lived objects)
@@ -38,11 +36,10 @@ Future<void> init() async {
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
     ..registerLazySingleton<FlashCardCubit>(() => FlashCardCubit(injector()))
-    ..registerFactory<FlashCardDetailCubit>(
-        () => FlashCardDetailCubit(
-              flashCardRespository: injector(),
-              widgetService: injector(),
-            ))
+    ..registerFactory<FlashCardDetailCubit>(() => FlashCardDetailCubit(
+          flashCardRespository: injector(),
+          widgetService: injector(),
+        ))
     ..registerFactory<FlashCardLearnFlipCubit>(() => FlashCardLearnFlipCubit())
     ..registerFactory<FlashCardQuizzCubit>(
         () => FlashCardQuizzCubit(injector()))
@@ -83,7 +80,7 @@ Future<void> init() async {
 
   if (!injector.isRegistered<AppSettingCubit>()) {
     injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit(
-          updateHomeWidgetService: injector(),
+          widgetService: injector(),
         ));
   }
 }

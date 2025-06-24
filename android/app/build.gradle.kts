@@ -30,6 +30,8 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -65,4 +67,6 @@ dependencies {
     implementation("androidx.work:work-multiprocess:2.9.0")
 
     implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("androidx.multidex:multidex:2.0.1")
 }
