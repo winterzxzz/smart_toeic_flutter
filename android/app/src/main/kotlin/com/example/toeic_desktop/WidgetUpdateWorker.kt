@@ -13,6 +13,10 @@ import kotlinx.coroutines.withContext
 import com.google.gson.Gson
 import com.example.toeic_desktop.data.ContentPreferences
 import com.example.toeic_desktop.model.FlashCard
+import android.app.NotificationManager
+import android.app.NotificationChannel
+import android.os.Build
+import androidx.core.app.NotificationCompat
 
 class WidgetUpdateWorker(
     context: Context,
@@ -36,6 +40,7 @@ class WidgetUpdateWorker(
                         Log.d("WidgetUpdateWorker", "Updating widget content with ${flashCard.word}")
                         updateWidgetContent(flashCard)
                         ContentPreferences.setCurrentFlashCardIndex(applicationContext, (currentFlashCardIndex + 1) % flashCards.size)
+                        showNotification(flashCard.word, flashCard.definition)
                         Log.d("WidgetUpdateWorker", "Updated current flash card index to ${ContentPreferences.getCurrentFlashCardIndex(applicationContext)}")
                     }
                 }
@@ -75,6 +80,30 @@ class WidgetUpdateWorker(
                 throw e
             }
         }
+    }
+
+    private fun showNotification(title: String, message: String) {
+        val notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Notification channel for Android 8+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "work_channel",
+                "WorkManager Notifications",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = NotificationCompat.Builder(applicationContext, "work_channel")
+            .setContentTitle(title)
+            .setContentText(message)
+            .setSmallIcon(R.mipmap.ic_launcher) // Use app logo
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .build()
+
+        notificationManager.notify(12, notification)
     }
 
     companion object {
