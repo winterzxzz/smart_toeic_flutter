@@ -92,7 +92,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
         ) {
 
             Image(
-                provider = ImageProvider(R.drawable.bg_flashcard),
+                provider = ImageProvider(R.drawable.banner),
                 contentDescription = "Background",
                 modifier = GlanceModifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
