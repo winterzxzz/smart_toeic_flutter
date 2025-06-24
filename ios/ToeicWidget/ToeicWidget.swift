@@ -95,6 +95,7 @@ struct ToeicWidgetEntryView: View {
                            startPoint: .top, endPoint: .bottom)
         )
         .cornerRadius(16)
+        .widgetURL(URL(string: "test://winter-toeic.com/bottom-tab?isFromWidget=true"))
     }
 }
 

@@ -82,7 +82,7 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 .clickable(
                     actionRunCallback<TOEICGlanceActionCallback>(
                         actionParametersOf(
-                            DeepLinkKey to "test://winter-toeic.com/bottom-tab"
+                            DeepLinkKey to "test://winter-toeic.com/bottom-tab?isFromWidget=true"
                         )
                     )
                 )
