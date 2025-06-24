@@ -35,6 +35,8 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
           .map((e) => FlashCardShowInWidget(
                 word: e.word,
                 definition: e.definition,
+                pronunciation: e.pronunciation,
+                partOfSpeech: e.partOfSpeech.join(', '),
               ))
           .toList();
       final flashCardShowInWidgetList = FlashCardShowInWidgetList(

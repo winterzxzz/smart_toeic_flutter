@@ -12,8 +12,11 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.Box
+import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.layout.ContentScale
 import androidx.glance.color.ColorProvider
@@ -110,6 +113,12 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Row(
+                    modifier = GlanceModifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
                         text = flashCard.word,
                         style = TextStyle(
@@ -119,13 +128,22 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                         )
                     )
                     Text(
-                        text = flashCard.definition,
+                        text = flashCard.pronunciation,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = ColorProvider(day = Color.White, night = Color.White)
+                        ),
+                        modifier = GlanceModifier.padding(start = 8.dp)
+                    )
+                }
+                Text(
+                        text = "(${flashCard.partOfSpeech}) ${flashCard.definition}",
                         style = TextStyle(
                             fontSize = 14.sp,
                             color = ColorProvider(day = Color.White, night = Color.White)
                         )
-                    )
-                }
+                )
+            }
             } else {
                 Column(
                 modifier = GlanceModifier

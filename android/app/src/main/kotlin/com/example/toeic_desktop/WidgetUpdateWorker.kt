@@ -40,7 +40,7 @@ class WidgetUpdateWorker(
                         Log.d("WidgetUpdateWorker", "Updating widget content with ${flashCard.word}")
                         updateWidgetContent(flashCard)
                         ContentPreferences.setCurrentFlashCardIndex(applicationContext, (currentFlashCardIndex + 1) % flashCards.size)
-                        showNotification(flashCard.word, flashCard.definition)
+                        showNotification("${flashCard.word} ${flashCard.pronunciation}", "(${flashCard.partOfSpeech}) ${flashCard.definition}")
                         Log.d("WidgetUpdateWorker", "Updated current flash card index to ${ContentPreferences.getCurrentFlashCardIndex(applicationContext)}")
                     }
                 }
