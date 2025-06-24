@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 enum FormFlashCardType {
@@ -73,6 +74,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
             ),
             const SizedBox(height: 8),
             TextField(
+              inputFormatters: [CapitalizeFirstLetterFormatter()],
               controller: titleController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -96,6 +98,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
             ),
             const SizedBox(height: 8),
             TextField(
+              inputFormatters: [CapitalizeFirstLetterFormatter()],
               controller: descriptionController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
