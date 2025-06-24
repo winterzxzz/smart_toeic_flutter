@@ -211,6 +211,7 @@ class _PageState extends State<Page> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Column(
                   children: [
+                    const SizedBox(height: 16),
                     const AvatarHeading(),
                     const ProfileDivider(
                       height: 24,
@@ -228,13 +229,6 @@ class _PageState extends State<Page> {
                       label: S.current.name_label,
                       hintText: S.current.name_hint,
                       icon: FontAwesomeIcons.user,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFieldHeading(
-                      controller: bioController,
-                      label: S.current.bio_label,
-                      hintText: S.current.bio_hint,
-                      maxLines: 3,
                     ),
                     const ProfileDivider(
                       height: 24,
