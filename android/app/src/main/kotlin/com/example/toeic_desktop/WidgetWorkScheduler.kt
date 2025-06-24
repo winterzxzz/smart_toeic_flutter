@@ -29,7 +29,7 @@ object WidgetWorkScheduler {
         }.build()
 
         val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, TimeUnit.MINUTES)
-            .setInitialDelay(5, TimeUnit.SECONDS)
+            .setInitialDelay(2, TimeUnit.SECONDS)
             .setInputData(inputData)
             .build()
 

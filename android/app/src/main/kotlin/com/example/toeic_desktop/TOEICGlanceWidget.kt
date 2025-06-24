@@ -128,16 +128,24 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 }
             } else {
                 Column(
-                    modifier = GlanceModifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                modifier = GlanceModifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                     Text(
-                        text = "No flashcard",
+                        text = "No data",
                         style = TextStyle(
-                            fontSize = 16.sp,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = ColorProvider(day = Color.White, night = Color.White)
+                        )
+                    )
+                    Text(
+                        text = "Open the app to load flashcards.",
+                        style = TextStyle(
+                            fontSize = 14.sp,
                             color = ColorProvider(day = Color.White, night = Color.White)
                         )
                     )
