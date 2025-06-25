@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
+import 'package:toeic_desktop/data/services/noti_service.dart';
 
 class WidgetService {
   static const MethodChannel _channel =
@@ -36,10 +37,13 @@ class WidgetService {
     }
   }
 
-  /// Periodic widget update after 2 minutes
+  /// Periodic widget update after 15 minutes
   Future<String?> schedulePeriodicWidgetUpdate({
     required FlashCardShowInWidgetList flashCardShowInWidgetList,
   }) async {
+    if (kReleaseMode) {
+      await NotiService().requestBatteryOptimizationPermission();
+    }
     try {
       final json = flashCardShowInWidgetList.toJson();
       final String? result =
