@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/common/utils/string_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toeic_desktop/common/utils/utils.dart';
 
 import '../models/enums/language.dart';
 
@@ -96,12 +97,18 @@ class SharedPreferencesHelper {
 
   static Future<String> getDailyReminderTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_dailyReminderTime) ?? '10:00';
+    return prefs.getString(_dailyReminderTime) ??
+        Utils.getTimeHHMm(DateTime.now());
   }
 
   static Future<void> setDailyReminderTime(String dailyReminderTime) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(_dailyReminderTime, dailyReminderTime);
+  }
+
+  static Future<void> removeDailyReminderTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_dailyReminderTime);
   }
 
   SharedPreferencesHelper._();

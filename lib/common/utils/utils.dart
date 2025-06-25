@@ -71,6 +71,10 @@ class Utils {
     return valueString;
   }
 
+  static String getTimeHHMm(DateTime dateTime) {
+    return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+  }
+
   // compare two string ignore case
   static bool compareStringIgnoreCase(String a, String b) {
     // remove all whitespace, dot and comma

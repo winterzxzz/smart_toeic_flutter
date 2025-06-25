@@ -74,6 +74,8 @@ class AppSettingCubit extends Cubit<AppSettingState> {
         minute: int.parse(time[1]),
       );
     } else {
+      // Cancel all notifications if daily reminder is turned off
+      await SharedPreferencesHelper.removeDailyReminderTime();
       NotiService().cancelAllNotifications();
     }
   }

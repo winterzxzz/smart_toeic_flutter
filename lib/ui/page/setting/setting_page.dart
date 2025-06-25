@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
@@ -214,7 +215,7 @@ class _SettingPageState extends State<SettingPage> {
                       SettingsSwitch(
                         value: state.isDailyReminder,
                         title: state.dailyReminderTime ??
-                            _formatTime(DateTime.now()),
+                            Utils.getTimeHHMm(DateTime.now()),
                         onChanged: (val) {
                           appSettingCubit.changeDailyReminder(
                               isDailyReminder: val);
@@ -228,7 +229,7 @@ class _SettingPageState extends State<SettingPage> {
                             onPressed: () => _showTimePicker(
                                 context,
                                 state.dailyReminderTime ??
-                                    _formatTime(DateTime.now())),
+                                    Utils.getTimeHHMm(DateTime.now())),
                             child: Text(S.current.set_time),
                           ),
                         ),
@@ -240,10 +241,6 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ],
         ));
-  }
-
-  String _formatTime(DateTime time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   void _showTimePicker(BuildContext context, String currentTime) {
@@ -287,7 +284,7 @@ class _SettingPageState extends State<SettingPage> {
                   const SizedBox(width: 16),
                   TextButton(
                     onPressed: () {
-                      final formatted = _formatTime(selectedTime);
+                      final formatted = Utils.getTimeHHMm(selectedTime);
                       appSettingCubit.changeDailyReminderTime(
                         dailyReminderTime: formatted,
                       );
