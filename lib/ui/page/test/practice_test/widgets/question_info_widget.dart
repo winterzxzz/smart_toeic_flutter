@@ -200,107 +200,112 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   ),
                                 ],
                               ),
-                            const SizedBox(height: 8),
-                            BlocBuilder<UserCubit, UserState>(
-                              builder: (context, state) {
-                                final isPremium =
-                                    state.user?.isPremium() ?? false;
-                                if (!isPremium) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          GoRouter.of(context).pushNamed(
-                                              AppRouter.upgradeAccount);
-                                        },
-                                        child: Text(
-                                          S.current.upgrade_to_use_ai,
-                                          style: theme.textTheme.bodyMedium,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      // Add upgrade button
-                                      SizedBox(
-                                        width: 200,
-                                        child: ElevatedButton(
-                                          onPressed: null,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              const FaIcon(
-                                                FontAwesomeIcons.robot,
-                                                size: 14,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                S.current.create_answer_by_ai,
-                                                style:
-                                                    theme.textTheme.bodyMedium,
-                                              ),
-                                            ],
+                            if (questionResult != null &&
+                                questionResult.questionResultPart >= 5) ...[
+                              const SizedBox(height: 8),
+                              BlocBuilder<UserCubit, UserState>(
+                                builder: (context, state) {
+                                  final isPremium =
+                                      state.user?.isPremium() ?? false;
+                                  if (!isPremium) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            GoRouter.of(context).pushNamed(
+                                                AppRouter.upgradeAccount);
+                                          },
+                                          child: Text(
+                                            S.current.upgrade_to_use_ai,
+                                            style: theme.textTheme.bodyMedium,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return BlocBuilder<PracticeTestCubit,
-                                          PracticeTestState>(
-                                      buildWhen: (previous, current) =>
-                                          previous.loadStatusExplain !=
-                                              current.loadStatusExplain ||
-                                          previous.loadingExplainQuestionId !=
-                                              current.loadingExplainQuestionId,
-                                      builder: (context, state) {
-                                        final isLoading = state
-                                                    .loadStatusExplain ==
-                                                LoadStatus.loading &&
-                                            state.loadingExplainQuestionId ==
-                                                widget.question.id;
-                                        return SizedBox(
-                                          child: CustomButton(
-                                            height: 50,
-                                            width: 200,
-                                            isLoading: isLoading,
-                                            onPressed: isLoading
-                                                ? null
-                                                : () async {
-                                                    await cubit
-                                                        .getExplainQuestion(
-                                                            widget.question);
-                                                  },
+                                        const SizedBox(height: 16),
+                                        // Add upgrade button
+                                        SizedBox(
+                                          width: 200,
+                                          child: ElevatedButton(
+                                            onPressed: null,
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                if (isLoading)
-                                                  const LoadingCircle(
-                                                    size: 20,
-                                                  )
-                                                else
-                                                  const FaIcon(
-                                                    FontAwesomeIcons.lock,
-                                                    size: 14,
-                                                  ),
+                                                const FaIcon(
+                                                  FontAwesomeIcons.robot,
+                                                  size: 14,
+                                                ),
                                                 const SizedBox(width: 8),
                                                 Text(
                                                   S.current.create_answer_by_ai,
+                                                  style: theme
+                                                      .textTheme.bodyMedium,
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        );
-                                      });
-                                }
-                              },
-                            ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return BlocBuilder<PracticeTestCubit,
+                                            PracticeTestState>(
+                                        buildWhen: (previous, current) =>
+                                            previous.loadStatusExplain !=
+                                                current.loadStatusExplain ||
+                                            previous.loadingExplainQuestionId !=
+                                                current
+                                                    .loadingExplainQuestionId,
+                                        builder: (context, state) {
+                                          final isLoading = state
+                                                      .loadStatusExplain ==
+                                                  LoadStatus.loading &&
+                                              state.loadingExplainQuestionId ==
+                                                  widget.question.id;
+                                          return SizedBox(
+                                            child: CustomButton(
+                                              height: 50,
+                                              width: 200,
+                                              isLoading: isLoading,
+                                              onPressed: isLoading
+                                                  ? null
+                                                  : () async {
+                                                      await cubit
+                                                          .getExplainQuestion(
+                                                              widget.question);
+                                                    },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  if (isLoading)
+                                                    const LoadingCircle(
+                                                      size: 20,
+                                                    )
+                                                  else
+                                                    const FaIcon(
+                                                      FontAwesomeIcons.lock,
+                                                      size: 14,
+                                                    ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    S.current
+                                                        .create_answer_by_ai,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  }
+                                },
+                              )
+                            ],
                             if (widget.question.questionExplain != null) ...[
                               const SizedBox(height: 8),
                               ExplanationUI(
