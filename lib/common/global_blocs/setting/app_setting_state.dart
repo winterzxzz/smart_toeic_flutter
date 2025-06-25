@@ -6,7 +6,7 @@ class AppSettingState extends Equatable {
   final Color primaryColor;
   final bool isDynamicColor;
   final bool isDailyReminder;
-  final String dailyReminderTime;
+  final String? dailyReminderTime;
 
   const AppSettingState({
     this.language = AppConfigs.defaultLanguage,
@@ -14,7 +14,7 @@ class AppSettingState extends Equatable {
     this.primaryColor = const Color(0xff26A69A),
     this.isDynamicColor = false,
     this.isDailyReminder = false,
-    this.dailyReminderTime = '10:00',
+    this.dailyReminderTime,
   });
 
   @override

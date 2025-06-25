@@ -65,8 +65,8 @@ class AppSettingCubit extends Cubit<AppSettingState> {
   void changeDailyReminder({required bool isDailyReminder}) async {
     await SharedPreferencesHelper.setIsDailyReminder(isDailyReminder);
     emit(state.copyWith(isDailyReminder: isDailyReminder));
-    if (isDailyReminder) {
-      final time = state.dailyReminderTime.split(':');
+    if (isDailyReminder && state.dailyReminderTime != null) {
+      final time = state.dailyReminderTime!.split(':');
       NotiService().scheduleDailyNotification(
         title: S.current.daily_reminder,
         body: S.current.daily_reminder_description,

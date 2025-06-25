@@ -213,7 +213,8 @@ class _SettingPageState extends State<SettingPage> {
                     children: [
                       SettingsSwitch(
                         value: state.isDailyReminder,
-                        title: state.dailyReminderTime,
+                        title: state.dailyReminderTime ??
+                            _formatTime(DateTime.now()),
                         onChanged: (val) {
                           appSettingCubit.changeDailyReminder(
                               isDailyReminder: val);
@@ -225,7 +226,9 @@ class _SettingPageState extends State<SettingPage> {
                           margin: AppStyle.edgeInsetsA12,
                           child: CustomButton(
                             onPressed: () => _showTimePicker(
-                                context, state.dailyReminderTime),
+                                context,
+                                state.dailyReminderTime ??
+                                    _formatTime(DateTime.now())),
                             child: Text(S.current.set_time),
                           ),
                         ),
@@ -237,6 +240,10 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ],
         ));
+  }
+
+  String _formatTime(DateTime time) {
+    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   void _showTimePicker(BuildContext context, String currentTime) {
@@ -280,8 +287,7 @@ class _SettingPageState extends State<SettingPage> {
                   const SizedBox(width: 16),
                   TextButton(
                     onPressed: () {
-                      final formatted =
-                          '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
+                      final formatted = _formatTime(selectedTime);
                       appSettingCubit.changeDailyReminderTime(
                         dailyReminderTime: formatted,
                       );
