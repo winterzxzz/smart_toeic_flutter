@@ -40,7 +40,10 @@ class WidgetUpdateWorker(
                         Log.d("WidgetUpdateWorker", "Updating widget content with ${flashCard.word}")
                         updateWidgetContent(flashCard)
                         ContentPreferences.setCurrentFlashCardIndex(applicationContext, (currentFlashCardIndex + 1) % flashCards.size)
-                        showNotification("${flashCard.word} ${flashCard.pronunciation}", "(${flashCard.partOfSpeech}) ${flashCard.definition}")
+                        val isCanShowNotification = ContentPreferences.isCanShowNotification(applicationContext)
+                        if (isCanShowNotification) {
+                            showNotification("${flashCard.word} ${flashCard.pronunciation}", "(${flashCard.partOfSpeech}) ${flashCard.definition}")
+                        }
                         Log.d("WidgetUpdateWorker", "Updated current flash card index to ${ContentPreferences.getCurrentFlashCardIndex(applicationContext)}")
                     }
                 }
@@ -105,6 +108,12 @@ class WidgetUpdateWorker(
         // get now for id
         val now = System.currentTimeMillis().toInt()
         notificationManager.notify(now, notification)
+    }
+
+    private fun cancelAllNotifications() {
+        val notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     companion object {

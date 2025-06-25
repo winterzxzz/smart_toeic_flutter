@@ -220,15 +220,15 @@ class _PageState extends State<Page> {
                           TargetScoreWidget(
                             title:
                                 '${S.current.reading_current} / ${S.current.reading_target}',
-                            targetScore: user?.targetScore?.reading,
-                            currentScore: user?.actualScore?.reading,
+                            targetScore: user?.targetScore?.reading ?? 0,
+                            currentScore: user?.actualScore?.reading ?? 0,
                           ),
                           const SizedBox(height: 24),
                           TargetScoreWidget(
                             title:
                                 '${S.current.listening_current} / ${S.current.listening_target}',
-                            targetScore: user?.targetScore?.listening,
-                            currentScore: user?.actualScore?.listening,
+                            targetScore: user?.targetScore?.listening ?? 0,
+                            currentScore: user?.actualScore?.listening ?? 0,
                           ),
                         ],
                       ),

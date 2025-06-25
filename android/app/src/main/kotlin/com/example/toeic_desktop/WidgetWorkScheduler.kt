@@ -30,6 +30,7 @@ object WidgetWorkScheduler {
             putString("updateType", "content")
         }.build()
 
+
         val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, TimeUnit.MINUTES)
             .setInitialDelay(2, TimeUnit.SECONDS)
             .setInputData(inputData)
@@ -60,4 +61,5 @@ object WidgetWorkScheduler {
         WorkManager.getInstance(context).cancelUniqueWork(workName)
         Log.d("WidgetWorkScheduler", "Cancelled widget update work: $workName")
     }
+
 } 

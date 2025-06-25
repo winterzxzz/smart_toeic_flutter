@@ -165,8 +165,10 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
                         example2SentenceController.text =
                             flashCardAiGen.example2;
                         noteController.text = flashCardAiGen.note;
-                        partOfSpeechController.text =
-                            flashCardAiGen.partOfSpeech.join(', ');
+                        partOfSpeechController.text = flashCardAiGen
+                            .partOfSpeech
+                            .join(', ')
+                            .toLowerCase();
                         pronunciationController.text =
                             flashCardAiGen.pronunciation;
                       }
@@ -197,7 +199,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const LoadingCircle(
-                                      size: 20,
+                                      size: 16,
                                     ),
                                     const SizedBox(width: 10),
                                     Text(S.current.ai_filling),
@@ -292,9 +294,11 @@ class FormItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           TextField(
-            inputFormatters: [
-              CapitalizeFirstLetterFormatter(),
-            ],
+            inputFormatters: title == S.current.part_of_speech
+                ? null
+                : [
+                    CapitalizeFirstLetterFormatter(),
+                  ],
             controller: controller, // Attach controller
             decoration: InputDecoration(
               border: OutlineInputBorder(

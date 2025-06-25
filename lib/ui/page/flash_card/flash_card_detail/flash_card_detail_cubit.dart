@@ -54,10 +54,11 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
     response.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
+        loadStatusAiGen: LoadStatus.success,
         flashCards: [r, ...state.flashCards],
       )),
     );
@@ -72,6 +73,7 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
       )),
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
+        loadStatusAiGen: LoadStatus.success,
         flashCards: state.flashCards.where((e) => e.id != id).toList(),
       )),
     );
@@ -89,6 +91,7 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
+          loadStatusAiGen: LoadStatus.success,
           flashCards: state.flashCards.map((e) => e.id == id ? r : e).toList(),
         ));
         showToast(
@@ -112,10 +115,11 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
     response.fold(
       (l) => emit(state.copyWith(
         loadStatusAiGen: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) {
         emit(state.copyWith(
+          loadStatus: LoadStatus.success,
           loadStatusAiGen: LoadStatus.success,
           flashCardAiGen: r,
         ));

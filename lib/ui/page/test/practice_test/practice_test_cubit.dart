@@ -298,6 +298,8 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     final promptQuestion = Question(
         id: q.id,
         number: q.id,
+        question: q.question,
+        paragraph: q.paragraph,
         option1: q.option1,
         option2: q.option2,
         option3: q.option3,

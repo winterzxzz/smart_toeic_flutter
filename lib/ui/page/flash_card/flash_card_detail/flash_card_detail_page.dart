@@ -65,7 +65,8 @@ class _PageState extends State<Page> {
     return Scaffold(
       body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
         listener: (context, state) {
-          if (state.loadStatus == LoadStatus.failure) {
+          if (state.loadStatus == LoadStatus.failure ||
+              state.loadStatusAiGen == LoadStatus.failure) {
             AppNavigator(context: context).error(state.message);
           }
         },
