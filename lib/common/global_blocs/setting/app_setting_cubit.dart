@@ -68,8 +68,8 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     if (isDailyReminder) {
       final time = state.dailyReminderTime.split(':');
       NotiService().scheduleDailyNotification(
-        title: 'Daily Reminder',
-        body: 'Check the app today!',
+        title: S.current.daily_reminder,
+        body: S.current.daily_reminder_description,
         hour: int.parse(time[0]),
         minute: int.parse(time[1]),
       );
@@ -84,8 +84,8 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     if (state.isDailyReminder) {
       final time = dailyReminderTime.split(':');
       NotiService().scheduleDailyNotification(
-        title: 'Daily Reminder',
-        body: 'Check the app today!',
+        title: S.current.daily_reminder,
+        body: S.current.daily_reminder_description,
         hour: int.parse(time[0]),
         minute: int.parse(time[1]),
       );

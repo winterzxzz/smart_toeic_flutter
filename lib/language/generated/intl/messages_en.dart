@@ -363,7 +363,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "set_flashcard": MessageLookupByLibrary.simpleMessage("Set Flashcard"),
         "set_flashcard_title":
             MessageLookupByLibrary.simpleMessage("Set Flashcard"),
-        "set_time": MessageLookupByLibrary.simpleMessage("Set Time"),
+        "set_time": MessageLookupByLibrary.simpleMessage("Change Time"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "short_answers": MessageLookupByLibrary.simpleMessage("Short answers"),
         "show_answer": MessageLookupByLibrary.simpleMessage("Show Answer"),

@@ -2840,10 +2840,10 @@ class S {
     );
   }
 
-  /// `Set Time`
+  /// `Change Time`
   String get set_time {
     return Intl.message(
-      'Set Time',
+      'Change Time',
       name: 'set_time',
       desc: '',
       args: [],

@@ -287,12 +287,14 @@
     "cohesion": "Cohesion", 
     "daily_reminder": "Daily Reminder",
     "daily_reminder_description": "Check the app today!", 
-    "set_time": "Set Time", 
+    "set_time": "Change Time", 
     "difficulty_rate": "Difficulty Rate",
     "time": "Time",
     "number_of_questions": "Number of Questions",
     "number_of_correct_answers": "Number of Correct Answers",
     "number_of_wrong_answers": "Number of Wrong Answers",
     "accuracy_rate": "Accuracy Rate",
-    "quiz_result": "Quiz Result"
+    "quiz_result": "Quiz Result", 
+    "daily_reminder": "Daily Reminder",
+    "daily_reminder_description": "Check the app today!",
 }

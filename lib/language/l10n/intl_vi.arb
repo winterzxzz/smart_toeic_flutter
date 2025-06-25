@@ -288,5 +288,7 @@
     "number_of_correct_answers": "Số câu trả lời đúng",
     "number_of_wrong_answers": "Số câu trả lời sai",
     "accuracy_rate": "Tỷ lệ chính xác",
-    "quiz_result": "Kết quả câu hỏi"
+    "quiz_result": "Kết quả câu hỏi", 
+    "daily_reminder": "Nhắc nhở hàng ngày",
+    "daily_reminder_description": "Kiểm tra ứng dụng hàng ngày để luyện TOEIC
 }
