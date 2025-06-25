@@ -67,14 +67,14 @@ class MainActivity : FlutterActivity() {
                     }
                     "schedulePeriodicWidgetUpdate" -> {
                         val data = call.argument<HashMap<String, Any>>("flashCardShowInWidgetList")                        // request permission for battery optimization only if not already granted
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            val powerManager = getSystemService(Context.POWER_SERVICE) as android.os.PowerManager
-                            if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
-                                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                                intent.data = android.net.Uri.parse("package:$packageName")
-                                startActivity(intent)
-                            }
-                        }
+                        // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        //     val powerManager = getSystemService(Context.POWER_SERVICE) as android.os.PowerManager
+                        //     if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+                        //         val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                        //         intent.data = android.net.Uri.parse("package:$packageName")
+                        //         startActivity(intent)
+                        //     }
+                        // }
                         if(data != null) {
                             val list = data["flashCardShowInWidgetList"] as? List<HashMap<String, String>>
                             if(list != null) {

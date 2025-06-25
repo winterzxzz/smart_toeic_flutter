@@ -92,11 +92,11 @@ class NotiService {
 
   Future<void> requestBatteryOptimizationPermission() async {
     if (Platform.isAndroid) {
-      final PermissionStatus status =
-          await Permission.ignoreBatteryOptimizations.status;
-      if (!status.isGranted) {
-        await Permission.ignoreBatteryOptimizations.request();
-      }
+      // final PermissionStatus status =
+      //     await Permission.ignoreBatteryOptimizations.status;
+      // if (!status.isGranted) {
+      //   await Permission.ignoreBatteryOptimizations.request();
+      // }
     }
   }
 

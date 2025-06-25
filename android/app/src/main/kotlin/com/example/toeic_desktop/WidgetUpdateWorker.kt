@@ -102,8 +102,9 @@ class WidgetUpdateWorker(
             .setSmallIcon(R.mipmap.ic_launcher) // Use app logo
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
-
-        notificationManager.notify(12, notification)
+        // get now for id
+        val now = System.currentTimeMillis().toInt()
+        notificationManager.notify(now, notification)
     }
 
     companion object {
