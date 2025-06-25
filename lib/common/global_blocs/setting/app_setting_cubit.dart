@@ -41,6 +41,15 @@ class AppSettingCubit extends Cubit<AppSettingState> {
   void changeLanguage({required Language language}) async {
     await SharedPreferencesHelper.setCurrentLanguage(language);
     S.load(Locale(language.code));
+    if (state.isDailyReminder && state.dailyReminderTime != null) {
+      final time = state.dailyReminderTime!.split(':');
+      NotiService().scheduleDailyNotification(
+        title: S.current.daily_reminder,
+        body: S.current.daily_reminder_description,
+        hour: int.parse(time[0]),
+        minute: int.parse(time[1]),
+      );
+    }
     emit(state.copyWith(
       language: language,
     ));

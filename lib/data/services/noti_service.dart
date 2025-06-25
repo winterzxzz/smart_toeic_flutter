@@ -114,16 +114,15 @@ class NotiService {
     required int minute,
   }) async {
     try {
-      final int notificationId = title.hashCode;
-      await flutterLocalNotificationsPlugin.cancel(notificationId);
+      await flutterLocalNotificationsPlugin.cancel(111);
       await AlarmPermissionService().requestExactAlarmPermissionIfNeeded();
       final tz.TZDateTime scheduledDate = _nextInstanceOfTime(hour, minute);
 
       debugPrint(
-          'Scheduling notification with ID: $notificationId at $scheduledDate');
+          'Scheduling notification with ID: 111 at $scheduledDate');
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        notificationId,
+        111,
         title,
         body,
         scheduledDate,
@@ -152,6 +151,7 @@ class NotiService {
     }
     return scheduledTime;
   }
+
 
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();

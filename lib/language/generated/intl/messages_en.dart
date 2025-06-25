@@ -119,8 +119,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create New Flashcard Set"),
         "daily_reminder":
             MessageLookupByLibrary.simpleMessage("Daily Reminder"),
-        "daily_reminder_description":
-            MessageLookupByLibrary.simpleMessage("Check the app today!"),
+        "daily_reminder_description": MessageLookupByLibrary.simpleMessage(
+            "Check the app today to improve your TOEIC skills!"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "decay_score": MessageLookupByLibrary.simpleMessage("Decay Score"),
         "definition": MessageLookupByLibrary.simpleMessage("Definition"),

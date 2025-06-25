@@ -119,7 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "daily_reminder":
             MessageLookupByLibrary.simpleMessage("Nhắc nhở hàng ngày"),
         "daily_reminder_description": MessageLookupByLibrary.simpleMessage(
-            "Kiểm tra ứng dụng hàng ngày!"),
+            "Kiểm tra ứng dụng hàng ngày để học tập hiệu quả hơn!"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Tối"),
         "decay_score": MessageLookupByLibrary.simpleMessage("Điểm giảm dần"),
         "definition": MessageLookupByLibrary.simpleMessage("Định nghĩa"),

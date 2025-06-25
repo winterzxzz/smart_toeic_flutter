@@ -2830,10 +2830,10 @@ class S {
     );
   }
 
-  /// `Check the app today!`
+  /// `Check the app today to improve your TOEIC skills!`
   String get daily_reminder_description {
     return Intl.message(
-      'Check the app today!',
+      'Check the app today to improve your TOEIC skills!',
       name: 'daily_reminder_description',
       desc: '',
       args: [],
