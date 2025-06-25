@@ -43,12 +43,12 @@ class Page extends StatelessWidget {
         } else {
           AppNavigator(context: context).hideLoadingOverlay();
           if (state.loadStatus == LoadStatus.success) {
-            NotiService().showFlutterNotification(
+            injector<NotiService>().showFlutterNotification(
               title: S.current.congratulations,
               content: S.current.your_account_has_been_successfully_upgraded,
             );
           } else {
-            NotiService().showFlutterNotification(
+            injector<NotiService>().showFlutterNotification(
               title: S.current.update_error,
               content: state.message,
             );

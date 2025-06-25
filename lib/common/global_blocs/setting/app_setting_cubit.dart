@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/services/noti_service.dart';
 import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -43,7 +44,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     S.load(Locale(language.code));
     if (state.isDailyReminder && state.dailyReminderTime != null) {
       final time = state.dailyReminderTime!.split(':');
-      NotiService().scheduleDailyNotification(
+      injector<NotiService>().scheduleDailyNotification(
         title: S.current.daily_reminder,
         body: S.current.daily_reminder_description,
         hour: int.parse(time[0]),
@@ -76,7 +77,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     emit(state.copyWith(isDailyReminder: isDailyReminder));
     if (isDailyReminder && state.dailyReminderTime != null) {
       final time = state.dailyReminderTime!.split(':');
-      NotiService().scheduleDailyNotification(
+      injector<NotiService>().scheduleDailyNotification(
         title: S.current.daily_reminder,
         body: S.current.daily_reminder_description,
         hour: int.parse(time[0]),
@@ -85,7 +86,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     } else {
       // Cancel all notifications if daily reminder is turned off
       await SharedPreferencesHelper.removeDailyReminderTime();
-      NotiService().cancelAllNotifications();
+      injector<NotiService>().cancelAllNotifications();
     }
   }
 
@@ -94,7 +95,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     emit(state.copyWith(dailyReminderTime: dailyReminderTime));
     if (state.isDailyReminder) {
       final time = dailyReminderTime.split(':');
-      NotiService().scheduleDailyNotification(
+      injector<NotiService>().scheduleDailyNotification(
         title: S.current.daily_reminder,
         body: S.current.daily_reminder_description,
         hour: int.parse(time[0]),
