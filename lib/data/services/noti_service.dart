@@ -29,7 +29,6 @@ class NotiService {
   Future<void> initialize() async {
     if (_isInitialized) return;
     await requestNotificationPermission();
-    await requestBatteryOptimizationPermission();
     initTimeZone();
     // prepare android init settings
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -90,15 +89,7 @@ class NotiService {
     );
   }
 
-  Future<void> requestBatteryOptimizationPermission() async {
-    if (Platform.isAndroid) {
-      // final PermissionStatus status =
-      //     await Permission.ignoreBatteryOptimizations.status;
-      // if (!status.isGranted) {
-      //   await Permission.ignoreBatteryOptimizations.request();
-      // }
-    }
-  }
+
 
   // SHOW NOTIFICATION
   void showFlutterNotification({
@@ -126,9 +117,6 @@ class NotiService {
       final int notificationId = title.hashCode;
       await flutterLocalNotificationsPlugin.cancel(notificationId);
       await AlarmPermissionService().requestExactAlarmPermissionIfNeeded();
-      if (kReleaseMode) {
-        await requestBatteryOptimizationPermission();
-      }
       final tz.TZDateTime scheduledDate = _nextInstanceOfTime(hour, minute);
 
       debugPrint(
