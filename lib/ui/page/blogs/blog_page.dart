@@ -7,6 +7,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';
@@ -67,6 +68,7 @@ class _PageState extends State<Page> {
                 height: 50,
                 margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 child: TextField(
+                  inputFormatters: [CapitalizeFirstLetterFormatter()],
                   onChanged: (value) {
                     _timer?.cancel();
                     _timer = Timer(const Duration(milliseconds: 500), () {

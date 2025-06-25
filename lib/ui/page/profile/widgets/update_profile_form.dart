@@ -1,57 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
-enum FormFlashCardType {
-  create,
-  edit,
-}
-
-class FormFlashCardArgs {
-  final String? title;
-  final String? description;
-  final FormFlashCardType type;
+class FormUpdateProfileArgs {
+  final String? name;
+  final String? bio;
   final Function(String, String) onSave;
 
-  const FormFlashCardArgs({
-    this.title,
-    this.description,
-    required this.type,
+  const FormUpdateProfileArgs({
+    required this.name,
+    required this.bio,
     required this.onSave,
   });
 }
 
-class FormFlashCard extends StatefulWidget {
-  const FormFlashCard({
+class FormUpdateProfileWidget extends StatefulWidget {
+  const FormUpdateProfileWidget({
     super.key,
     required this.args,
   });
 
-  final FormFlashCardArgs args;
+  final FormUpdateProfileArgs args;
 
   @override
-  State<FormFlashCard> createState() => _FormFlashCardState();
+  State<FormUpdateProfileWidget> createState() =>
+      _FormUpdateProfileWidgetState();
 }
 
-class _FormFlashCardState extends State<FormFlashCard> {
-  late final TextEditingController titleController;
-  late final TextEditingController descriptionController;
+class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
+  late final TextEditingController nameController;
+  late final TextEditingController bioController;
 
   @override
   void initState() {
     super.initState();
-    titleController = TextEditingController(text: widget.args.title);
-    descriptionController =
-        TextEditingController(text: widget.args.description ?? '');
+    nameController = TextEditingController(text: widget.args.name);
+    bioController = TextEditingController(text: widget.args.bio);
   }
 
   @override
   void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
+    nameController.dispose();
+    bioController.dispose();
     super.dispose();
   }
 
@@ -67,7 +64,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              S.current.title,
+              S.current.name_hint,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -75,7 +72,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
             const SizedBox(height: 8),
             TextField(
               inputFormatters: [CapitalizeFirstLetterFormatter()],
-              controller: titleController,
+              controller: nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -91,7 +88,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
             ),
             const SizedBox(height: 16),
             Text(
-              S.current.description,
+              S.current.bio_hint,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -99,7 +96,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
             const SizedBox(height: 8),
             TextField(
               inputFormatters: [CapitalizeFirstLetterFormatter()],
-              controller: descriptionController,
+              controller: bioController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -126,15 +123,31 @@ class _FormFlashCardState extends State<FormFlashCard> {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: CustomButton(
-                    onPressed: () {
-                      widget.args.onSave(
-                        titleController.text,
-                        descriptionController.text,
-                      );
-                      GoRouter.of(context).pop();
+                  child: BlocConsumer<UserCubit, UserState>(
+                    listenWhen: (pre, current) =>
+                        pre.updateStatus != current.updateStatus,
+                    listener: (context, state) {
+                      if (state.updateStatus == LoadStatus.success) {
+                        GoRouter.of(context).pop();
+                      } else if (state.updateStatus == LoadStatus.failure) {
+                        AppNavigator(context: context).error(state.message);
+                      }
                     },
-                    child: Text(S.current.save_button),
+                    buildWhen: (pre, current) =>
+                        pre.updateStatus != current.updateStatus,
+                    builder: (context, state) {
+                      return CustomButton(
+                        onPressed: () {
+                          if (state.updateStatus == LoadStatus.loading) return;
+                          widget.args.onSave(
+                            nameController.text,
+                            bioController.text,
+                          );
+                        },
+                        isLoading: state.updateStatus == LoadStatus.loading,
+                        child: Text(S.current.save_button),
+                      );
+                    },
                   ),
                 ),
               ],

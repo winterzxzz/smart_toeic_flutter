@@ -24,6 +24,8 @@ object WidgetWorkScheduler {
         context: Context,
         intervalMinutes: Long = 15,
     ) {
+
+
         val inputData = Data.Builder().apply {
             putString("updateType", "content")
         }.build()

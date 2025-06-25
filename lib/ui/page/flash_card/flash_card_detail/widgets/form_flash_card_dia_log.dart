@@ -9,6 +9,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
@@ -291,6 +292,9 @@ class FormItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           TextField(
+            inputFormatters: [
+              CapitalizeFirstLetterFormatter(),
+            ],
             controller: controller, // Attach controller
             decoration: InputDecoration(
               border: OutlineInputBorder(

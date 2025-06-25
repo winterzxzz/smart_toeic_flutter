@@ -197,13 +197,16 @@ class _MatchingWordState extends State<MatchingWord>
   Widget _buildWordContent(String text, bool isSelected, VoidCallback onTap) {
     final theme = Theme.of(context);
     return InkWell(
+      borderRadius: BorderRadius.circular(8),
       onTap: onTap,
       child: Container(
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? theme.colorScheme.primary : Colors.white,
-          border: Border.all(color: Colors.grey),
+          color: isSelected
+              ? theme.colorScheme.primary
+              : theme.colorScheme.primary.withValues(alpha: 0.2),
+          border: Border.all(color: theme.colorScheme.primary, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(16),

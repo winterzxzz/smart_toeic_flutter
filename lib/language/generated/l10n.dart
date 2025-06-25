@@ -2849,6 +2849,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Difficulty Rate`
+  String get difficulty_rate {
+    return Intl.message(
+      'Difficulty Rate',
+      name: 'difficulty_rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time`
+  String get time {
+    return Intl.message(
+      'Time',
+      name: 'time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of Questions`
+  String get number_of_questions {
+    return Intl.message(
+      'Number of Questions',
+      name: 'number_of_questions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of Correct Answers`
+  String get number_of_correct_answers {
+    return Intl.message(
+      'Number of Correct Answers',
+      name: 'number_of_correct_answers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of Wrong Answers`
+  String get number_of_wrong_answers {
+    return Intl.message(
+      'Number of Wrong Answers',
+      name: 'number_of_wrong_answers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accuracy Rate`
+  String get accuracy_rate {
+    return Intl.message(
+      'Accuracy Rate',
+      name: 'accuracy_rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quiz Result`
+  String get quiz_result {
+    return Intl.message(
+      'Quiz Result',
+      name: 'quiz_result',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

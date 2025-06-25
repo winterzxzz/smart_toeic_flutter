@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -50,14 +52,21 @@ class Page extends StatelessWidget {
             onPressed: () {
               GoRouter.of(context).push(AppRouter.upgradeAccount);
             },
-            icon: SvgPicture.asset(
-              AppImages.icPremium,
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                theme.colorScheme.primary,
-                BlendMode.srcIn,
-              ),
+            icon: BlocSelector<UserCubit, UserState, bool>(
+              selector: (state) {
+                return state.user?.isPremium() ?? false;
+              },
+              builder: (context, isPremium) {
+                return SvgPicture.asset(
+                  AppImages.icPremium,
+                  width: 24,
+                  height: 24,
+                  colorFilter: ColorFilter.mode(
+                    isPremium ? theme.colorScheme.primary : Colors.grey,
+                    BlendMode.srcIn,
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -127,4 +136,3 @@ class Page extends StatelessWidget {
     );
   }
 }
-
