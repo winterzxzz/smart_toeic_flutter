@@ -64,6 +64,11 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     );
   }
 
+  void _scrollToTop() {
+    listController.jumpToItem(
+        index: 0, scrollController: scrollController, alignment: 0);
+  }
+
   void setUrlAudio(String url) async {
     await audioPlayer.setSourceUrl(url).then((_) async {
       await audioPlayer.resume();
@@ -136,6 +141,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     final questionsOfPart = state.questions
         .where((question) => question.part == part.numValue)
         .toList();
+    _scrollToTop();
     if (questionsOfPart.isEmpty) {
       emit(state.copyWith(
         focusPart: part,
