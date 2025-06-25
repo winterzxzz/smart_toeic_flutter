@@ -25,7 +25,7 @@ class AppColors {
 
   ///Common
   static const Color primary = Color(0xFF47bcaa);
-  static const Color secondary = Color(0xFF3E4450);
+  static const Color secondary = Color(0x803E4450);
   static const Color error = Color(0xFFEB5757);
   static const Color success = Colors.green;
 
