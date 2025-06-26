@@ -28,11 +28,11 @@ class WidgetUpdateWorker(
             val updateType = inputData.getString("updateType") ?: "content"
             when (updateType) {
                 "content" -> {
-                    val currentIndex = ContentPreferences.getCurrentFlashCardIndex(applicationContext)
-                    val flashCards = ContentPreferences.loadFlashCards(applicationContext)
-                    val flashCard = flashCards[currentIndex]
-                    if(flashCard != null) {
-                        withContext(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
+                        val currentIndex = ContentPreferences.getCurrentFlashCardIndex(applicationContext)
+                        val flashCards = ContentPreferences.loadFlashCards(applicationContext)
+                        val flashCard = flashCards[currentIndex]
+                        if(flashCard != null) {
                             val isCanShowNotification = ContentPreferences.isCanShowNotification(applicationContext)
                             if(isCanShowNotification) {
                                 Log.d("WidgetUpdateWorker", "Showing notification for flash card: ${flashCard.word}")
@@ -41,7 +41,9 @@ class WidgetUpdateWorker(
                                 Log.d("WidgetUpdateWorker", "Notification is disabled, not showing notification for flash card: ${flashCard.word}")
                                 ContentPreferences.setIsCanShowNotification(applicationContext, true)
                             }
-                            TOEICGlanceWidget.updateSpecificWidgetByGlanceId(applicationContext, flashCard)
+                            if(TOEICGlanceWidget.isWidgetAdded(applicationContext)) {
+                                TOEICGlanceWidget.updateSpecificWidgetByGlanceId(applicationContext, flashCard)
+                            }
                             ContentPreferences.setCurrentFlashCardIndex(applicationContext, (currentIndex + 1) % flashCards.size)
                         }
                     }

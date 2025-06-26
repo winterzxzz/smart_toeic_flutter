@@ -89,12 +89,6 @@ class MainActivity : FlutterActivity() {
                         ContentPreferences.clearAllData(this)
                         result.success("All widget updates cancelled")
                     }
-                    "isWidgetAdded" -> {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val isAdded = isGlanceWidgetAdded()
-                            result.success(isAdded)
-                        }
-                    }
                     else -> {
                         result.notImplemented()
                     }
@@ -112,22 +106,6 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private suspend fun isGlanceWidgetAdded(): Boolean {
-        return try {
-            val glanceAppWidgetManager = GlanceAppWidgetManager(applicationContext)
-            val glanceIds = glanceAppWidgetManager.getGlanceIds(TOEICGlanceWidget::class.java)
-            if (glanceIds.isNotEmpty()) {
-                Log.d("MainActivity", "Widget is already added.")
-                true
-            } else {
-                Log.d("MainActivity", "Widget is not added.")
-                false
-            }
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Error checking widget: ${e.message}", e)
-            false
-        }
-    }
 
     private fun sendDeepLinkToFlutter(deepLink: String) {
         flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->

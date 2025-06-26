@@ -7,30 +7,29 @@ void showToast({
   required ToastificationType type,
 }) {
   toastification.show(
-    type: type,
-    title: Text(title),
-    description: description != null ? Text(description) : null,
-    primaryColor: Colors.white,
-    alignment: Alignment.bottomCenter,
-    pauseOnHover: false,
-    autoCloseDuration: const Duration(seconds: 2),
-    progressBarTheme: ProgressIndicatorThemeData(
-      color: type == ToastificationType.success
+      type: type,
+      description: Text(title),
+      primaryColor: Colors.white,
+      alignment: Alignment.bottomCenter,
+      pauseOnHover: false,
+      autoCloseDuration: const Duration(seconds: 2),
+      progressBarTheme: ProgressIndicatorThemeData(
+        color: type == ToastificationType.success
+            ? Colors.green
+            : type == ToastificationType.info
+                ? Colors.blue
+                : type == ToastificationType.warning
+                    ? Colors.orange
+                    : Colors.red,
+      ),
+      showProgressBar: true,
+      backgroundColor: type == ToastificationType.success
           ? Colors.green
           : type == ToastificationType.info
               ? Colors.blue
               : type == ToastificationType.warning
                   ? Colors.orange
                   : Colors.red,
-    ),
-    showProgressBar: true,
-    backgroundColor: type == ToastificationType.success
-        ? Colors.green
-        : type == ToastificationType.info
-            ? Colors.blue
-            : type == ToastificationType.warning
-                ? Colors.orange
-                : Colors.red,
-    foregroundColor: Colors.white,
-  );
+      foregroundColor: Colors.white,
+      closeButtonShowType: CloseButtonShowType.none);
 }

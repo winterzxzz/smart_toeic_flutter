@@ -212,5 +212,18 @@ class TOEICGlanceWidget : GlanceAppWidget() {
                 }
             }
         }
+
+        suspend fun isWidgetAdded(context: Context): Boolean {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val glanceAppWidgetManager = GlanceAppWidgetManager(context)
+                    val glanceIds = glanceAppWidgetManager.getGlanceIds(TOEICGlanceWidget::class.java)
+                    glanceIds.isNotEmpty()
+                } catch (e: Exception) {
+                    Log.e("TOEICGlanceWidget", "Error checking widget: ${e.message}", e)
+                    false
+                }
+            }
+        }
     }
 }

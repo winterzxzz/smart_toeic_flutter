@@ -68,19 +68,4 @@ class WidgetService {
     }
     return null;
   }
-
-  /// Check if the widget is added to the home screen
-  Future<bool> isWidgetAdded() async {
-    if (Platform.isAndroid) {
-      try {
-        final bool isAdded = await _channel.invokeMethod('isWidgetAdded');
-        return isAdded;
-      } on PlatformException catch (e) {
-        debugPrint("Failed to check if widget is added: '${e.message}'.");
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
 }
