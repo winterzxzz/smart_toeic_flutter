@@ -32,6 +32,7 @@ class FullTestMode extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           CustomButton(
+            width: double.infinity,
             height: 50,
             onPressed: () {
               GoRouter.of(context)

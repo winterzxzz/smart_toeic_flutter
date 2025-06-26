@@ -77,6 +77,7 @@ class _PracticeModeState extends State<PracticeMode> {
         SizedBox(
           child: CustomButton(
             height: 50,
+            width: double.infinity,
             onPressed: selectedParts.isEmpty
                 ? null
                 : () {

@@ -226,6 +226,7 @@ class _SettingPageState extends State<SettingPage> {
                         Container(
                           margin: AppStyle.edgeInsetsA12,
                           child: CustomButton(
+                            width: double.infinity,
                             onPressed: () => _showTimePicker(
                                 context,
                                 state.dailyReminderTime ??

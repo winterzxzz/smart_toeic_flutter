@@ -123,6 +123,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
             ),
             const SizedBox(height: 12),
             CustomButton(
+              width: double.infinity,
               height: 50,
               onPressed: () => _cubit.handleCheck(_transcriptController.text),
               child: Text(S.current.check),

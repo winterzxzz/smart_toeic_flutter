@@ -113,6 +113,7 @@ class _PageState extends State<Page> {
                                 state.loadStatus == LoadStatus.loading,
                             builder: (context, isLoading) {
                               return CustomButton(
+                                width: double.infinity,
                                 onPressed: _isResetPasswordButtonEnabled()
                                     ? () {
                                         context

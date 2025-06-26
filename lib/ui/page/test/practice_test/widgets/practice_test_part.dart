@@ -82,24 +82,22 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
                     child: Column(
                       children: [
                         Container(
-                          height: 30,
+                          height: 25,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: color,
                             borderRadius: BorderRadius.circular(6.0),
                           ),
-                          child: Center(
-                            child: Icon(
-                              isAnswered
-                                  ? Icons.check_circle
-                                  : Icons.circle_outlined,
-                              size: 20,
-                              color: isAnswered ? Colors.white : null,
-                            ),
+                          child: Icon(
+                            isAnswered
+                                ? Icons.check_circle
+                                : Icons.circle_outlined,
+                            size: 20,
+                            color: isAnswered ? Colors.white : null,
                           ),
                         ),
                         const SizedBox(
-                          height: 4,
+                          height: 2,
                         ),
                         Text(
                           widget.questions[index].id.toString(),
