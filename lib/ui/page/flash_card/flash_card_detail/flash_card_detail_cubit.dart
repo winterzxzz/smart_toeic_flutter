@@ -1,11 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
 import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
+import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'flash_card_detail_state.dart';
 
 class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
@@ -19,7 +21,7 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
         super(FlashCardDetailState.initial());
 
   Future<void> fetchFlashCards(String setId) async {
-    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    emit(state.copyWith(loadStatus: LoadStatus.loading, setFlashCardId: setId));
     final response = await _flashCardRespository.getFlashCards(setId);
     await Future.delayed(const Duration(seconds: 1));
     response.fold(
@@ -59,31 +61,35 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
     final response =
         await _flashCardRespository.createFlashCard(flashCardRequest);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.message,
-      )),
-      (r) => emit(state.copyWith(
+        (l) => emit(state.copyWith(
+              loadStatus: LoadStatus.failure,
+              message: l.message,
+            )), (r) {
+      emit(state.copyWith(
         loadStatus: LoadStatus.success,
         loadStatusAiGen: LoadStatus.success,
         flashCards: [r, ...state.flashCards],
-      )),
-    );
+      ));
+      injector<FlashCardCubit>()
+          .updateSetFlashCardAfterAddedd(setFlashCardId: state.setFlashCardId);
+    });
   }
 
   Future<void> deleteFlashCard(String id) async {
     final response = await _flashCardRespository.deleteFlashCard(id);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.toString(),
-      )),
-      (r) => emit(state.copyWith(
+        (l) => emit(state.copyWith(
+              loadStatus: LoadStatus.failure,
+              message: l.toString(),
+            )), (r) {
+      emit(state.copyWith(
         loadStatus: LoadStatus.success,
         loadStatusAiGen: LoadStatus.success,
         flashCards: state.flashCards.where((e) => e.id != id).toList(),
-      )),
-    );
+      ));
+      injector<FlashCardCubit>()
+          .updateSetFlashCardAfterRemoved(setFlashCardId: state.setFlashCardId);
+    });
   }
 
   Future<void> updateFlashCard(

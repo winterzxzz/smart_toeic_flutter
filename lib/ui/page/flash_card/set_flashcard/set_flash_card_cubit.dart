@@ -120,4 +120,37 @@ class FlashCardCubit extends Cubit<FlashCardState> {
       },
     );
   }
+
+  void updateSetFlashCardAfterAddedd({
+    required String setFlashCardId,
+  }) {
+    emit(state.copyWith(
+      flashCards: state.flashCards.map((e) {
+        if (e.id == setFlashCardId) {
+          return e.copyWith(
+            numberOfFlashcards: e.numberOfFlashcards + 1,
+          );
+        }
+        return e;
+      }).toList(),
+    ));
+  }
+
+  void updateSetFlashCardAfterRemoved({
+    required String setFlashCardId,
+  }) {
+    emit(state.copyWith(
+      flashCards: state.flashCards.map((e) {
+        if (e.id == setFlashCardId) {
+          if (e.numberOfFlashcards <= 0) {
+            return e;
+          }
+          return e.copyWith(
+            numberOfFlashcards: e.numberOfFlashcards - 1,
+          );
+        }
+        return e;
+      }).toList(),
+    ));
+  }
 }

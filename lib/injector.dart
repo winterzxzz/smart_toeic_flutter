@@ -36,7 +36,6 @@ Future<void> init() async {
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
-    ..registerLazySingleton<FlashCardCubit>(() => FlashCardCubit(injector()))
     ..registerFactory<FlashCardDetailCubit>(() => FlashCardDetailCubit(
           flashCardRespository: injector(),
           widgetService: injector(),
@@ -68,8 +67,8 @@ Future<void> init() async {
   // Singleton Cubits (long-lived objects)
   injector
     ..registerLazySingleton<EntrypointCubit>(() => EntrypointCubit())
-    ..registerLazySingleton<UserCubit>(() => UserCubit(injector()));
-
+    ..registerLazySingleton<UserCubit>(() => UserCubit(injector()))
+    ..registerLazySingleton<FlashCardCubit>(() => FlashCardCubit(injector()));
   // Conditional registrations
   if (!injector.isRegistered<TestsCubit>()) {
     injector.registerLazySingleton<TestsCubit>(() => TestsCubit(injector()));
