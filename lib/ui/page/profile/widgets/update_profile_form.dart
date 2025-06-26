@@ -5,7 +5,6 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
@@ -129,8 +128,6 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
                     listener: (context, state) {
                       if (state.updateStatus == LoadStatus.success) {
                         GoRouter.of(context).pop();
-                      } else if (state.updateStatus == LoadStatus.failure) {
-                        AppNavigator(context: context).error(state.message);
                       }
                     },
                     buildWhen: (pre, current) =>

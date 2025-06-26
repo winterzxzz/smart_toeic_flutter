@@ -51,11 +51,8 @@ class UserCubit extends Cubit<UserState> {
     response.fold(
       (l) {
         emit(state.copyWith(
-            updateTargetScoreStatus: LoadStatus.failure,
-            message: l.message));
-        showToast(
-            title: l.message,
-            type: ToastificationType.error);
+            updateTargetScoreStatus: LoadStatus.failure, message: l.message));
+        showToast(title: l.message, type: ToastificationType.error);
       },
       (r) {
         emit(state.copyWith(
@@ -86,14 +83,19 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> updateProfile(ProfileUpdateRequest request) async {
+    if (request.name.isEmpty) {
+      emit(state.copyWith(
+          updateStatus: LoadStatus.failure, message: "Vui lòng nhập tên"));
+      showToast(title: "Vui lòng nhập tên", type: ToastificationType.error);
+      return;
+    }
     emit(state.copyWith(updateStatus: LoadStatus.loading));
     final response = await profileRepository.updateProfile(request);
     response.fold(
       (l) {
         emit(state.copyWith(
             updateStatus: LoadStatus.failure, message: l.message));
-        showToast(
-            title: l.message, type: ToastificationType.error);
+        showToast(title: l.message, type: ToastificationType.error);
       },
       (r) {
         final currentUser = state.user!;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -8,7 +7,6 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_navigator.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_state.dart';
@@ -69,11 +67,7 @@ class _PageState extends State<Page> {
     final navigator = RegisterNavigator(context: context);
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
-        if (LoadStatus.failure == state.loadDataStatus) {
-          showToast(title: state.message, type: ToastificationType.error);
-        }
         if (LoadStatus.success == state.loadDataStatus) {
-          showToast(title: state.message, type: ToastificationType.success);
           navigator.navigateToLogin();
         }
       },

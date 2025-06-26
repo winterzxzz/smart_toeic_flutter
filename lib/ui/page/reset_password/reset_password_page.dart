@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -8,7 +7,6 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_cubit.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_navigator.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_state.dart';
@@ -57,20 +55,7 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     final navigator = ResetPasswordNavigator(context: context);
-    return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
-      listener: (context, state) {
-        if (state.loadStatus == LoadStatus.failure) {
-          showToast(
-            title: state.message,
-            type: ToastificationType.error,
-          );
-        } else if (state.loadStatus == LoadStatus.success) {
-          showToast(
-            title: state.message,
-            type: ToastificationType.success,
-          );
-        }
-      },
+    return BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
       builder: (context, state) {
         return Scaffold(
           body: Center(

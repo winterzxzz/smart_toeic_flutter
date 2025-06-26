@@ -52,7 +52,6 @@ class FlashCardCubit extends Cubit<FlashCardState> {
   }
 
   Future<void> createFlashCardSet(String title, String description) async {
-    emit(state.copyWith(loadStatus: LoadStatus.initial));
     if (title.isEmpty) {
       emit(state.copyWith(
         loadStatus: LoadStatus.failure,
@@ -134,11 +133,14 @@ class FlashCardCubit extends Cubit<FlashCardState> {
   Future<void> updateFlashCardSet(
       String id, String title, String description) async {
     if (title.isEmpty) {
-      emit(state.copyWith(loadStatus: LoadStatus.initial));
       emit(state.copyWith(
         loadStatus: LoadStatus.failure,
         message: "Vui lòng nhập tiêu đề",
       ));
+      showToast(
+        title: "Vui lòng nhập tiêu đề",
+        type: ToastificationType.error,
+      );
       return;
     }
     final response =

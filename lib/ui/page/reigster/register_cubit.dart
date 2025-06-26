@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/common/utils/app_validartor.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/reigster/register_state.dart';
 
 import '../../../data/models/enums/load_status.dart';
@@ -38,17 +40,30 @@ class RegisterCubit extends Cubit<RegisterState> {
       emit(state.copyWith(loadDataStatus: LoadStatus.loading));
       final result =
           await authRepo.signUp(email: email, name: name, password: password);
-      result.fold(
-          (l) => emit(state.copyWith(
-              loadDataStatus: LoadStatus.failure,
-              message: l.message)), (response) {
+      result.fold((l) {
+        emit(state.copyWith(
+            loadDataStatus: LoadStatus.failure, message: l.message));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      }, (response) {
         emit(state.copyWith(
             loadDataStatus: LoadStatus.success,
             message: 'Register success! Login to continue'));
+        showToast(
+          title: 'Register success! Login to continue',
+          type: ToastificationType.success,
+        );
       });
     } catch (e) {
       emit(state.copyWith(
           loadDataStatus: LoadStatus.failure, message: e.toString()));
+      // Show error message
+      showToast(
+        title: e.toString(),
+        type: ToastificationType.error,
+      );
     }
   }
 }

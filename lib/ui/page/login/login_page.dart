@@ -65,9 +65,6 @@ class _PageState extends State<Page> {
     final navigator = LoginNavigator(context: context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state.loadStatus == LoadStatus.failure) {
-          navigator.error(state.errorMessage);
-        }
         if (state.loadStatus == LoadStatus.success) {
           GoRouter.of(context).goNamed(AppRouter.bottomTab);
         }
