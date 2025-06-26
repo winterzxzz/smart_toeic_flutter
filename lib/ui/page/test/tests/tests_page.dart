@@ -4,7 +4,6 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/test/tests/tests_cubit.dart';
@@ -43,15 +42,7 @@ class _PageState extends State<Page> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: BlocConsumer<TestsCubit, TestsState>(
-        listenWhen: (previous, current) {
-          return previous.loadStatus != current.loadStatus;
-        },
-        listener: (context, state) {
-          if (state.loadStatus == LoadStatus.failure) {
-            AppNavigator(context: context).error(state.message);
-          }
-        },
+      body: BlocBuilder<TestsCubit, TestsState>(
         buildWhen: (previous, current) {
           return previous.filteredTests != current.filteredTests ||
               previous.loadStatus != current.loadStatus;

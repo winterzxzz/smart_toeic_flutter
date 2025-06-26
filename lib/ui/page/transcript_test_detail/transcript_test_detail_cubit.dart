@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
 import 'package:toeic_desktop/data/services/stt_service.dart';
 import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
 class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
@@ -38,8 +40,11 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
     final transcriptTestDetail = await _transcriptTestRepository
         .getTranscriptTestDetail(transcriptTestId);
     transcriptTestDetail.fold(
-      (l) => emit(
-          state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
+      (l) {
+        emit(
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message));
+        showToast(title: l.message, type: ToastificationType.error);
+      },
       (r) => emit(
           state.copyWith(loadStatus: LoadStatus.success, transcriptTests: r)),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
@@ -10,7 +9,6 @@ import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_state.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/widgets/analysis_markdown.dart';
@@ -49,12 +47,7 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AnalysisCubit, AnalysisState>(
-        listener: (context, state) {
-          if (state.loadStatus == LoadStatus.failure) {
-            showToast(title: state.message, type: ToastificationType.error);
-          }
-        },
+      body: BlocBuilder<AnalysisCubit, AnalysisState>(
         builder: (context, state) {
           return CustomScrollView(
             controller: analysisCubit.scrollController,

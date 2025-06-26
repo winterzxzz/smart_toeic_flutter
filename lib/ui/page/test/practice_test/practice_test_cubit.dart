@@ -17,7 +17,6 @@ import 'package:toeic_desktop/data/models/request/result_item_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
-import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_page.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
@@ -98,9 +97,12 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
       await getResultTestByResultId(resultId);
     }
     res1.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+        ));
+        showToast(title: l.message, type: ToastificationType.error);
+      },
       (questions) => emit(state.copyWith(
         questions: _setQuestionFollowPartSelected(questions, parts),
         loadStatus: LoadStatus.success,
@@ -251,10 +253,13 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
     final response = await _testRepository.submitTest(request);
 
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatusSubmit: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatusSubmit: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(title: l.message, type: ToastificationType.error);
+      },
       (r) async {
         final resultModel = ResultModel(
           resultId: r.id ?? '',
@@ -282,7 +287,10 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
   Future<void> getResultTestByResultId(String resultId) async {
     final response = await _testRepository.getResultTestByResultId(resultId);
     response.fold(
-      (l) => emit(state.copyWith(loadStatus: LoadStatus.failure)),
+      (l) {
+        emit(state.copyWith(loadStatus: LoadStatus.failure));
+        showToast(title: l.message, type: ToastificationType.error);
+      },
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
         questionsResult: r,
@@ -313,10 +321,7 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         emit(state.copyWith(
           loadStatusExplain: LoadStatus.failure,
         ));
-        showToast(
-            title: S.current.error,
-            description: l.message,
-            type: ToastificationType.error);
+        showToast(title: l.message, type: ToastificationType.error);
       },
       (r) {
         final newListQuestion = state.questions.map((e) {

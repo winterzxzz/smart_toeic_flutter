@@ -99,44 +99,45 @@ class _PageState extends State<Page> {
                   child: LoadingCircle(),
                 )
               else ...[
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 16),
-                        // Action Buttons
-                        _buildActionButton(
-                          context,
-                          icon: Icons.play_circle_outline_rounded,
-                          label: S.current.practice_flashcards,
-                          onPressed: () {
-                            GoRouter.of(context).pushNamed(
-                              AppRouter.flashCardQuizz,
-                              extra: {'id': widget.setId},
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 12),
-                        _buildActionButton(
-                          context,
-                          icon: Icons.shuffle,
-                          label: S.current.view_randomly,
-                          onPressed: () {
-                            GoRouter.of(context).pushNamed(
-                              AppRouter.flashCardLearnFlip,
-                              extra: {
-                                'title': widget.title,
-                                'flashCards': _cubit.state.flashCards,
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                      ],
+                if (state.flashCards.isNotEmpty)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 16),
+                          // Action Buttons
+                          _buildActionButton(
+                            context,
+                            icon: Icons.play_circle_outline_rounded,
+                            label: S.current.practice_flashcards,
+                            onPressed: () {
+                              GoRouter.of(context).pushNamed(
+                                AppRouter.flashCardQuizz,
+                                extra: {'id': widget.setId},
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                          _buildActionButton(
+                            context,
+                            icon: Icons.shuffle,
+                            label: S.current.view_randomly,
+                            onPressed: () {
+                              GoRouter.of(context).pushNamed(
+                                AppRouter.flashCardLearnFlip,
+                                extra: {
+                                  'title': widget.title,
+                                  'flashCards': _cubit.state.flashCards,
+                                },
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   sliver: state.flashCards.isEmpty

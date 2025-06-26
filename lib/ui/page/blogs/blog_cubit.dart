@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/blog_repository.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_state.dart';
 
 class BlogCubit extends Cubit<BlogState> {
@@ -12,8 +14,11 @@ class BlogCubit extends Cubit<BlogState> {
 
     final result = await blogRepository.getBlog();
     result.fold(
-      (l) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.message)),
+      (l) {
+        emit(
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message));
+        showToast(title: l.message, type: ToastificationType.error);
+      },
       (r) {
         if (blogId != null) {
           emit(state.copyWith(
@@ -43,8 +48,11 @@ class BlogCubit extends Cubit<BlogState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final searchBlogs = await blogRepository.searchBlog(keyword);
     searchBlogs.fold(
-      (l) => emit(state.copyWith(
-          loadStatus: LoadStatus.failure, message: l.message)),
+      (l) {
+        emit(
+            state.copyWith(loadStatus: LoadStatus.failure, message: l.message));
+        showToast(title: l.message, type: ToastificationType.error);
+      },
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,

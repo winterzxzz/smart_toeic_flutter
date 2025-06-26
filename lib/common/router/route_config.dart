@@ -32,7 +32,7 @@ import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/mode_test_page
 import 'package:toeic_desktop/ui/page/test/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
 
-import '../../ui/page/splash/splash.dart';
+import '../../ui/page/splash/splash_page.dart';
 
 class AppRouter {
   AppRouter._();

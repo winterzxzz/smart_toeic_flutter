@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/test/tests/tests_state.dart';
 
 class TestsCubit extends Cubit<TestsState> {
@@ -12,10 +14,13 @@ class TestsCubit extends Cubit<TestsState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final response = await _testRepository.getTests(limit: 10);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.toString(),
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(title: l.message, type: ToastificationType.error);
+      },
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
         tests: r,

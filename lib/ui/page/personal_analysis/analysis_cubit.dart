@@ -18,9 +18,10 @@ class AnalysisCubit extends Cubit<AnalysisState> {
   Future<void> fetchProfileAnalysis() async {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await profileRepository.getProfileAnalysis();
-    result.fold(
-        (l) => emit(
-            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
+    result.fold((l) {
+      emit(state.copyWith(loadStatus: LoadStatus.failure, message: l.message));
+      showToast(title: l.message, type: ToastificationType.error);
+    },
         (r) => emit(state.copyWith(
             loadStatus: LoadStatus.success, profileAnalysis: r)));
   }
@@ -28,10 +29,11 @@ class AnalysisCubit extends Cubit<AnalysisState> {
   Future<void> fetchSuggestForStudy() async {
     emit(state.copyWith(suggestForStudyStatus: LoadStatus.loading));
     final result = await profileRepository.getSuggestForStudy();
-    result.fold(
-        (l) => emit(state.copyWith(
-            suggestForStudyStatus: LoadStatus.failure,
-            message: l.message)), (r) {
+    result.fold((l) {
+      emit(state.copyWith(
+          suggestForStudyStatus: LoadStatus.failure, message: l.message));
+      showToast(title: l.message, type: ToastificationType.error);
+    }, (r) {
       emit(state.copyWith(
           suggestForStudyStatus: LoadStatus.success, suggestForStudy: r));
       showToast(

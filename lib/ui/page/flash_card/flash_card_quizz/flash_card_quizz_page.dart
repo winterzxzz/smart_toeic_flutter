@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -11,7 +10,6 @@ import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/confidence_level.dart';
@@ -101,13 +99,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                 .pushReplacementNamed(AppRouter.flashCardQuizzResult, extra: {
               'flashCardQuizzScoreRequest': state.flashCardQuizzScoreRequest,
             });
-          }
-          if (state.loadStatus == LoadStatus.failure) {
-            showToast(title: state.message, type: ToastificationType.error);
-          } else if (state.loadStatus == LoadStatus.success) {
-            if (state.message.isNotEmpty) {
-              showToast(title: state.message, type: ToastificationType.success);
-            }
           }
         },
         builder: (context, state) {

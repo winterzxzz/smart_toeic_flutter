@@ -8,7 +8,6 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -51,13 +50,8 @@ class _PageState extends State<Page> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: BlocConsumer<FlashCardDetailLearningCubit,
+      body: BlocBuilder<FlashCardDetailLearningCubit,
           FlashCardDetailLearningState>(
-        listener: (context, state) {
-          if (state.loadStatus == LoadStatus.failure) {
-            AppNavigator(context: context).error(state.message);
-          }
-        },
         builder: (context, state) {
           return CustomScrollView(
             slivers: [
@@ -103,7 +97,7 @@ class _PageState extends State<Page> {
                             },
                           );
                         },
-                      child: Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [

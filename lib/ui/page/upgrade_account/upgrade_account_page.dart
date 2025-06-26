@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -11,11 +10,9 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_cubit.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_state.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/widgets/upgrade_account_card.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PricingPlanScreen extends StatelessWidget {
   const PricingPlanScreen({super.key});
@@ -55,14 +52,7 @@ class _PageState extends State<Page> {
           AppNavigator(context: context).showLoadingOverlay();
         } else {
           AppNavigator(context: context).hideLoadingOverlay();
-          if (state.loadStatus == LoadStatus.failure) {
-            showToast(
-              title: state.message,
-              type: ToastificationType.error,
-            );
-          } else if (state.loadStatus == LoadStatus.success) {
-            _launchUrl(state.payment!.orderUrl);
-          }
+          if (state.loadStatus == LoadStatus.failure) {}
         }
       },
       builder: (context, state) {
@@ -299,8 +289,7 @@ class _PageState extends State<Page> {
                             width: size.width * 0.6,
                             height: 50,
                             onPressed: () {
-                              _launchUrl(
-                                  'mailto:winter@toeic.com?subject=Support&body=I have a question about the TOEIC app');
+                              _upgradeAccountCubit.mailTo();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -328,14 +317,5 @@ class _PageState extends State<Page> {
         );
       },
     );
-  }
-
-  void _launchUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      showToast(
-        title: 'Could not open URL',
-        type: ToastificationType.error,
-      );
-    }
   }
 }

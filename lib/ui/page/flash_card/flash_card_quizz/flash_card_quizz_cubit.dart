@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 
@@ -34,13 +36,16 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final rs =
         await _flashCardRepository.updateFlashCardLearning(newLearningSetId);
-    rs.fold(
-        (l1) => emit(state.copyWith(
-            loadStatus: LoadStatus.failure, message: l1.message)), (r1) async {
+    rs.fold((l1) {
+      emit(state.copyWith(loadStatus: LoadStatus.failure, message: l1.message));
+      showToast(title: l1.message, type: ToastificationType.error);
+    }, (r1) async {
       final rs2 = await _flashCardRepository.getFlashCardsLearning(r1.id!);
-      rs2.fold(
-          (l2) => emit(state.copyWith(
-              loadStatus: LoadStatus.failure, message: l2.message)),
+      rs2.fold((l2) {
+        emit(state.copyWith(
+            loadStatus: LoadStatus.failure, message: l2.message));
+        showToast(title: l2.message, type: ToastificationType.error);
+      },
           (r2) => emit(state.copyWith(
               loadStatus: LoadStatus.success,
               flashCardLearning: r2,
@@ -144,10 +149,10 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
         .toList();
     final rs = await _flashCardRepository
         .updateSessionScore(newFlashCardQuizzScoreRequest);
-    rs.fold(
-        (l) => emit(
-            state.copyWith(loadStatus: LoadStatus.failure, message: l.message)),
-        (r) {
+    rs.fold((l) {
+      emit(state.copyWith(loadStatus: LoadStatus.failure, message: l.message));
+      showToast(title: l.message, type: ToastificationType.error);
+    }, (r) {
       injector<FlashCardCubit>().fetchFlashCardSetsLearning();
       emit(state.copyWith(
         isFinish: true,
@@ -155,6 +160,8 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
         loadStatus: LoadStatus.success,
         message: 'Kết thúc bài kiểm tra',
       ));
+      showToast(
+          title: 'Kết thúc bài kiểm tra', type: ToastificationType.success);
     });
   }
 

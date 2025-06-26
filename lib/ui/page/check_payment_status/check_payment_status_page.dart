@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
-import 'package:toeic_desktop/data/services/noti_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
@@ -42,17 +41,6 @@ class Page extends StatelessWidget {
               .showLoadingOverlay(message: S.current.checking_payment_status);
         } else {
           AppNavigator(context: context).hideLoadingOverlay();
-          if (state.loadStatus == LoadStatus.success) {
-            injector<NotiService>().showFlutterNotification(
-              title: S.current.congratulations,
-              content: S.current.your_account_has_been_successfully_upgraded,
-            );
-          } else {
-            injector<NotiService>().showFlutterNotification(
-              title: S.current.update_error,
-              content: state.message,
-            );
-          }
         }
       },
       builder: (context, state) {

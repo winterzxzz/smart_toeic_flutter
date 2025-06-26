@@ -1,7 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/payment_repository.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UpgradeAccountCubit extends Cubit<UpgradeAccountState> {
   final PaymentRepository _paymentRepository;
@@ -13,12 +16,36 @@ class UpgradeAccountCubit extends Cubit<UpgradeAccountState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final result = await _paymentRepository.getPayment();
     result.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.message,
-      )),
-      (payment) => emit(
-          state.copyWith(payment: payment, loadStatus: LoadStatus.success)),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
+      (payment) {
+        emit(state.copyWith(payment: payment, loadStatus: LoadStatus.success));
+        if (state.payment != null) {
+          _launchUrl(state.payment!.orderUrl);
+        }
+      },
     );
+  }
+
+  void mailTo() {
+    _launchUrl(
+        'mailto:winter@toeic.com?subject=Support&body=I have a question about the TOEIC app');
+  }
+
+  void _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      showToast(
+        title: 'Could not open URL',
+        type: ToastificationType.error,
+      );
+    }
   }
 }

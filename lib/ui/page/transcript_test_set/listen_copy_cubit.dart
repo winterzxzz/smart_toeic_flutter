@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_state.dart';
 
 class ListenCopyCubit extends Cubit<ListenCopyState> {
@@ -15,10 +17,16 @@ class ListenCopyCubit extends Cubit<ListenCopyState> {
     final transcriptTests =
         await _transcriptTestRepository.getTranscriptTestSets();
     transcriptTests.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) => emit(state.copyWith(
           loadStatus: LoadStatus.success,
           transcriptTestSets: r,
