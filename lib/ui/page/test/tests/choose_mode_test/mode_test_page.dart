@@ -33,6 +33,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
             actions: [
               Container(
                 margin: const EdgeInsets.only(right: 16),
+                height: 45,
                 width: 150,
                 child: CustomDropdownExample<String>(
                   data: [ModeTest.practice.name, ModeTest.full.name],

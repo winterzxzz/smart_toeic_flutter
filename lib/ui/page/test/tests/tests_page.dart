@@ -69,6 +69,7 @@ class _PageState extends State<Page> {
                 actions: [
                   Container(
                     margin: const EdgeInsets.only(right: 8),
+                    height: 45,
                     width: 150,
                     child: CustomDropdownExample<String>(
                       data: TestType.values.map((e) => e.name).toList(),

@@ -42,7 +42,7 @@ class _CustomDropdownExampleState<T> extends State<CustomDropdownExample<T>> {
         closedBorder: Border.all(color: theme.colorScheme.primary),
         closedFillColor: color,
         expandedFillColor: color,
-        headerStyle: theme.textTheme.bodySmall,
+        headerStyle: theme.textTheme.bodySmall?.copyWith(height: 0.1),
         hintStyle: theme.textTheme.bodySmall,
         listItemStyle: theme.textTheme.bodySmall,
         closedSuffixIcon: const FaIcon(
