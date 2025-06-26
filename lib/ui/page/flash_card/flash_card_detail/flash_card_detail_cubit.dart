@@ -49,6 +49,13 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
   }
 
   Future<void> createFlashCard(FlashCardRequest flashCardRequest) async {
+    if (!flashCardRequest.isValid()) {
+      showToast(
+        title: 'Vui lòng điền đầy đủ thông tin',
+        type: ToastificationType.error,
+      );
+      return;
+    }
     final response =
         await _flashCardRespository.createFlashCard(flashCardRequest);
     response.fold(

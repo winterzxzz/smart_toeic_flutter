@@ -37,8 +37,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
     return Scaffold(
       body: BlocListener<FlashCardCubit, FlashCardState>(
         listenWhen: (previous, current) =>
-            previous.loadStatus != current.loadStatus ||
-            previous.flashCards != current.flashCards,
+            previous.loadStatus != current.loadStatus,
         listener: (context, state) {
           if (state.loadStatus == LoadStatus.failure) {
             AppNavigator(context: context).error(state.message);
@@ -76,7 +75,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                   return const SliverFillRemaining(
                     child: LoadingCircle(),
                   );
-                } else if (state.loadStatus == LoadStatus.success) {
+                } else {
                   return SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     sliver: SliverList.separated(
@@ -92,7 +91,6 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                     ),
                   );
                 }
-                return const SliverToBoxAdapter(child: SizedBox());
               },
             ),
             const SliverPadding(

@@ -32,6 +32,17 @@ class FlashCardRequest {
     };
   }
 
+  bool isValid() {
+    return word.isNotEmpty &&
+        translation.isNotEmpty &&
+        setFlashcardId.isNotEmpty &&
+        definition.isNotEmpty &&
+        exampleSentence.isNotEmpty &&
+        note.isNotEmpty &&
+        partOfSpeech.isNotEmpty &&
+        pronunciation.isNotEmpty;
+  }
+
   FlashCardRequest copyWith({
     String? word,
     String? translation,

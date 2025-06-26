@@ -96,22 +96,7 @@ class _PageState extends State<Page> {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      Utils.showModalBottomSheetForm(
-                        context: context,
-                        title: S.current.add_new_word,
-                        child: BlocProvider.value(
-                          value: _cubit,
-                          child: FlashCardDetailForm(
-                            args: FlashCardDetailFormArgs(
-                              type: FlashCardDetailFormType.create,
-                              setFlashcardId: widget.setId,
-                              onSave: (flashCardRequest) {
-                                _cubit.createFlashCard(flashCardRequest);
-                              },
-                            ),
-                          ),
-                        ),
-                      );
+                      _showForm();
                     },
                   ),
                 ],
@@ -185,6 +170,25 @@ class _PageState extends State<Page> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  void _showForm() {
+    Utils.showModalBottomSheetForm(
+      context: context,
+      title: S.current.add_new_word,
+      child: BlocProvider.value(
+        value: _cubit,
+        child: FlashCardDetailForm(
+          args: FlashCardDetailFormArgs(
+            type: FlashCardDetailFormType.create,
+            setFlashcardId: widget.setId,
+            onSave: (flashCardRequest) {
+              _cubit.createFlashCard(flashCardRequest);
+            },
+          ),
+        ),
       ),
     );
   }

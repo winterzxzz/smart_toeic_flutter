@@ -1,8 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
-import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
 
 class FlashCardCubit extends Cubit<FlashCardState> {
@@ -15,7 +13,7 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     response.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
@@ -30,7 +28,7 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     response.fold(
       (l) => emit(state.copyWith(
         loadStatusLearning: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) => emit(state.copyWith(
         loadStatusLearning: LoadStatus.success,
@@ -40,12 +38,20 @@ class FlashCardCubit extends Cubit<FlashCardState> {
   }
 
   Future<void> createFlashCardSet(String title, String description) async {
+    emit(state.copyWith(loadStatus: LoadStatus.initial));
+    if (title.isEmpty) {
+      emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+        message: "Vui lòng nhập tiêu đề",
+      ));
+      return;
+    }
     final response =
         await _flashCardRespository.createFlashCardSet(title, description);
     response.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
@@ -59,17 +65,13 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     response.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
           flashCards: state.flashCards.where((e) => e.id != id).toList(),
         ));
-        showToast(
-          title: "Xóa thành công",
-          type: ToastificationType.success,
-        );
       },
     );
   }
@@ -80,7 +82,7 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     response.fold(
       (l) => emit(state.copyWith(
         loadStatusLearning: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) {
         emit(state.copyWith(
@@ -89,32 +91,32 @@ class FlashCardCubit extends Cubit<FlashCardState> {
               .where((e) => e.id != learningSetId)
               .toList(),
         ));
-        showToast(
-          title: "Xóa thành công",
-          type: ToastificationType.success,
-        );
       },
     );
   }
 
   Future<void> updateFlashCardSet(
       String id, String title, String description) async {
+    if (title.isEmpty) {
+      emit(state.copyWith(loadStatus: LoadStatus.initial));
+      emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+        message: "Vui lòng nhập tiêu đề",
+      ));
+      return;
+    }
     final response =
         await _flashCardRespository.updateFlashCardSet(id, title, description);
     response.fold(
       (l) => emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: l.toString(),
+        message: l.message,
       )),
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
           flashCards: state.flashCards.map((e) => e.id == id ? r : e).toList(),
         ));
-        showToast(
-          title: "Cập nhật thành công",
-          type: ToastificationType.success,
-        );
       },
     );
   }
