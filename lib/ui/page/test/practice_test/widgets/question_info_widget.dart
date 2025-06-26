@@ -58,7 +58,6 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
         // Options
         Flexible(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 4),
@@ -148,40 +147,43 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                     color = Colors.red.withValues(alpha: 0.5);
                                   }
                                 }
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 40,
-                                      height: 40,
-                                      child: Radio<String>(
-                                        value: option.id ?? '',
-                                        groupValue: questionResult?.useranswer,
-                                        activeColor: Colors.red,
-                                        onChanged: null,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 10),
-                                      decoration: BoxDecoration(
-                                        color: color,
-                                      ),
-                                      child: Text(
-                                        '${option.id}.',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                return Container(
+                                  color: color,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Radio<String>(
+                                          value: option.id ?? '',
+                                          groupValue:
+                                              questionResult?.useranswer,
+                                          activeColor: Colors.red,
+                                          onChanged: null,
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Expanded(
-                                      child: Container(
+                                      Container(
                                         margin: const EdgeInsets.only(top: 10),
                                         child: Text(
-                                            option.content.toString().trim()),
+                                          '${option.id}.',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                    )
-                                  ],
+                                      const SizedBox(width: 4),
+                                      Expanded(
+                                        child: Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 10),
+                                          child: Text(
+                                              option.content.toString().trim()),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 );
                               },
                             ),
@@ -265,40 +267,37 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                                   LoadStatus.loading &&
                                               state.loadingExplainQuestionId ==
                                                   widget.question.id;
-                                          return SizedBox(
-                                            child: CustomButton(
-                                              height: 50,
-                                              width: 200,
-                                              isLoading: isLoading,
-                                              onPressed: isLoading
-                                                  ? null
-                                                  : () async {
-                                                      await cubit
-                                                          .getExplainQuestion(
-                                                              widget.question);
-                                                    },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  if (isLoading)
-                                                    const LoadingCircle(
-                                                      size: 20,
-                                                    )
-                                                  else
-                                                    const FaIcon(
-                                                      FontAwesomeIcons.lock,
-                                                      size: 14,
-                                                    ),
-                                                  const SizedBox(width: 8),
-                                                  Text(
-                                                    S.current
-                                                        .create_answer_by_ai,
+                                          return CustomButton(
+                                            height: 50,
+                                            isLoading: isLoading,
+                                            onPressed: isLoading
+                                                ? null
+                                                : () async {
+                                                    await cubit
+                                                        .getExplainQuestion(
+                                                            widget.question);
+                                                  },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                if (isLoading)
+                                                  const LoadingCircle(
+                                                    size: 20,
+                                                  )
+                                                else
+                                                  const FaIcon(
+                                                    FontAwesomeIcons.lock,
+                                                    size: 14,
                                                   ),
-                                                ],
-                                              ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  S.current.create_answer_by_ai,
+                                                ),
+                                              ],
                                             ),
                                           );
                                         });

@@ -28,11 +28,11 @@ class _ModeTestpageState extends State<ModeTestpage> {
           SliverAppBar(
             title: Text(widget.test.title!),
             floating: true,
+            toolbarHeight: 55,
             leading: const LeadingBackButton(),
             actions: [
               Container(
                 margin: const EdgeInsets.only(right: 16),
-                height: 40,
                 width: 150,
                 child: CustomDropdownExample<String>(
                   data: [ModeTest.practice.name, ModeTest.full.name],

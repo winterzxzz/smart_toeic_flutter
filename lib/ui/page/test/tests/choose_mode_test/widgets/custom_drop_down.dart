@@ -42,12 +42,9 @@ class _CustomDropdownExampleState<T> extends State<CustomDropdownExample<T>> {
         closedBorder: Border.all(color: theme.colorScheme.primary),
         closedFillColor: color,
         expandedFillColor: color,
-        headerStyle: const TextStyle(
-          fontSize: 12,
-          height: 0.5,
-        ),
-        hintStyle: const TextStyle(fontSize: 12),
-        listItemStyle: const TextStyle(fontSize: 12),
+        headerStyle: theme.textTheme.bodySmall,
+        hintStyle: theme.textTheme.bodySmall,
+        listItemStyle: theme.textTheme.bodySmall,
         closedSuffixIcon: const FaIcon(
           FontAwesomeIcons.chevronDown,
           size: 10,

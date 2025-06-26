@@ -61,6 +61,7 @@ class _PageState extends State<Page> {
             slivers: [
               SliverAppBar(
                 floating: true,
+                toolbarHeight: 55,
                 title: Text(
                   S.current.tests,
                   style: theme.textTheme.titleMedium,
@@ -68,7 +69,6 @@ class _PageState extends State<Page> {
                 actions: [
                   Container(
                     margin: const EdgeInsets.only(right: 8),
-                    height: 40,
                     width: 150,
                     child: CustomDropdownExample<String>(
                       data: TestType.values.map((e) => e.name).toList(),

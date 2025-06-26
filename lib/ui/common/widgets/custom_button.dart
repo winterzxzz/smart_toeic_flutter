@@ -7,14 +7,14 @@ class CustomButton extends StatelessWidget {
   final void Function()? onPressed;
   final bool isLoading;
   final double height;
-  final double width;
+  final double? width;
   const CustomButton({
     super.key,
     required this.child,
     this.onPressed,
     this.isLoading = false,
     this.height = 55,
-    this.width = double.infinity,
+    this.width,
   });
 
   @override
@@ -29,18 +29,19 @@ class CustomButton extends StatelessWidget {
           backgroundColor: theme.colorScheme.primary,
           disabledBackgroundColor: theme.disabledColor,
           foregroundColor: AppColors.textWhite,
+          textStyle: theme.textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: Center(
-          child: isLoading
-              ? const LoadingCircle(
-                  size: 16,
-                  color: AppColors.textWhite,
-                )
-              : child,
-        ),
+        child: isLoading
+            ? const LoadingCircle(
+                size: 16,
+                color: AppColors.textWhite,
+              )
+            : child,
       ),
     );
   }

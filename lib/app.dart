@@ -3,6 +3,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
@@ -114,11 +115,15 @@ class MyApp extends StatelessWidget {
                     ),
                   );
                 },
-                child: _buildMaterialApp(
-                  locale: state.language.local,
-                  theme: state.themeMode,
-                  primaryColor: state.primaryColor,
-                  isDynamicColor: state.isDynamicColor,
+                child: ScreenUtilInit(
+                  designSize: const Size(375, 812),
+                  minTextAdapt: true,
+                  child: _buildMaterialApp(
+                    locale: state.language.local,
+                    theme: state.themeMode,
+                    primaryColor: state.primaryColor,
+                    isDynamicColor: state.isDynamicColor,
+                  ),
                 ),
               ),
             );

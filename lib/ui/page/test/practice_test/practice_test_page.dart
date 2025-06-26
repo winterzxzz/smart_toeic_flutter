@@ -258,24 +258,24 @@ class _PartSelectorHeaderDelegate extends SliverPersistentHeaderDelegate {
               itemBuilder: (context, index) => InkWell(
                 onTap: () => onTap(parts[index]),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: parts[index].numValue == focusPart.numValue
-                        ? theme.colorScheme.primary
-                        : theme.brightness == Brightness.dark
-                            ? AppColors.backgroundDarkSub
-                            : AppColors.backgroundLightSub,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(parts[index].name,
-                      style: TextStyle(
-                          color: parts[index].numValue == focusPart.numValue
-                              ? Colors.white
-                              : theme.brightness == Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black)),
-                ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: parts[index].numValue == focusPart.numValue
+                          ? theme.colorScheme.primary
+                          : theme.brightness == Brightness.dark
+                              ? AppColors.backgroundDarkSub
+                              : AppColors.backgroundLightSub,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      parts[index].name,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: parts[index].numValue == focusPart.numValue
+                            ? AppColors.textWhite
+                            : null,
+                      ),
+                    )),
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'app_colors.dart';
 
@@ -50,48 +51,48 @@ class AppThemes {
 
     return TextTheme(
       displayLarge: TextStyle(
-        fontSize: 96.0,
+        fontSize: 96.0.sp,
         color: textColor,
       ),
       displayMedium: TextStyle(
-        fontSize: 60.0,
+        fontSize: 60.0.sp,
         color: textColor,
       ),
       displaySmall: TextStyle(
-        fontSize: 48.0,
+        fontSize: 48.0.sp,
         color: textColor,
       ),
       headlineMedium: TextStyle(
-        fontSize: 34.0,
+        fontSize: 34.0.sp,
         color: textColor,
       ),
       headlineSmall: TextStyle(
-        fontSize: 24.0,
+        fontSize: 24.0.sp,
         color: textColor,
       ),
       titleLarge: TextStyle(
-        fontSize: 20.0,
+        fontSize: 20.0.sp,
         color: textColor,
         fontWeight: FontWeight.w500,
       ),
       titleMedium: TextStyle(
-        fontSize: 16.0,
+        fontSize: 16.0.sp,
         color: textColor,
       ),
       titleSmall: TextStyle(
-        fontSize: 14.0,
+        fontSize: 14.0.sp,
         color: textColor,
         fontWeight: FontWeight.w500,
       ),
-      bodyLarge: TextStyle(fontSize: 16.0, color: textColor),
-      bodyMedium: TextStyle(fontSize: 14.0, color: textColor),
-      bodySmall: TextStyle(fontSize: 12.0, color: textColor),
+      bodyLarge: TextStyle(fontSize: 16.0.sp, color: textColor),
+      bodyMedium: TextStyle(fontSize: 14.0.sp, color: textColor),
+      bodySmall: TextStyle(fontSize: 12.0.sp, color: textColor),
       labelLarge: TextStyle(
-        fontSize: 14.0,
+        fontSize: 14.0.sp,
         color: textColor,
         fontWeight: FontWeight.w500,
       ),
-      labelSmall: TextStyle(fontSize: 14.0, color: textColor),
+      labelSmall: TextStyle(fontSize: 14.0.sp, color: textColor),
     );
   }
 
