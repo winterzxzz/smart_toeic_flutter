@@ -11,7 +11,9 @@ void showToast({
     title: Text(title),
     description: description != null ? Text(description) : null,
     primaryColor: Colors.white,
-    autoCloseDuration: const Duration(seconds: 3),
+    alignment: Alignment.bottomCenter,
+    pauseOnHover: false,
+    autoCloseDuration: const Duration(seconds: 2),
     progressBarTheme: ProgressIndicatorThemeData(
       color: type == ToastificationType.success
           ? Colors.green

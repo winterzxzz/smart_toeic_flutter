@@ -7,7 +7,6 @@ import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -63,13 +62,7 @@ class _PageState extends State<Page> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: BlocConsumer<FlashCardDetailCubit, FlashCardDetailState>(
-        listener: (context, state) {
-          if (state.loadStatus == LoadStatus.failure ||
-              state.loadStatusAiGen == LoadStatus.failure) {
-            AppNavigator(context: context).error(state.message);
-          }
-        },
+      body: BlocBuilder<FlashCardDetailCubit, FlashCardDetailState>(
         builder: (context, state) {
           return CustomScrollView(
             slivers: [

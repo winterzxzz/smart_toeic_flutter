@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
 
 class FlashCardCubit extends Cubit<FlashCardState> {
@@ -11,10 +13,16 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading));
     final response = await _flashCardRespository.getSetFlashCards();
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
         flashCards: r,
@@ -26,10 +34,16 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     emit(state.copyWith(loadStatusLearning: LoadStatus.loading));
     final response = await _flashCardRespository.getSetFlashCardsLearning();
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatusLearning: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatusLearning: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) => emit(state.copyWith(
         loadStatusLearning: LoadStatus.success,
         flashCardsLearning: r,
@@ -44,15 +58,25 @@ class FlashCardCubit extends Cubit<FlashCardState> {
         loadStatus: LoadStatus.failure,
         message: "Vui lòng nhập tiêu đề",
       ));
+      showToast(
+        title: "Vui lòng nhập tiêu đề",
+        type: ToastificationType.error,
+      );
       return;
     }
     final response =
         await _flashCardRespository.createFlashCardSet(title, description);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) => emit(state.copyWith(
         loadStatus: LoadStatus.success,
         flashCards: [r, ...state.flashCards],
@@ -63,10 +87,16 @@ class FlashCardCubit extends Cubit<FlashCardState> {
   Future<void> deleteFlashCardSet(String id) async {
     final response = await _flashCardRespository.deleteFlashCardSet(id);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
@@ -80,10 +110,16 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     final response =
         await _flashCardRespository.deleteFlashCardLearning(learningSetId);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatusLearning: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatusLearning: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) {
         emit(state.copyWith(
           loadStatusLearning: LoadStatus.success,
@@ -108,10 +144,16 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     final response =
         await _flashCardRespository.updateFlashCardSet(id, title, description);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,

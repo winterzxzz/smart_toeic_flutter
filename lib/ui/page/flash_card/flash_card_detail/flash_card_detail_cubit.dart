@@ -24,11 +24,16 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
     emit(state.copyWith(loadStatus: LoadStatus.loading, setFlashCardId: setId));
     final response = await _flashCardRespository.getFlashCards(setId);
     await Future.delayed(const Duration(seconds: 1));
-    response.fold(
-        (l) => emit(state.copyWith(
-              loadStatus: LoadStatus.failure,
-              message: l.toString(),
-            )), (r) {
+    response.fold((l) {
+      emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+        message: l.message,
+      ));
+      showToast(
+        title: l.message,
+        type: ToastificationType.error,
+      );
+    }, (r) {
       emit(state.copyWith(
         loadStatus: LoadStatus.success,
         flashCards: r,
@@ -60,11 +65,16 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
     }
     final response =
         await _flashCardRespository.createFlashCard(flashCardRequest);
-    response.fold(
-        (l) => emit(state.copyWith(
-              loadStatus: LoadStatus.failure,
-              message: l.message,
-            )), (r) {
+    response.fold((l) {
+      emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+        message: l.message,
+      ));
+      showToast(
+        title: l.message,
+        type: ToastificationType.error,
+      );
+    }, (r) {
       emit(state.copyWith(
         loadStatus: LoadStatus.success,
         loadStatusAiGen: LoadStatus.success,
@@ -77,11 +87,16 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
 
   Future<void> deleteFlashCard(String id) async {
     final response = await _flashCardRespository.deleteFlashCard(id);
-    response.fold(
-        (l) => emit(state.copyWith(
-              loadStatus: LoadStatus.failure,
-              message: l.toString(),
-            )), (r) {
+    response.fold((l) {
+      emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+        message: l.message,
+      ));
+      showToast(
+        title: l.message,
+        type: ToastificationType.error,
+      );
+    }, (r) {
       emit(state.copyWith(
         loadStatus: LoadStatus.success,
         loadStatusAiGen: LoadStatus.success,
@@ -97,10 +112,16 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
     final response =
         await _flashCardRespository.updateFlashCard(id, word, translation);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatus: LoadStatus.failure,
-        message: l.toString(),
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,
@@ -126,10 +147,16 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
     emit(state.copyWith(loadStatusAiGen: LoadStatus.loading));
     final response = await _flashCardRespository.getFlashCardInforByAI(prompt);
     response.fold(
-      (l) => emit(state.copyWith(
-        loadStatusAiGen: LoadStatus.failure,
-        message: l.message,
-      )),
+      (l) {
+        emit(state.copyWith(
+          loadStatusAiGen: LoadStatus.failure,
+          message: l.message,
+        ));
+        showToast(
+          title: l.message,
+          type: ToastificationType.error,
+        );
+      },
       (r) {
         emit(state.copyWith(
           loadStatus: LoadStatus.success,

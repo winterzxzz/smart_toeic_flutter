@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
@@ -34,18 +33,7 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
               height: 16,
             ),
           ),
-          BlocConsumer<FlashCardCubit, FlashCardState>(
-            listenWhen: (previous, current) =>
-                previous.loadStatusLearning != current.loadStatusLearning ||
-                previous.flashCardsLearning != current.flashCardsLearning,
-            buildWhen: (previous, current) =>
-                previous.loadStatusLearning != current.loadStatusLearning ||
-                previous.flashCardsLearning != current.flashCardsLearning,
-            listener: (context, state) {
-              if (state.loadStatusLearning == LoadStatus.failure) {
-                AppNavigator(context: context).error(state.message);
-              }
-            },
+          BlocBuilder<FlashCardCubit, FlashCardState>(
             builder: (context, state) {
               if (state.loadStatusLearning == LoadStatus.loading) {
                 return const SliverFillRemaining(

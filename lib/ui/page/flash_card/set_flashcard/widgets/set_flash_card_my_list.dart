@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
@@ -35,69 +34,60 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
     // ignore: unused_local_variable
     final theme = Theme.of(context);
     return Scaffold(
-      body: BlocListener<FlashCardCubit, FlashCardState>(
-        listenWhen: (previous, current) =>
-            previous.loadStatus != current.loadStatus,
-        listener: (context, state) {
-          if (state.loadStatus == LoadStatus.failure) {
-            AppNavigator(context: context).error(state.message);
-          }
-        },
-        child: CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  const SizedBox(height: 16),
-                  CustomButton(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const FaIcon(FontAwesomeIcons.plus, size: 16),
-                        const SizedBox(width: 8),
-                        Text(S.current.create_flashcard_sets),
-                      ],
-                    ),
-                    onPressed: () => showCreateSetFlashCardBottomSheet(context),
+      body: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                const SizedBox(height: 16),
+                CustomButton(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const FaIcon(FontAwesomeIcons.plus, size: 16),
+                      const SizedBox(width: 8),
+                      Text(S.current.create_flashcard_sets),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                ]),
-              ),
+                  onPressed: () => showCreateSetFlashCardBottomSheet(context),
+                ),
+                const SizedBox(height: 16),
+              ]),
             ),
-            BlocBuilder<FlashCardCubit, FlashCardState>(
-              buildWhen: (previous, current) =>
-                  previous.loadStatus != current.loadStatus ||
-                  previous.flashCards != current.flashCards,
-              builder: (context, state) {
-                if (state.loadStatus == LoadStatus.loading) {
-                  return const SliverFillRemaining(
-                    child: LoadingCircle(),
-                  );
-                } else {
-                  return SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    sliver: SliverList.separated(
-                      itemBuilder: (context, index) {
-                        return SetFlashCardItem(
-                          flashcard: state.flashCards[index],
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(height: 16);
-                      },
-                      itemCount: state.flashCards.length,
-                    ),
-                  );
-                }
-              },
-            ),
-            const SliverPadding(
-              padding: EdgeInsets.only(bottom: 16),
-            ),
-          ],
-        ),
+          ),
+          BlocBuilder<FlashCardCubit, FlashCardState>(
+            buildWhen: (previous, current) =>
+                previous.loadStatus != current.loadStatus ||
+                previous.flashCards != current.flashCards,
+            builder: (context, state) {
+              if (state.loadStatus == LoadStatus.loading) {
+                return const SliverFillRemaining(
+                  child: LoadingCircle(),
+                );
+              } else {
+                return SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  sliver: SliverList.separated(
+                    itemBuilder: (context, index) {
+                      return SetFlashCardItem(
+                        flashcard: state.flashCards[index],
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 16);
+                    },
+                    itemCount: state.flashCards.length,
+                  ),
+                );
+              }
+            },
+          ),
+          const SliverPadding(
+            padding: EdgeInsets.only(bottom: 16),
+          ),
+        ],
       ),
     );
   }
