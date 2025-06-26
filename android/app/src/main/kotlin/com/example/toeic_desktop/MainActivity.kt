@@ -66,7 +66,7 @@ class MainActivity : FlutterActivity() {
                         result.success("Widget color updated to $colorHex")
                     }
                     "schedulePeriodicWidgetUpdate" -> {
-                        val data = call.argument<HashMap<String, Any>>("flashCardShowInWidgetList")                        // request permission for battery optimization only if not
+                        // check if the widget is added to the home screen
                         if(data != null) {
                             val list = data["flashCardShowInWidgetList"] as? List<HashMap<String, String>>
                             if(list != null) {
@@ -104,6 +104,12 @@ class MainActivity : FlutterActivity() {
         if (destination != null) {
             sendDeepLinkToFlutter(destination)
         }
+    }
+
+    private fun isGlanceWidgetAdded(context: Context, widget: GlanceAppWidget): Boolean {
+        val glanceAppWidgetManager = GlanceAppWidgetManager(context)
+        val glanceIds = glanceAppWidgetManager.getGlanceIds(widget::class.java)
+        return glanceIds.isNotEmpty()
     }
 
     private fun sendDeepLinkToFlutter(deepLink: String) {
