@@ -36,7 +36,6 @@ object ContentPreferences {
     fun saveFlashCards(context: Context, flashCards: List<FlashCard>) {
         val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
         prefs.edit().putString(CONTENT_KEY.name, Gson().toJson(flashCards)).apply()
-        prefs.edit().putInt(IS_CAN_SHOW_NOTIFICATION_KEY.name, 0).apply()
     }
 
     fun getCurrentFlashCardIndex(context: Context): Int {
@@ -53,11 +52,15 @@ object ContentPreferences {
     fun clearAllData(context: Context) {
         val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
         prefs.edit().remove(CONTENT_KEY.name).remove(CURRENT_FLASH_CARD_INDEX_KEY.name).apply()
-        prefs.edit().putInt(IS_CAN_SHOW_NOTIFICATION_KEY.name, 1).apply()
+    }
+
+    fun setIsCanShowNotification(context: Context, isCanShow: Boolean) {
+        val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        prefs.edit().putInt(IS_CAN_SHOW_NOTIFICATION_KEY.name, if (isCanShow) 1 else 0).apply()
     }
 
     fun isCanShowNotification(context: Context): Boolean {
         val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-        return prefs.getInt(IS_CAN_SHOW_NOTIFICATION_KEY.name, 1) == 1
+        return prefs.getInt(IS_CAN_SHOW_NOTIFICATION_KEY.name, 0) == 1
     }
 }

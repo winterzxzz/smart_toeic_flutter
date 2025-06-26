@@ -28,7 +28,7 @@ Future<void> init() async {
     ..registerLazySingleton<BlogRepository>(
         () => BlogRepositoryImpl(injector()))
     ..registerLazySingleton<SpeechService>(() => SpeechService())
-    ..registerLazySingleton<NotiService>(() => NotiService()..initialize())
+    ..registerLazySingleton<NotiService>(() => NotiService())
     ..registerLazySingleton<WidgetService>(() => WidgetService());
 
   // Cubit dependencies (short-lived objects)

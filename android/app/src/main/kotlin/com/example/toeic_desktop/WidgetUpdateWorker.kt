@@ -25,26 +25,25 @@ class WidgetUpdateWorker(
 
     override suspend fun doWork(): Result {
         return try {
-            Log.d("WidgetUpdateWorker", "Starting widget update work")
-            
-            // Get the color data from input
-            val currentFlashCardIndex = ContentPreferences.getCurrentFlashCardIndex(applicationContext)
-            Log.d("WidgetUpdateWorker", "Current flash card index: $currentFlashCardIndex")
             val updateType = inputData.getString("updateType") ?: "content"
-            
             when (updateType) {
                 "content" -> {
+                    val currentIndex = ContentPreferences.getCurrentFlashCardIndex(applicationContext)
                     val flashCards = ContentPreferences.loadFlashCards(applicationContext)
-                    val flashCard = flashCards[currentFlashCardIndex]
+                    val flashCard = flashCards[currentIndex]
                     if(flashCard != null) {
-                        Log.d("WidgetUpdateWorker", "Updating widget content with ${flashCard.word}")
-                        updateWidgetContent(flashCard)
-                        ContentPreferences.setCurrentFlashCardIndex(applicationContext, (currentFlashCardIndex + 1) % flashCards.size)
-                        val isCanShowNotification = ContentPreferences.isCanShowNotification(applicationContext)
-                        if (isCanShowNotification) {
-                            showNotification("${flashCard.word} ${flashCard.pronunciation}", "(${flashCard.partOfSpeech}) ${flashCard.definition}")
+                        withContext(Dispatchers.IO) {
+                            val isCanShowNotification = ContentPreferences.isCanShowNotification(applicationContext)
+                            if(isCanShowNotification) {
+                                Log.d("WidgetUpdateWorker", "Showing notification for flash card: ${flashCard.word}")
+                                showNotification("${flashCard.word} ${flashCard.pronunciation}", "(${flashCard.partOfSpeech}) ${flashCard.definition}")
+                            } else {
+                                Log.d("WidgetUpdateWorker", "Notification is disabled, not showing notification for flash card: ${flashCard.word}")
+                                ContentPreferences.setIsCanShowNotification(applicationContext, true)
+                            }
+                            TOEICGlanceWidget.updateSpecificWidgetByGlanceId(applicationContext, flashCard)
+                            ContentPreferences.setCurrentFlashCardIndex(applicationContext, (currentIndex + 1) % flashCards.size)
                         }
-                        Log.d("WidgetUpdateWorker", "Updated current flash card index to ${ContentPreferences.getCurrentFlashCardIndex(applicationContext)}")
                     }
                 }
                 else -> {
@@ -58,30 +57,6 @@ class WidgetUpdateWorker(
         } catch (e: Exception) {
             Log.e("WidgetUpdateWorker", "Error in widget update work", e)
             Result.failure()
-        }
-    }
-
-    
-
-
-    private suspend fun updateWidgetContent(flashCard: FlashCard) {
-        withContext(Dispatchers.IO) {
-            try {
-                val glanceAppWidgetManager = GlanceAppWidgetManager(applicationContext)
-                val glanceIds = glanceAppWidgetManager.getGlanceIds(TOEICGlanceWidget::class.java)
-
-                glanceIds.forEach { glanceId ->
-                    updateAppWidgetState(applicationContext, glanceId) { prefs ->
-                        prefs[ContentPreferences.CONTENT_KEY] = Gson().toJson(flashCard)
-                    }
-                }
-
-                TOEICGlanceWidget().updateAll(applicationContext)
-                Log.d("WidgetUpdateWorker", "Widget content updated")
-            } catch (e: Exception) {
-                Log.e("WidgetUpdateWorker", "Error updating widget content", e)
-                throw e
-            }
         }
     }
 

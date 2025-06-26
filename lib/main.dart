@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/data/services/noti_service.dart';
 
 import 'app.dart';
 import 'common/configs/app_configs.dart';
@@ -10,5 +11,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesHelper().initialize();
   await init();
+  injector<NotiService>().initialize();
   runApp(const MyApp());
 }

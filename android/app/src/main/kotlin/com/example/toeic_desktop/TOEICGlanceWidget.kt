@@ -29,13 +29,16 @@ import androidx.glance.appwidget.updateAll
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import android.util.Log
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.currentState
 import com.google.gson.Gson
@@ -190,6 +193,24 @@ class TOEICGlanceWidget : GlanceAppWidget() {
             
             // Trigger immediate widget update
             updateWidgetImmediately(context)
+        }
+
+        suspend fun updateSpecificWidgetByGlanceId(context: Context, flashCard: FlashCard) {
+            withContext(Dispatchers.IO) {
+                try {
+                    val glanceAppWidgetManager = GlanceAppWidgetManager(context)
+                    val glanceIds = glanceAppWidgetManager.getGlanceIds(TOEICGlanceWidget::class.java)
+
+                    glanceIds.forEach { glanceId ->
+                        updateAppWidgetState(context, glanceId) { prefs ->
+                            prefs[ContentPreferences.CONTENT_KEY] = Gson().toJson(flashCard)
+                        }
+                    }
+                    TOEICGlanceWidget().updateAll(context)
+                } catch (e: Exception) {
+                    throw e
+                }
+            }
         }
     }
 }

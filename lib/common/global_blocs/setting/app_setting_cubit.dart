@@ -64,7 +64,6 @@ class AppSettingCubit extends Cubit<AppSettingState> {
   void changePrimaryColor(
       {required Color color, required String hexColor}) async {
     await SharedPreferencesHelper.setPrimaryColor(color);
-    await widgetService.updateWidgetColor('#$hexColor');
     emit(state.copyWith(primaryColor: color));
   }
 

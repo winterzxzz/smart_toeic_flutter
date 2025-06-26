@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
+import 'package:toeic_desktop/data/services/widget_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/setting_card.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/settting_switch.dart';
 
@@ -240,6 +243,19 @@ class _SettingPageState extends State<SettingPage> {
                 );
               },
             ),
+            CustomButton(
+              onPressed: () async {
+                final isAdded = await injector<WidgetService>().isWidgetAdded();
+                if (isAdded) {
+                  showToast(
+                      title: "Widget Added", type: ToastificationType.success);
+                } else {
+                  showToast(
+                      title: "Widget Removed", type: ToastificationType.error);
+                }
+              },
+              child: const Text("Check is Widget Added"),
+            )
           ],
         ));
   }
