@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:toeic_desktop/common/utils/time_utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class FlashCardLearningTile extends StatefulWidget {
@@ -31,6 +32,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
@@ -59,47 +61,54 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.flashcard.flashcardId?.word ?? '',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                // Add a button to play the pronunciation
-                InkWell(
-                  onTap: () {
-                    _speak(widget.flashcard.flashcardId?.word ?? '');
-                  },
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
+                Flexible(
+                  child: Row(
+                    children: [
+                      Text(widget.flashcard.flashcardId?.word ?? '',
+                          style: theme.textTheme.titleSmall),
+                      const SizedBox(
+                        width: 8,
                       ),
-                      child: const Icon(
-                        Icons.volume_up_outlined,
-                        color: AppColors.primary,
-                      )),
-                ),
-                const Spacer(),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.purple,
-                    borderRadius: BorderRadius.circular(16),
+                      // Add a button to play the pronunciation
+                      InkWell(
+                        onTap: () {
+                          _speak(widget.flashcard.flashcardId?.word ?? '');
+                        },
+                        borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primary
+                                  .withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.volume_up_outlined,
+                              color: theme.colorScheme.primary,
+                            )),
+                      ),
+                    ],
                   ),
-                  child: Text(
-                    widget.flashcard.flashcardId?.partOfSpeech.join(', ') ?? '',
-                    style: const TextStyle(
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      widget.flashcard.flashcardId?.partOfSpeech.join(', ') ??
+                          '',
+                      style: theme.textTheme.bodySmall?.copyWith(
                         color: AppColors.textWhite,
-                        fontWeight: FontWeight.w500),
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -119,39 +128,71 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                               'UK'),
                         ],
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${S.current.translate}: ',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: widget.flashcard.flashcardId?.translation ??
+                                  '',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       Text(
-                        'Translate: ${widget.flashcard.flashcardId?.translation ?? ''}',
-                        style: const TextStyle(fontSize: 16),
+                        '${S.current.definition}:',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Definition:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      Text(widget.flashcard.flashcardId?.definition ?? '',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          )),
+                      Text(
+                        '${S.current.example_sentences}:',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      Text(widget.flashcard.flashcardId?.definition ?? ''),
-                      const Text('Example Sentences:',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
                       if (widget.flashcard.flashcardId?.exampleSentence
                               .isNotEmpty ??
                           false) ...[
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         ...widget.flashcard.flashcardId!.exampleSentence
                             .map((example) => Text(
                                   '- $example',
-                                  style: TextStyle(color: Colors.grey[700]),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                  ),
                                 )),
                       ],
-                      const SizedBox(height: 8),
-                      const Text('Note:',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(widget.flashcard.flashcardId?.note ?? ''),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${S.current.note}:',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(widget.flashcard.flashcardId?.note ?? '',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          )),
                       if (widget.flashcard.optimalTime != null)
                         Column(
                           children: [
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 4),
                             const Divider(),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 4),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -161,12 +202,17 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(
-                                          color: AppColors.primary, width: 1),
+                                          color: theme.colorScheme.primary,
+                                          width: 1),
                                     ),
                                     child: Text(
-                                        'Review in: ${TimeUtils.getDiffDays(widget.flashcard.optimalTime!)} days (Initial interval: ${widget.flashcard.interval} days)'),
+                                        'Review in: ${TimeUtils.getDiffDays(widget.flashcard.optimalTime!)} days (Initial interval: ${widget.flashcard.interval} days)',
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          fontStyle: FontStyle.italic,
+                                        )),
                                   ),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: 4),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 4),
@@ -177,9 +223,11 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                                     ),
                                     child: Text(
                                       'Retention: ${widget.flashcard.retentionScore?.toStringAsFixed(2) ?? ''}',
-                                      style: const TextStyle(
+                                      style:
+                                          theme.textTheme.bodyMedium?.copyWith(
                                         color: AppColors.textWhite,
                                         fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.italic,
                                       ),
                                     ),
                                   ),
@@ -198,16 +246,21 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
   }
 
   Widget _buildPronunciation(String pronunciation, String label) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Text(
           '$label:',
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(width: 4),
         Text(
           pronunciation,
-          style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ],
     );
