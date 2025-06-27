@@ -89,16 +89,15 @@ class NotiService {
     );
   }
 
-
-
   // SHOW NOTIFICATION
   void showFlutterNotification({
     required String title,
     required String content,
     String? payload,
   }) async {
+    final now = DateTime.now().toIso8601String();
     await flutterLocalNotificationsPlugin.show(
-      title.hashCode,
+      now.hashCode,
       title,
       content,
       noficationDetails(),
@@ -118,8 +117,7 @@ class NotiService {
       await AlarmPermissionService().requestExactAlarmPermissionIfNeeded();
       final tz.TZDateTime scheduledDate = _nextInstanceOfTime(hour, minute);
 
-      debugPrint(
-          'Scheduling notification with ID: 111 at $scheduledDate');
+      debugPrint('Scheduling notification with ID: 111 at $scheduledDate');
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         111,
@@ -151,7 +149,6 @@ class NotiService {
     }
     return scheduledTime;
   }
-
 
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();

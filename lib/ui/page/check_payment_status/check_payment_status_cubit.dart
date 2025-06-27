@@ -32,7 +32,17 @@ class CheckPaymentStatusCubit extends Cubit<CheckPaymentStatusState> {
         title: S.current.congratulations,
         content: S.current.your_account_has_been_successfully_upgraded,
       );
-      injector<UserCubit>().updateUser(r.user);
+      // 2026-09-23T03:25:56.228Z
+      final user = injector<UserCubit>().state.user;
+      if (user != null) {
+        injector<UserCubit>().updateUser(
+          user.copyWith(
+            upgradeExpiredDate: DateTime.parse(user.upgradeExpiredDate!)
+                .add(const Duration(days: 30))
+                .toIso8601String(),
+          ),
+        );
+      }
     });
   }
 }
