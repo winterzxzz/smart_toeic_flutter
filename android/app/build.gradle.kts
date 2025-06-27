@@ -75,4 +75,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.multidex:multidex:2.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.4")
+
 }

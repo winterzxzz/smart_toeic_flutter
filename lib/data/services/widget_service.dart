@@ -39,4 +39,15 @@ class WidgetService {
       return null;
     }
   }
+
+  Future<String?> cancelWidgetUpdate() async {
+    try {
+      final String? result = await _channel.invokeMethod('cancelWidgetUpdate');
+      debugPrint("Cancel widget update: $result");
+      return result;
+    } on PlatformException catch (e) {
+      debugPrint("Failed to cancel widget update: '${e.message}'.");
+      return null;
+    }
+  }
 }

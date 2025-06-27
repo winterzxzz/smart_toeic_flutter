@@ -115,7 +115,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
       reminderWordAfterTime,
     );
     if (state.isReminderWordAfterTime) {
-      await injector<WidgetService>().updateReminderWordAfterTime(
+      injector<WidgetService>().updateReminderWordAfterTime(
         reminderWordAfterTime: reminderWordAfterTime,
       );
     }
@@ -127,6 +127,13 @@ class AppSettingCubit extends Cubit<AppSettingState> {
 
   void changeIsReminderWordAfterTime(
       {required bool isReminderWordAfterTime}) async {
+    if (isReminderWordAfterTime) {
+      injector<WidgetService>().updateReminderWordAfterTime(
+        reminderWordAfterTime: state.reminderWordAfterTime ?? '',
+      );
+    } else {
+      injector<WidgetService>().cancelWidgetUpdate();
+    }
     await SharedPreferencesHelper.setIsReminderWordAfterTime(
       isReminderWordAfterTime,
     );
