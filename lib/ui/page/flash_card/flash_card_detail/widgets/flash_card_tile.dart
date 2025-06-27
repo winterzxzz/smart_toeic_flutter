@@ -64,10 +64,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                       children: [
                         Text(
                           widget.flashcard.word,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: theme.textTheme.titleSmall,
                         ),
                         const SizedBox(
                           width: 8,
@@ -81,118 +78,126 @@ class _FlashcardTileState extends State<FlashcardTile>
                           child: Container(
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: Colors.blue.withValues(alpha: 0.1),
+                                color: theme.colorScheme.primary
+                                    .withValues(alpha: 0.1),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.volume_up_outlined,
-                                color: AppColors.primary,
+                                color: theme.colorScheme.primary,
                               )),
                         ),
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.purple,
-                          borderRadius: BorderRadius.circular(8),
+                  Flexible(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primary
+                                  .withValues(alpha: 0.7),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              widget.flashcard.partOfSpeech.join(', '),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: AppColors.textWhite,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
                         ),
-                        child: Text(
-                          widget.flashcard.partOfSpeech.join(', '),
-                          style: const TextStyle(
-                              color: AppColors.textWhite,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      PopupMenuButton(
-                        icon: const Icon(Icons.more_vert, size: 16),
-                        color: theme.appBarTheme.backgroundColor,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onSelected: (value) {
-                          switch (value) {
-                            case 'edit':
-                              Utils.showModalBottomSheetForm(
-                                context: context,
-                                title: S.current.edit,
-                                child: BlocProvider.value(
-                                  value: _cubit,
-                                  child: FlashCardDetailForm(
-                                    args: FlashCardDetailFormArgs(
-                                      type: FlashCardDetailFormType.edit,
-                                      flashCard: widget.flashcard,
-                                      onSave: (flashCardRequest) {
-                                        _cubit.updateFlashCard(
-                                          widget.flashcard.id,
-                                          flashCardRequest.word,
-                                          flashCardRequest.translation,
-                                        );
-                                      },
+                        const SizedBox(width: 8),
+                        PopupMenuButton(
+                          icon: const Icon(Icons.more_vert, size: 16),
+                          color: theme.appBarTheme.backgroundColor,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onSelected: (value) {
+                            switch (value) {
+                              case 'edit':
+                                Utils.showModalBottomSheetForm(
+                                  context: context,
+                                  title: S.current.edit,
+                                  child: BlocProvider.value(
+                                    value: _cubit,
+                                    child: FlashCardDetailForm(
+                                      args: FlashCardDetailFormArgs(
+                                        type: FlashCardDetailFormType.edit,
+                                        flashCard: widget.flashcard,
+                                        onSave: (flashCardRequest) {
+                                          _cubit.updateFlashCard(
+                                            widget.flashcard.id,
+                                            flashCardRequest.word,
+                                            flashCardRequest.translation,
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                              break;
-                            case 'delete':
-                              showConfirmDialog(
-                                context,
-                                S.current.delete,
-                                S.current.are_you_sure_delete_flashcard,
-                                () {
-                                  context
-                                      .read<FlashCardDetailCubit>()
-                                      .deleteFlashCard(
-                                        widget.flashcard.id,
-                                      );
-                                },
-                              );
-                              break;
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 'edit',
-                            child: Row(
-                              children: [
-                                const FaIcon(
-                                  FontAwesomeIcons.penToSquare,
-                                  size: 14,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  S.current.edit,
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: 'delete',
-                            child: Row(
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.trash,
-                                  size: 14,
-                                  color: theme.colorScheme.error,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
+                                );
+                                break;
+                              case 'delete':
+                                showConfirmDialog(
+                                  context,
                                   S.current.delete,
-                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                  S.current.are_you_sure_delete_flashcard,
+                                  () {
+                                    context
+                                        .read<FlashCardDetailCubit>()
+                                        .deleteFlashCard(
+                                          widget.flashcard.id,
+                                        );
+                                  },
+                                );
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Row(
+                                children: [
+                                  const FaIcon(
+                                    FontAwesomeIcons.penToSquare,
+                                    size: 14,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    S.current.edit,
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Row(
+                                children: [
+                                  FaIcon(
+                                    FontAwesomeIcons.trash,
+                                    size: 14,
                                     color: theme.colorScheme.error,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    S.current.delete,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.error,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -201,20 +206,31 @@ class _FlashcardTileState extends State<FlashcardTile>
                 children: [
                   Row(
                     children: [
-                      _buildPronunciation(
-                          widget.flashcard.pronunciation, 'UK'),
+                      _buildPronunciation(widget.flashcard.pronunciation, 'UK'),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: Text(
-                          '${S.current.translate}: ${widget.flashcard.translation}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 16),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${S.current.translate}: ',
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: widget.flashcard.translation,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       AnimatedRotation(
@@ -244,6 +260,9 @@ class _FlashcardTileState extends State<FlashcardTile>
                           ),
                           Text(
                             widget.flashcard.definition,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
                           Text(
                             '${S.current.example_sentences}:',
@@ -252,21 +271,29 @@ class _FlashcardTileState extends State<FlashcardTile>
                             ),
                           ),
                           if (widget.flashcard.exampleSentence.isNotEmpty) ...[
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
                             ...widget.flashcard.exampleSentence
                                 .map((example) => Text(
                                       '- $example',
-                                      style: TextStyle(color: Colors.grey[700]),
+                                      style:
+                                          theme.textTheme.bodyMedium?.copyWith(
+                                        fontStyle: FontStyle.italic,
+                                      ),
                                     )),
                           ],
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 4),
                           Text(
                             '${S.current.note}:',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(widget.flashcard.note),
+                          Text(
+                            widget.flashcard.note,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
                         ]
                       ],
                     ),
