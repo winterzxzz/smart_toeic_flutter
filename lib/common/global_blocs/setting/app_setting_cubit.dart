@@ -118,18 +118,17 @@ class AppSettingCubit extends Cubit<AppSettingState> {
       injector<WidgetService>().updateReminderWordAfterTime(
         reminderWordAfterTime: reminderWordAfterTime,
       );
+      emit(state.copyWith(
+        reminderWordAfterTime: reminderWordAfterTime,
+      ));
     }
-    emit(state.copyWith(
-      reminderWordAfterTime: reminderWordAfterTime,
-      isReminderWordAfterTime: true,
-    ));
   }
 
   void changeIsReminderWordAfterTime(
       {required bool isReminderWordAfterTime}) async {
     if (isReminderWordAfterTime) {
       injector<WidgetService>().updateReminderWordAfterTime(
-        reminderWordAfterTime: state.reminderWordAfterTime ?? '',
+        reminderWordAfterTime: state.reminderWordAfterTime,
       );
     } else {
       injector<WidgetService>().cancelWidgetUpdate();

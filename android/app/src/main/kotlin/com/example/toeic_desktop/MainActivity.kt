@@ -102,13 +102,14 @@ class MainActivity : FlutterActivity() {
                                 }
                             }
                         }
-                        result.success("Widget update scheduled after 15 minutes")
+                        result.success("Widget update scheduled after ${ContentPreferences.getReminderWordAfterTime(this)}")
                     }
                     "updateReminderWordAfterTime" -> {
                         val reminderWordAfterTime = call.argument<String>("reminderWordAfterTime")
                         if(reminderWordAfterTime != null) {
                             ContentPreferences.setReminderWordAfterTime(this, reminderWordAfterTime)
                         }
+                        Log.d("MainActivity", "reminderWordAfterTime: $reminderWordAfterTime")
                         val value = reminderWordAfterTime?.split(" ")?.first()?.toLong()
                         val unit = reminderWordAfterTime?.split(" ")?.last()?.toLowerCase()
                         if(value != null && unit != null) {
@@ -126,11 +127,13 @@ class MainActivity : FlutterActivity() {
                                         else -> TimeUnit.MINUTES
                                     }
                                     WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this@MainActivity, value, timeUnit)
-                                    }
-                                    result.success("Widget update scheduled after $reminderWordAfterTime")
-                                } else {
-                                    result.success("Invalid reminder word after time format")
+                                }
+                                result.success("Widget update scheduled after $reminderWordAfterTime")
+                            } else {
+                                result.success("No flash cards available for widget update")
                             }
+                        } else {
+                            result.success("Invalid reminder word after time format")
                         }
                     }
                     "cancelWidgetUpdate" -> {

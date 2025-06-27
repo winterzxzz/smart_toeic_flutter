@@ -239,8 +239,7 @@ class _SettingPageState extends State<SettingPage> {
                     children: [
                       SettingsSwitch(
                         value: state.isReminderWordAfterTime,
-                        title: state.reminderWordAfterTime ??
-                            Constants.reminderWordAfterTimes[0],
+                        title: state.reminderWordAfterTime,
                         onChanged: (val) {
                           appSettingCubit.changeIsReminderWordAfterTime(
                               isReminderWordAfterTime: val);
@@ -253,9 +252,7 @@ class _SettingPageState extends State<SettingPage> {
                           child: CustomButton(
                             width: double.infinity,
                             onPressed: () => _showReminderWordAfterTimePicker(
-                                context,
-                                state.reminderWordAfterTime ??
-                                    Constants.reminderWordAfterTimes[0]),
+                                context, state.reminderWordAfterTime),
                             child: Text(
                               S.current.set_time,
                             ),

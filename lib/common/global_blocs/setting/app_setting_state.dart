@@ -7,7 +7,7 @@ class AppSettingState extends Equatable {
   final bool isDynamicColor;
   final bool isDailyReminder;
   final String? dailyReminderTime;
-  final String? reminderWordAfterTime;
+  final String reminderWordAfterTime;
   final bool isReminderWordAfterTime;
 
   const AppSettingState({
@@ -17,7 +17,7 @@ class AppSettingState extends Equatable {
     this.isDynamicColor = false,
     this.isDailyReminder = false,
     this.dailyReminderTime,
-    this.reminderWordAfterTime,
+    this.reminderWordAfterTime = '15 minutes',
     this.isReminderWordAfterTime = false,
   });
 
