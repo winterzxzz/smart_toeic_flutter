@@ -240,6 +240,47 @@ class _SettingPageState extends State<SettingPage> {
                 );
               },
             ),
+            const Padding(
+              padding: AppStyle.edgeInsetsA12,
+              child: Text(
+                'Reminder word after',
+              ),
+            ),
+            BlocBuilder<AppSettingCubit, AppSettingState>(
+              buildWhen: (previous, current) {
+                return previous.isDailyReminder != current.isDailyReminder ||
+                    previous.dailyReminderTime != current.dailyReminderTime;
+              },
+              builder: (context, state) {
+                return SettingsCard(
+                  child: Column(
+                    children: [
+                      SettingsSwitch(
+                        value: state.isDailyReminder,
+                        title: '15 minutes',
+                        onChanged: (val) {
+                          appSettingCubit.changeDailyReminder(
+                              isDailyReminder: val);
+                        },
+                      ),
+                      AppStyle.divider,
+                      Container(
+                        margin: AppStyle.edgeInsetsA12,
+                        child: CustomButton(
+                          width: double.infinity,
+                          onPressed: () =>
+                              _showReminderWordAfterTimePicker(context),
+                          child: Text(S.current.set_time),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 24,
+            )
           ],
         ));
   }
@@ -289,6 +330,57 @@ class _SettingPageState extends State<SettingPage> {
                       appSettingCubit.changeDailyReminderTime(
                         dailyReminderTime: formatted,
                       );
+                      GoRouter.of(ctx).pop();
+                    },
+                    child: Text(S.current.save_button),
+                  ),
+                  const SizedBox(width: 16),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showReminderWordAfterTimePicker(BuildContext context) {
+    final theme = Theme.of(context);
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return SizedBox(
+          height: 400,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 350,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  itemCount: Constants.reminderWordAfterTimes.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        Constants.reminderWordAfterTimes[index],
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      onTap: () {},
+                    );
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      GoRouter.of(ctx).pop();
+                    },
+                    child: Text(S.current.cancel),
+                  ),
+                  const SizedBox(width: 16),
+                  TextButton(
+                    onPressed: () {
                       GoRouter.of(ctx).pop();
                     },
                     child: Text(S.current.save_button),

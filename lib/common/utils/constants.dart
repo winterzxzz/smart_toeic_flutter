@@ -210,6 +210,19 @@ class Constants {
         'FF9800',
       ];
 
+  static List<String> get reminderWordAfterTimes => [
+        '15 minutes',
+        '30 minutes',
+        '45 minutes',
+        '60 minutes',
+        '1 hour',
+        '2 hours',
+        '4 hours',
+        '8 hours',
+        '12 hours',
+        '24 hours',
+      ];
+
   static Map<int, int> listeningScore = {
     0: 5,
     1: 5,
