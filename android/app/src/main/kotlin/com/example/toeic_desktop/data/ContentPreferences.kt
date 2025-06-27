@@ -35,6 +35,7 @@ object ContentPreferences {
     
     fun saveFlashCards(context: Context, flashCards: List<FlashCard>) {
         val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        prefs.edit().putInt(CURRENT_FLASH_CARD_INDEX_KEY.name, 0).apply()
         prefs.edit().putString(CONTENT_KEY.name, Gson().toJson(flashCards)).apply()
     }
 

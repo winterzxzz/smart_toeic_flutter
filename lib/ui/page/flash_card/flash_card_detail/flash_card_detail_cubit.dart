@@ -53,7 +53,6 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
       final isReminderWordAfterTime =
           injector<AppSettingCubit>().state.isReminderWordAfterTime;
       if (isReminderWordAfterTime) {
-        _widgetService.cancelWidgetUpdates();
         _widgetService.schedulePeriodicWidgetUpdate(
             flashCardShowInWidgetList: flashCardShowInWidgetList);
       }
