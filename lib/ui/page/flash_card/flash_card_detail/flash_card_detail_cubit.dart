@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
@@ -49,9 +50,13 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
       final flashCardShowInWidgetList = FlashCardShowInWidgetList(
         flashCardShowInWidgetList: listOfFlashCardShowInWidget,
       );
-      _widgetService.cancelWidgetUpdates();
-      _widgetService.schedulePeriodicWidgetUpdate(
-          flashCardShowInWidgetList: flashCardShowInWidgetList);
+      final isReminderWordAfterTime =
+          injector<AppSettingCubit>().state.isReminderWordAfterTime;
+      if (isReminderWordAfterTime) {
+        _widgetService.cancelWidgetUpdates();
+        _widgetService.schedulePeriodicWidgetUpdate(
+            flashCardShowInWidgetList: flashCardShowInWidgetList);
+      }
     });
   }
 

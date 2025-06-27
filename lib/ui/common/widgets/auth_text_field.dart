@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class AuthTextField extends StatefulWidget {
