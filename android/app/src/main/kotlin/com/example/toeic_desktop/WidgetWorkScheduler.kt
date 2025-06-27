@@ -23,6 +23,7 @@ object WidgetWorkScheduler {
     fun schedulePeriodicWidgetUpdate(
         context: Context,
         intervalMinutes: Long = 15,
+        timeUnit: TimeUnit = TimeUnit.MINUTES
     ) {
 
 
@@ -31,7 +32,7 @@ object WidgetWorkScheduler {
         }.build()
 
 
-        val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, timeUnit)
             .setInitialDelay(2, TimeUnit.SECONDS)
             .setInputData(inputData)
             .build()
@@ -43,7 +44,7 @@ object WidgetWorkScheduler {
                 workRequest
             )
 
-        Log.d("WidgetWorkScheduler", "Scheduled periodic widget update every $intervalMinutes minutes")
+        Log.d("WidgetWorkScheduler", "Scheduled periodic widget update every $intervalMinutes ${timeUnit.name.lowercase()}")
     }
 
     /**

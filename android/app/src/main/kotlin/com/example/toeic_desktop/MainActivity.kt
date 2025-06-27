@@ -19,6 +19,7 @@ import androidx.glance.appwidget.updateAll
 import com.example.toeic_desktop.model.FlashCard
 import com.example.toeic_desktop.data.ContentPreferences
 import com.example.toeic_desktop.data.ColorPreferences
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : FlutterActivity() {
@@ -78,16 +79,32 @@ class MainActivity : FlutterActivity() {
                                         partOfSpeech = it["partOfSpeech"] ?: ""
                                     )
                                 }
-                                ContentPreferences.saveFlashCards(this, flashcards)
-                                WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, 15)
+                                if(flashcards.isNotEmpty()) {
+                                    ContentPreferences.saveFlashCards(this, flashcards)
+                                    WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, 15)
+                                }
                             }
                         }
                         result.success("Widget update scheduled after 15 minutes")
                     }
-                    "cancelWidgetUpdates" -> {
-                        WidgetWorkScheduler.cancelAllWidgetUpdates(this)
-                        ContentPreferences.clearAllData(this)
-                        result.success("All widget updates cancelled")
+                    "updateReminderWordAfterTime" -> {
+                        val reminderWordAfterTime = call.argument<String>("reminderWordAfterTime")
+                        val value = reminderWordAfterTime?.split(" ")?.first()?.toLong()
+                        val unit = reminderWordAfterTime?.split(" ")?.last()?.toLowerCase()
+                        if(value != null && unit != null) {
+                            ContentPreferences.setIsCanShowNotification(this, false)
+                            WidgetWorkScheduler.cancelWidgetUpdate(this, WidgetUpdateWorker.PERIODIC_UPDATE_WORK)
+                            val timeUnit = when (unit) {
+                                "minutes" -> TimeUnit.MINUTES
+                                "hours" -> TimeUnit.HOURS
+                                "days" -> TimeUnit.DAYS
+                                else -> TimeUnit.MINUTES
+                            }
+                            WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, value, timeUnit)
+                            result.success("Widget update scheduled after $reminderWordAfterTime")
+                        } else {
+                            result.success("Invalid reminder word after time format")
+                        }
                     }
                     else -> {
                         result.notImplemented()

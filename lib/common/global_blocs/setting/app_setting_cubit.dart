@@ -100,7 +100,7 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     emit(state.copyWith(dailyReminderTime: dailyReminderTime));
     if (state.isDailyReminder) {
       final time = dailyReminderTime.split(':');
-      injector<NotiService>().scheduleDailyNotification(
+      await injector<NotiService>().scheduleDailyNotification(
         title: S.current.daily_reminder,
         body: S.current.daily_reminder_description,
         hour: int.parse(time[0]),
@@ -114,6 +114,11 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     await SharedPreferencesHelper.setReminderWordAfterTime(
       reminderWordAfterTime,
     );
+    if (state.isReminderWordAfterTime) {
+      await injector<WidgetService>().updateReminderWordAfterTime(
+        reminderWordAfterTime: reminderWordAfterTime,
+      );
+    }
     emit(state.copyWith(
       reminderWordAfterTime: reminderWordAfterTime,
       isReminderWordAfterTime: true,
