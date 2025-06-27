@@ -25,6 +25,10 @@ class AppSettingCubit extends Cubit<AppSettingState> {
     final isDailyReminder = await SharedPreferencesHelper.getIsDailyReminder();
     final dailyReminderTime =
         await SharedPreferencesHelper.getDailyReminderTime();
+    final isReminderWordAfterTime =
+        await SharedPreferencesHelper.getIsReminderWordAfterTime();
+    final reminderWordAfterTime =
+        await SharedPreferencesHelper.getReminderWordAfterTime();
 
     if (currentLanguage != null) {
       S.load(Locale(currentLanguage.code));
@@ -36,6 +40,8 @@ class AppSettingCubit extends Cubit<AppSettingState> {
       primaryColor: primaryColor,
       isDailyReminder: isDailyReminder,
       dailyReminderTime: dailyReminderTime,
+      isReminderWordAfterTime: isReminderWordAfterTime,
+      reminderWordAfterTime: reminderWordAfterTime,
     ));
   }
 
@@ -101,5 +107,24 @@ class AppSettingCubit extends Cubit<AppSettingState> {
         minute: int.parse(time[1]),
       );
     }
+  }
+
+  void changeReminderWordAfterTime(
+      {required String reminderWordAfterTime}) async {
+    await SharedPreferencesHelper.setReminderWordAfterTime(
+      reminderWordAfterTime,
+    );
+    emit(state.copyWith(
+      reminderWordAfterTime: reminderWordAfterTime,
+      isReminderWordAfterTime: true,
+    ));
+  }
+
+  void changeIsReminderWordAfterTime(
+      {required bool isReminderWordAfterTime}) async {
+    await SharedPreferencesHelper.setIsReminderWordAfterTime(
+      isReminderWordAfterTime,
+    );
+    emit(state.copyWith(isReminderWordAfterTime: isReminderWordAfterTime));
   }
 }

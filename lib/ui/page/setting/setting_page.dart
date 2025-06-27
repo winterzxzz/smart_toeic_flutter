@@ -46,7 +46,10 @@ class _SettingPageState extends State<SettingPage> {
           children: [
             Padding(
               padding: AppStyle.edgeInsetsA12,
-              child: Text(S.current.display_theme),
+              child: Text(
+                S.current.display_theme,
+                style: theme.textTheme.bodyMedium,
+              ),
             ),
             BlocSelector<AppSettingCubit, AppSettingState, ThemeMode>(
               selector: (state) {
@@ -58,7 +61,10 @@ class _SettingPageState extends State<SettingPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       RadioListTile<int>(
-                        title: Text(S.current.follow_system),
+                        title: Text(
+                          S.current.follow_system,
+                          style: theme.textTheme.bodyMedium,
+                        ),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.system.index,
                         contentPadding: AppStyle.edgeInsetsH12,
@@ -69,7 +75,10 @@ class _SettingPageState extends State<SettingPage> {
                         },
                       ),
                       RadioListTile<int>(
-                        title: Text(S.current.light_mode),
+                        title: Text(
+                          S.current.light_mode,
+                          style: theme.textTheme.bodyMedium,
+                        ),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.light.index,
                         contentPadding: AppStyle.edgeInsetsH12,
@@ -80,7 +89,10 @@ class _SettingPageState extends State<SettingPage> {
                         },
                       ),
                       RadioListTile<int>(
-                        title: Text(S.current.dark_mode),
+                        title: Text(
+                          S.current.dark_mode,
+                          style: theme.textTheme.bodyMedium,
+                        ),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.dark.index,
                         contentPadding: AppStyle.edgeInsetsH12,
@@ -97,7 +109,10 @@ class _SettingPageState extends State<SettingPage> {
             ),
             Padding(
               padding: AppStyle.edgeInsetsA12,
-              child: Text(S.current.language),
+              child: Text(
+                S.current.language,
+                style: theme.textTheme.bodyMedium,
+              ),
             ),
             BlocSelector<AppSettingCubit, AppSettingState, Language>(
               selector: (state) {
@@ -108,7 +123,10 @@ class _SettingPageState extends State<SettingPage> {
                   child: Column(
                     children: [
                       RadioListTile<Language>(
-                        title: Text(S.current.english),
+                        title: Text(
+                          S.current.english,
+                          style: theme.textTheme.bodyMedium,
+                        ),
                         value: Language.english,
                         groupValue: language,
                         onChanged: (e) {
@@ -116,7 +134,10 @@ class _SettingPageState extends State<SettingPage> {
                         },
                       ),
                       RadioListTile<Language>(
-                        title: Text(S.current.vietnamese),
+                        title: Text(
+                          S.current.vietnamese,
+                          style: theme.textTheme.bodyMedium,
+                        ),
                         value: Language.vietnamese,
                         groupValue: language,
                         onChanged: (e) {
@@ -132,6 +153,7 @@ class _SettingPageState extends State<SettingPage> {
               padding: AppStyle.edgeInsetsA12,
               child: Text(
                 S.current.theme_color,
+                style: theme.textTheme.bodyMedium,
               ),
             ),
             BlocBuilder<AppSettingCubit, AppSettingState>(
@@ -200,7 +222,56 @@ class _SettingPageState extends State<SettingPage> {
             Padding(
               padding: AppStyle.edgeInsetsA12,
               child: Text(
+                'Reminder word after',
+                style: theme.textTheme.bodyMedium,
+              ),
+            ),
+            BlocBuilder<AppSettingCubit, AppSettingState>(
+              buildWhen: (previous, current) {
+                return previous.isReminderWordAfterTime !=
+                        current.isReminderWordAfterTime ||
+                    previous.reminderWordAfterTime !=
+                        current.reminderWordAfterTime;
+              },
+              builder: (context, state) {
+                return SettingsCard(
+                  child: Column(
+                    children: [
+                      SettingsSwitch(
+                        value: state.isReminderWordAfterTime,
+                        title: state.reminderWordAfterTime ??
+                            Constants.reminderWordAfterTimes[0],
+                        onChanged: (val) {
+                          appSettingCubit.changeIsReminderWordAfterTime(
+                              isReminderWordAfterTime: val);
+                        },
+                      ),
+                      if (state.isReminderWordAfterTime) ...[
+                        AppStyle.divider,
+                        Container(
+                          margin: AppStyle.edgeInsetsA12,
+                          child: CustomButton(
+                            width: double.infinity,
+                            onPressed: () => _showReminderWordAfterTimePicker(
+                                context,
+                                state.reminderWordAfterTime ??
+                                    Constants.reminderWordAfterTimes[0]),
+                            child: Text(
+                              S.current.set_time,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                );
+              },
+            ),
+            Padding(
+              padding: AppStyle.edgeInsetsA12,
+              child: Text(
                 S.current.daily_reminder,
+                style: theme.textTheme.bodyMedium,
               ),
             ),
             BlocBuilder<AppSettingCubit, AppSettingState>(
@@ -231,48 +302,12 @@ class _SettingPageState extends State<SettingPage> {
                                 context,
                                 state.dailyReminderTime ??
                                     Utils.getTimeHHMm(DateTime.now())),
-                            child: Text(S.current.set_time),
+                            child: Text(
+                              S.current.set_time,
+                            ),
                           ),
                         ),
                       ]
-                    ],
-                  ),
-                );
-              },
-            ),
-            const Padding(
-              padding: AppStyle.edgeInsetsA12,
-              child: Text(
-                'Reminder word after',
-              ),
-            ),
-            BlocBuilder<AppSettingCubit, AppSettingState>(
-              buildWhen: (previous, current) {
-                return previous.isDailyReminder != current.isDailyReminder ||
-                    previous.dailyReminderTime != current.dailyReminderTime;
-              },
-              builder: (context, state) {
-                return SettingsCard(
-                  child: Column(
-                    children: [
-                      SettingsSwitch(
-                        value: state.isDailyReminder,
-                        title: '15 minutes',
-                        onChanged: (val) {
-                          appSettingCubit.changeDailyReminder(
-                              isDailyReminder: val);
-                        },
-                      ),
-                      AppStyle.divider,
-                      Container(
-                        margin: AppStyle.edgeInsetsA12,
-                        child: CustomButton(
-                          width: double.infinity,
-                          onPressed: () =>
-                              _showReminderWordAfterTimePicker(context),
-                          child: Text(S.current.set_time),
-                        ),
-                      ),
                     ],
                   ),
                 );
@@ -344,52 +379,69 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  void _showReminderWordAfterTimePicker(BuildContext context) {
+  void _showReminderWordAfterTimePicker(
+      BuildContext context, String selectedTime) {
     final theme = Theme.of(context);
     showModalBottomSheet(
       context: context,
       builder: (ctx) {
-        return SizedBox(
-          height: 400,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 350,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  itemCount: Constants.reminderWordAfterTimes.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                        Constants.reminderWordAfterTimes[index],
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      onTap: () {},
-                    );
-                  },
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return SizedBox(
+              height: 400,
+              child: Column(
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      GoRouter.of(ctx).pop();
-                    },
-                    child: Text(S.current.cancel),
+                  SizedBox(
+                    height: 350,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      itemCount: Constants.reminderWordAfterTimes.length,
+                      itemBuilder: (context, index) {
+                        final isSelected = selectedTime ==
+                            Constants.reminderWordAfterTimes[index];
+                        return ListTile(
+                          selected: isSelected,
+                          title: Text(
+                            Constants.reminderWordAfterTimes[index],
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          trailing: isSelected ? const Icon(Icons.check) : null,
+                          onTap: () {
+                            setState(() {
+                              selectedTime =
+                                  Constants.reminderWordAfterTimes[index];
+                            });
+                          },
+                        );
+                      },
+                    ),
                   ),
-                  const SizedBox(width: 16),
-                  TextButton(
-                    onPressed: () {
-                      GoRouter.of(ctx).pop();
-                    },
-                    child: Text(S.current.save_button),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          GoRouter.of(ctx).pop();
+                        },
+                        child: Text(S.current.cancel),
+                      ),
+                      const SizedBox(width: 16),
+                      TextButton(
+                        onPressed: () {
+                          appSettingCubit.changeReminderWordAfterTime(
+                            reminderWordAfterTime: selectedTime,
+                          );
+                          GoRouter.of(ctx).pop();
+                        },
+                        child: Text(S.current.save_button),
+                      ),
+                      const SizedBox(width: 16),
+                    ],
                   ),
-                  const SizedBox(width: 16),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

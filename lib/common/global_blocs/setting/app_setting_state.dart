@@ -7,6 +7,8 @@ class AppSettingState extends Equatable {
   final bool isDynamicColor;
   final bool isDailyReminder;
   final String? dailyReminderTime;
+  final String? reminderWordAfterTime;
+  final bool isReminderWordAfterTime;
 
   const AppSettingState({
     this.language = AppConfigs.defaultLanguage,
@@ -15,6 +17,8 @@ class AppSettingState extends Equatable {
     this.isDynamicColor = false,
     this.isDailyReminder = false,
     this.dailyReminderTime,
+    this.reminderWordAfterTime,
+    this.isReminderWordAfterTime = false,
   });
 
   @override
@@ -25,6 +29,8 @@ class AppSettingState extends Equatable {
         isDynamicColor,
         isDailyReminder,
         dailyReminderTime,
+        reminderWordAfterTime,
+        isReminderWordAfterTime,
       ];
 
   AppSettingState copyWith({
@@ -34,6 +40,8 @@ class AppSettingState extends Equatable {
     bool? isDynamicColor,
     bool? isDailyReminder,
     String? dailyReminderTime,
+    String? reminderWordAfterTime,
+    bool? isReminderWordAfterTime,
   }) {
     return AppSettingState(
       themeMode: themeMode ?? this.themeMode,
@@ -42,6 +50,10 @@ class AppSettingState extends Equatable {
       isDynamicColor: isDynamicColor ?? this.isDynamicColor,
       isDailyReminder: isDailyReminder ?? this.isDailyReminder,
       dailyReminderTime: dailyReminderTime ?? this.dailyReminderTime,
+      reminderWordAfterTime:
+          reminderWordAfterTime ?? this.reminderWordAfterTime,
+      isReminderWordAfterTime:
+          isReminderWordAfterTime ?? this.isReminderWordAfterTime,
     );
   }
 }

@@ -20,7 +20,7 @@ class SettingsSwitch extends StatelessWidget {
     return SwitchListTile(
       title: Text(
         title,
-        style: theme.textTheme.bodyLarge,
+        style: theme.textTheme.bodyMedium,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: AppStyle.radius8,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/common/utils/string_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
@@ -18,6 +19,8 @@ class SharedPreferencesHelper {
   static const _primaryColor = 'primary_color';
   static const _isDailyReminder = 'is_daily_reminder';
   static const _dailyReminderTime = 'daily_reminder_time';
+  static const _isReminderWordAfterTime = 'is_reminder_word_after_time';
+  static const _reminderWordAfterTime = 'reminder_word_after_time';
 
   static Future<bool> isOnboarded() async {
     try {
@@ -109,6 +112,34 @@ class SharedPreferencesHelper {
   static Future<void> removeDailyReminderTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(_dailyReminderTime);
+  }
+
+  static Future<bool> getIsReminderWordAfterTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isReminderWordAfterTime) ?? false;
+  }
+
+  static Future<void> setIsReminderWordAfterTime(
+      bool isReminderWordAfterTime) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_isReminderWordAfterTime, isReminderWordAfterTime);
+  }
+
+  static Future<String> getReminderWordAfterTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_reminderWordAfterTime) ??
+        Constants.reminderWordAfterTimes[0];
+  }
+
+  static Future<void> setReminderWordAfterTime(
+      String reminderWordAfterTime) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_reminderWordAfterTime, reminderWordAfterTime);
+  }
+
+  static Future<void> removeReminderWordAfterTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_reminderWordAfterTime);
   }
 
   SharedPreferencesHelper._();
