@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
+import android.os.Bundle
 import android.provider.Settings
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -30,6 +31,17 @@ class MainActivity : FlutterActivity() {
         private const val ALARM_CHANNEL = "exact_alarm_channel"
     }
     private var methodChannel: MethodChannel? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val payload = intent.getStringExtra("notification_payload")
+        payload?.let {
+            if(it == "tests") {
+                sendDeepLinkToFlutter("test://winter-toeic.com/bottom-tab?isFromWidget=true")
+            }
+        }
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
