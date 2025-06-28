@@ -54,7 +54,8 @@ class AppRouter {
               state.uri.path == flashCardQuizz ||
               state.uri.path == flashCardQuizzResult ||
               state.uri.path == resultTest ||
-              state.uri.path == upgradeAccount) {
+              state.uri.path == upgradeAccount ||
+              state.uri.path == transcriptTest) {
             return login;
           }
           return null;
@@ -143,6 +144,11 @@ class AppRouter {
             },
           ),
         ]),
+    GoRoute(
+      name: transcriptTest,
+      path: transcriptTest,
+      builder: (context, state) => const ListenCopyPage(),
+    ),
     GoRoute(
       name: modeTest,
       path: modeTest,
@@ -239,11 +245,6 @@ class AppRouter {
       name: upgradeAccount,
       path: upgradeAccount,
       builder: (context, state) => const PricingPlanScreen(),
-    ),
-    GoRoute(
-      name: transcriptTest,
-      path: transcriptTest,
-      builder: (context, state) => const ListenCopyPage(),
     ),
     GoRoute(
       name: transcriptTestDetail,

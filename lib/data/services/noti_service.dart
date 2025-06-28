@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/services/alarm_permission_service.dart';
 
 class NotiService {
@@ -49,7 +50,27 @@ class NotiService {
       iOS: initializationSettingsIOS,
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (response) {
+        debugPrint(
+            'onDidReceiveNotificationResponse tapped with payload: ${response.payload}');
+        if (response.payload == 'tests') {
+          // Navigate to transcript test
+          AppRouter.router.goNamed(AppRouter.bottomTab);
+          AppRouter.router.pushNamed(AppRouter.transcriptTest);
+        }
+      },
+      onDidReceiveBackgroundNotificationResponse: (response) {
+        debugPrint(
+            'onDidReceiveBackgroundNotificationResponse tapped with payload: ${response.payload}');
+        if (response.payload == 'tests') {
+          // Navigate to transcript test
+          AppRouter.router.goNamed(AppRouter.bottomTab);
+          AppRouter.router.pushNamed(AppRouter.transcriptTest);
+        }
+      },
+    );
   }
 
   // REQUEST PERMISSION
@@ -78,13 +99,13 @@ class NotiService {
   NotificationDetails noficationDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
-        'high_importance_channel',
-        'High Importance Notifications',
-        channelDescription: 'This channel is used for important notifications.',
-        importance: Importance.max,
-        playSound: true,
-        priority: Priority.high,
-      ),
+          'high_importance_channel', 'High Importance Notifications',
+          channelDescription:
+              'This channel is used for important notifications.',
+          importance: Importance.max,
+          playSound: true,
+          priority: Priority.high,
+          autoCancel: true),
       iOS: DarwinNotificationDetails(),
     );
   }
@@ -123,6 +144,7 @@ class NotiService {
         111,
         title,
         body,
+        payload: 'tests',
         scheduledDate,
         noficationDetails(),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
