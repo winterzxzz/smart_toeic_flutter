@@ -306,5 +306,9 @@
     "register_success_login_to_continue": "Register success! Login to continue",
     "send_email_success": "Send email successfully!",
     "support_body": "I have a question about the TOEIC app",
-    "could_not_open_url": "Could not open URL"
+    "could_not_open_url": "Could not open URL",
+    "update_target_score_success": "Update target score successfully",
+    "update_profile_avatar_success": "Update profile avatar successfully",
+    "please_enter_name": "Please enter name",
+    "update_profile_success": "Update profile successfully"
 }

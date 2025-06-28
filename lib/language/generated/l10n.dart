@@ -3019,6 +3019,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Update target score successfully`
+  String get update_target_score_success {
+    return Intl.message(
+      'Update target score successfully',
+      name: 'update_target_score_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update profile avatar successfully`
+  String get update_profile_avatar_success {
+    return Intl.message(
+      'Update profile avatar successfully',
+      name: 'update_profile_avatar_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter name`
+  String get please_enter_name {
+    return Intl.message(
+      'Please enter name',
+      name: 'please_enter_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update profile successfully`
+  String get update_profile_success {
+    return Intl.message(
+      'Update profile successfully',
+      name: 'update_profile_success',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

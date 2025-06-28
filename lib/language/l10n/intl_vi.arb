@@ -300,5 +300,9 @@
     "register_success_login_to_continue": "Đăng ký thành công! Đăng nhập để tiếp tục",
     "send_email_success": "Gửi email thành công!",
     "support_body": "Tôi có câu hỏi về ứng dụng TOEIC",
-    "could_not_open_url": "Không mở được liên kết"
+    "could_not_open_url": "Không mở được liên kết",
+    "update_target_score_success": "Cập nhật mục tiêu điểm thành công",
+    "update_profile_avatar_success": "Cập nhật ảnh đại diện thành công",
+    "please_enter_name": "Vui lòng nhập tên",
+    "update_profile_success": "Cập nhật hồ sơ thành công"
 }

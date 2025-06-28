@@ -289,6 +289,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "photographs": MessageLookupByLibrary.simpleMessage("Photographs"),
         "please_enter_all_information": MessageLookupByLibrary.simpleMessage(
             "Please enter all information"),
+        "please_enter_name":
+            MessageLookupByLibrary.simpleMessage("Please enter name"),
         "please_enter_title":
             MessageLookupByLibrary.simpleMessage("Please enter title"),
         "please_enter_word":
@@ -433,8 +435,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "update_error": MessageLookupByLibrary.simpleMessage("Update Error"),
         "update_profile":
             MessageLookupByLibrary.simpleMessage("Update Profile"),
+        "update_profile_avatar_success": MessageLookupByLibrary.simpleMessage(
+            "Update profile avatar successfully"),
+        "update_profile_success":
+            MessageLookupByLibrary.simpleMessage("Update profile successfully"),
         "update_target_score":
             MessageLookupByLibrary.simpleMessage("Update Target Score"),
+        "update_target_score_success": MessageLookupByLibrary.simpleMessage(
+            "Update target score successfully"),
         "update_word_successfully":
             MessageLookupByLibrary.simpleMessage("Update word successfully"),
         "upgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),

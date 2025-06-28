@@ -11,6 +11,7 @@ import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 
 part 'user_state.dart';
@@ -56,9 +57,11 @@ class UserCubit extends Cubit<UserState> {
       },
       (r) {
         emit(state.copyWith(
-            updateTargetScoreStatus: LoadStatus.success, user: r));
+            updateTargetScoreStatus: LoadStatus.success,
+            user: r,
+            isHaveUser: true));
         showToast(
-            title: 'Update target score success',
+            title: S.current.update_target_score_success,
             type: ToastificationType.success);
       },
     );
@@ -76,7 +79,7 @@ class UserCubit extends Cubit<UserState> {
         final updatedUser = currentUser.copyWith(avatar: r);
         updateUser(updatedUser);
         showToast(
-            title: 'Update prolfile avatar success',
+            title: S.current.update_profile_avatar_success,
             type: ToastificationType.success);
       },
     );
@@ -85,8 +88,10 @@ class UserCubit extends Cubit<UserState> {
   Future<void> updateProfile(ProfileUpdateRequest request) async {
     if (request.name.isEmpty) {
       emit(state.copyWith(
-          updateStatus: LoadStatus.failure, message: "Vui lòng nhập tên"));
-      showToast(title: "Vui lòng nhập tên", type: ToastificationType.error);
+          updateStatus: LoadStatus.failure,
+          message: S.current.please_enter_name));
+      showToast(
+          title: S.current.please_enter_name, type: ToastificationType.error);
       return;
     }
     emit(state.copyWith(updateStatus: LoadStatus.loading));
@@ -104,7 +109,8 @@ class UserCubit extends Cubit<UserState> {
         emit(state.copyWith(
             user: updatedUser, updateStatus: LoadStatus.success));
         showToast(
-            title: 'Update profile success', type: ToastificationType.success);
+            title: S.current.update_profile_success,
+            type: ToastificationType.success);
       },
     );
   }

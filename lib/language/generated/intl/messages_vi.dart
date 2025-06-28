@@ -280,6 +280,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "photographs": MessageLookupByLibrary.simpleMessage("Hình ảnh"),
         "please_enter_all_information": MessageLookupByLibrary.simpleMessage(
             "Vui lòng điền đầy đủ thông tin"),
+        "please_enter_name":
+            MessageLookupByLibrary.simpleMessage("Vui lòng nhập tên"),
         "please_enter_title":
             MessageLookupByLibrary.simpleMessage("Vui lòng nhập tiêu đề"),
         "please_enter_word":
@@ -417,8 +419,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "update_error": MessageLookupByLibrary.simpleMessage("Lỗi cập nhật"),
         "update_profile":
             MessageLookupByLibrary.simpleMessage("Cập nhật hồ sơ"),
+        "update_profile_avatar_success": MessageLookupByLibrary.simpleMessage(
+            "Cập nhật ảnh đại diện thành công"),
+        "update_profile_success":
+            MessageLookupByLibrary.simpleMessage("Cập nhật hồ sơ thành công"),
         "update_target_score":
             MessageLookupByLibrary.simpleMessage("Cập nhật mục tiêu điểm"),
+        "update_target_score_success": MessageLookupByLibrary.simpleMessage(
+            "Cập nhật mục tiêu điểm thành công"),
         "update_word_successfully":
             MessageLookupByLibrary.simpleMessage("Cập nhật từ vựng thành công"),
         "upgrade": MessageLookupByLibrary.simpleMessage("Nâng cấp"),
