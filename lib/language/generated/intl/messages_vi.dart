@@ -107,6 +107,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "conversations": MessageLookupByLibrary.simpleMessage("Hội thoại"),
         "correct": MessageLookupByLibrary.simpleMessage("Đúng!"),
         "correct_answer": MessageLookupByLibrary.simpleMessage("Đáp án đúng"),
+        "could_not_open_url":
+            MessageLookupByLibrary.simpleMessage("Không mở được liên kết"),
         "count": MessageLookupByLibrary.simpleMessage("Số lượng"),
         "create_answer_by_ai":
             MessageLookupByLibrary.simpleMessage("Tạo đáp án bằng AI"),
@@ -170,6 +172,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fill_by_ai": MessageLookupByLibrary.simpleMessage("Điền bằng AI"),
         "filter": MessageLookupByLibrary.simpleMessage("Lọc"),
         "finish": MessageLookupByLibrary.simpleMessage("Kết thúc"),
+        "finish_quizz":
+            MessageLookupByLibrary.simpleMessage("Kết thúc bài kiểm tra"),
         "flashcards": MessageLookupByLibrary.simpleMessage("Flashcards"),
         "flashcards_description": MessageLookupByLibrary.simpleMessage(
             "Flashcards tương tác giúp tăng từ vựng nhanh."),
@@ -274,6 +278,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "personal_analytics":
             MessageLookupByLibrary.simpleMessage("Phân tích cá nhân"),
         "photographs": MessageLookupByLibrary.simpleMessage("Hình ảnh"),
+        "please_enter_all_information": MessageLookupByLibrary.simpleMessage(
+            "Vui lòng điền đầy đủ thông tin"),
+        "please_enter_title":
+            MessageLookupByLibrary.simpleMessage("Vui lòng nhập tiêu đề"),
+        "please_enter_word":
+            MessageLookupByLibrary.simpleMessage("Vui lòng nhập từ vựng"),
         "please_wait": MessageLookupByLibrary.simpleMessage("Vui lòng chờ..."),
         "practice": MessageLookupByLibrary.simpleMessage("Luyện tập"),
         "practice_button": MessageLookupByLibrary.simpleMessage("Luyện tập"),
@@ -324,7 +334,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "register_button": MessageLookupByLibrary.simpleMessage("Đăng ký"),
         "register_description": MessageLookupByLibrary.simpleMessage(
             "Tạo tài khoản để luyện TOEIC"),
+        "register_success_login_to_continue":
+            MessageLookupByLibrary.simpleMessage(
+                "Đăng ký thành công! Đăng nhập để tiếp tục"),
         "relatively_hard": MessageLookupByLibrary.simpleMessage("Khá khó"),
+        "reminder_word_after":
+            MessageLookupByLibrary.simpleMessage("Nhắc nhở từ sau"),
         "renew": MessageLookupByLibrary.simpleMessage("Gia hạn"),
         "reset_password_description": MessageLookupByLibrary.simpleMessage(
             "Nhập email để đặt lại mật khẩu"),
@@ -346,6 +361,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "select_part_to_practice":
             MessageLookupByLibrary.simpleMessage("Chọn phần luyện tập"),
         "send_button": MessageLookupByLibrary.simpleMessage("Gửi"),
+        "send_email_success":
+            MessageLookupByLibrary.simpleMessage("Gửi email thành công!"),
         "set_flashcard": MessageLookupByLibrary.simpleMessage("Bộ thẻ từ"),
         "set_flashcard_title":
             MessageLookupByLibrary.simpleMessage("Bộ thẻ từ"),
@@ -367,6 +384,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "submitting": MessageLookupByLibrary.simpleMessage("Đang nộp..."),
         "success": MessageLookupByLibrary.simpleMessage("Thành công"),
+        "support_body": MessageLookupByLibrary.simpleMessage(
+            "Tôi có câu hỏi về ứng dụng TOEIC"),
         "system_mode": MessageLookupByLibrary.simpleMessage("Tự động"),
         "take_toeic_tests":
             MessageLookupByLibrary.simpleMessage("Làm bài TOEIC"),
@@ -400,6 +419,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cập nhật hồ sơ"),
         "update_target_score":
             MessageLookupByLibrary.simpleMessage("Cập nhật mục tiêu điểm"),
+        "update_word_successfully":
+            MessageLookupByLibrary.simpleMessage("Cập nhật từ vựng thành công"),
         "upgrade": MessageLookupByLibrary.simpleMessage("Nâng cấp"),
         "upgrade_account":
             MessageLookupByLibrary.simpleMessage("Nâng cấp tài khoản"),

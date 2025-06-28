@@ -39,6 +39,9 @@ class AppConfigs {
   static const maxAttachFile = 5;
 
   static const scrollThreshold = 500.0;
+
+  // mail to
+  static const mailTo = 'winter@toeic.com';
 }
 
 class DatabaseConfig {

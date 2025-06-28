@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -74,7 +73,6 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   }
 
   void handleCheck(String userInput) {
-    debugPrint('winter-handleCheck userInput: $userInput');
     final currentTranscriptQuestion = state.transcriptTests[state.currentIndex];
     final result = _transcriptCheckerService.checkTranscription(
       userInput: userInput,
@@ -112,12 +110,10 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   }
 
   void onStatusStt(SpeechStatus status) {
-    debugPrint('winter-onStatus: $status');
   }
 
   void onErrorStt(SpeechStatus error) {
     stopListening();
-    debugPrint('winter-onError: $error');
   }
 
   Future<void> cancelListening() async {
@@ -133,7 +129,6 @@ class TranscriptTestDetailCubit extends Cubit<TranscriptTestDetailState> {
   }
 
   void onResult(String result) {
-    debugPrint('winter-onResult: $result');
     emit(state.copyWith(userInput: result, isShowAiVoice: false));
   }
 

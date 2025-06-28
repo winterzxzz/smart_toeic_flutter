@@ -2919,6 +2919,106 @@ class S {
       args: [],
     );
   }
+
+  /// `Reminder word after`
+  String get reminder_word_after {
+    return Intl.message(
+      'Reminder word after',
+      name: 'reminder_word_after',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter all information`
+  String get please_enter_all_information {
+    return Intl.message(
+      'Please enter all information',
+      name: 'please_enter_all_information',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update word successfully`
+  String get update_word_successfully {
+    return Intl.message(
+      'Update word successfully',
+      name: 'update_word_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter word`
+  String get please_enter_word {
+    return Intl.message(
+      'Please enter word',
+      name: 'please_enter_word',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finish quiz`
+  String get finish_quizz {
+    return Intl.message(
+      'Finish quiz',
+      name: 'finish_quizz',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter title`
+  String get please_enter_title {
+    return Intl.message(
+      'Please enter title',
+      name: 'please_enter_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register success! Login to continue`
+  String get register_success_login_to_continue {
+    return Intl.message(
+      'Register success! Login to continue',
+      name: 'register_success_login_to_continue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send email successfully!`
+  String get send_email_success {
+    return Intl.message(
+      'Send email successfully!',
+      name: 'send_email_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I have a question about the TOEIC app`
+  String get support_body {
+    return Intl.message(
+      'I have a question about the TOEIC app',
+      name: 'support_body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Could not open URL`
+  String get could_not_open_url {
+    return Intl.message(
+      'Could not open URL',
+      name: 'could_not_open_url',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -5,7 +5,7 @@ import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
-import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/protip_widget.dart';
+import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/protip_widget.dart';
 
 class FullTestMode extends StatelessWidget {
   const FullTestMode({

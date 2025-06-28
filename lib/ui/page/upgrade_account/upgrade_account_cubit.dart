@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/payment_repository.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_state.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -37,13 +39,13 @@ class UpgradeAccountCubit extends Cubit<UpgradeAccountState> {
 
   void mailTo() {
     _launchUrl(
-        'mailto:winter@toeic.com?subject=Support&body=I have a question about the TOEIC app');
+        'mailto:${AppConfigs.mailTo}?subject=Support&body=${S.current.support_body}');
   }
 
   void _launchUrl(String url) async {
     if (!await launchUrl(Uri.parse(url))) {
       showToast(
-        title: 'Could not open URL',
+        title: S.current.could_not_open_url,
         type: ToastificationType.error,
       );
     }

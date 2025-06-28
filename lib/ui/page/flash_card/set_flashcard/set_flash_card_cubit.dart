@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
 
@@ -55,10 +56,10 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     if (title.isEmpty) {
       emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: "Vui lòng nhập tiêu đề",
+        message: S.current.please_enter_title,
       ));
       showToast(
-        title: "Vui lòng nhập tiêu đề",
+        title: S.current.please_enter_title,
         type: ToastificationType.error,
       );
       return;
@@ -135,10 +136,10 @@ class FlashCardCubit extends Cubit<FlashCardState> {
     if (title.isEmpty) {
       emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        message: "Vui lòng nhập tiêu đề",
+        message: S.current.please_enter_title,
       ));
       showToast(
-        title: "Vui lòng nhập tiêu đề",
+        title: S.current.please_enter_title,
         type: ToastificationType.error,
       );
       return;

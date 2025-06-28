@@ -7,9 +7,9 @@ import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
-import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/custom_drop_down.dart';
-import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/protip_widget.dart';
-import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/question_parts.dart';
+import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/custom_drop_down.dart';
+import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/protip_widget.dart';
+import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/question_parts.dart';
 
 class PracticeMode extends StatefulWidget {
   const PracticeMode({

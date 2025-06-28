@@ -290,5 +290,15 @@
     "accuracy_rate": "Tỷ lệ chính xác",
     "quiz_result": "Kết quả câu hỏi", 
     "daily_reminder": "Nhắc nhở hàng ngày",
-    "daily_reminder_description": "Kiểm tra ứng dụng hàng ngày để học tập hiệu quả hơn!"
+    "daily_reminder_description": "Kiểm tra ứng dụng hàng ngày để học tập hiệu quả hơn!",
+    "reminder_word_after": "Nhắc nhở từ sau",
+    "please_enter_all_information": "Vui lòng điền đầy đủ thông tin",
+    "update_word_successfully": "Cập nhật từ vựng thành công",
+    "please_enter_word": "Vui lòng nhập từ vựng",
+    "finish_quizz": "Kết thúc bài kiểm tra",
+    "please_enter_title": "Vui lòng nhập tiêu đề",
+    "register_success_login_to_continue": "Đăng ký thành công! Đăng nhập để tiếp tục",
+    "send_email_success": "Gửi email thành công!",
+    "support_body": "Tôi có câu hỏi về ứng dụng TOEIC",
+    "could_not_open_url": "Không mở được liên kết"
 }

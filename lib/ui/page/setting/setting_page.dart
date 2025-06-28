@@ -222,7 +222,7 @@ class _SettingPageState extends State<SettingPage> {
             Padding(
               padding: AppStyle.edgeInsetsA12,
               child: Text(
-                'Reminder word after',
+                S.current.reminder_word_after,
                 style: theme.textTheme.bodyMedium,
               ),
             ),

@@ -7,6 +7,7 @@ import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/flash_card_show_in_widget.dart';
 import 'package:toeic_desktop/data/network/repositories/flash_card_respository.dart';
 import 'package:toeic_desktop/data/services/widget_service.dart';
+import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'flash_card_detail_state.dart';
@@ -62,7 +63,7 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
   Future<void> createFlashCard(FlashCardRequest flashCardRequest) async {
     if (!flashCardRequest.isValid()) {
       showToast(
-        title: 'Vui lòng điền đầy đủ thông tin',
+        title: S.current.please_enter_all_information,
         type: ToastificationType.error,
       );
       return;
@@ -133,7 +134,7 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
           flashCards: state.flashCards.map((e) => e.id == id ? r : e).toList(),
         ));
         showToast(
-          title: 'Cập nhật từ vựng thành công',
+          title: S.current.update_word_successfully,
           type: ToastificationType.success,
         );
       },
@@ -143,7 +144,7 @@ class FlashCardDetailCubit extends Cubit<FlashCardDetailState> {
   Future<void> getFlashCardInforByAI(String prompt) async {
     if (prompt.isEmpty) {
       showToast(
-        title: 'Vui lòng nhập từ vựng',
+        title: S.current.please_enter_word,
         type: ToastificationType.error,
       );
       return;
