@@ -108,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "correct": MessageLookupByLibrary.simpleMessage("Correct!"),
         "correct_answer":
             MessageLookupByLibrary.simpleMessage("Correct answer"),
+        "could_not_open_url":
+            MessageLookupByLibrary.simpleMessage("Could not open URL"),
         "count": MessageLookupByLibrary.simpleMessage("Count"),
         "create_answer_by_ai":
             MessageLookupByLibrary.simpleMessage("Create answer by AI"),
@@ -179,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fill_by_ai": MessageLookupByLibrary.simpleMessage("Fill by AI"),
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),
         "finish": MessageLookupByLibrary.simpleMessage("Finish"),
+        "finish_quizz": MessageLookupByLibrary.simpleMessage("Finish quiz"),
         "flashcards": MessageLookupByLibrary.simpleMessage("Flashcards"),
         "flashcards_description": MessageLookupByLibrary.simpleMessage(
             "Interactive flashcards to boost your vocabulary and language skills efficiently."),
@@ -284,6 +287,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "personal_analytics":
             MessageLookupByLibrary.simpleMessage("Personal analytics"),
         "photographs": MessageLookupByLibrary.simpleMessage("Photographs"),
+        "please_enter_all_information": MessageLookupByLibrary.simpleMessage(
+            "Please enter all information"),
+        "please_enter_name":
+            MessageLookupByLibrary.simpleMessage("Please enter name"),
+        "please_enter_title":
+            MessageLookupByLibrary.simpleMessage("Please enter title"),
+        "please_enter_word":
+            MessageLookupByLibrary.simpleMessage("Please enter word"),
         "please_wait": MessageLookupByLibrary.simpleMessage("Please wait..."),
         "practice": MessageLookupByLibrary.simpleMessage("Practice"),
         "practice_button": MessageLookupByLibrary.simpleMessage("Practice"),
@@ -335,8 +346,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "register_button": MessageLookupByLibrary.simpleMessage("Register"),
         "register_description": MessageLookupByLibrary.simpleMessage(
             "Create an account to access our comprehensive TOEIC preparation resources"),
+        "register_success_login_to_continue":
+            MessageLookupByLibrary.simpleMessage(
+                "Register success! Login to continue"),
         "relatively_hard":
             MessageLookupByLibrary.simpleMessage("Relatively Hard"),
+        "reminder_word_after":
+            MessageLookupByLibrary.simpleMessage("Reminder word after"),
         "renew": MessageLookupByLibrary.simpleMessage("Renew"),
         "reset_password_description": MessageLookupByLibrary.simpleMessage(
             "Enter your email and we will send you a link to reset your password"),
@@ -360,6 +376,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "select_part_to_practice":
             MessageLookupByLibrary.simpleMessage("Select Part to Practice"),
         "send_button": MessageLookupByLibrary.simpleMessage("Send"),
+        "send_email_success":
+            MessageLookupByLibrary.simpleMessage("Send email successfully!"),
         "set_flashcard": MessageLookupByLibrary.simpleMessage("Set Flashcard"),
         "set_flashcard_title":
             MessageLookupByLibrary.simpleMessage("Set Flashcard"),
@@ -382,6 +400,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "submitting": MessageLookupByLibrary.simpleMessage("Submitting..."),
         "success": MessageLookupByLibrary.simpleMessage("Success"),
+        "support_body": MessageLookupByLibrary.simpleMessage(
+            "I have a question about the TOEIC app"),
         "system_mode": MessageLookupByLibrary.simpleMessage("System Mode"),
         "take_toeic_tests":
             MessageLookupByLibrary.simpleMessage("Take TOEIC tests"),
@@ -415,8 +435,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "update_error": MessageLookupByLibrary.simpleMessage("Update Error"),
         "update_profile":
             MessageLookupByLibrary.simpleMessage("Update Profile"),
+        "update_profile_avatar_success": MessageLookupByLibrary.simpleMessage(
+            "Update profile avatar successfully"),
+        "update_profile_success":
+            MessageLookupByLibrary.simpleMessage("Update profile successfully"),
         "update_target_score":
             MessageLookupByLibrary.simpleMessage("Update Target Score"),
+        "update_target_score_success": MessageLookupByLibrary.simpleMessage(
+            "Update target score successfully"),
+        "update_word_successfully":
+            MessageLookupByLibrary.simpleMessage("Update word successfully"),
         "upgrade": MessageLookupByLibrary.simpleMessage("Upgrade"),
         "upgrade_account":
             MessageLookupByLibrary.simpleMessage("Upgrade Account"),

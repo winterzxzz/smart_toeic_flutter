@@ -296,5 +296,19 @@
     "accuracy_rate": "Accuracy Rate",
     "quiz_result": "Quiz Result", 
     "daily_reminder": "Daily Reminder",
-    "daily_reminder_description": "Check the app today to improve your TOEIC skills!"
+    "daily_reminder_description": "Check the app today to improve your TOEIC skills!",
+    "reminder_word_after": "Reminder word after",
+    "please_enter_all_information": "Please enter all information",
+    "update_word_successfully": "Update word successfully",
+    "please_enter_word": "Please enter word",
+    "finish_quizz": "Finish quiz",
+    "please_enter_title": "Please enter title",
+    "register_success_login_to_continue": "Register success! Login to continue",
+    "send_email_success": "Send email successfully!",
+    "support_body": "I have a question about the TOEIC app",
+    "could_not_open_url": "Could not open URL",
+    "update_target_score_success": "Update target score successfully",
+    "update_profile_avatar_success": "Update profile avatar successfully",
+    "please_enter_name": "Please enter name",
+    "update_profile_success": "Update profile successfully"
 }

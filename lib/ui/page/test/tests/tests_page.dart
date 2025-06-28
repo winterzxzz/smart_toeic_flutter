@@ -5,7 +5,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
-import 'package:toeic_desktop/ui/page/test/tests/choose_mode_test/widgets/custom_drop_down.dart';
+import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/test/tests/tests_cubit.dart';
 import 'package:toeic_desktop/ui/page/test/tests/tests_state.dart';
 import 'package:toeic_desktop/ui/page/test/tests/widgets/test_card.dart';

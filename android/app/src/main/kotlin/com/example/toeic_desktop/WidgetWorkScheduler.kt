@@ -4,11 +4,14 @@ import android.content.Context
 import android.util.Log
 import androidx.work.*
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import com.example.toeic_desktop.data.ContentPreferences
-import com.example.toeic_desktop.model.FlashCard
+import androidx.work.await
+import kotlinx.coroutines.withContext
+
+
+
+
 
 
 
@@ -23,6 +26,7 @@ object WidgetWorkScheduler {
     fun schedulePeriodicWidgetUpdate(
         context: Context,
         intervalMinutes: Long = 15,
+        timeUnit: TimeUnit = TimeUnit.MINUTES
     ) {
 
 
@@ -31,7 +35,7 @@ object WidgetWorkScheduler {
         }.build()
 
 
-        val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(intervalMinutes, timeUnit)
             .setInitialDelay(2, TimeUnit.SECONDS)
             .setInputData(inputData)
             .build()
@@ -43,7 +47,7 @@ object WidgetWorkScheduler {
                 workRequest
             )
 
-        Log.d("WidgetWorkScheduler", "Scheduled periodic widget update every $intervalMinutes minutes")
+        Log.d("WidgetWorkScheduler", "Scheduled periodic widget update every $intervalMinutes ${timeUnit.name.lowercase()}")
     }
 
     /**
@@ -61,5 +65,31 @@ object WidgetWorkScheduler {
         WorkManager.getInstance(context).cancelUniqueWork(workName)
         Log.d("WidgetWorkScheduler", "Cancelled widget update work: $workName")
     }
+
+    /**
+     * Check if workmanager is running
+     */
+    
+    suspend fun isWorkManagerRunning(context: Context): Boolean {
+        return withContext(Dispatchers.IO) {
+        try {
+            val workInfos = WorkManager.getInstance(context)
+                .getWorkInfosForUniqueWork(WidgetUpdateWorker.PERIODIC_UPDATE_WORK)
+                .await()
+            
+            workInfos.isNotEmpty() && workInfos.any { workInfo ->
+                workInfo.state in setOf(
+                    WorkInfo.State.BLOCKED,
+                    WorkInfo.State.ENQUEUED,
+                    WorkInfo.State.RUNNING
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("WidgetWorkScheduler", "Error checking WorkManager status", e)
+                false
+            }
+        }
+    }
+
 
 } 

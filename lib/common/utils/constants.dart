@@ -23,7 +23,7 @@ class Constants {
             icon: FontAwesomeIcons.idCard,
             title: S.current.flashcards,
             desciption: S.current.flashcards_description),
-        ServiceItem(
+      ServiceItem(
             icon: FontAwesomeIcons.list,
             title: S.current.practice_exams,
             desciption: S.current.practice_exams_description),
@@ -215,7 +215,6 @@ class Constants {
         '30 minutes',
         '45 minutes',
         '60 minutes',
-        '1 hour',
         '2 hours',
         '4 hours',
         '8 hours',

@@ -25,6 +25,10 @@ class TOEICGlanceWidgetReceiver : GlanceAppWidgetReceiver() {
     private suspend fun updateContentWidget(context: Context) {
             val currentIndex = ContentPreferences.getCurrentFlashCardIndex(context)
             val flashCards = ContentPreferences.loadFlashCards(context)
+            if(flashCards.isEmpty()) {
+                Log.e("GlanceWidget", "No flash cards found")
+                return
+            }
             val flashCard = flashCards[currentIndex]
             if (flashCard != null) {
                 Log.d("GlanceWidget", "Updating widget with flash card: ${flashCard.word}")

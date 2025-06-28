@@ -20,6 +20,7 @@ object ContentPreferences {
     val CONTENT_KEY = stringPreferencesKey("flashcards_json")
     val CURRENT_FLASH_CARD_INDEX_KEY = intPreferencesKey("flash_card_index")
     val IS_CAN_SHOW_NOTIFICATION_KEY = intPreferencesKey("is_can_show_notification")
+    val REMINDER_WORD_AFTER_TIME_KEY = stringPreferencesKey("reminder_word_after_time")
 
     // Non-suspend methods for immediate access using SharedPreferences
     fun loadFlashCards(context: Context): List<FlashCard> {
@@ -35,6 +36,7 @@ object ContentPreferences {
     
     fun saveFlashCards(context: Context, flashCards: List<FlashCard>) {
         val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        prefs.edit().putInt(CURRENT_FLASH_CARD_INDEX_KEY.name, 0).apply()
         prefs.edit().putString(CONTENT_KEY.name, Gson().toJson(flashCards)).apply()
     }
 
@@ -62,5 +64,15 @@ object ContentPreferences {
     fun isCanShowNotification(context: Context): Boolean {
         val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
         return prefs.getInt(IS_CAN_SHOW_NOTIFICATION_KEY.name, 0) == 1
+    }
+
+    fun setReminderWordAfterTime(context: Context, reminderWordAfterTime: String) {
+        val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        prefs.edit().putString(REMINDER_WORD_AFTER_TIME_KEY.name, reminderWordAfterTime).apply()
+    }
+
+    fun getReminderWordAfterTime(context: Context): String {
+        val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        return prefs.getString(REMINDER_WORD_AFTER_TIME_KEY.name, "15 minutes") ?: "15 minutes"
     }
 }

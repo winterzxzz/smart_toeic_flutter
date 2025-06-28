@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 
 class AuthTextField extends StatefulWidget {
@@ -43,15 +42,15 @@ class _AuthTextFieldState extends State<AuthTextField> {
       height: widget.height,
       child: TextFormField(
         controller: widget.controller,
-        autofillHints: widget.isPassword
-            ? [
-                AutofillHints.password,
-              ]
-            : widget.labelText == S.current.email_label
-                ? [
-                    AutofillHints.email,
-                  ]
-                : null,
+        // autofillHints: widget.isPassword
+        //     ? [
+        //         AutofillHints.password,
+        //       ]
+        //     : widget.labelText == S.current.email_label
+        //         ? [
+        //             AutofillHints.email,
+        //           ]
+        //         : null,
         keyboardType: widget.keyboardType,
         obscureText: _isPasswordVisible,
         decoration: InputDecoration(

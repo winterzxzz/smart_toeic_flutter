@@ -19,6 +19,7 @@ import androidx.glance.appwidget.updateAll
 import com.example.toeic_desktop.model.FlashCard
 import com.example.toeic_desktop.data.ContentPreferences
 import com.example.toeic_desktop.data.ColorPreferences
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : FlutterActivity() {
@@ -78,16 +79,66 @@ class MainActivity : FlutterActivity() {
                                         partOfSpeech = it["partOfSpeech"] ?: ""
                                     )
                                 }
-                                ContentPreferences.saveFlashCards(this, flashcards)
-                                WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this, 15)
+                                if(flashcards.isNotEmpty()) {
+                                    ContentPreferences.saveFlashCards(this, flashcards)
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        if(!WidgetWorkScheduler.isWorkManagerRunning(this@MainActivity)) {
+                                            val reminderWordAfterTime = ContentPreferences.getReminderWordAfterTime(this@MainActivity)
+                                            val value = reminderWordAfterTime.split(" ")?.first()?.toLong()
+                                            val unit = reminderWordAfterTime.split(" ")?.last()?.toLowerCase()
+                                            if(value != null && unit != null) {
+                                                val timeUnit = when (unit) {
+                                                    "minutes" -> TimeUnit.MINUTES
+                                                    "hours" -> TimeUnit.HOURS
+                                                    "days" -> TimeUnit.DAYS
+                                                    else -> TimeUnit.MINUTES
+                                                }
+                                                WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this@MainActivity, value, timeUnit)
+                                            } else {
+                                                WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this@MainActivity)
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
-                        result.success("Widget update scheduled after 15 minutes")
+                        result.success("Widget update scheduled after ${ContentPreferences.getReminderWordAfterTime(this)}")
                     }
-                    "cancelWidgetUpdates" -> {
-                        WidgetWorkScheduler.cancelAllWidgetUpdates(this)
-                        ContentPreferences.clearAllData(this)
-                        result.success("All widget updates cancelled")
+                    "updateReminderWordAfterTime" -> {
+                        val reminderWordAfterTime = call.argument<String>("reminderWordAfterTime")
+                        if(reminderWordAfterTime != null) {
+                            ContentPreferences.setReminderWordAfterTime(this, reminderWordAfterTime)
+                        }
+                        Log.d("MainActivity", "reminderWordAfterTime: $reminderWordAfterTime")
+                        val value = reminderWordAfterTime?.split(" ")?.first()?.toLong()
+                        val unit = reminderWordAfterTime?.split(" ")?.last()?.toLowerCase()
+                        if(value != null && unit != null) {
+                            val flashCards = ContentPreferences.loadFlashCards(this)
+                            if(flashCards.isNotEmpty()) {
+                                ContentPreferences.setIsCanShowNotification(this, false)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    if(WidgetWorkScheduler.isWorkManagerRunning(this@MainActivity)) {
+                                        WidgetWorkScheduler.cancelWidgetUpdate(this@MainActivity, WidgetUpdateWorker.PERIODIC_UPDATE_WORK)
+                                    }
+                                    val timeUnit = when (unit) {
+                                        "minutes" -> TimeUnit.MINUTES
+                                        "hours" -> TimeUnit.HOURS
+                                        "days" -> TimeUnit.DAYS
+                                        else -> TimeUnit.MINUTES
+                                    }
+                                    WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this@MainActivity, value, timeUnit)
+                                }
+                                result.success("Widget update scheduled after $reminderWordAfterTime")
+                            } else {
+                                result.success("No flash cards available for widget update")
+                            }
+                        } else {
+                            result.success("Invalid reminder word after time format")
+                        }
+                    }
+                    "cancelWidgetUpdate" -> {
+                        WidgetWorkScheduler.cancelWidgetUpdate(this, WidgetUpdateWorker.PERIODIC_UPDATE_WORK)
+                        result.success("Widget update cancelled")
                     }
                     else -> {
                         result.notImplemented()
