@@ -17,6 +17,8 @@ import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import android.app.PendingIntent
+import android.content.Intent
 
 class WidgetUpdateWorker(
     context: Context,
@@ -74,11 +76,26 @@ class WidgetUpdateWorker(
             notificationManager.createNotificationChannel(channel)
         }
 
+          // Intent to launch MainActivity with extra data
+        val intent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("notification_payload", "tests") // ✅ Set your payload here
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(applicationContext, "work_channel")
             .setContentTitle(title)
             .setContentText(message)
             .setSmallIcon(R.mipmap.ic_launcher) // Use app logo
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
             .build()
         // get now for id
         val now = System.currentTimeMillis().toInt()

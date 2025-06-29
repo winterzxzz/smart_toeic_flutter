@@ -6,13 +6,15 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/services/alarm_permission_service.dart';
 
 class NotiService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  final bool _isInitialized = false;
+  bool _isInitialized = false;
+  static String? _pendingPayload; // Store payload when app is killed
 
   bool get isInitialized => _isInitialized;
 
@@ -30,6 +32,7 @@ class NotiService {
     if (_isInitialized) return;
     await requestNotificationPermission();
     initTimeZone();
+
     // prepare android init settings
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -49,7 +52,80 @@ class NotiService {
       iOS: initializationSettingsIOS,
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: _onNotificationTapped,
+      onDidReceiveBackgroundNotificationResponse: _onNotificationTapped,
+    );
+
+    _isInitialized = true;
+
+    // Check if app was launched from notification (when app was killed)
+    await _checkLaunchDetails();
+  }
+
+  // Check if the app was launched from a notification
+  Future<void> _checkLaunchDetails() async {
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+      final String? payload =
+          notificationAppLaunchDetails?.notificationResponse?.payload;
+      debugPrint('App launched from notification with payload: $payload');
+
+      if (payload != null) {
+        // Store the payload to handle after the app is fully initialized
+        _pendingPayload = payload;
+        // Handle the navigation after a short delay to ensure the app is ready
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _handleNotificationPayload(payload);
+        });
+      }
+    }
+  }
+
+  // Handle notification tap (both foreground and background)
+  static void _onNotificationTapped(NotificationResponse response) {
+    debugPrint('Notification tapped with payload: ${response.payload}');
+    if (response.payload != null) {
+      _handleNotificationPayload(response.payload!);
+    }
+  }
+
+  // Handle the notification payload and navigate accordingly
+  static void _handleNotificationPayload(String payload) {
+    debugPrint('Handling notification payload: $payload');
+
+    if (payload == 'tests') {
+      try {
+        // Ensure we're navigating from the root
+        AppRouter.router.go(AppRouter.bottomTab); // Reset to home first
+        Future.delayed(const Duration(milliseconds: 100), () {
+          AppRouter.router.pushNamed(AppRouter.transcriptTest);
+        });
+      } catch (e) {
+        debugPrint('Error navigating from notification: $e');
+        // Fallback: try alternative navigation method
+        Future.delayed(const Duration(milliseconds: 500), () {
+          try {
+            AppRouter.router.goNamed(AppRouter.bottomTab);
+            AppRouter.router.pushNamed(AppRouter.transcriptTest);
+          } catch (e2) {
+            debugPrint('Fallback navigation also failed: $e2');
+          }
+        });
+      }
+    }
+  }
+
+  // Call this method after your app's routing is fully initialized
+  static Future<void> handlePendingNotification() async {
+    if (_pendingPayload != null) {
+      debugPrint('Handling pending notification payload: $_pendingPayload');
+      _handleNotificationPayload(_pendingPayload!);
+      _pendingPayload = null;
+    }
   }
 
   // REQUEST PERMISSION
@@ -78,13 +154,13 @@ class NotiService {
   NotificationDetails noficationDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
-        'high_importance_channel',
-        'High Importance Notifications',
-        channelDescription: 'This channel is used for important notifications.',
-        importance: Importance.max,
-        playSound: true,
-        priority: Priority.high,
-      ),
+          'high_importance_channel', 'High Importance Notifications',
+          channelDescription:
+              'This channel is used for important notifications.',
+          importance: Importance.max,
+          playSound: true,
+          priority: Priority.high,
+          autoCancel: true),
       iOS: DarwinNotificationDetails(),
     );
   }
@@ -125,11 +201,13 @@ class NotiService {
         body,
         scheduledDate,
         noficationDetails(),
+        payload: 'tests',
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.time,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );
+
       // get pending notification
       final pendingNotificationRequests =
           await flutterLocalNotificationsPlugin.pendingNotificationRequests();
