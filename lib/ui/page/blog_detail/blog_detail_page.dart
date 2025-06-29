@@ -33,7 +33,7 @@ class _BlogDetailState extends State<BlogDetail> {
     _bannerAd = BannerAd(
       adUnitId: AppConfigs.bannerAdUnitId,
       request: const AdRequest(),
-      size: AdSize.banner,
+      size: AdSize.mediumRectangle,
       listener: BannerAdListener(
         onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
         onAdFailedToLoad: (ad, err) {
@@ -60,44 +60,52 @@ class _BlogDetailState extends State<BlogDetail> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: SelectionArea(
-            child: HtmlWidget(
-              widget.blog.content ?? '',
-              onTapUrl: (url) {
-                _launchUrl(url);
-                return true;
-              },
-              enableCaching: true,
-              onLoadingBuilder: (context, element, loadingProgress) {
-                return const LoadingCircle();
-              },
-              customWidgetBuilder: (ele) {
-                if (ele.localName == 'img') {
-                  final src = ele.attributes['src'];
-                  return Image.network(
-                    src ?? '',
-                    fit: BoxFit.cover,
-                  );
-                }
-                return null;
-              },
-              onErrorBuilder: (context, element, error) {
-                return const SizedBox.shrink();
-              },
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: SelectionArea(
+                child: HtmlWidget(
+                  widget.blog.content ?? '',
+                  onTapUrl: (url) {
+                    _launchUrl(url);
+                    return true;
+                  },
+                  enableCaching: true,
+                  onLoadingBuilder: (context, element, loadingProgress) {
+                    return const LoadingCircle();
+                  },
+                  customWidgetBuilder: (ele) {
+                    if (ele.localName == 'img') {
+                      final src = ele.attributes['src'];
+                      return Image.network(
+                        src ?? '',
+                        fit: BoxFit.cover,
+                      );
+                    }
+                    return null;
+                  },
+                  onErrorBuilder: (context, element, error) {
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
             ),
           ),
-        ),
+          if (_isBannerAdReady)
+            Positioned(
+              bottom: 10,
+              left: 0,
+              right: 0,
+              child: SizedBox(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+            ),
+        ],
       ),
-      bottomNavigationBar: _isBannerAdReady
-          ? SizedBox(
-              width: _bannerAd.size.width.toDouble(),
-              height: _bannerAd.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd),
-            )
-          : null,
     );
   }
 
