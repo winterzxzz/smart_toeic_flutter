@@ -8,7 +8,7 @@ class AppConfigs {
 
   ///API Env
   static String get baseUrl => env.baseUrl;
-  static String get adsBaseUrl => env.adsBaseUrl;
+  static String get bannerAdUnitId => env.bannerAdUnitId;
   static String get mocKyBaseUrl => 'https://run.mocky.io';
   static String get envName => env.envName;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toastification/toastification.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -30,7 +31,7 @@ class _BlogDetailState extends State<BlogDetail> {
   void initState() {
     super.initState();
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-4829406909435995/9509723114',
+      adUnitId: AppConfigs.bannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(

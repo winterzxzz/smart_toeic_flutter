@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -82,7 +83,7 @@ class _PageState extends State<Page> {
     super.initState();
     _cubit = context.read<PracticeTestCubit>();
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-4829406909435995/9509723114',
+      adUnitId: AppConfigs.bannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(

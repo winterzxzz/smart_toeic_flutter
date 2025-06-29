@@ -23,14 +23,14 @@ extension EnvironmentExt on Environment {
     }
   }
 
-  String get adsBaseUrl {
+  String get bannerAdUnitId {
     switch (this) {
       case Environment.dev:
-        return "ca-app-pub-4829406909435995~8175610087";
+        return "ca-app-pub-4829406909435995/9509723114";
       case Environment.stg:
-        return "http://stg";
+        return "ca-app-pub-4829406909435995/9509723114";
       case Environment.prod:
-        return "ca-app-pub-4829406909435995~8175610087";
+        return "ca-app-pub-4829406909435995/9509723114";
     }
   }
 }

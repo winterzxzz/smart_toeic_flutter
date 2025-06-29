@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
@@ -55,7 +56,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
     );
     _cubit = context.read<TranscriptTestDetailCubit>();
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-4829406909435995/9509723114',
+      adUnitId: AppConfigs.bannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
