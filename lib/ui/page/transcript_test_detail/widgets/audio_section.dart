@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
@@ -24,35 +25,59 @@ class _AudioSectionState extends State<AudioSection> {
   bool _isPlaying = true;
   bool _isCompleted = false;
 
+  // Stream subscriptions for proper cleanup
+  StreamSubscription<Duration?>? _durationSubscription;
+  StreamSubscription<bool>? _playingSubscription;
+  StreamSubscription<Duration>? _positionSubscription;
+  StreamSubscription<PlayerState>? _playerStateSubscription;
+
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer()
-      ..setUrl(widget.audioUrl)
-      ..play()
-      ..durationStream.listen((duration) {
+    _initializeAudioPlayer();
+  }
+
+  void _initializeAudioPlayer() {
+    _audioPlayer = AudioPlayer();
+
+    _audioPlayer?.setUrl(widget.audioUrl).then((_) {
+      if (mounted) {
+        _audioPlayer?.play();
+      }
+    });
+
+    _durationSubscription = _audioPlayer?.durationStream.listen((duration) {
+      if (mounted) {
         setState(() {
           _duration = duration;
         });
-      })
-      ..playingStream.listen((playing) {
+      }
+    });
+
+    _playingSubscription = _audioPlayer?.playingStream.listen((playing) {
+      if (mounted) {
         setState(() {
           _isPlaying = playing;
         });
-      })
-      ..positionStream.listen((position) {
+      }
+    });
+
+    _positionSubscription = _audioPlayer?.positionStream.listen((position) {
+      if (mounted) {
         setState(() {
           _position = position;
         });
-      })
-      ..playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          setState(() {
-            _isCompleted = true;
-            _isPlaying = false;
-          });
-        }
-      });
+      }
+    });
+
+    _playerStateSubscription = _audioPlayer?.playerStateStream.listen((state) {
+      if (mounted && state.processingState == ProcessingState.completed) {
+        setState(() {
+          _isCompleted = true;
+          _isPlaying = false;
+        });
+      }
+    });
   }
 
   void _handleSeekStart(double p) {
@@ -66,18 +91,22 @@ class _AudioSectionState extends State<AudioSection> {
   void _handleSeekEnd(double p) {
     _audioPlayer?.seek(Duration(seconds: p.toInt()));
     _audioPlayer?.play();
-    setState(() {
-      _position = Duration(seconds: p.toInt());
-    });
+    if (mounted) {
+      setState(() {
+        _position = Duration(seconds: p.toInt());
+      });
+    }
   }
 
   void _handleTapPlayPause() async {
     if (_isCompleted) {
-      setState(() {
-        _position = Duration.zero;
-        _isCompleted = false;
-        _isPlaying = true;
-      });
+      if (mounted) {
+        setState(() {
+          _position = Duration.zero;
+          _isCompleted = false;
+          _isPlaying = true;
+        });
+      }
       await _audioPlayer?.seek(Duration.zero);
       await _audioPlayer?.play();
     } else {
@@ -91,6 +120,13 @@ class _AudioSectionState extends State<AudioSection> {
 
   @override
   void dispose() {
+    // Cancel all stream subscriptions
+    _durationSubscription?.cancel();
+    _playingSubscription?.cancel();
+    _positionSubscription?.cancel();
+    _playerStateSubscription?.cancel();
+
+    // Dispose audio player
     _audioPlayer?.dispose();
     super.dispose();
   }
