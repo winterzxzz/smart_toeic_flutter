@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -51,11 +53,21 @@ class Page extends StatefulWidget {
 
 class _PageState extends State<Page> {
   late final FlashCardDetailCubit _cubit;
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
 
   @override
   void initState() {
     super.initState();
     _cubit = context.read<FlashCardDetailCubit>();
+    _bannerAd = BannerAd(
+      adUnitId: AppConfigs.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+      ),
+    )..load();
   }
 
   @override
@@ -165,6 +177,13 @@ class _PageState extends State<Page> {
           );
         },
       ),
+      bottomNavigationBar: _isBannerAdReady
+          ? SizedBox(
+              width: _bannerAd.size.width.toDouble(),
+              height: _bannerAd.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd),
+            )
+          : null,
     );
   }
 
