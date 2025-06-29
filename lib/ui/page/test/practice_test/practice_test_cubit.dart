@@ -82,18 +82,21 @@ class PracticeTestCubit extends Cubit<PracticeTestState> {
         duration: args.duration,
         focusPart: args.parts.first,
         testId: args.testId));
-    await getPracticeTestDetail(args.testId, args.parts, args.resultId);
+    await getPracticeTestDetail(
+        args.testId, args.parts, args.resultId, args.testShow);
     if (args.testShow == TestShow.test) {
       _startTimer();
     }
   }
 
-  Future<void> getPracticeTestDetail(
-      String testId, List<PartEnum> parts, String? resultId) async {
+  Future<void> getPracticeTestDetail(String testId, List<PartEnum> parts,
+      String? resultId, TestShow testShow) async {
     await Future.microtask(
         () => emit(state.copyWith(loadStatus: LoadStatus.loading)));
     final res1 = await _testRepository.getDetailTest(testId);
-    if (resultId != null) {
+    if (resultId != null &&
+        resultId.isNotEmpty &&
+        testShow == TestShow.result) {
       await getResultTestByResultId(resultId);
     }
     res1.fold(

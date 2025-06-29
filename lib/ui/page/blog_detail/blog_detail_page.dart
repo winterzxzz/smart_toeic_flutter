@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -9,7 +10,7 @@ import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class BlogDetail extends StatelessWidget {
+class BlogDetail extends StatefulWidget {
   final Blog blog;
 
   const BlogDetail({
@@ -18,10 +19,35 @@ class BlogDetail extends StatelessWidget {
   });
 
   @override
+  State<BlogDetail> createState() => _BlogDetailState();
+}
+
+class _BlogDetailState extends State<BlogDetail> {
+  late final BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4829406909435995/9509723114',
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+        onAdFailedToLoad: (ad, err) {
+          debugPrint('Failed to load banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    )..load();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(blog.title?.trim() ?? ''),
+        title: Text(widget.blog.title?.trim() ?? ''),
         leading: const LeadingBackButton(
           isClose: true,
         ),
@@ -38,7 +64,7 @@ class BlogDetail extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: SelectionArea(
             child: HtmlWidget(
-              blog.content ?? '',
+              widget.blog.content ?? '',
               onTapUrl: (url) {
                 _launchUrl(url);
                 return true;
@@ -64,6 +90,13 @@ class BlogDetail extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: _isBannerAdReady
+          ? SizedBox(
+              width: _bannerAd.size.width.toDouble(),
+              height: _bannerAd.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd),
+            )
+          : null,
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
@@ -74,10 +75,20 @@ class Page extends StatefulWidget {
 
 class _PageState extends State<Page> {
   late final PracticeTestCubit _cubit;
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
   @override
   void initState() {
     super.initState();
     _cubit = context.read<PracticeTestCubit>();
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4829406909435995/9509723114',
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+      ),
+    )..load();
   }
 
   @override
@@ -181,39 +192,54 @@ class _PageState extends State<Page> {
                 },
               ),
               bottomNavigationBar: BottomAppBar(
-                height: widget.testShow == TestShow.result ? 0 : null,
+                padding: const EdgeInsets.only(left: 16, right: 8),
+                height: widget.testShow == TestShow.result
+                    ? 0
+                    : 56 + _bannerAd.size.height.toDouble(),
                 child: widget.testShow == TestShow.result
                     ? null
-                    : Row(children: [
-                        BlocBuilder<PracticeTestCubit, PracticeTestState>(
-                          buildWhen: (previous, current) =>
-                              previous.duration != current.duration,
-                          builder: (context, state) {
-                            return Text(
-                              '${state.duration.inMinutes}:${state.duration.inSeconds % 60 < 10 ? '0' : ''}${state.duration.inSeconds % 60}',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                    : Column(
+                        children: [
+                          if (_isBannerAdReady)
+                            SizedBox(
+                              width: double.infinity,
+                              height: _bannerAd.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd),
+                            ),
+                          Row(children: [
+                            BlocBuilder<PracticeTestCubit, PracticeTestState>(
+                              buildWhen: (previous, current) =>
+                                  previous.duration != current.duration,
+                              builder: (context, state) {
+                                return Text(
+                                  '${state.duration.inMinutes}:${state.duration.inSeconds % 60 < 10 ? '0' : ''}${state.duration.inSeconds % 60}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                              child: CustomButton(
+                                height: 50,
+                                onPressed: () {
+                                  showConfirmDialog(
+                                      context,
+                                      S.current.are_you_sure,
+                                      S.current.are_you_sure_submit_test, () {
+                                    _cubit.submitTest();
+                                  });
+                                },
+                                child: Text(S.current.submit),
                               ),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                          child: CustomButton(
-                            height: 50,
-                            onPressed: () {
-                              showConfirmDialog(context, S.current.are_you_sure,
-                                  S.current.are_you_sure_submit_test, () {
-                                _cubit.submitTest();
-                              });
-                            },
-                            child: Text(S.current.submit),
-                          ),
-                        ),
-                      ]),
+                            ),
+                          ]),
+                        ],
+                      ),
               ),
             ),
           ),

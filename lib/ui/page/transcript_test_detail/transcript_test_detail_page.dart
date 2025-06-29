@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -42,6 +43,8 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> with TickerProviderStateMixin {
   late AnimationController _timerController;
   late TranscriptTestDetailCubit _cubit;
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
 
   @override
   void initState() {
@@ -51,6 +54,14 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
       duration: const Duration(seconds: 3),
     );
     _cubit = context.read<TranscriptTestDetailCubit>();
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4829406909435995/9509723114',
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+      ),
+    )..load();
   }
 
   @override
@@ -237,6 +248,13 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                 ],
               ],
             ),
+            bottomNavigationBar: _isBannerAdReady
+                ? SizedBox(
+                    width: _bannerAd.size.width.toDouble(),
+                    height: _bannerAd.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd),
+                  )
+                : null,
           ),
         );
       },

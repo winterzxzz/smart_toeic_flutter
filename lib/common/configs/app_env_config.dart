@@ -26,11 +26,11 @@ extension EnvironmentExt on Environment {
   String get adsBaseUrl {
     switch (this) {
       case Environment.dev:
-        return "ca-app-pub-5943352178502068~5927084216";
+        return "ca-app-pub-4829406909435995~8175610087";
       case Environment.stg:
         return "http://stg";
       case Environment.prod:
-        return "ca-app-pub-5943352178502068~5927084216";
+        return "ca-app-pub-4829406909435995~8175610087";
     }
   }
 }
