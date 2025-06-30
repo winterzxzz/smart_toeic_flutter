@@ -13,6 +13,7 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/widgets/flash_card_tile.dart';
@@ -157,16 +158,8 @@ class _PageState extends State<Page> {
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   sliver: state.flashCards.isEmpty
-                      ? SliverToBoxAdapter(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 100),
-                                Text(S.current.no_words_in_flash_card,
-                                    style: theme.textTheme.bodyMedium),
-                              ],
-                            ),
-                          ),
+                      ? const SliverFillRemaining(
+                          child: NotDataFoundWidget(),
                         )
                       : SliverList.separated(
                           itemBuilder: (context, index) =>

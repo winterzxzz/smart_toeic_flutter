@@ -6,6 +6,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_set/listen_copy_state.dart';
@@ -92,14 +93,8 @@ class _PageState extends State<Page> {
                   child: LoadingCircle(),
                 )
               else if (state.filteredTranscriptTestSets.isEmpty)
-                SliverFillRemaining(
-                  child: Center(
-                      child: Text(
-                    S.current.no_data_found,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: .6),
-                    ),
-                  )),
+                const SliverFillRemaining(
+                  child: NotDataFoundWidget(),
                 )
               else
                 SliverPadding(
