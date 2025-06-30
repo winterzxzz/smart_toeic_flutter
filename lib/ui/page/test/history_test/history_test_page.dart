@@ -5,6 +5,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/test/history_test/history_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/test/history_test/history_test_state.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/result_card.dart';
@@ -44,8 +45,8 @@ class Page extends StatelessWidget {
               }
               if (state.loadStatus == LoadStatus.success) {
                 if (state.results.isEmpty) {
-                  return SliverFillRemaining(
-                    child: Center(child: Text(S.current.no_data_found)),
+                  return const SliverFillRemaining(
+                    child: NotDataFoundWidget(),
                   );
                 }
                 return SliverPadding(
