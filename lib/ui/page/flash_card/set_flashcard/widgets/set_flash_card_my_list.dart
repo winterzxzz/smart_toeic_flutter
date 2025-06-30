@@ -8,6 +8,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/widgets/form_set_flash_card_dia_log.dart';
@@ -67,6 +68,11 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                   child: LoadingCircle(),
                 );
               } else {
+                if (state.flashCards.isEmpty) {
+                  return const SliverFillRemaining(
+                    child: NotDataFoundWidget(),
+                  );
+                }
                 return SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   sliver: SliverList.separated(

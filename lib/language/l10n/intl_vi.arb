@@ -304,5 +304,6 @@
     "update_target_score_success": "Cập nhật mục tiêu điểm thành công",
     "update_profile_avatar_success": "Cập nhật ảnh đại diện thành công",
     "please_enter_name": "Vui lòng nhập tên",
-    "update_profile_success": "Cập nhật hồ sơ thành công"
+    "update_profile_success": "Cập nhật hồ sơ thành công",
+    "not_show_advertise": "Không hiển thị quảng cáo"
 }

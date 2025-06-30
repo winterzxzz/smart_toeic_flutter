@@ -107,5 +107,5 @@ class AppImages {
   static const banner1 = 'assets/images/banner1.png';
   static const banner2 = 'assets/images/banner2.png';
   static const banner3 = 'assets/images/banner3.png';
-
+  static const notDataFound = 'assets/images/not_data_found.png';
 }

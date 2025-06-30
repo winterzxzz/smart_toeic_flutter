@@ -255,6 +255,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_limit": MessageLookupByLibrary.simpleMessage("Không giới hạn"),
         "no_words_in_flash_card":
             MessageLookupByLibrary.simpleMessage("Không có từ trong bộ thẻ"),
+        "not_show_advertise":
+            MessageLookupByLibrary.simpleMessage("Không hiển thị quảng cáo"),
         "note": MessageLookupByLibrary.simpleMessage("Ghi chú"),
         "number_of_correct_answers":
             MessageLookupByLibrary.simpleMessage("Số câu trả lời đúng"),

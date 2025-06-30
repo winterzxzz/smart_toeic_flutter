@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/widgets/set_flash_card_learning_item.dart';
@@ -40,6 +41,11 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
                   child: LoadingCircle(),
                 );
               } else if (state.loadStatusLearning == LoadStatus.success) {
+                if (state.flashCardsLearning.isEmpty) {
+                  return const SliverFillRemaining(
+                    child: NotDataFoundWidget(),
+                  );
+                }
                 return SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   sliver: SliverList.separated(
