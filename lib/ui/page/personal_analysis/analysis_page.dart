@@ -86,35 +86,42 @@ class _PageState extends State<Page> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (state.profileAnalysis.score != null)
+                        if (state.profileAnalysis.score != null) ...[
                           AnalysisScore(
                             overallScore: state.profileAnalysis.score!,
                             listenScore: state.profileAnalysis.listenScore!,
                             readScore: state.profileAnalysis.readScore!,
                           ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                        ],
                         if (state.profileAnalysis.accuracyByPart != null &&
-                            state.profileAnalysis.accuracyByPart!.isNotEmpty)
+                            state.profileAnalysis.accuracyByPart!
+                                .isNotEmpty) ...[
                           AnalysisPercentage(
                             percentage: state.profileAnalysis.accuracyByPart!,
                           ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                        ],
                         if (state.profileAnalysis.averageTimeByPart != null &&
-                            state.profileAnalysis.averageTimeByPart!.isNotEmpty)
+                            state.profileAnalysis.averageTimeByPart!
+                                .isNotEmpty) ...[
                           AnalysisTime(
                             averageTimeByPart:
                                 state.profileAnalysis.averageTimeByPart!,
                             timeSecondRecommend:
                                 state.profileAnalysis.timeSecondRecommend!,
                           ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                        ],
                         if (state.profileAnalysis.categoryAccuracy != null &&
-                            state.profileAnalysis.categoryAccuracy!.isNotEmpty)
+                            state.profileAnalysis.categoryAccuracy!
+                                .isNotEmpty) ...[
                           StackedBarChartPage(
                             categoryAccuracys:
                                 state.profileAnalysis.categoryAccuracy!,
                           ),
-                        const SizedBox(height: 32),
+                          const SizedBox(height: 32),
+                        ],
                         BlocSelector<UserCubit, UserState, UserEntity?>(
                           selector: (state) => state.user,
                           builder: (context, user) {
