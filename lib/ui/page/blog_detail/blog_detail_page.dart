@@ -35,7 +35,7 @@ class _BlogDetailState extends State<BlogDetail> {
     if (injector<UserCubit>().state.user != null &&
         injector<UserCubit>().state.user!.isPremium() == false) {
       _bannerAd = BannerAd(
-        adUnitId: AppConfigs.bannerAdUnitId,
+        adUnitId: AppConfigs.testAdUnitId,
         request: const AdRequest(),
         size: AdSize.mediumRectangle,
         listener: BannerAdListener(

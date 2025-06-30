@@ -59,7 +59,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
     if (injector<UserCubit>().state.user != null &&
         injector<UserCubit>().state.user!.isPremium() == false) {
       _bannerAd = BannerAd(
-        adUnitId: AppConfigs.bannerAdUnitId,
+        adUnitId: AppConfigs.testAdUnitId,
         request: const AdRequest(),
         size: AdSize.banner,
         listener: BannerAdListener(

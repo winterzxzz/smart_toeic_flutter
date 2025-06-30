@@ -86,7 +86,7 @@ class _PageState extends State<Page> {
     if (injector<UserCubit>().state.user != null &&
         injector<UserCubit>().state.user!.isPremium() == false) {
       _bannerAd = BannerAd(
-        adUnitId: AppConfigs.bannerAdUnitId,
+        adUnitId: AppConfigs.testAdUnitId,
         request: const AdRequest(),
         size: AdSize.fullBanner,
         listener: BannerAdListener(

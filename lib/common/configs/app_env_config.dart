@@ -33,4 +33,15 @@ extension EnvironmentExt on Environment {
         return "ca-app-pub-4829406909435995/9509723114";
     }
   }
+
+  String get testAdUnitId {
+    switch (this) {
+      case Environment.dev:
+        return "ca-app-pub-3940256099942544/6300978111";
+      case Environment.stg:
+        return "ca-app-pub-3940256099942544/6300978111";
+      case Environment.prod:
+        return "ca-app-pub-3940256099942544/6300978111";
+    }
+  }
 }
