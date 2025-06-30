@@ -40,8 +40,8 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> removeUser(BuildContext context) async {
     await SharedPreferencesHelper().removeCookies();
-    await injector.reset();
-    await init();
+    emit(const UserState());
+    await resetSingletonCubitsAndInitAgain();
     AppRouter.clearAndNavigate('/');
   }
 
