@@ -46,14 +46,17 @@ class _PageState extends State<Page> {
   void initState() {
     super.initState();
     analysisCubit = context.read<AnalysisCubit>();
-    _bannerAd = BannerAd(
-      adUnitId: AppConfigs.bannerAdUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
-      ),
-    )..load();
+    if (injector<UserCubit>().state.user != null &&
+        injector<UserCubit>().state.user!.isPremium() == false) {
+      _bannerAd = BannerAd(
+        adUnitId: AppConfigs.bannerAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+          onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+        ),
+      )..load();
+    }
   }
 
   @override

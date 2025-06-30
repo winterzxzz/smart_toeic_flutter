@@ -5,6 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -82,14 +83,17 @@ class _PageState extends State<Page> {
   void initState() {
     super.initState();
     _cubit = context.read<PracticeTestCubit>();
-    _bannerAd = BannerAd(
-      adUnitId: AppConfigs.bannerAdUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
-      ),
-    )..load();
+    if (injector<UserCubit>().state.user != null &&
+        injector<UserCubit>().state.user!.isPremium() == false) {
+      _bannerAd = BannerAd(
+        adUnitId: AppConfigs.bannerAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.fullBanner,
+        listener: BannerAdListener(
+          onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+        ),
+      )..load();
+    }
   }
 
   @override
@@ -196,10 +200,14 @@ class _PageState extends State<Page> {
                 padding: const EdgeInsets.only(left: 16, right: 8),
                 height: widget.testShow == TestShow.result
                     ? 0
-                    : 56 + _bannerAd.size.height.toDouble(),
+                    : 56 +
+                        (_isBannerAdReady
+                            ? _bannerAd.size.height.toDouble()
+                            : 0),
                 child: widget.testShow == TestShow.result
                     ? null
                     : Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           if (_isBannerAdReady)
                             SizedBox(
