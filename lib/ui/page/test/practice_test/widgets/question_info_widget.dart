@@ -202,55 +202,35 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   ),
                                 ],
                               ),
-                            if (questionResult != null &&
-                                questionResult.questionResultPart >= 5) ...[
+                            if (widget.question.part >= 5) ...[
                               const SizedBox(height: 8),
                               BlocBuilder<UserCubit, UserState>(
                                 builder: (context, state) {
                                   final isPremium =
                                       state.user?.isPremium() ?? false;
                                   if (!isPremium) {
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            GoRouter.of(context).pushNamed(
-                                                AppRouter.upgradeAccount);
-                                          },
-                                          child: Text(
+                                    return CustomButton(
+                                      height: 50,
+                                      onPressed: () {
+                                        GoRouter.of(context).pushNamed(
+                                            AppRouter.upgradeAccount);
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          const FaIcon(
+                                            FontAwesomeIcons.lock,
+                                            size: 14,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
                                             S.current.upgrade_to_use_ai,
-                                            style: theme.textTheme.bodyMedium,
                                           ),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        // Add upgrade button
-                                        SizedBox(
-                                          width: 200,
-                                          child: ElevatedButton(
-                                            onPressed: null,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const FaIcon(
-                                                  FontAwesomeIcons.robot,
-                                                  size: 14,
-                                                ),
-                                                const SizedBox(width: 8),
-                                                Text(
-                                                  S.current.create_answer_by_ai,
-                                                  style: theme
-                                                      .textTheme.bodyMedium,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     );
                                   } else {
                                     return BlocBuilder<PracticeTestCubit,
@@ -278,7 +258,6 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                                             widget.question);
                                                   },
                                             child: Row(
-                                              mainAxisSize: MainAxisSize.min,
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               crossAxisAlignment:
