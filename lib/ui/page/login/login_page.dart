@@ -62,6 +62,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final navigator = LoginNavigator(context: context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
@@ -84,12 +85,14 @@ class _PageState extends State<Page> {
                   const SizedBox(height: 16),
                   Text(
                     S.current.login_title,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: theme.textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     S.current.login_description,
-                    style: const TextStyle(color: AppColors.textGray),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textGray,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
@@ -143,7 +146,7 @@ class _PageState extends State<Page> {
                               children: [
                                 TextSpan(
                                   text: S.current.register_button,
-                                  style: const TextStyle(
+                                  style: theme.textTheme.bodyMedium?.copyWith(
                                     color: AppColors.textBlue,
                                     decoration: TextDecoration.underline,
                                     decorationColor: AppColors.textBlue,
@@ -161,7 +164,7 @@ class _PageState extends State<Page> {
                             },
                             child: Text(
                               S.current.forgot_password,
-                              style: const TextStyle(
+                              style: theme.textTheme.bodyMedium?.copyWith(
                                 color: AppColors.textBlue,
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.textBlue,

@@ -2,7 +2,7 @@
     "app_name": "Smart TOEIC Prep",
     "onboarding_title": "Cảm ơn bạn đã tin tưởng",
     "onboarding_description": "Ứng dụng luyện TOEIC tốt nhất",
-    "login_title": "Chào mừng đến TOEIC Thông Minh",
+    "login_title": "Chào mừng đến Smart TOEIC Prep",
     "reset_password_title": "Đặt lại mật khẩu",
     "login_description": "Đăng nhập để luyện thi TOEIC",
     "send_button": "Gửi",
@@ -304,5 +304,6 @@
     "update_target_score_success": "Cập nhật mục tiêu điểm thành công",
     "update_profile_avatar_success": "Cập nhật ảnh đại diện thành công",
     "please_enter_name": "Vui lòng nhập tên",
-    "update_profile_success": "Cập nhật hồ sơ thành công"
+    "update_profile_success": "Cập nhật hồ sơ thành công",
+    "not_show_advertise": "Không hiển thị quảng cáo"
 }

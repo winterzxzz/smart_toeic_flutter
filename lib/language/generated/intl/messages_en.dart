@@ -262,6 +262,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_limit": MessageLookupByLibrary.simpleMessage("No limit"),
         "no_words_in_flash_card": MessageLookupByLibrary.simpleMessage(
             "No words in this flashcard set"),
+        "not_show_advertise":
+            MessageLookupByLibrary.simpleMessage("Not show advertise"),
         "note": MessageLookupByLibrary.simpleMessage("Note"),
         "number_of_correct_answers":
             MessageLookupByLibrary.simpleMessage("Number of Correct Answers"),

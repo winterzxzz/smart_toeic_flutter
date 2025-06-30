@@ -33,6 +33,7 @@ Future<void> init() async {
 
   // Cubit dependencies (short-lived objects)
   injector
+    ..registerFactory<SplashCubit>(() => SplashCubit(injector()))
     ..registerFactory<LoginCubit>(() => LoginCubit(injector()))
     ..registerFactory<RegisterCubit>(() => RegisterCubit(injector()))
     ..registerFactory<PracticeTestCubit>(() => PracticeTestCubit(injector()))
@@ -68,19 +69,22 @@ Future<void> init() async {
   injector
     ..registerLazySingleton<EntrypointCubit>(() => EntrypointCubit())
     ..registerLazySingleton<UserCubit>(() => UserCubit(injector()))
-    ..registerLazySingleton<FlashCardCubit>(() => FlashCardCubit(injector()));
-  // Conditional registrations
-  if (!injector.isRegistered<TestsCubit>()) {
-    injector.registerLazySingleton<TestsCubit>(() => TestsCubit(injector()));
-  }
-
-  if (!injector.isRegistered<SplashCubit>()) {
-    injector.registerFactory<SplashCubit>(() => SplashCubit(injector()));
-  }
-
-  if (!injector.isRegistered<AppSettingCubit>()) {
-    injector.registerLazySingleton<AppSettingCubit>(() => AppSettingCubit(
+    ..registerLazySingleton<FlashCardCubit>(() => FlashCardCubit(injector()))
+    ..registerLazySingleton<TestsCubit>(() => TestsCubit(injector()))
+    ..registerLazySingleton<AppSettingCubit>(() => AppSettingCubit(
           widgetService: injector(),
         ));
+}
+
+/// Not need to reset app setting cubit and user cubit
+Future<void> resetSingletonCubitsAndInitAgain() async {
+  if (injector.isRegistered<EntrypointCubit>()) {
+    await injector.resetLazySingleton<EntrypointCubit>();
+  }
+  if (injector.isRegistered<FlashCardCubit>()) {
+    await injector.resetLazySingleton<FlashCardCubit>();
+  }
+  if (injector.isRegistered<TestsCubit>()) {
+    await injector.resetLazySingleton<TestsCubit>();
   }
 }

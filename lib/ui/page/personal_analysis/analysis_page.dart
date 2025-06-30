@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -38,10 +40,23 @@ class Page extends StatefulWidget {
 
 class _PageState extends State<Page> {
   late final AnalysisCubit analysisCubit;
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
   @override
   void initState() {
     super.initState();
     analysisCubit = context.read<AnalysisCubit>();
+    if (injector<UserCubit>().state.user != null &&
+        injector<UserCubit>().state.user!.isPremium() == false) {
+      _bannerAd = BannerAd(
+        adUnitId: AppConfigs.testAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+          onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+        ),
+      )..load();
+    }
   }
 
   @override
@@ -71,35 +86,42 @@ class _PageState extends State<Page> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (state.profileAnalysis.score != null)
+                        if (state.profileAnalysis.score != null) ...[
                           AnalysisScore(
                             overallScore: state.profileAnalysis.score!,
                             listenScore: state.profileAnalysis.listenScore!,
                             readScore: state.profileAnalysis.readScore!,
                           ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                        ],
                         if (state.profileAnalysis.accuracyByPart != null &&
-                            state.profileAnalysis.accuracyByPart!.isNotEmpty)
+                            state.profileAnalysis.accuracyByPart!
+                                .isNotEmpty) ...[
                           AnalysisPercentage(
                             percentage: state.profileAnalysis.accuracyByPart!,
                           ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                        ],
                         if (state.profileAnalysis.averageTimeByPart != null &&
-                            state.profileAnalysis.averageTimeByPart!.isNotEmpty)
+                            state.profileAnalysis.averageTimeByPart!
+                                .isNotEmpty) ...[
                           AnalysisTime(
                             averageTimeByPart:
                                 state.profileAnalysis.averageTimeByPart!,
                             timeSecondRecommend:
                                 state.profileAnalysis.timeSecondRecommend!,
                           ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                        ],
                         if (state.profileAnalysis.categoryAccuracy != null &&
-                            state.profileAnalysis.categoryAccuracy!.isNotEmpty)
+                            state.profileAnalysis.categoryAccuracy!
+                                .isNotEmpty) ...[
                           StackedBarChartPage(
                             categoryAccuracys:
                                 state.profileAnalysis.categoryAccuracy!,
                           ),
-                        const SizedBox(height: 32),
+                          const SizedBox(height: 32),
+                        ],
                         BlocSelector<UserCubit, UserState, UserEntity?>(
                           selector: (state) => state.user,
                           builder: (context, user) {
@@ -143,6 +165,13 @@ class _PageState extends State<Page> {
           );
         },
       ),
+      bottomNavigationBar: _isBannerAdReady
+          ? SizedBox(
+              width: _bannerAd.size.width.toDouble(),
+              height: _bannerAd.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd),
+            )
+          : null,
     );
   }
 }

@@ -34,15 +34,17 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            S.current.settings,
-            style: theme.textTheme.titleMedium,
-          ),
-          leading: const LeadingBackButton(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          S.current.settings,
+          style: theme.textTheme.titleMedium,
         ),
-        body: ListView(
+        leading: const LeadingBackButton(),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: AppStyle.edgeInsetsA12,
@@ -314,7 +316,9 @@ class _SettingPageState extends State<SettingPage> {
               height: 24,
             )
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   void _showTimePicker(BuildContext context, String currentTime) {

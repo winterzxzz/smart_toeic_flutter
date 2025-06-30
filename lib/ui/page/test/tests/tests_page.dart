@@ -5,6 +5,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/test/tests/tests_cubit.dart';
 import 'package:toeic_desktop/ui/page/test/tests/tests_state.dart';
@@ -78,21 +79,26 @@ class _PageState extends State<Page> {
                   child: LoadingCircle(),
                 )
               else if (state.loadStatus == LoadStatus.success)
-                SliverPadding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  sliver: SliverList.separated(
-                    itemCount: state.filteredTests.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 16),
-                    itemBuilder: (context, index) {
-                      return TestCard(
-                        key: ValueKey(state.filteredTests[index].id),
-                        test: state.filteredTests[index],
-                      );
-                    },
-                  ),
-                )
+                if (state.filteredTests.isEmpty)
+                  const SliverFillRemaining(
+                    child: NotDataFoundWidget(),
+                  )
+                else
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    sliver: SliverList.separated(
+                      itemCount: state.filteredTests.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 16),
+                      itemBuilder: (context, index) {
+                        return TestCard(
+                          key: ValueKey(state.filteredTests[index].id),
+                          test: state.filteredTests[index],
+                        );
+                      },
+                    ),
+                  )
               else
                 const SliverFillRemaining(
                   hasScrollBody: false,

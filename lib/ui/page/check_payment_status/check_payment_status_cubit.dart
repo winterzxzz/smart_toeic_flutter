@@ -35,11 +35,17 @@ class CheckPaymentStatusCubit extends Cubit<CheckPaymentStatusState> {
       // 2026-09-23T03:25:56.228Z
       final user = injector<UserCubit>().state.user;
       if (user != null) {
+        // if not null + 30 days
+        // if null now + 30 days
         injector<UserCubit>().updateUser(
           user.copyWith(
-            upgradeExpiredDate: DateTime.parse(user.upgradeExpiredDate!)
-                .add(const Duration(days: 30))
-                .toIso8601String(),
+            upgradeExpiredDate: user.upgradeExpiredDate != null
+                ? DateTime.parse(user.upgradeExpiredDate!)
+                    .add(const Duration(days: 30))
+                    .toIso8601String()
+                : DateTime.now()
+                    .add(const Duration(days: 30))
+                    .toIso8601String(),
           ),
         );
       }

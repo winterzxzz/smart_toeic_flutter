@@ -3059,6 +3059,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Not show advertise`
+  String get not_show_advertise {
+    return Intl.message(
+      'Not show advertise',
+      name: 'not_show_advertise',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

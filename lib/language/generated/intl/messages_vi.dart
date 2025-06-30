@@ -233,7 +233,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_description": MessageLookupByLibrary.simpleMessage(
             "Đăng nhập để luyện thi TOEIC"),
         "login_title": MessageLookupByLibrary.simpleMessage(
-            "Chào mừng đến TOEIC Thông Minh"),
+            "Chào mừng đến Smart TOEIC Prep"),
         "logout": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
         "main_idea": MessageLookupByLibrary.simpleMessage("Ý chính"),
         "matching_word": MessageLookupByLibrary.simpleMessage("Ghép từ"),
@@ -255,6 +255,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_limit": MessageLookupByLibrary.simpleMessage("Không giới hạn"),
         "no_words_in_flash_card":
             MessageLookupByLibrary.simpleMessage("Không có từ trong bộ thẻ"),
+        "not_show_advertise":
+            MessageLookupByLibrary.simpleMessage("Không hiển thị quảng cáo"),
         "note": MessageLookupByLibrary.simpleMessage("Ghi chú"),
         "number_of_correct_answers":
             MessageLookupByLibrary.simpleMessage("Số câu trả lời đúng"),

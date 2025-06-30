@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -10,6 +13,7 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_state.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/widgets/flash_card_tile.dart';
@@ -51,11 +55,24 @@ class Page extends StatefulWidget {
 
 class _PageState extends State<Page> {
   late final FlashCardDetailCubit _cubit;
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
 
   @override
   void initState() {
     super.initState();
     _cubit = context.read<FlashCardDetailCubit>();
+    if (injector<UserCubit>().state.user != null &&
+        injector<UserCubit>().state.user!.isPremium() == false) {
+      _bannerAd = BannerAd(
+        adUnitId: AppConfigs.testAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+          onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+        ),
+      )..load();
+    }
   }
 
   @override
@@ -141,16 +158,8 @@ class _PageState extends State<Page> {
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   sliver: state.flashCards.isEmpty
-                      ? SliverToBoxAdapter(
-                          child: Center(
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 100),
-                                Text(S.current.no_words_in_flash_card,
-                                    style: theme.textTheme.bodyMedium),
-                              ],
-                            ),
-                          ),
+                      ? const SliverFillRemaining(
+                          child: NotDataFoundWidget(),
                         )
                       : SliverList.separated(
                           itemBuilder: (context, index) =>
@@ -165,6 +174,13 @@ class _PageState extends State<Page> {
           );
         },
       ),
+      bottomNavigationBar: _isBannerAdReady
+          ? SizedBox(
+              width: _bannerAd.size.width.toDouble(),
+              height: _bannerAd.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd),
+            )
+          : null,
     );
   }
 

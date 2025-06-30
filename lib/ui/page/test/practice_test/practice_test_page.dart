@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
@@ -74,10 +77,23 @@ class Page extends StatefulWidget {
 
 class _PageState extends State<Page> {
   late final PracticeTestCubit _cubit;
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
   @override
   void initState() {
     super.initState();
     _cubit = context.read<PracticeTestCubit>();
+    if (injector<UserCubit>().state.user != null &&
+        injector<UserCubit>().state.user!.isPremium() == false) {
+      _bannerAd = BannerAd(
+        adUnitId: AppConfigs.testAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.fullBanner,
+        listener: BannerAdListener(
+          onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
+        ),
+      )..load();
+    }
   }
 
   @override
@@ -181,39 +197,58 @@ class _PageState extends State<Page> {
                 },
               ),
               bottomNavigationBar: BottomAppBar(
-                height: widget.testShow == TestShow.result ? 0 : null,
+                padding: const EdgeInsets.only(left: 16, right: 8),
+                height: widget.testShow == TestShow.result
+                    ? 0
+                    : 56 +
+                        (_isBannerAdReady
+                            ? _bannerAd.size.height.toDouble()
+                            : 0),
                 child: widget.testShow == TestShow.result
                     ? null
-                    : Row(children: [
-                        BlocBuilder<PracticeTestCubit, PracticeTestState>(
-                          buildWhen: (previous, current) =>
-                              previous.duration != current.duration,
-                          builder: (context, state) {
-                            return Text(
-                              '${state.duration.inMinutes}:${state.duration.inSeconds % 60 < 10 ? '0' : ''}${state.duration.inSeconds % 60}',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          if (_isBannerAdReady)
+                            SizedBox(
+                              width: double.infinity,
+                              height: _bannerAd.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd),
+                            ),
+                          Row(children: [
+                            BlocBuilder<PracticeTestCubit, PracticeTestState>(
+                              buildWhen: (previous, current) =>
+                                  previous.duration != current.duration,
+                              builder: (context, state) {
+                                return Text(
+                                  '${state.duration.inMinutes}:${state.duration.inSeconds % 60 < 10 ? '0' : ''}${state.duration.inSeconds % 60}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                              child: CustomButton(
+                                height: 50,
+                                onPressed: () {
+                                  showConfirmDialog(
+                                      context,
+                                      S.current.are_you_sure,
+                                      S.current.are_you_sure_submit_test, () {
+                                    _cubit.submitTest();
+                                  });
+                                },
+                                child: Text(S.current.submit),
                               ),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                          child: CustomButton(
-                            height: 50,
-                            onPressed: () {
-                              showConfirmDialog(context, S.current.are_you_sure,
-                                  S.current.are_you_sure_submit_test, () {
-                                _cubit.submitTest();
-                              });
-                            },
-                            child: Text(S.current.submit),
-                          ),
-                        ),
-                      ]),
+                            ),
+                          ]),
+                        ],
+                      ),
               ),
             ),
           ),

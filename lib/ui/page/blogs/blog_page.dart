@@ -9,6 +9,7 @@ import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_state.dart';
@@ -117,8 +118,8 @@ class _PageState extends State<Page> {
                     );
                   }
                   if (state.searchBlogs.isEmpty) {
-                    return SliverToBoxAdapter(
-                      child: Center(child: Text(S.current.no_data_found)),
+                    return const SliverFillRemaining(
+                      child: NotDataFoundWidget(),
                     );
                   }
                   return SliverList.separated(

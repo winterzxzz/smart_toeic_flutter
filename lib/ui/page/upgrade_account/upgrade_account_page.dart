@@ -209,6 +209,7 @@ class _PageState extends State<Page> {
                                 S.current.ai_question_explanations,
                                 S.current.personal_analytics,
                                 S.current.quizzes_and_reminders,
+                                S.current.not_show_advertise,
                               ],
                               available: [
                                 true,
@@ -216,6 +217,7 @@ class _PageState extends State<Page> {
                                 true,
                                 true,
                                 true,
+                                false,
                                 false,
                                 false,
                                 false,
@@ -239,6 +241,7 @@ class _PageState extends State<Page> {
                                 S.current.ai_question_explanations,
                                 S.current.personal_analytics,
                                 S.current.quizzes_and_reminders,
+                                S.current.not_show_advertise
                               ],
                               available: [
                                 true,
@@ -249,7 +252,8 @@ class _PageState extends State<Page> {
                                 true,
                                 true,
                                 true,
-                                true
+                                true,
+                                true,
                               ],
                               isPremium: isPremium,
                               isCurrentPlan: isPremium,
