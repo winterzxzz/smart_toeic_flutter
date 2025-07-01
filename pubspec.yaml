@@ -88,6 +88,8 @@ dependencies:
   flutter_timezone: ^4.1.1
   flutter_screenutil: ^5.9.3
   google_mobile_ads: ^5.3.1
+  web3dart: ^2.7.1
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:
