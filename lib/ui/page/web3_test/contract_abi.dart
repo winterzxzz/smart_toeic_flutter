@@ -1,10 +1,10 @@
 class Web3Constants {
   static const String rpcUrl =
-      'https://sepolia.infura.io/v3/1234567890abcdef1234567890abcdef';
+      'https://sepolia.infura.io/v3/f9d771f6042d40aa8c56b0958808108b';
   static const String privateKey =
       'abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890';
   static const String contractAddress =
-      '0xf3f8c414d71c4cbbd893838d06896f7d81717d6f';
+      '0x66c54ac20d0ffb427d42c17b4138a9456e837bc2';
   static const String abi = '''
   [
     {
