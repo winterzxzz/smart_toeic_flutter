@@ -69,7 +69,6 @@ class _PageState extends State<Page> {
                 height: 50,
                 margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 child: TextField(
-                  inputFormatters: [CapitalizeFirstLetterFormatter()],
                   onChanged: (value) {
                     _timer?.cancel();
                     _timer = Timer(const Duration(milliseconds: 500), () {
@@ -85,7 +84,9 @@ class _PageState extends State<Page> {
                     filled: true,
                     isDense: true,
                     fillColor: theme.cardColor,
-                    hintStyle: theme.textTheme.bodyMedium,
+                    hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.hintColor,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
