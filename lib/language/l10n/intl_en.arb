@@ -314,6 +314,8 @@
     "not_show_advertise": "Not show advertise",
     "certificates": "Certificates", 
     "search_certificates_hint": "Search certificates by Nation ID Card", 
-    "search_certificates": "Search"
+    "search_certificates": "Search", 
+    "please_enter_national_id": "Please enter National ID", 
+    "national_id_invalid": "National ID is invalid"
     
 }

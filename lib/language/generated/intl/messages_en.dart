@@ -256,6 +256,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_list": MessageLookupByLibrary.simpleMessage("My List"),
         "name_hint": MessageLookupByLibrary.simpleMessage("Enter your name"),
         "name_label": MessageLookupByLibrary.simpleMessage("Name"),
+        "national_id_invalid":
+            MessageLookupByLibrary.simpleMessage("National ID is invalid"),
         "next": MessageLookupByLibrary.simpleMessage("Next"),
         "next_question": MessageLookupByLibrary.simpleMessage("Next Question"),
         "no_blogs": MessageLookupByLibrary.simpleMessage("No blogs found"),
@@ -294,6 +296,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter all information"),
         "please_enter_name":
             MessageLookupByLibrary.simpleMessage("Please enter name"),
+        "please_enter_national_id":
+            MessageLookupByLibrary.simpleMessage("Please enter National ID"),
         "please_enter_title":
             MessageLookupByLibrary.simpleMessage("Please enter title"),
         "please_enter_word":

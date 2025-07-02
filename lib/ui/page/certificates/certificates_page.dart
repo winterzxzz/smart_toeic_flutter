@@ -7,7 +7,6 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
-import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/certificates/certificates_cubit.dart';
 import 'package:toeic_desktop/ui/page/certificates/certificates_state.dart';
 import 'package:toeic_desktop/ui/page/certificates/widgets/certificate_card.dart';
@@ -66,6 +65,7 @@ class _PageState extends State<Page> {
               S.current.certificates,
               style: theme.textTheme.titleMedium,
             ),
+            floating: true,
             leading: const LeadingBackButton(),
             centerTitle: false,
           ),
@@ -76,9 +76,10 @@ class _PageState extends State<Page> {
                   height: 50,
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   child: TextField(
+                    keyboardType: TextInputType.number,
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: S.current.search_certificates,
+                      hintText: S.current.search_certificates_hint,
                       prefixIcon: const Icon(
                         Icons.search,
                         size: 18,
@@ -109,37 +110,50 @@ class _PageState extends State<Page> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                CustomButton(
-                  onPressed: () {
-                    _cubit.getCertificates(searchQuery: _searchController.text);
+                BlocSelector<CertificatesCubit, CertificatesState, LoadStatus>(
+                  selector: (state) {
+                    return state.loadStatus;
                   },
-                  child: Text(S.current.search_certificates),
+                  builder: (context, loadStatus) {
+                    final isLoading = loadStatus == LoadStatus.loading;
+                    return Container(
+                      height: 50,
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(left: 16, right: 16),
+                      child: CustomButton(
+                        isLoading: isLoading,
+                        onPressed: isLoading
+                            ? null
+                            : () {
+                                _cubit.getCertificates(
+                                    searchQuery: _searchController.text);
+                              },
+                        child: isLoading
+                            ? const LoadingCircle(
+                                size: 14,
+                              )
+                            : Text(S.current.search_certificates),
+                      ),
+                    );
+                  },
                 )
               ],
             ),
           ),
           BlocBuilder<CertificatesCubit, CertificatesState>(
             builder: (context, state) {
-              if (state.loadStatus == LoadStatus.loading) {
-                return const SliverToBoxAdapter(
-                  child: LoadingCircle(),
-                );
+              if (state.certificates.isEmpty) {
+                return const SliverToBoxAdapter();
               } else {
-                if (state.certificates.isEmpty) {
-                  return const SliverToBoxAdapter(
-                    child: NotDataFoundWidget(),
-                  );
-                } else {
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final certificate = state.certificates[index];
-                        return CertificateCard(certificate: certificate);
-                      },
-                      childCount: state.certificates.length,
-                    ),
-                  );
-                }
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final certificate = state.certificates[index];
+                      return CertificateCard(certificate: certificate);
+                    },
+                    childCount: state.certificates.length,
+                  ),
+                );
               }
             },
           )

@@ -248,6 +248,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_list": MessageLookupByLibrary.simpleMessage("Danh sách của tôi"),
         "name_hint": MessageLookupByLibrary.simpleMessage("Nhập tên"),
         "name_label": MessageLookupByLibrary.simpleMessage("Tên"),
+        "national_id_invalid":
+            MessageLookupByLibrary.simpleMessage("Số CMND không hợp lệ"),
         "next": MessageLookupByLibrary.simpleMessage("Tiếp"),
         "next_question": MessageLookupByLibrary.simpleMessage("Câu tiếp"),
         "no_blogs": MessageLookupByLibrary.simpleMessage("Không có blog"),
@@ -285,6 +287,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Vui lòng điền đầy đủ thông tin"),
         "please_enter_name":
             MessageLookupByLibrary.simpleMessage("Vui lòng nhập tên"),
+        "please_enter_national_id":
+            MessageLookupByLibrary.simpleMessage("Vui lòng nhập số CMND"),
         "please_enter_title":
             MessageLookupByLibrary.simpleMessage("Vui lòng nhập tiêu đề"),
         "please_enter_word":

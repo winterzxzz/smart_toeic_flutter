@@ -3099,6 +3099,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Please enter National ID`
+  String get please_enter_national_id {
+    return Intl.message(
+      'Please enter National ID',
+      name: 'please_enter_national_id',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `National ID is invalid`
+  String get national_id_invalid {
+    return Intl.message(
+      'National ID is invalid',
+      name: 'national_id_invalid',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

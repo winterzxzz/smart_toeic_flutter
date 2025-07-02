@@ -308,5 +308,7 @@
     "not_show_advertise": "Không hiển thị quảng cáo",
     "certificates": "Chứng chỉ",
     "search_certificates_hint": "Tìm kiếm chứng chỉ bằng số CMND", 
-    "search_certificates": "Tìm kiếm"
+    "search_certificates": "Tìm kiếm",
+    "please_enter_national_id": "Vui lòng nhập số CMND", 
+    "national_id_invalid": "Số CMND không hợp lệ"
 }
