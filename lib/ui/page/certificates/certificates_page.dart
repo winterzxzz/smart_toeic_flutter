@@ -127,6 +127,7 @@ class _PageState extends State<Page> {
                             : () {
                                 _cubit.getCertificates(
                                     searchQuery: _searchController.text);
+                                FocusScope.of(context).unfocus();
                               },
                         child: isLoading
                             ? const LoadingCircle(
