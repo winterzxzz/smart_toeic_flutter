@@ -8,6 +8,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_cached_image.dart';
 
@@ -28,7 +29,8 @@ class _AvatarHeadingState extends State<AvatarHeading> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -41,7 +43,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
 
             return CircleAvatar(
               radius: 48,
-              backgroundColor: Theme.of(context).secondaryHeaderColor,
+              backgroundColor: colorScheme.secondaryContainer,
               backgroundImage: hasAvatar ? null : null,
               child: Stack(
                 alignment: Alignment.center,
@@ -57,15 +59,14 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                         errorWidget: Container(
                           width: 96,
                           height: 96,
-                          color: Theme.of(context).secondaryHeaderColor,
+                          color: colorScheme.secondaryContainer,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 user?.name.characters.first.toUpperCase() ??
                                     'U',
-                                style: const TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600),
+                                style: textTheme.titleLarge,
                               ),
                             ],
                           ),
@@ -78,8 +79,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                       children: [
                         Text(
                           user?.name.characters.first.toUpperCase() ?? 'U',
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w600),
+                          style: textTheme.titleLarge,
                         ),
                       ],
                     ),
@@ -92,7 +92,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          color: colorScheme.primary,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -122,7 +122,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
                 width: 32,
                 height: 32,
                 colorFilter: ColorFilter.mode(
-                  isPremium ? theme.colorScheme.primary : Colors.grey,
+                  isPremium ? colorScheme.primary : Colors.grey,
                   BlendMode.srcIn,
                 ),
               ),

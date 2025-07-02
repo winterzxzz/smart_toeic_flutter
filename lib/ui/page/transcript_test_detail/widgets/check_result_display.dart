@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/transcript/check_result.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
@@ -12,14 +13,15 @@ class CheckResultDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       children: [
         Container(
           padding: const EdgeInsets.all(16),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            color: colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: BlocSelector<TranscriptTestDetailCubit,
@@ -30,7 +32,7 @@ class CheckResultDisplay extends StatelessWidget {
             builder: (context, userInput) {
               return Text(
                 '${S.current.you}: $userInput',
-                style: theme.textTheme.bodyLarge,
+                style: textTheme.bodyLarge,
               );
             },
           ),
@@ -40,7 +42,7 @@ class CheckResultDisplay extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            color: colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child:
@@ -51,13 +53,13 @@ class CheckResultDisplay extends StatelessWidget {
             builder: (context, state) {
               if (!state.isCheck) {
                 return Text('${S.current.result}: ',
-                    style: theme.textTheme.bodyLarge);
+                    style: textTheme.bodyLarge);
               }
 
               List<TextSpan> spans = [
                 TextSpan(
                   text: '${S.current.result}: ',
-                  style: theme.textTheme.bodyLarge,
+                  style: textTheme.bodyLarge,
                 ),
               ];
 
@@ -75,7 +77,7 @@ class CheckResultDisplay extends StatelessWidget {
 
                 spans.add(TextSpan(
                   text: result.word,
-                  style: theme.textTheme.bodyLarge!.apply(color: color),
+                  style: textTheme.bodyLarge!.apply(color: color),
                 ));
               }
 

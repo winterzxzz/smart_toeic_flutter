@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 
 class BlogHorizontalCard extends StatelessWidget {
@@ -14,7 +15,7 @@ class BlogHorizontalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -54,9 +55,10 @@ class BlogHorizontalCard extends StatelessWidget {
                         ),
                         child: Text(
                           blog.category ?? '',
-                          style: theme.textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.textWhite),
+                          style: textTheme.labelMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textWhite,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -65,14 +67,14 @@ class BlogHorizontalCard extends StatelessWidget {
                         blog.title ?? '',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.titleSmall,
+                        style: textTheme.titleSmall,
                       ),
                       const Spacer(),
                       Row(
                         children: [
                           Text(
                             S.current.read_more,
-                            style: theme.textTheme.labelMedium?.copyWith(
+                            style: textTheme.labelMedium?.copyWith(
                               fontWeight: FontWeight.w400,
                             ),
                           ),

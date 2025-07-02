@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
@@ -58,7 +59,8 @@ class _FormFlashCardState extends State<FormFlashCard> {
   @override
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -68,7 +70,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
           children: [
             Text(
               S.current.title,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -83,7 +85,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: theme.colorScheme.primary),
+                  borderSide: BorderSide(color: colorScheme.primary),
                 ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -92,7 +94,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
             const SizedBox(height: 16),
             Text(
               S.current.description,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -107,7 +109,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: theme.colorScheme.primary),
+                  borderSide: BorderSide(color: colorScheme.primary),
                 ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -121,7 +123,7 @@ class _FormFlashCardState extends State<FormFlashCard> {
                 Expanded(
                   child: TextButton(
                     onPressed: () => GoRouter.of(context).pop(),
-                    child: Text(S.current.cancel),
+                    child: Text(S.current.cancel, style: textTheme.bodyMedium),
                   ),
                 ),
                 const SizedBox(width: 16),

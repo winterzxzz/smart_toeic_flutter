@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/keep_alive_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/widgets/set_flash_card_learning.dart';
@@ -51,7 +52,8 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
     return DefaultTabController(
       animationDuration: const Duration(milliseconds: 200),
       length: 2,
@@ -78,7 +80,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
                     children: [
                       const FaIcon(FontAwesomeIcons.list, size: 16),
                       const SizedBox(width: 8),
-                      Text(S.current.my_list),
+                      Text(S.current.my_list, style: textTheme.titleMedium),
                     ],
                   ),
                 ),
@@ -88,7 +90,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
                     children: [
                       const FaIcon(FontAwesomeIcons.book, size: 16),
                       const SizedBox(width: 8),
-                      Text(S.current.studying),
+                      Text(S.current.studying, style: textTheme.titleMedium),
                     ],
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class AnalysisPercentage extends StatefulWidget {
   const AnalysisPercentage({
@@ -17,7 +18,7 @@ class AnalysisPercentage extends StatefulWidget {
 class _AnalysisPercentageState extends State<AnalysisPercentage> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Card(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -26,7 +27,7 @@ class _AnalysisPercentageState extends State<AnalysisPercentage> {
           children: [
             Text(
               S.current.accuracy_by_part,
-              style: theme.textTheme.titleLarge,
+              style: textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -50,7 +51,7 @@ class _AnalysisPercentageState extends State<AnalysisPercentage> {
                           ];
                           return Text(
                             titles[value.toInt() - 1],
-                            style: theme.textTheme.bodySmall?.copyWith(
+                            style: textTheme.bodySmall?.copyWith(
                                 fontWeight: FontWeight.w600, fontSize: 8),
                           );
                         },
@@ -87,7 +88,7 @@ class _AnalysisPercentageState extends State<AnalysisPercentage> {
   }
 
   BarChartGroupData _createBarData(int x, double y) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return BarChartGroupData(
       x: x,
       barRods: [
@@ -95,8 +96,8 @@ class _AnalysisPercentageState extends State<AnalysisPercentage> {
           toY: y,
           gradient: LinearGradient(
             colors: [
-              theme.colorScheme.primary,
-              theme.colorScheme.primary.withValues(alpha: .8)
+              colorScheme.primary,
+              colorScheme.primary.withValues(alpha: .8)
             ],
           ),
           width: 20,

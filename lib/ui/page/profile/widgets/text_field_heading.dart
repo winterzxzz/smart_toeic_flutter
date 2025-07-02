@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class TextFieldHeading extends StatelessWidget {
   const TextFieldHeading({
@@ -22,17 +23,18 @@ class TextFieldHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: theme.textTheme.titleSmall),
+        Text(label, style: textTheme.titleSmall),
         const SizedBox(height: 4),
         SizedBox(
           child: TextField(
             controller: controller,
             maxLines: maxLines,
-            style: theme.textTheme.bodyMedium?.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
             enabled: !disabled,
@@ -40,7 +42,7 @@ class TextFieldHeading extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText,
               isDense: true,
-              hintStyle: theme.textTheme.bodyMedium?.copyWith(
+              hintStyle: textTheme.bodyMedium?.copyWith(
                   color: AppColors.textGray,
                   fontWeight: FontWeight.w400,
                   fontSize: 14),
@@ -54,7 +56,7 @@ class TextFieldHeading extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide:
-                    BorderSide(width: 1, color: theme.colorScheme.primary),
+                    BorderSide(width: 1, color: colorScheme.primary),
               ),
             ),
           ),

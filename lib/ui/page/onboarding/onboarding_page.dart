@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/onboarding/widgets/onboarding_content.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -32,7 +33,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +72,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       height: 48,
                       decoration: BoxDecoration(
                         border: Border.all(
-                            color: theme.colorScheme.primary, width: 2),
+                            color: colorScheme.primary, width: 2),
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
@@ -79,7 +80,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         Icons.arrow_back_ios,
                         weight: 2,
                         size: 16,
-                        color: theme.colorScheme.primary,
+                        color: colorScheme.primary,
                       ),
                     ),
                   )
@@ -96,8 +97,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: index == _currentPage
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.primary.withValues(alpha: 0.2),
+                            ? colorScheme.primary
+                            : colorScheme.primary.withValues(alpha: 0.2),
                       ),
                     );
                   }),

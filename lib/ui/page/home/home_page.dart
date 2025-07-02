@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_section_task.dart';
 
@@ -41,12 +42,13 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final size = MediaQuery.of(context).size;
+    final textTheme = context.textTheme;  
+    final colorScheme = context.colorScheme;
+    final size = context.sizze;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(S.current.app_name, style: theme.textTheme.titleMedium),
+        title: Text(S.current.app_name, style: textTheme.titleMedium),
         actions: [
           IconButton(
             onPressed: () {
@@ -62,7 +64,7 @@ class Page extends StatelessWidget {
                   width: 24,
                   height: 24,
                   colorFilter: ColorFilter.mode(
-                    isPremium ? theme.colorScheme.primary : Colors.grey,
+                    isPremium ? colorScheme.primary : Colors.grey,
                     BlendMode.srcIn,
                   ),
                 );

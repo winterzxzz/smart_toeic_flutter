@@ -10,6 +10,7 @@ import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -77,7 +78,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
       body: BlocBuilder<FlashCardDetailCubit, FlashCardDetailState>(
         builder: (context, state) {
@@ -92,11 +93,11 @@ class _PageState extends State<Page> {
                   children: [
                     Text(
                       widget.title,
-                      style: const TextStyle(fontSize: 16),
+                      style: textTheme.titleMedium,
                     ),
                     Text(
                       '${state.flashCards.length} ${S.current.words}',
-                      style: theme.textTheme.bodySmall?.copyWith(
+                      style: textTheme.bodySmall?.copyWith(
                         color: AppColors.textGray,
                       ),
                     ),

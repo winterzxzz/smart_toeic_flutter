@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test_set.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class TranscriptTestItem extends StatelessWidget {
   const TranscriptTestItem({
@@ -16,7 +17,7 @@ class TranscriptTestItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
@@ -65,7 +66,7 @@ class TranscriptTestItem extends StatelessWidget {
                   children: [
                     Text(
                       test.title ?? '',
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 2,
@@ -74,7 +75,7 @@ class TranscriptTestItem extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       S.current.click_to_start_test,
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         color: AppColors.textGray,
                       ),
                     ),

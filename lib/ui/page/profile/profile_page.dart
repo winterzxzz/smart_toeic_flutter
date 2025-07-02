@@ -11,6 +11,7 @@ import 'package:toeic_desktop/data/models/enums/profile_menu_button.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/profile/widgets/avatar_heading.dart';
@@ -52,7 +53,8 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -60,11 +62,11 @@ class _PageState extends State<Page> {
             floating: true,
             title: Text(
               S.current.profile,
-              style: theme.textTheme.titleMedium,
+              style: textTheme.titleMedium,
             ),
             actions: [
               PopupMenuButton(
-                color: theme.appBarTheme.backgroundColor,
+                color: colorScheme.surface,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(minWidth: 150),
                 child: Container(
@@ -111,7 +113,7 @@ class _PageState extends State<Page> {
                         const SizedBox(width: 16),
                         Text(
                           ProfileMenuButton.settings.getTitle(),
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -127,7 +129,7 @@ class _PageState extends State<Page> {
                         const SizedBox(width: 16),
                         Text(
                           ProfileMenuButton.targetScore.getTitle(),
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -143,7 +145,7 @@ class _PageState extends State<Page> {
                         const SizedBox(width: 16),
                         Text(
                           ProfileMenuButton.history.getTitle(),
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -159,7 +161,7 @@ class _PageState extends State<Page> {
                         const SizedBox(width: 16),
                         Text(
                           ProfileMenuButton.analysis.getTitle(),
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -176,7 +178,7 @@ class _PageState extends State<Page> {
                         const SizedBox(width: 16),
                         Text(
                           ProfileMenuButton.logout.getTitle(),
-                          style: theme.textTheme.bodyMedium?.copyWith(
+                          style: textTheme.bodyMedium?.copyWith(
                             color: AppColors.error,
                           ),
                         ),
@@ -202,7 +204,7 @@ class _PageState extends State<Page> {
                       const SizedBox(height: 8),
                       Text(
                         user?.name ?? '',
-                        style: theme.textTheme.bodyMedium
+                        style: textTheme.bodyMedium
                             ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(
@@ -210,7 +212,7 @@ class _PageState extends State<Page> {
                       ),
                       Text(
                         user?.email ?? '',
-                        style: theme.textTheme.bodyMedium,
+                        style: textTheme.bodyMedium,
                       ),
                       const ProfileDivider(
                         height: 24,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 
 class Utils {
@@ -89,7 +90,7 @@ class Utils {
     required Widget child,
     bool isClose = true,
   }) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

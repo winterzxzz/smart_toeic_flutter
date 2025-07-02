@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/widgets/practice_test_part.dart';
@@ -19,7 +20,7 @@ class _QuestionIndexState extends State<QuestionIndex> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
     return Drawer(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       child: SafeArea(

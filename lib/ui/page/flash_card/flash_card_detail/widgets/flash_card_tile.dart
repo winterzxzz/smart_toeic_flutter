@@ -6,6 +6,7 @@ import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/widgets/form_flash_card_dia_log.dart';
@@ -41,7 +42,9 @@ class _FlashcardTileState extends State<FlashcardTile>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Card(
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.zero,
@@ -64,7 +67,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                       children: [
                         Text(
                           widget.flashcard.word,
-                          style: theme.textTheme.titleSmall,
+                          style: textTheme.titleSmall,
                         ),
                         const SizedBox(
                           width: 8,
@@ -78,13 +81,13 @@ class _FlashcardTileState extends State<FlashcardTile>
                           child: Container(
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primary
-                                    .withValues(alpha: 0.1),
+                                color:
+                                    colorScheme.primary.withValues(alpha: 0.1),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.volume_up_outlined,
-                                color: theme.colorScheme.primary,
+                                color: colorScheme.primary,
                               )),
                         ),
                       ],
@@ -99,13 +102,12 @@ class _FlashcardTileState extends State<FlashcardTile>
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.primary
-                                  .withValues(alpha: 0.7),
+                              color: colorScheme.primary.withValues(alpha: 0.7),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
                               widget.flashcard.partOfSpeech.join(', '),
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: textTheme.bodySmall?.copyWith(
                                 color: AppColors.textWhite,
                                 fontStyle: FontStyle.italic,
                               ),
@@ -170,7 +172,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                                   const SizedBox(width: 8),
                                   Text(
                                     S.current.edit,
-                                    style: theme.textTheme.bodyMedium,
+                                    style: textTheme.bodyMedium,
                                   ),
                                 ],
                               ),
@@ -182,13 +184,13 @@ class _FlashcardTileState extends State<FlashcardTile>
                                   FaIcon(
                                     FontAwesomeIcons.trash,
                                     size: 14,
-                                    color: theme.colorScheme.error,
+                                    color: colorScheme.error,
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
                                     S.current.delete,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.error,
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      color: colorScheme.error,
                                     ),
                                   ),
                                 ],
@@ -219,13 +221,13 @@ class _FlashcardTileState extends State<FlashcardTile>
                             children: [
                               TextSpan(
                                 text: '${S.current.translate}: ',
-                                style: theme.textTheme.bodyMedium?.copyWith(
+                                style: textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               TextSpan(
                                 text: widget.flashcard.translation,
-                                style: theme.textTheme.bodyMedium?.copyWith(
+                                style: textTheme.bodyMedium?.copyWith(
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
@@ -254,19 +256,19 @@ class _FlashcardTileState extends State<FlashcardTile>
                           const SizedBox(height: 8),
                           Text(
                             '${S.current.definition}:',
-                            style: theme.textTheme.bodyMedium?.copyWith(
+                            style: textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             widget.flashcard.definition,
-                            style: theme.textTheme.bodyMedium?.copyWith(
+                            style: textTheme.bodyMedium?.copyWith(
                               fontStyle: FontStyle.italic,
                             ),
                           ),
                           Text(
                             '${S.current.example_sentences}:',
-                            style: theme.textTheme.bodyMedium?.copyWith(
+                            style: textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -275,8 +277,7 @@ class _FlashcardTileState extends State<FlashcardTile>
                             ...widget.flashcard.exampleSentence
                                 .map((example) => Text(
                                       '- $example',
-                                      style:
-                                          theme.textTheme.bodyMedium?.copyWith(
+                                      style: textTheme.bodyMedium?.copyWith(
                                         fontStyle: FontStyle.italic,
                                       ),
                                     )),
@@ -284,13 +285,13 @@ class _FlashcardTileState extends State<FlashcardTile>
                           const SizedBox(height: 4),
                           Text(
                             '${S.current.note}:',
-                            style: theme.textTheme.bodyMedium?.copyWith(
+                            style: textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             widget.flashcard.note,
-                            style: theme.textTheme.bodyMedium?.copyWith(
+                            style: textTheme.bodyMedium?.copyWith(
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -308,19 +309,19 @@ class _FlashcardTileState extends State<FlashcardTile>
   }
 
   Widget _buildPronunciation(String pronunciation, String label) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Row(
       children: [
         Text(
           '$label:',
-          style: theme.textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(width: 4),
         Text(
           pronunciation,
-          style: theme.textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             fontStyle: FontStyle.italic,
           ),
         ),

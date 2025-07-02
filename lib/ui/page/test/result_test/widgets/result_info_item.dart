@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class ResultInfoItem extends StatelessWidget {
   const ResultInfoItem({
@@ -16,7 +17,8 @@ class ResultInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -25,23 +27,23 @@ class ResultInfoItem extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: .1),
+              color: colorScheme.primary.withValues(alpha: .1),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: FaIcon(icon, size: 20, color: theme.colorScheme.primary),
+            child: FaIcon(icon, size: 20, color: colorScheme.primary),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               title,
-              style: theme.textTheme.bodyLarge
+              style: textTheme.bodyLarge
                   ?.copyWith(fontWeight: FontWeight.w600),
             ),
           ),
           Text(
             value,
-            style: theme.textTheme.bodyLarge?.copyWith(
+            style: textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.success,
             ),

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class BlogItemCard extends StatelessWidget {
   const BlogItemCard({
@@ -14,6 +15,7 @@ class BlogItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
     return Card(
       elevation: 2,
       surfaceTintColor: Colors.transparent,
@@ -51,12 +53,11 @@ class BlogItemCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(blog.title ?? '',
-                        style: Theme.of(context).textTheme.titleSmall),
+                    Text(blog.title ?? '', style: textTheme.titleSmall),
                     const SizedBox(height: 8),
                     Text(
                       blog.description ?? '',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: textTheme.bodySmall,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -69,8 +70,7 @@ class BlogItemCard extends StatelessWidget {
                                 size: 12, color: AppColors.textGray),
                             const SizedBox(width: 4),
                             Text(blog.author ?? '',
-                                style: const TextStyle(
-                                  fontSize: 12,
+                                style: textTheme.bodySmall?.copyWith(
                                   color: AppColors.textGray,
                                 )),
                           ],
@@ -84,8 +84,7 @@ class BlogItemCard extends StatelessWidget {
                             const SizedBox(width: 4),
                             Text(
                               (blog.view ?? 0).toString(),
-                              style: const TextStyle(
-                                fontSize: 12,
+                              style: textTheme.bodySmall?.copyWith(
                                 color: AppColors.textGray,
                               ),
                             ),
@@ -102,8 +101,7 @@ class BlogItemCard extends StatelessWidget {
                               DateFormat('dd/MM/yyyy').format(
                                 blog.createdAt ?? DateTime.now(),
                               ),
-                              style: const TextStyle(
-                                fontSize: 12,
+                              style: textTheme.bodySmall?.copyWith(
                                 color: AppColors.textGray,
                               ),
                             ),

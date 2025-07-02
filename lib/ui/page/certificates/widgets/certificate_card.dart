@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/ui_models/certificate.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/certificates/widgets/certificate_score_item.dart';
 
 class CertificateCard extends StatelessWidget {
@@ -11,7 +12,9 @@ class CertificateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return GestureDetector(
       onTap: () {
         final imageUrl =
@@ -28,11 +31,11 @@ class CertificateCard extends StatelessWidget {
           border: Border.all(
             color: certificate.isValid
                 ? AppColors.gray1
-                : theme.colorScheme.error.withValues(alpha: 0.3),
+                : colorScheme.error.withValues(alpha: 0.3),
           ),
           boxShadow: [
             BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.1),
+              color: colorScheme.shadow.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -59,7 +62,7 @@ class CertificateCard extends StatelessWidget {
                     ),
                     child: Text(
                       certificate.scoreLevel,
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: textTheme.labelSmall?.copyWith(
                         color: certificate.levelColor,
                         fontWeight: FontWeight.w600,
                       ),
@@ -73,13 +76,13 @@ class CertificateCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.error.withValues(alpha: 0.1),
+                        color: colorScheme.error.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         'Expired',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.error,
+                        style: textTheme.labelSmall?.copyWith(
+                          color: colorScheme.error,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -87,7 +90,7 @@ class CertificateCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     'ID: ${certificate.tokenId}',
-                    style: theme.textTheme.labelMedium?.copyWith(
+                    style: textTheme.labelMedium?.copyWith(
                       color: theme.hintColor,
                     ),
                   ),
@@ -96,14 +99,14 @@ class CertificateCard extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 certificate.name,
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 'National ID: ${certificate.nationalId}',
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: textTheme.bodyMedium?.copyWith(
                   color: theme.hintColor,
                 ),
               ),
@@ -146,7 +149,7 @@ class CertificateCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     'Issued: ${_formatDate(certificate.issueDate)}',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: textTheme.bodySmall?.copyWith(
                       color: theme.hintColor,
                     ),
                   ),
@@ -159,7 +162,7 @@ class CertificateCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     'Expires: ${_formatDate(certificate.expirationDate)}',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: textTheme.bodySmall?.copyWith(
                       color: theme.hintColor,
                     ),
                   ),

@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
@@ -44,7 +45,9 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
+    final theme = context.theme;
     final size = MediaQuery.of(context).size;
     return BlocConsumer<UpgradeAccountCubit, UpgradeAccountState>(
       listener: (context, state) {
@@ -73,7 +76,7 @@ class _PageState extends State<Page> {
                     Center(
                       child: Text(
                         S.current.choose_the_plan_that_s_right_for_you,
-                        style: theme.textTheme.titleLarge?.copyWith(
+                        style: textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -85,7 +88,7 @@ class _PageState extends State<Page> {
                         S.current
                             .enhance_your_toeic_skills_with_unique_features,
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        style: textTheme.bodyMedium?.copyWith(
                           color: AppColors.textGray,
                         ),
                       ),
@@ -100,12 +103,10 @@ class _PageState extends State<Page> {
                         return Container(
                           margin: const EdgeInsets.only(bottom: 24),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.primary
-                                .withValues(alpha: 0.1),
+                            color: colorScheme.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: theme.colorScheme.primary
-                                  .withValues(alpha: 0.3),
+                              color: colorScheme.primary.withValues(alpha: 0.3),
                             ),
                           ),
                           child: Padding(
@@ -117,14 +118,13 @@ class _PageState extends State<Page> {
                                   children: [
                                     Icon(
                                       Icons.star,
-                                      color: theme.colorScheme.primary,
+                                      color: colorScheme.primary,
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
                                       S.current.premium_account,
-                                      style:
-                                          theme.textTheme.titleMedium?.copyWith(
-                                        color: theme.colorScheme.primary,
+                                      style: textTheme.titleMedium?.copyWith(
+                                        color: colorScheme.primary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -134,7 +134,7 @@ class _PageState extends State<Page> {
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: theme.colorScheme.primary
+                                    color: colorScheme.primary
                                         .withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -154,7 +154,7 @@ class _PageState extends State<Page> {
                                                     .format(expiredDate);
                                             return Text(
                                               '${S.current.expiration_date}: $expiredDateString',
-                                              style: theme.textTheme.bodyMedium,
+                                              style: textTheme.bodyMedium,
                                             );
                                           },
                                         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/matching_word.dart';
 
@@ -14,13 +15,13 @@ class FlashCardQuizResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
       appBar: AppBar(
         leading: const LeadingBackButton(),
         title: Text(
           S.current.quiz_result,
-          style: theme.textTheme.titleMedium,
+          style: textTheme.titleMedium,
         ),
       ),
       body: ListView.builder(
@@ -39,7 +40,7 @@ class FlashCardQuizResultPage extends StatelessWidget {
               child: ListTile(
                 title: Text(
                   item.word!.capitalizeFirst,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: textTheme.titleLarge,
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

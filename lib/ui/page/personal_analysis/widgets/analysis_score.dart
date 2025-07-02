@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class AnalysisScore extends StatefulWidget {
   const AnalysisScore({
@@ -20,7 +21,7 @@ class AnalysisScore extends StatefulWidget {
 class _AnalysisScoreState extends State<AnalysisScore> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Card(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -28,7 +29,7 @@ class _AnalysisScoreState extends State<AnalysisScore> {
           children: [
             Text(
               S.current.analysis_score,
-              style: theme.textTheme.titleLarge,
+              style: textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
             _buildScoreRow(S.current.overall_score, widget.overallScore, 990),
@@ -43,23 +44,24 @@ class _AnalysisScoreState extends State<AnalysisScore> {
   }
 
   Widget _buildScoreRow(String title, int score, int maxScore) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Expanded(child: Text(title, style: theme.textTheme.bodyMedium)),
+            Expanded(child: Text(title, style: textTheme.bodyMedium)),
             Text.rich(
               TextSpan(
                 text: '$score',
-                style: theme.textTheme.bodyLarge?.copyWith(
+                style: textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
                 children: [
                   TextSpan(
                     text: '/$maxScore',
-                    style: theme.textTheme.bodySmall,
+                    style: textTheme.bodySmall,
                   )
                 ],
               ),
@@ -69,9 +71,9 @@ class _AnalysisScoreState extends State<AnalysisScore> {
         const SizedBox(height: 5),
         LinearProgressIndicator(
           value: score / maxScore,
-          backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+          backgroundColor: colorScheme.primary.withValues(alpha: 0.3),
           minHeight: 20,
-          color: theme.colorScheme.primary,
+          color: colorScheme.primary,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             bottomLeft: Radius.circular(10),

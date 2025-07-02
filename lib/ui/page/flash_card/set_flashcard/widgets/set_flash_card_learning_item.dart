@@ -7,6 +7,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set
 import 'package:toeic_desktop/data/models/ui_models/popup_menu.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 
 class SetFlashCardLearningItem extends StatelessWidget {
@@ -16,7 +17,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     final tags = [
       TagWidget(
         icon: FontAwesomeIcons.bookBookmark,
@@ -60,7 +61,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       flashcard.setFlashcardId.title,
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
@@ -77,7 +78,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
                       ),
                       child: Text(
                         '${_getNumberOfQuestionsReview(flashcard)} ${S.current.to_reviews}',
-                        style: const TextStyle(
+                        style: textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
@@ -88,7 +89,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
               ),
               Text(
                 flashcard.setFlashcardId.description,
-                style: theme.textTheme.bodyMedium,
+                style: textTheme.bodyMedium,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -125,6 +126,8 @@ class ListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
@@ -137,7 +140,7 @@ class ListItems extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: AppColors.primary,
+                          color: colorScheme.primary,
                         ),
                         height: 40,
                         child: Row(
@@ -146,7 +149,9 @@ class ListItems extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               e.title,
-                              style: const TextStyle(color: Colors.white),
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),

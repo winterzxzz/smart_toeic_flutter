@@ -5,6 +5,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -33,7 +34,7 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return BlocConsumer<CheckPaymentStatusCubit, CheckPaymentStatusState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.loading) {
@@ -71,14 +72,14 @@ class Page extends StatelessWidget {
                     // Title Text
                     Text(
                       S.current.congratulations,
-                      style: theme.textTheme.titleLarge,
+                      style: textTheme.titleLarge,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
                     // Subtitle Text
                     Text(
                       S.current.your_account_has_been_successfully_upgraded,
-                      style: theme.textTheme.bodyMedium,
+                      style: textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 32),
@@ -115,7 +116,7 @@ class Page extends StatelessWidget {
                         ? state.message
                         : S.current
                             .an_error_occured_while_checking_payment_status,
-                    style: theme.textTheme.bodyMedium,
+                    style: textTheme.bodyMedium,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),

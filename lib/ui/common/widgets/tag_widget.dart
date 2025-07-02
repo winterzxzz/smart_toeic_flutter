@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class TagWidget extends StatelessWidget {
   const TagWidget({
@@ -15,7 +16,8 @@ class TagWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = theme.textTheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       decoration: BoxDecoration(
@@ -28,7 +30,7 @@ class TagWidget extends StatelessWidget {
         children: [
           FaIcon(icon, size: 12, color: color),
           const SizedBox(width: 4),
-          Text(text, style: const TextStyle(fontSize: 12)),
+          Text(text, style: textTheme.bodySmall),
         ],
       ),
     );

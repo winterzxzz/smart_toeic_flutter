@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
@@ -35,7 +36,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return BlocSelector<TranscriptTestDetailCubit, TranscriptTestDetailState,
         bool>(
       selector: (state) {
@@ -74,7 +75,7 @@ class _TranscriptTestInputState extends State<TranscriptTestInput> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
-                      color: theme.colorScheme.primary,
+                      color: colorScheme.primary,
                     ),
                   ),
                 ),

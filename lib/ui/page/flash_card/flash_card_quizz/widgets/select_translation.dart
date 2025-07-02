@@ -5,7 +5,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_state.dart';
@@ -91,29 +91,30 @@ class _SectionQuestionState extends State<SectionQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       key: widget.widgetKey,
       children: [
         Text.rich(
-          style: const TextStyle(fontSize: 18),
+          style: textTheme.titleMedium,
           TextSpan(
             children: [
               TextSpan(
                 text: S.current.select_meaning,
-                style: theme.textTheme.bodyLarge,
+                style: textTheme.bodyLarge,
               ),
               TextSpan(
                 text: " '${widget.fcLearning.flashcardId!.word}'",
-                style: theme.textTheme.bodyLarge?.copyWith(
+                style: textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.error,
+                  color: colorScheme.error,
                 ),
               ),
               TextSpan(
                 text: ' ?',
-                style: theme.textTheme.bodyLarge,
+                style: textTheme.bodyLarge,
               ),
             ],
           ),
@@ -140,7 +141,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   height: 70,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: colorScheme.outline),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -166,7 +167,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
                         level.isNotEmpty
                             ? level[0].toUpperCase() + level.substring(1)
                             : '',
-                        style: theme.textTheme.bodyMedium,
+                        style: textTheme.bodyMedium,
                       )),
                     ],
                   ),
@@ -184,7 +185,7 @@ class _SectionQuestionState extends State<SectionQuestion> {
                   const SizedBox(height: 8),
                   Text(
                     '${S.current.answer}: ${widget.fcLearning.flashcardId!.translation}',
-                    style: theme.textTheme.bodyLarge,
+                    style: textTheme.bodyLarge,
                   ),
                 ],
               );

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/common/utils/time_utils.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class TestLastStudiedAtTimeText extends StatefulWidget {
   const TestLastStudiedAtTimeText({
@@ -44,11 +45,12 @@ class _TestLastStudiedAtTimeTextState extends State<TestLastStudiedAtTimeText> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Text(
       '${S.current.last_time_taken} ${TimeUtils.timeAgo(widget.updatedAt ?? widget.createdAt!)}',
-      style: theme.textTheme.bodySmall?.copyWith(
-        color: theme.colorScheme.primary,
+      style: textTheme.bodySmall?.copyWith(
+        color: colorScheme.primary,
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:toeic_desktop/data/models/entities/test/result_test.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 
 class ExamResultCard extends StatelessWidget {
@@ -21,7 +22,8 @@ class ExamResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     final tags = [
       TagWidget(
         icon: FontAwesomeIcons.circleCheck,
@@ -69,7 +71,7 @@ class ExamResultCard extends StatelessWidget {
                 children: [
                   Text(
                     result.testId.title,
-                    style: theme.textTheme.titleMedium?.copyWith(
+                    style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -92,8 +94,8 @@ class ExamResultCard extends StatelessWidget {
                             const SizedBox(width: 4),
                             Text(
                               '${result.secondTime}s',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.primary,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.primary,
                                 fontSize: 12,
                               ),
                             ),
@@ -105,21 +107,21 @@ class ExamResultCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.15),
+                          color: colorScheme.primary.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
                           children: [
-                            const FaIcon(
+                            FaIcon(
                               FontAwesomeIcons.calendarPlus,
                               size: 16,
-                              color: AppColors.primary,
+                              color: colorScheme.primary,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               ' ${DateFormat('dd/MM/yyyy').format(result.createdAt)}',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.primary,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.primary,
                                 fontSize: 12,
                               ),
                             ),

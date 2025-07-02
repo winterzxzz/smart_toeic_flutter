@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_cached_image.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/widgets/question_info_widget.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/widgets/test_audio_section.dart';
@@ -14,6 +15,8 @@ class QuestionWidget extends StatelessWidget {
   final QuestionModel question;
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;  
     return Container(
       key: ValueKey(question.id),
       margin: const EdgeInsets.only(bottom: 32),
@@ -26,14 +29,14 @@ class QuestionWidget extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context)
-                    .colorScheme
-                    .primary
-                    .withValues(alpha: 0.1),
+                color: colorScheme.primary.withValues(alpha: 0.1),
               ),
               child: SelectionArea(
                 child: Text(
                   question.paragraph!,
+                  style: textTheme.bodyMedium?.copyWith(
+                    height: 1.5,
+                  ),
                 ),
               ),
             ),

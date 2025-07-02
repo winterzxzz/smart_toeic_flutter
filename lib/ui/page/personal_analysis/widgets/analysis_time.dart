@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class AnalysisTime extends StatefulWidget {
   AnalysisTime({
@@ -31,7 +32,8 @@ class _AnalysisTimeState extends State<AnalysisTime> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -39,7 +41,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
           children: [
             Text(
               '${S.current.analysis_time} (${S.current.time_per_question})',
-              style: theme.textTheme.titleLarge,
+              style: textTheme.titleLarge,
             ),
             const SizedBox(height: 20),
             AspectRatio(
@@ -51,7 +53,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                     show: true,
                     border: Border.symmetric(
                       horizontal: BorderSide(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                        color: colorScheme.primary.withValues(alpha: 0.2),
                       ),
                     ),
                   ),
@@ -80,7 +82,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                             axisSide: meta.axisSide,
                             child: Text(
                               widget.parts[index],
-                              style: theme.textTheme.bodyMedium?.copyWith(
+                              style: textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 8,
                               ),
@@ -131,7 +133,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
                             fontSize: 18,
                             shadows: [
                               Shadow(
-                                color: theme.colorScheme.primary,
+                                color: colorScheme.primary,
                                 blurRadius: 12,
                               )
                             ],
@@ -169,7 +171,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
     double value,
     double shadowValue,
   ) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return BarChartGroupData(
       x: x,
       barRods: [
@@ -184,7 +186,7 @@ class _AnalysisTimeState extends State<AnalysisTime> {
         ),
         BarChartRodData(
           toY: shadowValue,
-          color: theme.colorScheme.primary.withValues(alpha: .8),
+          color: colorScheme.primary.withValues(alpha: .8),
           width: 10,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(6),

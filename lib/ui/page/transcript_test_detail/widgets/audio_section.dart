@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
@@ -133,7 +134,8 @@ class _AudioSectionState extends State<AudioSection> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return BlocListener<TranscriptTestDetailCubit, TranscriptTestDetailState>(
       listenWhen: (previous, current) =>
           previous.isShowAiVoice != current.isShowAiVoice,
@@ -147,7 +149,7 @@ class _AudioSectionState extends State<AudioSection> {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primary,
+          color: colorScheme.primary,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Stack(
@@ -210,12 +212,12 @@ class _AudioSectionState extends State<AudioSection> {
                 children: [
                   Text(
                     formatDuration(_position ?? Duration.zero),
-                    style: theme.textTheme.bodyMedium
+                    style: textTheme.bodyMedium
                         ?.copyWith(fontSize: 10, color: Colors.white),
                   ),
                   Text(
                     formatDuration(_duration ?? Duration.zero),
-                    style: theme.textTheme.bodyMedium
+                    style: textTheme.bodyMedium
                         ?.copyWith(fontSize: 10, color: Colors.white),
                   ),
                 ],

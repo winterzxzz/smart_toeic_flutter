@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/enums/mode_test.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/full_mode_test.dart';
@@ -21,12 +22,12 @@ class _ModeTestpageState extends State<ModeTestpage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text(widget.test.title!),
+            title: Text(widget.test.title!, style: textTheme.titleMedium),
             floating: true,
             toolbarHeight: 55,
             leading: const LeadingBackButton(),
@@ -57,7 +58,7 @@ class _ModeTestpageState extends State<ModeTestpage> {
                       widget.test.attemptCount! > 0) ...[
                     Text(
                       '${widget.test.attemptCount} ${S.current.attempt_count}',
-                      style: theme.textTheme.bodySmall,
+                      style: textTheme.bodySmall,
                     ),
                     const SizedBox(height: 8),
                   ],

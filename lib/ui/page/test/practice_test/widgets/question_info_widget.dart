@@ -10,6 +10,7 @@ import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
@@ -38,18 +39,19 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Question number
         CircleAvatar(
           radius: 16,
-          backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+          backgroundColor: colorScheme.primary.withValues(alpha: 0.1),
           child: Text(
             '${widget.question.id}',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.primary,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.primary,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -86,8 +88,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                     child: Radio<String>(
                                       value: option.id ?? '',
                                       groupValue: widget.question.userAnswer,
-                                      activeColor:
-                                          Theme.of(context).colorScheme.primary,
+                                      activeColor: colorScheme.primary,
                                       onChanged: (value) {
                                         cubit.setUserAnswer(
                                             widget.question, value!);
@@ -100,7 +101,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     '${option.id ?? ''}. ',
-                                    style: const TextStyle(
+                                    style: textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -116,7 +117,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                       margin: const EdgeInsets.only(top: 10),
                                       child: Text(
                                         option.content.toString().trim(),
-                                        style: const TextStyle(
+                                        style: textTheme.bodyMedium?.copyWith(
                                           height: 1.5,
                                         ),
                                       ),
@@ -168,7 +169,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                         margin: const EdgeInsets.only(top: 10),
                                         child: Text(
                                           '${option.id}.',
-                                          style: const TextStyle(
+                                          style: textTheme.bodyMedium?.copyWith(
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -179,7 +180,11 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                           margin:
                                               const EdgeInsets.only(top: 10),
                                           child: Text(
-                                              option.content.toString().trim()),
+                                            option.content.toString().trim(),
+                                            style: textTheme.bodyMedium?.copyWith(
+                                              height: 1.5,
+                                            ),
+                                          ),
                                         ),
                                       )
                                     ],
@@ -195,7 +200,7 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                   const SizedBox(height: 8),
                                   Text(
                                     '${S.current.correct_answer}: ${widget.question.correctAnswer}',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                    style: textTheme.bodyMedium?.copyWith(
                                       color: AppColors.success,
                                       fontWeight: FontWeight.bold,
                                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:toeic_desktop/data/models/ui_models/home_item_task_model.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class HomeItemTask extends StatelessWidget {
   const HomeItemTask({
@@ -12,7 +13,8 @@ class HomeItemTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return GestureDetector(
       onTap: () {
         if (homeItemTaskModel.onNavigate != null) {
@@ -43,7 +45,7 @@ class HomeItemTask extends StatelessWidget {
                       height: 32,
                       homeItemTaskModel.image,
                       colorFilter: ColorFilter.mode(
-                        theme.colorScheme.primary,
+                        colorScheme.primary,
                         BlendMode.srcIn,
                       ),
                     ),
@@ -52,9 +54,9 @@ class HomeItemTask extends StatelessWidget {
                       LinearProgressIndicator(
                         value: homeItemTaskModel.progress,
                         borderRadius: BorderRadius.circular(8),
-                        color: theme.colorScheme.primary,
+                        color: colorScheme.primary,
                         backgroundColor:
-                            theme.colorScheme.primary.withValues(alpha: 0.3),
+                            colorScheme.primary.withValues(alpha: 0.3),
                       ),
                   ],
                 ),
@@ -64,7 +66,7 @@ class HomeItemTask extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             homeItemTaskModel.title,
-            style: theme.textTheme.bodySmall,
+            style: textTheme.bodySmall,
           ),
         ],
       ),

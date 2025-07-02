@@ -4,6 +4,7 @@ import 'package:toeic_desktop/common/utils/time_utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class FlashCardLearningTile extends StatefulWidget {
   final FlashCardLearning flashcard;
@@ -32,7 +33,9 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
@@ -67,7 +70,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                   child: Row(
                     children: [
                       Text(widget.flashcard.flashcardId?.word ?? '',
-                          style: theme.textTheme.titleSmall),
+                          style: textTheme.titleSmall),
                       const SizedBox(
                         width: 8,
                       ),
@@ -80,13 +83,12 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                         child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.primary
-                                  .withValues(alpha: 0.1),
+                              color: colorScheme.primary.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               Icons.volume_up_outlined,
-                              color: theme.colorScheme.primary,
+                              color: colorScheme.primary,
                             )),
                       ),
                     ],
@@ -98,13 +100,13 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                      color: colorScheme.primary.withValues(alpha: 0.7),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
                       widget.flashcard.flashcardId?.partOfSpeech.join(', ') ??
                           '',
-                      style: theme.textTheme.bodySmall?.copyWith(
+                      style: textTheme.bodySmall?.copyWith(
                         color: AppColors.textWhite,
                         fontStyle: FontStyle.italic,
                       ),
@@ -134,14 +136,14 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                           children: [
                             TextSpan(
                               text: '${S.current.translate}: ',
-                              style: theme.textTheme.bodyMedium?.copyWith(
+                              style: textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             TextSpan(
                               text: widget.flashcard.flashcardId?.translation ??
                                   '',
-                              style: theme.textTheme.bodyMedium?.copyWith(
+                              style: textTheme.bodyMedium?.copyWith(
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -150,17 +152,17 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                       ),
                       Text(
                         '${S.current.definition}:',
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        style: textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(widget.flashcard.flashcardId?.definition ?? '',
-                          style: theme.textTheme.bodyMedium?.copyWith(
+                          style: textTheme.bodyMedium?.copyWith(
                             fontStyle: FontStyle.italic,
                           )),
                       Text(
                         '${S.current.example_sentences}:',
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        style: textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -171,7 +173,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                         ...widget.flashcard.flashcardId!.exampleSentence
                             .map((example) => Text(
                                   '- $example',
-                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                  style: textTheme.bodyMedium?.copyWith(
                                     fontStyle: FontStyle.italic,
                                   ),
                                 )),
@@ -179,12 +181,12 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                       const SizedBox(height: 4),
                       Text(
                         '${S.current.note}:',
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        style: textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(widget.flashcard.flashcardId?.note ?? '',
-                          style: theme.textTheme.bodyMedium?.copyWith(
+                          style: textTheme.bodyMedium?.copyWith(
                             fontStyle: FontStyle.italic,
                           )),
                       if (widget.flashcard.optimalTime != null)
@@ -207,8 +209,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                                     ),
                                     child: Text(
                                         'Review in: ${TimeUtils.getDiffDays(widget.flashcard.optimalTime!)} days (Initial interval: ${widget.flashcard.interval} days)',
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
+                                        style: textTheme.bodyMedium?.copyWith(
                                           fontStyle: FontStyle.italic,
                                         )),
                                   ),
@@ -223,8 +224,7 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
                                     ),
                                     child: Text(
                                       'Retention: ${widget.flashcard.retentionScore?.toStringAsFixed(2) ?? ''}',
-                                      style:
-                                          theme.textTheme.bodyMedium?.copyWith(
+                                      style: textTheme.bodyMedium?.copyWith(
                                         color: AppColors.textWhite,
                                         fontWeight: FontWeight.w500,
                                         fontStyle: FontStyle.italic,
@@ -246,19 +246,19 @@ class _FlashCardLearningTileState extends State<FlashCardLearningTile> {
   }
 
   Widget _buildPronunciation(String pronunciation, String label) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Row(
       children: [
         Text(
           '$label:',
-          style: theme.textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(width: 4),
         Text(
           pronunciation,
-          style: theme.textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             fontStyle: FontStyle.italic,
           ),
         ),

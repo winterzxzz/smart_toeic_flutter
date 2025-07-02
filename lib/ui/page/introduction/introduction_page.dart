@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class IntroductionPage extends StatelessWidget {
   const IntroductionPage({super.key});
@@ -35,14 +36,14 @@ class TourIntroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final size = MediaQuery.sizeOf(context);
+    final textTheme = context.textTheme;
+    final size = context.sizze;
     return Column(
       children: [
         const SizedBox(height: 100),
         Text(
           'Cam kết của TOEIC Prepp',
-          style: theme.textTheme.headlineSmall!.apply(
+          style: textTheme.headlineSmall!.apply(
             fontWeightDelta: 2,
           ),
         ),
@@ -51,8 +52,9 @@ class TourIntroWidget extends StatelessWidget {
           margin: EdgeInsets.symmetric(
             horizontal: size.width / 4,
           ),
-          child: const Text(
-              'Chúng tôi tin rằng việc học TOEIC không cần phải phức tạp hay áp lực. Với TOEIC Prep, bạn sẽ trải nghiệm một cách học tập dễ dàng, thông minh và đầy động lực.'),
+          child: Text(
+              'Chúng tôi tin rằng việc học TOEIC không cần phải phức tạp hay áp lực. Với TOEIC Prep, bạn sẽ trải nghiệm một cách học tập dễ dàng, thông minh và đầy động lực.',
+              style: textTheme.bodyMedium),
         ),
         const SizedBox(
           height: 3,
@@ -64,7 +66,7 @@ class TourIntroWidget extends StatelessWidget {
               onPressed: () {
                 // GoRouter.of(context).go(AppRouter.home);
               },
-              child: const Text('Bắt đầu học ngay')),
+              child: Text('Bắt đầu học ngay', style: textTheme.bodyMedium)),
         ),
         const SizedBox(height: 100),
       ],
@@ -77,7 +79,7 @@ class ThirdIntroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -86,7 +88,7 @@ class ThirdIntroWidget extends StatelessWidget {
           const SizedBox(height: 100),
           Text(
             'Chúng tôi mang đến cho bạn',
-            style: theme.textTheme.headlineSmall!.apply(
+            style: textTheme.headlineSmall!.apply(
               fontWeightDelta: 2,
             ),
           ),
@@ -155,13 +157,13 @@ class SecondIntroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Column(
       children: [
         const SizedBox(height: 100),
         Text(
           'Vì sao nên chọn TOEIC Prep?',
-          style: theme.textTheme.headlineSmall!.apply(
+          style: textTheme.headlineSmall!.apply(
             fontWeightDelta: 2,
           ),
         ),
@@ -198,13 +200,13 @@ class FirstIntroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Column(
       children: [
         const SizedBox(height: 100),
         Text(
           'Chào mừng đến với TOEIC Prep',
-          style: theme.textTheme.headlineSmall!.apply(
+          style: textTheme.headlineSmall!.apply(
             fontWeightDelta: 2,
           ),
         ),
@@ -231,7 +233,8 @@ class IntroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Expanded(
       child: Card(
         child: LayoutBuilder(builder: (context, constraints) {
@@ -242,7 +245,7 @@ class IntroCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: theme.brightness == Brightness.light
+                color: colorScheme.brightness == Brightness.light
                     ? Colors.grey.shade200
                     : Colors.grey.shade800,
               ),
@@ -255,7 +258,7 @@ class IntroCard extends StatelessWidget {
                 if (icon != null) const SizedBox(height: 8),
                 Text(
                   title,
-                  style: theme.textTheme.bodyLarge!.apply(fontWeightDelta: 2),
+                  style: textTheme.bodyLarge!.apply(fontWeightDelta: 2),
                 ),
                 const SizedBox(height: 8),
                 Text(message),

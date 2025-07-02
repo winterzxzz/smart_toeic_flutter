@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 Map<double, String> diffLevels = {
@@ -33,7 +33,8 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     if (widget.fcLearning.flashcardId == null) {
       return const SizedBox.shrink();
     }
@@ -43,14 +44,14 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
       children: [
         Text(
           widget.fcLearning.flashcardId?.word ?? '',
-          style: theme.textTheme.headlineMedium?.copyWith(
-            color: AppColors.primary,
+          style: textTheme.headlineMedium?.copyWith(
+            color: colorScheme.primary,
           ),
         ),
         const SizedBox(height: 32),
         Text(
           S.current.what_is_your_confidence_level,
-          style: theme.textTheme.bodyMedium,
+          style: textTheme.bodyMedium,
         ),
         const SizedBox(height: 32),
         ...diffLevels.entries.map((level) {
@@ -70,7 +71,7 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   height: 70,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: colorScheme.outline),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -87,7 +88,7 @@ class _ConfidenceLevelState extends State<ConfidenceLevel> {
                         },
                       ),
                       const SizedBox(width: 8),
-                      Text(level.value),
+                      Text(level.value, style: textTheme.bodyMedium),
                     ],
                   ),
                 ),

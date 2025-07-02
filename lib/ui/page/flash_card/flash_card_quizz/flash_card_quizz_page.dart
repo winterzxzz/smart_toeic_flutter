@@ -6,6 +6,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
@@ -65,7 +66,9 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     final navigator = AppNavigator(context: context);
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 600;
@@ -246,19 +249,13 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                 state.isCorrect
                                     ? S.current.great
                                     : S.current.try_harder,
-                                style: TextStyle(
-                                  fontSize: isSmallScreen ? 18 : 20,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: textTheme.titleMedium,
                               ),
                               Text(
                                 state.isCorrect
                                     ? S.current.you_answered_correctly
                                     : S.current.you_answered_incorrectly,
-                                style: TextStyle(
-                                  fontSize: isSmallScreen ? 14 : 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: textTheme.bodyMedium,
                               ),
                               const SizedBox(height: 16),
                               SizedBox(
@@ -267,8 +264,8 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: state.isCorrect
-                                        ? Colors.green
-                                        : Colors.red,
+                                        ? colorScheme.primary
+                                        : colorScheme.error,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -278,7 +275,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                   },
                                   child: Text(
                                     S.current.next_question,
-                                    style: const TextStyle(
+                                    style: textTheme.bodyMedium?.copyWith(
                                       color: Colors.white,
                                     ),
                                   ),

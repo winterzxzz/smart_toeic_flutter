@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'voice_wave.dart';
 
@@ -99,7 +100,7 @@ class _SpeechTestState extends State<SpeechTest> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return Scaffold(
       body: Center(
         child: Column(
@@ -114,14 +115,14 @@ class _SpeechTestState extends State<SpeechTest> {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isRecording ? theme.colorScheme.primary : null,
+                color: isRecording ? colorScheme.primary : null,
               ),
               child: IconButton(
                 onPressed: isRecording ? _stopSpeechToText : _startSpeechToText,
                 icon: Icon(
                   Icons.mic,
                   size: 32,
-                  color: isRecording ? theme.colorScheme.onPrimary : null,
+                  color: isRecording ? colorScheme.onPrimary : null,
                 ),
               ),
             ),

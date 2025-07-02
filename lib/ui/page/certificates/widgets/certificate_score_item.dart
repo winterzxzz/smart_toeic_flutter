@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class CertificateScoreItem extends StatelessWidget {
   final String label;
@@ -13,11 +14,13 @@ class CertificateScoreItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final colorScheme = context.colorScheme;
+    final textTheme = context.textTheme;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withValues(alpha: 0.05),
+        color: colorScheme.primary.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -25,14 +28,14 @@ class CertificateScoreItem extends StatelessWidget {
           Icon(
             icon,
             size: 20,
-            color: theme.colorScheme.primary,
+            color: colorScheme.primary,
           ),
           const SizedBox(height: 4),
           Text(
             score.toString(),
-            style: theme.textTheme.titleMedium?.copyWith(
+            style: textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
+              color: colorScheme.primary,
             ),
           ),
           Text(

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
@@ -39,7 +40,8 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +49,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
       children: [
         Center(
           child: Text(S.current.order_word_to_correct,
-              style: const TextStyle(fontSize: 18)),
+              style: textTheme.titleMedium),
         ),
         const SizedBox(height: 32),
         Wrap(
@@ -72,13 +74,13 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.8),
-                  border: Border.all(color: theme.colorScheme.primary),
+                  color: colorScheme.primary.withValues(alpha: 0.8),
+                  border: Border.all(color: colorScheme.primary),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   word,
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500, color: AppColors.textWhite),
                 ),
               ),
@@ -118,13 +120,13 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
+                    color: colorScheme.primary,
                     border: Border.all(color: AppColors.gray1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     word,
-                    style: theme.textTheme.bodyMedium?.copyWith(
+                    style: textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textWhite,
                     ),
@@ -162,7 +164,7 @@ class _OrderWordToCorrectState extends State<OrderWordToCorrect> {
           visible: isCheck,
           child: Text(
             '${S.current.answer}: ${widget.fcLearning.flashcardId!.exampleSentence.first}',
-            style: theme.textTheme.bodyMedium,
+            style: textTheme.bodyMedium,
           ),
         )
       ],
