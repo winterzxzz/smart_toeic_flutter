@@ -9,6 +9,7 @@ import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_cached_image.dart';
 
 class AvatarHeading extends StatefulWidget {
   const AvatarHeading({super.key});
@@ -36,30 +37,52 @@ class _AvatarHeadingState extends State<AvatarHeading> {
             return state.user;
           },
           builder: (context, user) {
+            final bool hasAvatar = user?.avatar.isNotEmpty ?? false;
+
             return CircleAvatar(
               radius: 48,
               backgroundColor: Theme.of(context).secondaryHeaderColor,
-              backgroundImage: user?.avatar.isEmpty ?? true
-                  ? null
-                  : Image.network(
-                          '${AppConfigs.baseUrl.replaceAll('/api', '')}${user?.avatar}')
-                      .image,
+              backgroundImage: hasAvatar ? null : null,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (user?.avatar.isNotEmpty ?? true)
-                        Container(
-                          color: Colors.transparent,
-                        )
-                      else
-                        Text(user?.name.characters.first.toUpperCase() ?? 'U',
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w600)),
-                    ],
-                  ),
+                  if (hasAvatar)
+                    ClipOval(
+                      child: CustomCachedImage(
+                        imageUrl:
+                            '${AppConfigs.baseUrl.replaceAll('/api', '')}${user?.avatar}',
+                        width: 96,
+                        height: 96,
+                        fit: BoxFit.cover,
+                        errorWidget: Container(
+                          width: 96,
+                          height: 96,
+                          color: Theme.of(context).secondaryHeaderColor,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                user?.name.characters.first.toUpperCase() ??
+                                    'U',
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          user?.name.characters.first.toUpperCase() ?? 'U',
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: InkWell(

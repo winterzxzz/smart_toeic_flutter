@@ -11,8 +11,6 @@ class ImagePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isNetworkImage = imageUrl.contains('http');
-    debugPrint(imageUrl);
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
