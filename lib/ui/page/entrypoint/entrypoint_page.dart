@@ -168,6 +168,7 @@ class _PageState extends State<Page> {
                   final bottomTabs = Constants.bottomTabs;
                   return BottomNavigationBar(
                     useLegacyColorScheme: true,
+                    backgroundColor: colorScheme.surface,
                     selectedItemColor: colorScheme.primary,
                     unselectedItemColor: AppColors.gray3,
                     selectedLabelStyle: const TextStyle(

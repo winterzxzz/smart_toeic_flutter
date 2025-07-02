@@ -52,7 +52,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
+    final colorScheme = context.colorScheme;
     final textTheme = context.textTheme;
     return DefaultTabController(
       animationDuration: const Duration(milliseconds: 200),
@@ -61,7 +61,7 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
         appBar: AppBar(
           title: Text(
             S.current.set_flashcard_title,
-            style: theme.textTheme.titleMedium,
+            style: textTheme.titleMedium,
           ),
           centerTitle: true,
           bottom: PreferredSize(
@@ -70,17 +70,21 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
               controller: _tabController,
               dividerHeight: 0,
               indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: theme.colorScheme.primary,
-              labelColor: theme.colorScheme.primary,
+              indicatorColor: colorScheme.primary,
+              labelColor: colorScheme.primary,
               unselectedLabelColor: Colors.grey,
               tabs: [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const FaIcon(FontAwesomeIcons.list, size: 16),
+                      FaIcon(
+                        FontAwesomeIcons.list,
+                        size: 16,
+                        color: textTheme.titleSmall?.color,
+                      ),
                       const SizedBox(width: 8),
-                      Text(S.current.my_list, style: textTheme.titleMedium),
+                      Text(S.current.my_list, style: textTheme.titleSmall),
                     ],
                   ),
                 ),
@@ -88,9 +92,13 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const FaIcon(FontAwesomeIcons.book, size: 16),
+                      FaIcon(
+                        FontAwesomeIcons.book,
+                        size: 16,
+                        color: textTheme.titleSmall?.color,
+                      ),
                       const SizedBox(width: 8),
-                      Text(S.current.studying, style: textTheme.titleMedium),
+                      Text(S.current.studying, style: textTheme.titleSmall),
                     ],
                   ),
                 ),
