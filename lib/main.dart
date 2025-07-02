@@ -14,8 +14,8 @@ void main() async {
     RequestConfiguration(testDeviceIds: ['105B2DCAFB40A94A3CE6C7EE0A4F4B72']),
   );
   await MobileAds.instance.initialize();
-  await SharedPreferencesHelper().initialize();
   await init();
-  injector<NotiService>().initialize();
+  await injector<SharedPreferencesHelper>().initialize();
+  await injector<NotiService>().initialize();
   runApp(const MyApp());
 }

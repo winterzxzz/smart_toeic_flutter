@@ -305,5 +305,10 @@
     "update_profile_avatar_success": "Cập nhật ảnh đại diện thành công",
     "please_enter_name": "Vui lòng nhập tên",
     "update_profile_success": "Cập nhật hồ sơ thành công",
-    "not_show_advertise": "Không hiển thị quảng cáo"
+    "not_show_advertise": "Không hiển thị quảng cáo",
+    "certificates": "Chứng chỉ",
+    "search_certificates_hint": "Tìm kiếm chứng chỉ bằng số CMND", 
+    "search_certificates": "Tìm kiếm",
+    "please_enter_national_id": "Vui lòng nhập số CMND", 
+    "national_id_invalid": "Số CMND không hợp lệ"
 }

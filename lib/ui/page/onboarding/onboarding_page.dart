@@ -136,9 +136,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-      setState(() {
-        _currentPage--;
-      });
     }
   }
 
@@ -149,9 +146,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-      setState(() {
-        _currentPage++;
-      });
     } else {
       _onToLogin();
     }

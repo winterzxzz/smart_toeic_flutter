@@ -311,5 +311,11 @@
     "update_profile_avatar_success": "Update profile avatar successfully",
     "please_enter_name": "Please enter name",
     "update_profile_success": "Update profile successfully", 
-    "not_show_advertise": "Not show advertise"
+    "not_show_advertise": "Not show advertise",
+    "certificates": "Certificates", 
+    "search_certificates_hint": "Search certificates by Nation ID Card", 
+    "search_certificates": "Search", 
+    "please_enter_national_id": "Please enter National ID", 
+    "national_id_invalid": "National ID is invalid"
+    
 }

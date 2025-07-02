@@ -11,6 +11,7 @@ import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_page.dart';
+import 'package:toeic_desktop/ui/page/image_view/image_view_page.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
@@ -31,6 +32,7 @@ import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/mode_test_page.dart';
 import 'package:toeic_desktop/ui/page/test/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
+import 'package:toeic_desktop/ui/page/certificates/certificates_page.dart';
 
 import '../../ui/page/splash/splash_page.dart';
 
@@ -90,6 +92,8 @@ class AppRouter {
   static const String transcriptTestDetail = "/transcript-test-detail";
   static const String historyTest = "/history-test";
   static const String blogDetail = "/blog-detail";
+  static const String certificates = "/certificates";
+  static const String imageView = "/image-view";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -281,6 +285,20 @@ class AppRouter {
         final args = state.extra as Map<String, dynamic>;
         final blog = args['blog'] as Blog;
         return BlogDetail(blog: blog);
+      },
+    ),
+    GoRoute(
+      name: certificates,
+      path: certificates,
+      builder: (context, state) => const CertificatesPage(),
+    ),
+    GoRoute(
+      name: imageView,
+      path: imageView,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final imageUrl = args['imageUrl'] as String;
+        return ImagePreview(imageUrl: imageUrl);
       },
     ),
   ];

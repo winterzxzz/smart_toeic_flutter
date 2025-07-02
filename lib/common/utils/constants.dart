@@ -23,7 +23,7 @@ class Constants {
             icon: FontAwesomeIcons.idCard,
             title: S.current.flashcards,
             desciption: S.current.flashcards_description),
-      ServiceItem(
+        ServiceItem(
             icon: FontAwesomeIcons.list,
             title: S.current.practice_exams,
             desciption: S.current.practice_exams_description),
@@ -191,6 +191,12 @@ class Constants {
           image: AppImages.icPremium,
           onNavigate: (context) =>
               GoRouter.of(context).push(AppRouter.upgradeAccount),
+        ),
+        HomeItemTaskModel(
+          title: S.current.certificates,
+          image: AppImages.icCertificate,
+          onNavigate: (context) =>
+              GoRouter.of(context).push(AppRouter.certificates),
         ),
         HomeItemTaskModel(
           title: S.current.settings,

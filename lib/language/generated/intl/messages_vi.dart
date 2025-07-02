@@ -79,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "category": MessageLookupByLibrary.simpleMessage("Danh mục"),
         "category_accuracy_chart":
             MessageLookupByLibrary.simpleMessage("Biểu đồ độ chính xác"),
+        "certificates": MessageLookupByLibrary.simpleMessage("Chứng chỉ"),
         "chart_visual_reference":
             MessageLookupByLibrary.simpleMessage("Biểu đồ/Hình ảnh"),
         "charts_visuals":
@@ -247,6 +248,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_list": MessageLookupByLibrary.simpleMessage("Danh sách của tôi"),
         "name_hint": MessageLookupByLibrary.simpleMessage("Nhập tên"),
         "name_label": MessageLookupByLibrary.simpleMessage("Tên"),
+        "national_id_invalid":
+            MessageLookupByLibrary.simpleMessage("Số CMND không hợp lệ"),
         "next": MessageLookupByLibrary.simpleMessage("Tiếp"),
         "next_question": MessageLookupByLibrary.simpleMessage("Câu tiếp"),
         "no_blogs": MessageLookupByLibrary.simpleMessage("Không có blog"),
@@ -284,6 +287,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Vui lòng điền đầy đủ thông tin"),
         "please_enter_name":
             MessageLookupByLibrary.simpleMessage("Vui lòng nhập tên"),
+        "please_enter_national_id":
+            MessageLookupByLibrary.simpleMessage("Vui lòng nhập số CMND"),
         "please_enter_title":
             MessageLookupByLibrary.simpleMessage("Vui lòng nhập tiêu đề"),
         "please_enter_word":
@@ -359,6 +364,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "score_and_save_results":
             MessageLookupByLibrary.simpleMessage("Chấm điểm & lưu kết quả"),
         "search_blogs": MessageLookupByLibrary.simpleMessage("Tìm blog..."),
+        "search_certificates": MessageLookupByLibrary.simpleMessage("Tìm kiếm"),
+        "search_certificates_hint": MessageLookupByLibrary.simpleMessage(
+            "Tìm kiếm chứng chỉ bằng số CMND"),
         "select_description":
             MessageLookupByLibrary.simpleMessage("Chọn mô tả"),
         "select_meaning": MessageLookupByLibrary.simpleMessage("Chọn nghĩa"),
