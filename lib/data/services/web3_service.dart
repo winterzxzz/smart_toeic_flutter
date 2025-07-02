@@ -37,18 +37,17 @@ class Web3Service {
         function: getAllTokensFunction,
         params: [],
       );
-      final tokenIds = List<BigInt>.from(tokenIdsResult);
+      final List<BigInt> tokenIds = List<BigInt>.from(tokenIdsResult.first);
       final List<Certificate> loadedCertificates = [];
 
       for (final tokenId in tokenIds) {
         final isValid = await isCertificateValid(tokenId);
-        if (isValid) {
-          final certificate = await getCertificateDetails(tokenId);
-          if (certificate.nationalId == nationalId) {
-            loadedCertificates.add(certificate);
-          } else {
-            continue;
-          }
+        final certificate = await getCertificateDetails(
+          nationalId: tokenId,
+          isValid: isValid,
+        );
+        if (certificate.nationalId == nationalId) {
+          loadedCertificates.add(certificate);
         } else {
           continue;
         }
@@ -59,15 +58,18 @@ class Web3Service {
     }
   }
 
-  Future<Certificate> getCertificateDetails(BigInt tokenId) async {
+  Future<Certificate> getCertificateDetails({
+    required BigInt nationalId,
+    required bool isValid,
+  }) async {
     try {
       final result = await client.call(
         contract: contract,
         function: getCertificateDetailsFunction,
-        params: [tokenId],
+        params: [nationalId],
       );
       return Certificate(
-        tokenId: tokenId.toInt(),
+        tokenId: nationalId.toInt(),
         name: result[0].toString(),
         readingScore: (result[1] as BigInt).toInt(),
         listeningScore: (result[2] as BigInt).toInt(),
@@ -79,14 +81,14 @@ class Web3Service {
         ),
         nationalId: result[5].toString(),
         cidCertificate: result[6].toString(),
-        isValid: result[7] as bool,
+        isValid: isValid,
       );
     } on Exception catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<bool> isCertificateValid(BigInt tokenId) async {
+  Future<bool> isCertificateValid(dynamic tokenId) async {
     try {
       final result = await client.call(
         contract: contract,

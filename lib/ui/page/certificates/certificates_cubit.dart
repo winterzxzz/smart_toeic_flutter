@@ -21,7 +21,7 @@ class CertificatesCubit extends Cubit<CertificatesState> {
         throw Exception(S.current.please_enter_national_id);
       }
 
-      if (!AppValidator.validateLength(searchQuery, 12, 12)) {
+      if (!AppValidator.validateLength(searchQuery, 8, 12)) {
         throw Exception(S.current.national_id_invalid);
       }
 
@@ -37,10 +37,12 @@ class CertificatesCubit extends Cubit<CertificatesState> {
         certificates: certificates,
       ));
     } catch (e) {
-      showToast(title: e.toString(), type: ToastificationType.error);
+      // remove Exception: from the error message
+      final errorMessage = e.toString().replaceFirst('Exception: ', '');
+      showToast(title: errorMessage, type: ToastificationType.error);
       emit(state.copyWith(
         loadStatus: LoadStatus.failure,
-        errorMessage: e.toString(),
+        errorMessage: errorMessage,
       ));
     }
   }

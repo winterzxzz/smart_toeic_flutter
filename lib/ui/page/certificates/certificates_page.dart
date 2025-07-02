@@ -109,7 +109,7 @@ class _PageState extends State<Page> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 BlocSelector<CertificatesCubit, CertificatesState, LoadStatus>(
                   selector: (state) {
                     return state.loadStatus;
