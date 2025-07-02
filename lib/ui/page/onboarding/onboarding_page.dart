@@ -131,33 +131,21 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   void _onPrevious() {
     if (_currentPage > 0) {
-      _pageController
-          .animateToPage(
+      _pageController.animateToPage(
         _currentPage - 1,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-      )
-          .then((value) {
-        setState(() {
-          _currentPage--;
-        });
-      });
+      );
     }
   }
 
   void _onNext() {
     if (_currentPage < Constants.services.length) {
-      _pageController
-          .animateToPage(
+      _pageController.animateToPage(
         _currentPage + 1,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-      )
-          .then((value) {
-        setState(() {
-          _currentPage++;
-        });
-      });
+      );
     } else {
       _onToLogin();
     }
