@@ -14,7 +14,6 @@ class FlashcardBack extends StatelessWidget {
     final colorScheme = context.colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: theme.colorScheme.primary, width: 2),
       ),

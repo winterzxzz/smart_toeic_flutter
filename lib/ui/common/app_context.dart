@@ -8,4 +8,5 @@ extension BuildContextExt on BuildContext {
   ColorScheme get colorScheme => theme.colorScheme;
 
   Size get sizze => MediaQuery.sizeOf(this);
+  
 }

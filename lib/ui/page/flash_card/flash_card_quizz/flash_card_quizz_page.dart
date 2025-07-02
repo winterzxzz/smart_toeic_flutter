@@ -205,8 +205,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     decoration: BoxDecoration(
-                      color:
-                          state.isCorrect ? Colors.green[200] : Colors.red[200],
+                      color: state.isCorrect ? Colors.green : Colors.pink,
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(12),
                         bottomRight: Radius.circular(12),
@@ -221,8 +220,9 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                             return LinearProgressIndicator(
                               value: _timerController.value,
                               backgroundColor: Colors.transparent,
-                              color:
-                                  state.isCorrect ? Colors.green : Colors.red,
+                              color: state.isCorrect
+                                  ? colorScheme.primary
+                                  : colorScheme.error,
                               minHeight: 3,
                             );
                           },
@@ -234,7 +234,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: const BoxDecoration(
-                                  color: Colors.white,
                                   shape: BoxShape.circle,
                                 ),
                                 child: FaIcon(
@@ -260,12 +259,10 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               const SizedBox(height: 16),
                               SizedBox(
                                 width: double.infinity,
-                                height: isSmallScreen ? 48 : 50,
+                                height: 50,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: state.isCorrect
-                                        ? colorScheme.primary
-                                        : colorScheme.error,
+                                    backgroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -275,8 +272,10 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                   },
                                   child: Text(
                                     S.current.next_question,
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      color: Colors.white,
+                                    style: textTheme.titleSmall?.copyWith(
+                                      color: state.isCorrect
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                   ),
                                 ),
