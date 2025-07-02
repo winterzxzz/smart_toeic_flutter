@@ -31,7 +31,7 @@ import 'package:toeic_desktop/ui/page/reset_password/reset_password_page.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/mode_test_page.dart';
 import 'package:toeic_desktop/ui/page/test/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
-import 'package:toeic_desktop/ui/page/web3_test/web3_test.dart';
+import 'package:toeic_desktop/ui/page/certificates/certificates_page.dart';
 
 import '../../ui/page/splash/splash_page.dart';
 
@@ -91,7 +91,7 @@ class AppRouter {
   static const String transcriptTestDetail = "/transcript-test-detail";
   static const String historyTest = "/history-test";
   static const String blogDetail = "/blog-detail";
-  static const String web3Test = "/web3-test";
+  static const String certificates = "/certificates";
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -286,9 +286,9 @@ class AppRouter {
       },
     ),
     GoRoute(
-      name: web3Test,
-      path: web3Test,
-      builder: (context, state) => const Web3TestPage(),
+      name: certificates,
+      path: certificates,
+      builder: (context, state) => const CertificatesPage(),
     ),
   ];
 

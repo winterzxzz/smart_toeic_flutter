@@ -79,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "category": MessageLookupByLibrary.simpleMessage("Danh mục"),
         "category_accuracy_chart":
             MessageLookupByLibrary.simpleMessage("Biểu đồ độ chính xác"),
+        "certificates": MessageLookupByLibrary.simpleMessage("Chứng chỉ"),
         "chart_visual_reference":
             MessageLookupByLibrary.simpleMessage("Biểu đồ/Hình ảnh"),
         "charts_visuals":
@@ -359,6 +360,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "score_and_save_results":
             MessageLookupByLibrary.simpleMessage("Chấm điểm & lưu kết quả"),
         "search_blogs": MessageLookupByLibrary.simpleMessage("Tìm blog..."),
+        "search_certificates": MessageLookupByLibrary.simpleMessage("Tìm kiếm"),
+        "search_certificates_hint": MessageLookupByLibrary.simpleMessage(
+            "Tìm kiếm chứng chỉ bằng số CMND"),
         "select_description":
             MessageLookupByLibrary.simpleMessage("Chọn mô tả"),
         "select_meaning": MessageLookupByLibrary.simpleMessage("Chọn nghĩa"),

@@ -77,6 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "category": MessageLookupByLibrary.simpleMessage("Category"),
         "category_accuracy_chart":
             MessageLookupByLibrary.simpleMessage("Category Accuracy Chart"),
+        "certificates": MessageLookupByLibrary.simpleMessage("Certificates"),
         "chart_visual_reference":
             MessageLookupByLibrary.simpleMessage("Chart/Visual reference"),
         "charts_visuals":
@@ -371,6 +372,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "score_and_save_results":
             MessageLookupByLibrary.simpleMessage("Score and save results"),
         "search_blogs": MessageLookupByLibrary.simpleMessage("Search Blogs..."),
+        "search_certificates": MessageLookupByLibrary.simpleMessage("Search"),
+        "search_certificates_hint": MessageLookupByLibrary.simpleMessage(
+            "Search certificates by Nation ID Card"),
         "select_description":
             MessageLookupByLibrary.simpleMessage("Select Description"),
         "select_meaning":

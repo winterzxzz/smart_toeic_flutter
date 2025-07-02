@@ -27,10 +27,12 @@ Future<void> init() async {
         () => TranscriptTestRepositoryImpl(injector()))
     ..registerLazySingleton<BlogRepository>(
         () => BlogRepositoryImpl(injector()))
+
+    // Services
     ..registerLazySingleton<SpeechService>(() => SpeechService())
     ..registerLazySingleton<NotiService>(() => NotiService())
-    ..registerLazySingleton<WidgetService>(() => WidgetService());
-
+    ..registerLazySingleton<WidgetService>(() => WidgetService())
+    ..registerLazySingleton<Web3Service>(() => Web3Service());
   // Cubit dependencies (short-lived objects)
   injector
     ..registerFactory<SplashCubit>(() => SplashCubit(injector()))
@@ -63,7 +65,10 @@ Future<void> init() async {
             ))
     ..registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(injector()))
     ..registerFactory<BlogCubit>(() => BlogCubit(injector()))
-    ..registerFactory<HistoryTestCubit>(() => HistoryTestCubit(injector()));
+    ..registerFactory<HistoryTestCubit>(() => HistoryTestCubit(injector()))
+    ..registerFactory<CertificatesCubit>(() => CertificatesCubit(
+          web3Service: injector(),
+        ));
 
   // Singleton Cubits (long-lived objects)
   injector

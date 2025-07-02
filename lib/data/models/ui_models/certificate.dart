@@ -1,14 +1,14 @@
+import 'package:flutter/material.dart';
 
 class Certificate {
   final int tokenId;
   final String name;
   final int readingScore;
   final int listeningScore;
-  final int issueDate;
-  final int expirationDate;
-  final String nationalID;
+  final DateTime issueDate;
+  final DateTime expirationDate;
+  final String nationalId;
   final String cidCertificate;
-  final String owner;
   final bool isValid;
 
   Certificate({
@@ -18,11 +18,35 @@ class Certificate {
     required this.listeningScore,
     required this.issueDate,
     required this.expirationDate,
-    required this.nationalID,
+    required this.nationalId,
     required this.cidCertificate,
-    required this.owner,
     required this.isValid,
   });
+
+  int get totalScore => readingScore + listeningScore;
+
+  String get scoreLevel {
+    if (totalScore >= 900) return 'Gold';
+    if (totalScore >= 700) return 'Blue';
+    if (totalScore >= 500) return 'Green';
+    if (totalScore >= 220) return 'Brown';
+    return 'Orange';
+  }
+
+  Color get levelColor {
+    switch (scoreLevel) {
+      case 'Gold':
+        return Colors.amber;
+      case 'Blue':
+        return Colors.blue;
+      case 'Green':
+        return Colors.green;
+      case 'Brown':
+        return Colors.brown;
+      default:
+        return Colors.orange;
+    }
+  }
 
   // copy with
   Certificate copyWith({
@@ -30,11 +54,10 @@ class Certificate {
     String? name,
     int? readingScore,
     int? listeningScore,
-    int? issueDate,
-    int? expirationDate,
-    String? nationalID,
+    DateTime? issueDate,
+    DateTime? expirationDate,
+    String? nationalId,
     String? cidCertificate,
-    String? owner,
     bool? isValid,
   }) {
     return Certificate(
@@ -44,11 +67,9 @@ class Certificate {
       listeningScore: listeningScore ?? this.listeningScore,
       issueDate: issueDate ?? this.issueDate,
       expirationDate: expirationDate ?? this.expirationDate,
-      nationalID: nationalID ?? this.nationalID,
+      nationalId: nationalId ?? this.nationalId,
       cidCertificate: cidCertificate ?? this.cidCertificate,
-      owner: owner ?? this.owner,
       isValid: isValid ?? this.isValid,
     );
   }
-  
 }

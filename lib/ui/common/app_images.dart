@@ -95,6 +95,7 @@ class AppImages {
   static const icTestFill = 'assets/vectors/ic_test_fill.svg';
   static const icFlashCardFill = 'assets/vectors/ic_flashcard_fill.svg';
   static const icBlogFill = 'assets/vectors/ic_blog_fill.svg';
+  static const icCertificate = 'assets/vectors/ic_certificate.svg';
 
   // animations
   static const splashAnimation = 'assets/animations/splash.json';

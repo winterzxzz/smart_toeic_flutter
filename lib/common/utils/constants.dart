@@ -193,15 +193,15 @@ class Constants {
               GoRouter.of(context).push(AppRouter.upgradeAccount),
         ),
         HomeItemTaskModel(
+          title: S.current.certificates,
+          image: AppImages.icCertificate,
+          onNavigate: (context) =>
+              GoRouter.of(context).push(AppRouter.certificates),
+        ),
+        HomeItemTaskModel(
           title: S.current.settings,
           image: AppImages.icSetting,
           onNavigate: (context) => GoRouter.of(context).push(AppRouter.setting),
-        ),
-        HomeItemTaskModel(
-          title: 'Web3 Test',
-          image: AppImages.icSetting,
-          onNavigate: (context) =>
-              GoRouter.of(context).push(AppRouter.web3Test),
         ),
       ];
 

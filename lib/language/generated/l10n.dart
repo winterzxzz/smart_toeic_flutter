@@ -3069,6 +3069,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Certificates`
+  String get certificates {
+    return Intl.message(
+      'Certificates',
+      name: 'certificates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search certificates by Nation ID Card`
+  String get search_certificates_hint {
+    return Intl.message(
+      'Search certificates by Nation ID Card',
+      name: 'search_certificates_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search_certificates {
+    return Intl.message(
+      'Search',
+      name: 'search_certificates',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
