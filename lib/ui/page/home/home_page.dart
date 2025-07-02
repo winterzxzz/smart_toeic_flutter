@@ -87,8 +87,7 @@ class Page extends StatelessWidget {
                   options: CarouselOptions(
                     autoPlay: true,
                     autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
+                    autoPlayAnimationDuration: const Duration(seconds: 1),
                     autoPlayCurve: Curves.fastOutSlowIn,
                     viewportFraction: 1,
                   ),
