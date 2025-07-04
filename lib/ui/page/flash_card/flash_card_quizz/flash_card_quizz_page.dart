@@ -6,6 +6,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
@@ -65,7 +66,9 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     final navigator = AppNavigator(context: context);
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 600;
@@ -202,8 +205,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     decoration: BoxDecoration(
-                      color:
-                          state.isCorrect ? Colors.green[200] : Colors.red[200],
+                      color: state.isCorrect ? Colors.green : Colors.pink,
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(12),
                         bottomRight: Radius.circular(12),
@@ -218,8 +220,9 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                             return LinearProgressIndicator(
                               value: _timerController.value,
                               backgroundColor: Colors.transparent,
-                              color:
-                                  state.isCorrect ? Colors.green : Colors.red,
+                              color: state.isCorrect
+                                  ? colorScheme.primary
+                                  : colorScheme.error,
                               minHeight: 3,
                             );
                           },
@@ -231,7 +234,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: const BoxDecoration(
-                                  color: Colors.white,
                                   shape: BoxShape.circle,
                                 ),
                                 child: FaIcon(
@@ -246,29 +248,21 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                 state.isCorrect
                                     ? S.current.great
                                     : S.current.try_harder,
-                                style: TextStyle(
-                                  fontSize: isSmallScreen ? 18 : 20,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: textTheme.titleMedium,
                               ),
                               Text(
                                 state.isCorrect
                                     ? S.current.you_answered_correctly
                                     : S.current.you_answered_incorrectly,
-                                style: TextStyle(
-                                  fontSize: isSmallScreen ? 14 : 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: textTheme.bodyMedium,
                               ),
                               const SizedBox(height: 16),
                               SizedBox(
                                 width: double.infinity,
-                                height: isSmallScreen ? 48 : 50,
+                                height: 50,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: state.isCorrect
-                                        ? Colors.green
-                                        : Colors.red,
+                                    backgroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -278,8 +272,10 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                   },
                                   child: Text(
                                     S.current.next_question,
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: textTheme.titleSmall?.copyWith(
+                                      color: state.isCorrect
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                   ),
                                 ),

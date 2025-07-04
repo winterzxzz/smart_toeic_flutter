@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class LoadingCircle extends StatelessWidget {
   const LoadingCircle({
@@ -14,14 +15,14 @@ class LoadingCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return Center(
       child: SizedBox(
         width: size,
         height: size,
         child: Center(
           child: CircularProgressIndicator(
-            color: color ?? theme.colorScheme.primary,
+            color: color ?? colorScheme.primary,
             strokeWidth: strokeWidth,
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 class UpgradeAccountCard extends StatelessWidget {
@@ -25,19 +26,20 @@ class UpgradeAccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final Color backgroundColor = theme.brightness == Brightness.light
+    final colorScheme = context.colorScheme;
+    final textTheme = context.textTheme;
+    final Color backgroundColor = colorScheme.brightness == Brightness.light
         ? AppColors.backgroundLight
         : AppColors.backgroundDarkSub;
-    final Color textColor = theme.brightness == Brightness.light
+    final Color textColor = colorScheme.brightness == Brightness.light
         ? AppColors.textBlack
         : AppColors.textWhite;
-    final inactiveBorderColor = theme.brightness == Brightness.light
+    final inactiveBorderColor = colorScheme.brightness == Brightness.light
         ? Colors.grey[300]!
         : Colors.grey[600]!;
-    final activeBorderColor = theme.brightness == Brightness.light
-        ? theme.colorScheme.primary
-        : theme.colorScheme.primary;
+    final activeBorderColor = colorScheme.brightness == Brightness.light
+        ? colorScheme.primary
+        : colorScheme.primary;
     final Color borderColor =
         isCurrentPlan ? activeBorderColor : inactiveBorderColor;
     BoxBorder border = isCurrentPlan
@@ -114,7 +116,7 @@ class UpgradeAccountCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               features[index],
-                              style: theme.textTheme.bodyMedium!.copyWith(
+                              style: textTheme.bodyMedium!.copyWith(
                                 color: textColor,
                               ),
                             ),
@@ -163,12 +165,12 @@ class UpgradeAccountCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
+                color: colorScheme.primary,
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 S.current.recommend,
-                style: theme.textTheme.bodyMedium!.copyWith(
+                style: textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w700,
                   fontSize: 10,
                   color: AppColors.textWhite,

@@ -4,6 +4,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/common/widgets/auth_text_field.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
@@ -64,6 +65,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
     final navigator = RegisterNavigator(context: context);
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
@@ -86,12 +88,14 @@ class _PageState extends State<Page> {
                   const SizedBox(height: 16),
                   Text(
                     S.current.login_title,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     S.current.register_description,
-                    style: const TextStyle(color: AppColors.textGray),
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textGray,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
@@ -151,7 +155,7 @@ class _PageState extends State<Page> {
                             children: [
                               TextSpan(
                                 text: S.current.login_button,
-                                style: const TextStyle(
+                                style: textTheme.bodyMedium?.copyWith(
                                   color: AppColors.textBlue,
                                   decoration: TextDecoration.underline,
                                   decorationColor: AppColors.textBlue,
@@ -167,7 +171,7 @@ class _PageState extends State<Page> {
                             },
                             child: Text(
                               S.current.forgot_password,
-                              style: const TextStyle(
+                              style: textTheme.bodyMedium?.copyWith(
                                 color: AppColors.textBlue,
                                 decoration: TextDecoration.underline,
                                 decorationColor: AppColors.textBlue,

@@ -8,6 +8,7 @@ import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/language.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
@@ -32,13 +33,13 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
           S.current.settings,
-          style: theme.textTheme.titleMedium,
+          style: textTheme.titleMedium,
         ),
         leading: const LeadingBackButton(),
       ),
@@ -50,7 +51,7 @@ class _SettingPageState extends State<SettingPage> {
               padding: AppStyle.edgeInsetsA12,
               child: Text(
                 S.current.display_theme,
-                style: theme.textTheme.bodyMedium,
+                style: textTheme.bodyMedium,
               ),
             ),
             BlocSelector<AppSettingCubit, AppSettingState, ThemeMode>(
@@ -65,7 +66,7 @@ class _SettingPageState extends State<SettingPage> {
                       RadioListTile<int>(
                         title: Text(
                           S.current.follow_system,
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.system.index,
@@ -79,7 +80,7 @@ class _SettingPageState extends State<SettingPage> {
                       RadioListTile<int>(
                         title: Text(
                           S.current.light_mode,
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.light.index,
@@ -93,7 +94,7 @@ class _SettingPageState extends State<SettingPage> {
                       RadioListTile<int>(
                         title: Text(
                           S.current.dark_mode,
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                         visualDensity: VisualDensity.compact,
                         value: ThemeMode.dark.index,
@@ -113,7 +114,7 @@ class _SettingPageState extends State<SettingPage> {
               padding: AppStyle.edgeInsetsA12,
               child: Text(
                 S.current.language,
-                style: theme.textTheme.bodyMedium,
+                style: textTheme.bodyMedium,
               ),
             ),
             BlocSelector<AppSettingCubit, AppSettingState, Language>(
@@ -127,7 +128,7 @@ class _SettingPageState extends State<SettingPage> {
                       RadioListTile<Language>(
                         title: Text(
                           S.current.english,
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                         value: Language.english,
                         groupValue: language,
@@ -138,7 +139,7 @@ class _SettingPageState extends State<SettingPage> {
                       RadioListTile<Language>(
                         title: Text(
                           S.current.vietnamese,
-                          style: theme.textTheme.bodyMedium,
+                          style: textTheme.bodyMedium,
                         ),
                         value: Language.vietnamese,
                         groupValue: language,
@@ -155,7 +156,7 @@ class _SettingPageState extends State<SettingPage> {
               padding: AppStyle.edgeInsetsA12,
               child: Text(
                 S.current.theme_color,
-                style: theme.textTheme.bodyMedium,
+                style: textTheme.bodyMedium,
               ),
             ),
             BlocBuilder<AppSettingCubit, AppSettingState>(
@@ -225,7 +226,7 @@ class _SettingPageState extends State<SettingPage> {
               padding: AppStyle.edgeInsetsA12,
               child: Text(
                 S.current.reminder_word_after,
-                style: theme.textTheme.bodyMedium,
+                style: textTheme.bodyMedium,
               ),
             ),
             BlocBuilder<AppSettingCubit, AppSettingState>(
@@ -270,7 +271,7 @@ class _SettingPageState extends State<SettingPage> {
               padding: AppStyle.edgeInsetsA12,
               child: Text(
                 S.current.daily_reminder,
-                style: theme.textTheme.bodyMedium,
+                style: textTheme.bodyMedium,
               ),
             ),
             BlocBuilder<AppSettingCubit, AppSettingState>(
@@ -382,7 +383,7 @@ class _SettingPageState extends State<SettingPage> {
 
   void _showReminderWordAfterTimePicker(
       BuildContext context, String selectedTime) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     showModalBottomSheet(
       context: context,
       builder: (ctx) {
@@ -404,7 +405,7 @@ class _SettingPageState extends State<SettingPage> {
                           selected: isSelected,
                           title: Text(
                             Constants.reminderWordAfterTimes[index],
-                            style: theme.textTheme.bodyMedium,
+                            style: textTheme.bodyMedium,
                           ),
                           trailing: isSelected ? const Icon(Icons.check) : null,
                           onTap: () {

@@ -2,6 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class CustomDropdownExample<T> extends StatefulWidget {
   const CustomDropdownExample({
@@ -31,20 +32,21 @@ class _CustomDropdownExampleState<T> extends State<CustomDropdownExample<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = theme.brightness == Brightness.dark
+    final colorScheme = context.colorScheme;
+    final textTheme = context.textTheme;
+    final color = colorScheme.brightness == Brightness.dark
         ? AppColors.appBarDark
         : AppColors.appBarLight;
     return CustomDropdown<T>(
       items: widget.data,
       hintText: widget.dataString.first,
       decoration: CustomDropdownDecoration(
-        closedBorder: Border.all(color: theme.colorScheme.primary),
+        closedBorder: Border.all(color: colorScheme.primary),
         closedFillColor: color,
         expandedFillColor: color,
-        headerStyle: theme.textTheme.bodySmall?.copyWith(height: 0.1),
-        hintStyle: theme.textTheme.bodySmall,
-        listItemStyle: theme.textTheme.bodySmall,
+        headerStyle: textTheme.bodySmall?.copyWith(height: 0.1),
+        hintStyle: textTheme.bodySmall,
+        listItemStyle: textTheme.bodySmall,
         closedSuffixIcon: const FaIcon(
           FontAwesomeIcons.chevronDown,
           size: 10,

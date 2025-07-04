@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/question.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_state.dart';
 
@@ -30,13 +31,14 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           widget.title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: textTheme.titleMedium,
         ),
         const SizedBox(
           height: 8,
@@ -62,10 +64,9 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
                     previous.questionsResult != current.questionsResult ||
                     previous.testShow != current.testShow,
                 builder: (context, state) {
-                  Color color =
-                      theme.colorScheme.primary.withValues(alpha: 0.2);
+                  Color color = colorScheme.primary.withValues(alpha: 0.2);
                   if (state.testShow == TestShow.test) {
-                    color = isAnswered ? theme.colorScheme.primary : color;
+                    color = isAnswered ? colorScheme.primary : color;
                   } else {
                     for (var questionResult in state.questionsResult) {
                       if (questionResult.questionNum ==
@@ -101,7 +102,7 @@ class _PracticeTestPartState extends State<PracticeTestPart> {
                         ),
                         Text(
                           widget.questions[index].id.toString(),
-                          style: theme.textTheme.bodySmall,
+                          style: textTheme.bodySmall,
                         ),
                       ],
                     ),

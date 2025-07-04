@@ -8,6 +8,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_c
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -48,7 +49,7 @@ class Page extends StatefulWidget {
 class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
       body: BlocBuilder<FlashCardDetailLearningCubit,
           FlashCardDetailLearningState>(
@@ -65,7 +66,7 @@ class _PageState extends State<Page> {
                   builder: (context, flashCards) {
                     return Text(
                       '${widget.setFlashCardLearning.setFlashcardId.title} (${flashCards.length} ${S.current.words})',
-                      style: theme.textTheme.titleMedium,
+                      style: textTheme.titleMedium,
                     );
                   },
                 ),
@@ -122,7 +123,7 @@ class _PageState extends State<Page> {
 
   void _showStatusInfo() {
     final isMobile = MediaQuery.of(context).size.width < 600;
-
+    final textTheme = context.textTheme;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -131,10 +132,7 @@ class _PageState extends State<Page> {
           children: [
             Text(
               'Status Explanation',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: isMobile ? 18 : 20,
-              ),
+              style: textTheme.titleMedium,
             ),
             IconButton(
               onPressed: () => GoRouter.of(context).pop(),
@@ -149,18 +147,12 @@ class _PageState extends State<Page> {
             children: [
               Text(
                 'Mức độ ghi nhớ (Decay Score)',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: isMobile ? 16 : 18,
-                ),
+                style: textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
               Text(
                 'Biểu thị khả năng ghi nhớ tại thời điểm hiện tại:',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: isMobile ? 14 : 16,
-                ),
+                style: textTheme.bodyMedium,
               ),
               const SizedBox(height: 8),
               _buildStatusRow(
@@ -184,18 +176,12 @@ class _PageState extends State<Page> {
               const SizedBox(height: 16),
               Text(
                 'Mức độ ghi nhớ (Retention Score)',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: isMobile ? 16 : 18,
-                ),
+                style: textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
               Text(
                 'Biểu thị khả năng ghi nhớ tại thời điểm hiện tại:',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: isMobile ? 14 : 16,
-                ),
+                style: textTheme.bodyMedium,
               ),
               const SizedBox(height: 8),
               _buildStatusRow(
@@ -219,6 +205,7 @@ class _PageState extends State<Page> {
 
   Widget _buildStatusRow(
       String range, String description, Color color, bool isMobile) {
+    final textTheme = context.textTheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -229,7 +216,7 @@ class _PageState extends State<Page> {
           Expanded(
             child: Text(
               '($range) $description',
-              style: TextStyle(fontSize: isMobile ? 14 : 16),
+              style: textTheme.bodyMedium,
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_style.dart';
 
 class SettingsCard extends StatelessWidget {
@@ -7,8 +8,9 @@ class SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
     return Material(
-      color: Theme.of(context).brightness == Brightness.dark
+      color: colorScheme.brightness == Brightness.dark
           ? Colors.grey.withValues(alpha: 0.2)
           : Colors.white70,
       shape: RoundedRectangleBorder(

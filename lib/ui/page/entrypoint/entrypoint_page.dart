@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/keep_alive_page.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
@@ -102,7 +103,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return OrientationBuilder(
       builder: (context, orientation) {
         return BlocBuilder<EntrypointCubit, EntrypointState>(
@@ -167,7 +168,8 @@ class _PageState extends State<Page> {
                   final bottomTabs = Constants.bottomTabs;
                   return BottomNavigationBar(
                     useLegacyColorScheme: true,
-                    selectedItemColor: theme.colorScheme.primary,
+                    backgroundColor: colorScheme.surface,
+                    selectedItemColor: colorScheme.primary,
                     unselectedItemColor: AppColors.gray3,
                     selectedLabelStyle: const TextStyle(
                       fontSize: 12,
@@ -194,7 +196,7 @@ class _PageState extends State<Page> {
                           colorFilter:
                               state.currentIndex == bottomTabs.indexOf(tab)
                                   ? ColorFilter.mode(
-                                      theme.colorScheme.primary,
+                                      colorScheme.primary,
                                       BlendMode.srcIn,
                                     )
                                   : const ColorFilter.mode(

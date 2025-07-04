@@ -9,6 +9,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';
@@ -67,7 +68,8 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Scaffold(
       appBar: AppBar(
         leading: const LeadingBackButton(),
@@ -80,7 +82,7 @@ class _PageState extends State<Page> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(fontSize: 16),
+                  style: textTheme.titleMedium,
                 ),
                 BlocSelector<FlashCardLearnFlipCubit, FlashCardLearnFlipState,
                     (int, int)>(
@@ -89,7 +91,7 @@ class _PageState extends State<Page> {
                   builder: (context, counts) {
                     return Text(
                       '${counts.$1}/${counts.$2} ${S.current.words}',
-                      style: theme.textTheme.bodySmall?.copyWith(
+                      style: textTheme.bodySmall?.copyWith(
                         color: AppColors.textGray,
                       ),
                     );
@@ -109,7 +111,7 @@ class _PageState extends State<Page> {
               return LinearProgressIndicator(
                 minHeight: 5,
                 value: (state.currentIndex + 1) / state.flashCards.length,
-                backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                backgroundColor: colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(4),
               );
             },

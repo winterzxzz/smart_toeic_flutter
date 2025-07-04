@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/test/result_test/widgets/result_action_buttons.dart';
 import 'package:toeic_desktop/ui/page/test/result_test/widgets/result_header_card.dart';
@@ -12,14 +13,14 @@ class ResultTestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
       appBar: AppBar(
         leading: const LeadingBackButton(isClose: true),
         elevation: 0,
         title: Text(
           resultModel.testName,
-          style: theme.textTheme.titleLarge,
+          style: textTheme.titleLarge,
         ),
         centerTitle: true,
       ),

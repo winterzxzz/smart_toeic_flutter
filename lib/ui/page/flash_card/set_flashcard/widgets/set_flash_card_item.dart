@@ -7,6 +7,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 import 'package:toeic_desktop/ui/page/flash_card/set_flashcard/set_flash_card_cubit.dart';
@@ -32,7 +33,9 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     final tags = [
       TagWidget(
           icon: FontAwesomeIcons.bookBookmark,
@@ -71,7 +74,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                   Expanded(
                     child: Text(
                       widget.flashcard.title,
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
@@ -112,7 +115,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                             const SizedBox(width: 8),
                             Text(
                               S.current.edit,
-                              style: theme.textTheme.bodyMedium,
+                              style: textTheme.bodyMedium,
                             ),
                           ],
                         ),
@@ -124,13 +127,13 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
                             FaIcon(
                               FontAwesomeIcons.trash,
                               size: 14,
-                              color: theme.colorScheme.error,
+                              color: colorScheme.error,
                             ),
                             const SizedBox(width: 8),
                             Text(
                               S.current.delete,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.error,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colorScheme.error,
                               ),
                             ),
                           ],
@@ -142,7 +145,7 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
               ),
               Text(
                 widget.flashcard.description,
-                style: theme.textTheme.bodyMedium,
+                style: textTheme.bodyMedium,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

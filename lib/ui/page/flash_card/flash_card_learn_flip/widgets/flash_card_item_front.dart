@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class FlashcardFront extends StatelessWidget {
   final String word;
@@ -8,10 +9,11 @@ class FlashcardFront extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
+        color: colorScheme.primary,
         borderRadius: BorderRadius.circular(16),
       ),
       alignment: Alignment.center,
@@ -21,15 +23,15 @@ class FlashcardFront extends StatelessWidget {
         children: [
           Text(
             word,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: theme.colorScheme.onPrimary,
+            style: textTheme.headlineMedium?.copyWith(
+              color: colorScheme.onPrimary,
             ),
             textAlign: TextAlign.center,
           ),
           Text(
             S.current.click_to_reveal,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onPrimary,
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onPrimary,
             ),
           ),
         ],

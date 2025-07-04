@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 class ResultActionButtons extends StatelessWidget {
@@ -14,7 +15,8 @@ class ResultActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -50,15 +52,15 @@ class ResultActionButtons extends StatelessWidget {
           height: 50,
           child: OutlinedButton.icon(
             style: OutlinedButton.styleFrom(
-              side: BorderSide(color: theme.colorScheme.onSurface, width: 1.5),
+              side: BorderSide(color: colorScheme.onSurface, width: 1.5),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16)),
             ),
             icon: FaIcon(FontAwesomeIcons.arrowRotateLeft,
-                size: 16, color: theme.colorScheme.onSurface),
+                size: 16, color: colorScheme.onSurface),
             label: Text(
               S.current.back_to_test_page,
-              style: theme.textTheme.bodyMedium,
+              style: textTheme.bodyMedium,
             ),
             onPressed: () {
               GoRouter.of(context).pop();

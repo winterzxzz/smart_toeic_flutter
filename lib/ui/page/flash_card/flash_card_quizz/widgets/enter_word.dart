@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
@@ -37,7 +37,8 @@ class _EnterWordState extends State<EnterWord> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       key: widget.key,
@@ -48,16 +49,16 @@ class _EnterWordState extends State<EnterWord> {
             children: [
               TextSpan(
                 text: S.current.enter_vietnamese_word,
-                style: theme.textTheme.bodyLarge,
+                style: textTheme.bodyLarge,
               ),
               TextSpan(
                 text: " '${widget.fcLearning.flashcardId!.word}'",
-                style: theme.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold, color: AppColors.error),
+                style: textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold, color: colorScheme.error),
               ),
               TextSpan(
                 text: ' ?',
-                style: theme.textTheme.bodyLarge,
+                style: textTheme.bodyLarge,
               ),
             ],
           ),
@@ -71,11 +72,11 @@ class _EnterWordState extends State<EnterWord> {
             hintText: S.current.enter_vietnamese_word,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: colorScheme.outline),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: theme.colorScheme.primary),
+              borderSide: BorderSide(color: colorScheme.primary),
             ),
           ),
         ),
@@ -94,7 +95,8 @@ class _EnterWordState extends State<EnterWord> {
                   _cubit.answer(
                       widget.fcLearning.flashcardId!.word,
                       _controller.text.toLowerCase() ==
-                          (widget.fcLearning.flashcardId!.translation).toLowerCase());
+                          (widget.fcLearning.flashcardId!.translation)
+                              .toLowerCase());
                 }
               });
             },
@@ -109,7 +111,7 @@ class _EnterWordState extends State<EnterWord> {
                 const SizedBox(height: 8),
                 Text(
                   '${S.current.answer}: ${widget.fcLearning.flashcardId!.translation}',
-                  style: theme.textTheme.bodyLarge,
+                  style: textTheme.bodyLarge,
                 ),
               ],
             );

@@ -1,6 +1,7 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class TestAudioSection extends StatefulWidget {
   const TestAudioSection({
@@ -99,13 +100,14 @@ class _TestAudioSectionState extends State<TestAudioSection> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Container(
       height: 44,
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
+        color: colorScheme.primary,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Stack(
@@ -137,7 +139,7 @@ class _TestAudioSectionState extends State<TestAudioSection> {
                   children: [
                     Text(
                       formatDuration(_position ?? Duration.zero),
-                      style: theme.textTheme.bodyMedium
+                      style: textTheme.bodyMedium
                           ?.copyWith(fontSize: 10, color: Colors.white),
                     ),
                     Expanded(
@@ -166,7 +168,7 @@ class _TestAudioSectionState extends State<TestAudioSection> {
                     ),
                     Text(
                       formatDuration(_duration ?? Duration.zero),
-                      style: theme.textTheme.bodyMedium
+                      style: textTheme.bodyMedium
                           ?.copyWith(fontSize: 10, color: Colors.white),
                     ),
                   ],

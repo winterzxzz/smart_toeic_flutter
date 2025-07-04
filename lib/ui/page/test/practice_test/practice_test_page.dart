@@ -11,6 +11,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
@@ -277,7 +278,9 @@ class _PartSelectorHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
+    final theme = context.theme;
     return Container(
       color: theme.appBarTheme.backgroundColor,
       height: 50,
@@ -296,8 +299,8 @@ class _PartSelectorHeaderDelegate extends SliverPersistentHeaderDelegate {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
                       color: parts[index].numValue == focusPart.numValue
-                          ? theme.colorScheme.primary
-                          : theme.brightness == Brightness.dark
+                          ? colorScheme.primary
+                          : colorScheme.brightness == Brightness.dark
                               ? AppColors.backgroundDarkSub
                               : AppColors.backgroundLightSub,
                       borderRadius: BorderRadius.circular(8),
@@ -305,7 +308,7 @@ class _PartSelectorHeaderDelegate extends SliverPersistentHeaderDelegate {
                     alignment: Alignment.center,
                     child: Text(
                       parts[index].name,
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         color: parts[index].numValue == focusPart.numValue
                             ? AppColors.textWhite
                             : null,

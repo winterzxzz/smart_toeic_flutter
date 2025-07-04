@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
 
@@ -25,7 +25,8 @@ class _QuestionListState extends State<QuestionList> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return SafeArea(
       child: Column(
         children: [
@@ -37,7 +38,7 @@ class _QuestionListState extends State<QuestionList> {
               children: [
                 Text(
                   S.current.question_list,
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  style: textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -62,8 +63,8 @@ class _QuestionListState extends State<QuestionList> {
                       key: ValueKey('question-${index + 1}'),
                       leading: CircleAvatar(
                         backgroundColor: isCurrentQuestion
-                            ? AppColors.primary
-                            : theme.dividerColor,
+                            ? colorScheme.primary
+                            : colorScheme.onSurface.withValues(alpha: .5),
                         child: Text(
                           '${index + 1}',
                           style: TextStyle(

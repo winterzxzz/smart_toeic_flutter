@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class TargetScoreWidget extends StatelessWidget {
   const TargetScoreWidget({
@@ -14,7 +15,8 @@ class TargetScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,19 +26,19 @@ class TargetScoreWidget extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: theme.textTheme.titleSmall,
+                style: textTheme.titleSmall,
               ),
             ),
             Text.rich(
               TextSpan(
                 text: '$currentScore',
-                style: theme.textTheme.bodyLarge?.copyWith(
+                style: textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
                 children: [
                   TextSpan(
                     text: '/$targetScore',
-                    style: theme.textTheme.bodySmall,
+                    style: textTheme.bodySmall,
                   )
                 ],
               ),
@@ -46,8 +48,8 @@ class TargetScoreWidget extends StatelessWidget {
         const SizedBox(height: 4),
         LinearProgressIndicator(
           borderRadius: BorderRadius.circular(8),
-          backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.3),
-          color: theme.colorScheme.primary,
+          backgroundColor: colorScheme.primary.withValues(alpha: 0.3),
+          color: colorScheme.primary,
           minHeight: 5,
           value: (currentScore! >= targetScore!)
               ? 1

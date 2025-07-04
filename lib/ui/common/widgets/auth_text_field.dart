@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class AuthTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -38,6 +39,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
     return SizedBox(
       height: widget.height,
       child: TextFormField(
@@ -67,7 +69,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               width: 2,
-              color: Theme.of(context).brightness == Brightness.light
+              color: colorScheme.brightness == Brightness.light
                   ? AppColors.primary
                   : AppColors.textWhite,
             ),

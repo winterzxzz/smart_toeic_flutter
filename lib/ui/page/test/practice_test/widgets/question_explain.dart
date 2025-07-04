@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_explain.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class ExplanationUI extends StatelessWidget {
   const ExplanationUI({super.key, required this.questionExplain});
@@ -10,7 +11,7 @@ class ExplanationUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -18,7 +19,7 @@ class ExplanationUI extends StatelessWidget {
         children: [
           Text(
             S.current.explanation,
-            style: theme.textTheme.titleMedium?.copyWith(
+            style: textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -56,8 +57,9 @@ class ExplanationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = isCorrect ? theme.colorScheme.primary : AppColors.error;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
+    final color = isCorrect ? colorScheme.primary : AppColors.error;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 2),
@@ -72,7 +74,7 @@ class ExplanationCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.textWhite,
               ),
@@ -80,7 +82,7 @@ class ExplanationCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               description,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: textTheme.bodyMedium?.copyWith(
                 color: AppColors.textWhite,
               ),
             ),

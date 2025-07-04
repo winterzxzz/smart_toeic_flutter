@@ -9,6 +9,7 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -92,6 +93,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
     return Column(
       children: [
         Expanded(
@@ -140,7 +142,7 @@ class _FlashCardDetailFormState extends State<FlashCardDetailForm> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
+            color: theme.cardColor,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
@@ -271,7 +273,8 @@ class FormItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -282,7 +285,7 @@ class FormItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.end,
@@ -307,7 +310,7 @@ class FormItem extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: theme.colorScheme.primary),
+                borderSide: BorderSide(color: colorScheme.primary),
               ),
             ),
           ),

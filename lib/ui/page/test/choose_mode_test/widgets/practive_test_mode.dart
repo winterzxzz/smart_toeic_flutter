@@ -6,6 +6,7 @@ import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/custom_drop_down.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/protip_widget.dart';
@@ -31,7 +32,7 @@ class _PracticeModeState extends State<PracticeMode> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;  
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,7 +43,7 @@ class _PracticeModeState extends State<PracticeMode> {
         const SizedBox(height: 16),
         Text(
           S.current.select_part_to_practice,
-          style: theme.textTheme.bodyMedium,
+          style: textTheme.bodyMedium,
         ),
         ...Constants.parts.map((part) => QuestionPart(
             part: part,
@@ -68,7 +69,7 @@ class _PracticeModeState extends State<PracticeMode> {
         const SizedBox(height: 8),
         Text(
           '${S.current.limit_time} (${S.current.limit_time_hint})',
-          style: theme.textTheme.bodySmall?.copyWith(
+          style: textTheme.bodySmall?.copyWith(
             color: AppColors.textGray,
             fontSize: 10,
           ),

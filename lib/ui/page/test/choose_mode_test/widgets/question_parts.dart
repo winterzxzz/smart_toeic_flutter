@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/enums/part.dart';
 import 'package:toeic_desktop/data/models/ui_models/part_model.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class QuestionPart extends StatefulWidget {
   final PartModel part;
@@ -21,7 +22,8 @@ class QuestionPart extends StatefulWidget {
 class _QuestionPartState extends State<QuestionPart> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -30,9 +32,9 @@ class _QuestionPartState extends State<QuestionPart> {
             Transform.scale(
               scale: 1.1,
               child: Checkbox(
-                activeColor: theme.colorScheme.primary,
+                activeColor: colorScheme.primary,
                 shape: CircleBorder(
-                  side: BorderSide(color: theme.colorScheme.primary, width: 1),
+                  side: BorderSide(color: colorScheme.primary, width: 1),
                 ),
                 value: widget.isSelected,
                 onChanged: (value) {
@@ -42,7 +44,7 @@ class _QuestionPartState extends State<QuestionPart> {
             ),
             Text(
               widget.part.partEnum.name,
-              style: const TextStyle(fontSize: 14),
+              style: textTheme.bodyMedium,
             ),
           ],
         ),
@@ -54,14 +56,14 @@ class _QuestionPartState extends State<QuestionPart> {
             (index) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                color: colorScheme.primary.withValues(alpha: 0.1),
                 border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.1)),
+                    color: colorScheme.primary.withValues(alpha: 0.1)),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
                 widget.part.tags[index],
-                style: const TextStyle(fontSize: 10),
+                style: textTheme.bodySmall,
               ),
             ),
           ),

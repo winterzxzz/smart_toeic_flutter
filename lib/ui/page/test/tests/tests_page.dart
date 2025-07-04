@@ -4,6 +4,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/custom_drop_down.dart';
@@ -41,7 +42,7 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
       body: BlocBuilder<TestsCubit, TestsState>(
         buildWhen: (previous, current) {
@@ -56,7 +57,7 @@ class _PageState extends State<Page> {
                 toolbarHeight: 55,
                 title: Text(
                   S.current.tests,
-                  style: theme.textTheme.titleMedium,
+                  style: textTheme.titleMedium,
                 ),
                 actions: [
                   Container(

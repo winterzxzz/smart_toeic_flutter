@@ -7,7 +7,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
@@ -47,7 +47,9 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
+    final theme = context.theme;
+    final textTheme = theme.textTheme;
     return BlocListener<BlogCubit, BlogState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.failure) {
@@ -60,7 +62,7 @@ class _PageState extends State<Page> {
             SliverAppBar(
               title: Text(
                 S.current.blogs_title,
-                style: theme.textTheme.titleMedium,
+                style: textTheme.titleMedium,
               ),
               floating: true,
             ),
@@ -69,7 +71,6 @@ class _PageState extends State<Page> {
                 height: 50,
                 margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                 child: TextField(
-                  inputFormatters: [CapitalizeFirstLetterFormatter()],
                   onChanged: (value) {
                     _timer?.cancel();
                     _timer = Timer(const Duration(milliseconds: 500), () {
@@ -85,7 +86,9 @@ class _PageState extends State<Page> {
                     filled: true,
                     isDense: true,
                     fillColor: theme.cardColor,
-                    hintStyle: theme.textTheme.bodyMedium,
+                    hintStyle: textTheme.bodyMedium?.copyWith(
+                      color: theme.hintColor,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -99,7 +102,7 @@ class _PageState extends State<Page> {
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: colorScheme.primary,
                       ),
                     ),
                   ),

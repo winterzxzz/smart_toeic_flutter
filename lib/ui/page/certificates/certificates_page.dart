@@ -4,6 +4,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
@@ -56,14 +57,16 @@ class _PageState extends State<Page> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             title: Text(
               S.current.certificates,
-              style: theme.textTheme.titleMedium,
+              style: textTheme.titleMedium,
             ),
             floating: true,
             leading: const LeadingBackButton(),
@@ -87,7 +90,7 @@ class _PageState extends State<Page> {
                       filled: true,
                       isDense: true,
                       fillColor: theme.cardColor,
-                      hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                      hintStyle: textTheme.bodyMedium?.copyWith(
                         color: theme.hintColor,
                       ),
                       border: OutlineInputBorder(
@@ -103,7 +106,7 @@ class _PageState extends State<Page> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
-                          color: theme.colorScheme.primary,
+                          color: colorScheme.primary,
                         ),
                       ),
                     ),

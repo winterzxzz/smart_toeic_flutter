@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/tag_widget.dart';
 import 'package:toeic_desktop/ui/page/test/tests/widgets/test_last_studied_at_text.dart';
 
@@ -20,7 +21,8 @@ class TestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final userAttempt = test.userAttempt;
     final isAttempted = userAttempt!.count! > 0;
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     final tags = [
       if (test.duration != null)
         TagWidget(
@@ -42,7 +44,7 @@ class TestCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-            color: isAttempted ? theme.colorScheme.primary : Colors.transparent,
+            color: isAttempted ? colorScheme.primary : Colors.transparent,
             width: 1),
       ),
       child: InkWell(
@@ -62,7 +64,7 @@ class TestCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       test.title ?? '',
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class FlashCardMyListItem extends StatelessWidget {
   const FlashCardMyListItem({
@@ -8,6 +8,8 @@ class FlashCardMyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Expanded(
         child: Card(
       child: InkWell(
@@ -19,7 +21,7 @@ class FlashCardMyListItem extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.gray2),
+            border: Border.all(color: colorScheme.outline),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,11 +36,13 @@ class FlashCardMyListItem extends StatelessWidget {
               ),
               Text(
                 '1,234',
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: textTheme.headlineMedium,
               ),
-              const Text(
+              Text(
                 'You\'ve learned 1,234 words so far',
-                style: TextStyle(color: AppColors.textGray),
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurface,
+                ),
               ),
             ],
           ),

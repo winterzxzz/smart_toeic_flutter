@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/test/choose_mode_test/widgets/custom_drop_down.dart';
 
 class StackedBarChartPage extends StatefulWidget {
@@ -32,7 +33,7 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Card(
       child: Container(
         height: 1000,
@@ -76,20 +77,20 @@ class _StackedBarChartPageState extends State<StackedBarChartPage> {
                 enableMultiSelection: true,
                 title: ChartTitle(
                   text: S.current.category_accuracy_chart,
-                  textStyle: theme.textTheme.titleLarge,
+                  textStyle: textTheme.titleLarge,
                 ),
                 legend: const Legend(
                     isVisible: true, position: LegendPosition.bottom),
                 primaryXAxis: CategoryAxis(
                   title: AxisTitle(
                     text: S.current.question_types,
-                    textStyle: theme.textTheme.bodyMedium,
+                    textStyle: textTheme.bodyMedium,
                   ),
                 ),
                 primaryYAxis: NumericAxis(
                   title: AxisTitle(
                     text: S.current.count,
-                    textStyle: theme.textTheme.bodyMedium,
+                    textStyle: textTheme.bodyMedium,
                   ),
                   interval: 25,
                 ),

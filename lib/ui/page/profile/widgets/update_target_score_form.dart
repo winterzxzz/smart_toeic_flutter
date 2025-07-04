@@ -5,6 +5,7 @@ import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 class UpdateTargetScoreForm extends StatefulWidget {
@@ -31,10 +32,12 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
+    final viewInsets = MediaQuery.viewInsetsOf(context);
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+        bottom: viewInsets.bottom,
         left: 16,
         right: 16,
         top: 16,
@@ -48,7 +51,7 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
             children: [
               Text(
                 S.current.update_target_score,
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -62,7 +65,7 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
           ),
           const SizedBox(height: 16),
           Text(S.current.reading_target_score,
-              style: theme.textTheme.bodyMedium),
+              style: textTheme.bodyMedium),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -73,8 +76,8 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
                   min: 0,
                   max: 450,
                   inactiveColor:
-                      theme.colorScheme.primary.withValues(alpha: 0.3),
-                  activeColor: theme.colorScheme.primary,
+                      colorScheme.primary.withValues(alpha: 0.3),
+                  activeColor: colorScheme.primary,
                   label: readingScore.toString(),
                   onChanged: (double value) {
                     setState(() {
@@ -89,13 +92,13 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
               ),
               Text(
                 readingScore.toString(),
-                style: theme.textTheme.titleLarge,
+                style: textTheme.titleLarge,
               ),
             ],
           ),
           const SizedBox(height: 16),
           Text(S.current.listening_target_score,
-              style: theme.textTheme.bodyMedium),
+              style: textTheme.bodyMedium),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -106,8 +109,8 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
                   min: 0,
                   max: 450,
                   inactiveColor:
-                      theme.colorScheme.primary.withValues(alpha: 0.3),
-                  activeColor: theme.colorScheme.primary,
+                      colorScheme.primary.withValues(alpha: 0.3),
+                  activeColor: colorScheme.primary,
                   label: listeningScore.toString(),
                   onChanged: (double value) {
                     setState(() {
@@ -120,7 +123,7 @@ class _UpdateTargetScoreFormState extends State<UpdateTargetScoreForm> {
               const SizedBox(width: 8),
               Text(
                 listeningScore.toString(),
-                style: theme.textTheme.titleLarge,
+                style: textTheme.titleLarge,
               ),
             ],
           ),

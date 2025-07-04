@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
@@ -33,7 +34,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
-    final theme = Theme.of(context);
+    final theme = context.theme;
     return Scaffold(
       body: CustomScrollView(
         slivers: [

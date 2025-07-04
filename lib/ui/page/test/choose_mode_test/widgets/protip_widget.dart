@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class ProtipWidget extends StatelessWidget {
   const ProtipWidget({
@@ -14,7 +15,7 @@ class ProtipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -22,7 +23,7 @@ class ProtipWidget extends StatelessWidget {
           color: backgroundColor.withValues(alpha: 0.2)),
       child: Text(
         text,
-        style: theme.textTheme.bodySmall?.copyWith(
+        style: textTheme.bodySmall?.copyWith(
           color: textColor,
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class FlashcardBack extends StatelessWidget {
   final FlashCard flashcard;
@@ -9,10 +9,11 @@ class FlashcardBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: theme.colorScheme.primary, width: 2),
       ),
@@ -23,28 +24,23 @@ class FlashcardBack extends StatelessWidget {
         children: [
           Text(
             'Translate: ${flashcard.translation}',
-            style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+            style: textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Definition:',
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+            style: textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
           Text(
             flashcard.definition,
-            style: const TextStyle(fontSize: 16, color: Colors.black87),
+            style: textTheme.bodyMedium,
           ),
           if (flashcard.exampleSentence.isNotEmpty) ...[
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Examples:',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+              style: textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             ...flashcard.exampleSentence.map((example) => Row(
@@ -52,8 +48,8 @@ class FlashcardBack extends StatelessWidget {
                     Container(
                       width: 8,
                       height: 8,
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -61,24 +57,20 @@ class FlashcardBack extends StatelessWidget {
                     Expanded(
                       child: Text(
                         example,
-                        style: const TextStyle(
-                            fontSize: 16, color: Colors.black87),
+                        style: textTheme.bodyMedium,
                       ),
                     ),
                   ],
                 )),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Note: ',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+              style: textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             Text(
               flashcard.note,
-              style: const TextStyle(fontSize: 16, color: Colors.black87),
+              style: textTheme.bodyMedium,
             ),
           ],
         ],

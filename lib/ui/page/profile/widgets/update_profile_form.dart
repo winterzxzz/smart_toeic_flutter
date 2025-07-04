@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
@@ -54,7 +55,8 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
   @override
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -64,7 +66,7 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
           children: [
             Text(
               S.current.name_hint,
-              style: theme.textTheme.bodyMedium?.copyWith(
+                style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -79,7 +81,7 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: theme.colorScheme.primary),
+                  borderSide: BorderSide(color: colorScheme.primary),
                 ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -88,7 +90,7 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
             const SizedBox(height: 16),
             Text(
               S.current.bio_hint,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -103,7 +105,7 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: theme.colorScheme.primary),
+                  borderSide: BorderSide(color: colorScheme.primary),
                 ),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

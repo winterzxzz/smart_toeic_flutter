@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_learning.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:confetti/confetti.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 
 class MatchingWord extends StatefulWidget {
@@ -146,7 +147,7 @@ class _MatchingWordState extends State<MatchingWord>
     required bool isSelected,
     required VoidCallback onTap,
   }) {
-    final theme = Theme.of(context);
+    final colorScheme = context.colorScheme;
     return AnimatedBuilder(
       animation: _shakeController,
       builder: (context, child) {
@@ -166,7 +167,7 @@ class _MatchingWordState extends State<MatchingWord>
                       width: 10,
                       height: 10,
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
+                        color: colorScheme.primary,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -195,7 +196,8 @@ class _MatchingWordState extends State<MatchingWord>
   }
 
   Widget _buildWordContent(String text, bool isSelected, VoidCallback onTap) {
-    final theme = Theme.of(context);
+    final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: onTap,
@@ -204,19 +206,19 @@ class _MatchingWordState extends State<MatchingWord>
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isSelected
-              ? theme.colorScheme.primary
-              : theme.colorScheme.primary.withValues(alpha: 0.2),
-          border: Border.all(color: theme.colorScheme.primary, width: 2),
+              ? colorScheme.primary
+              : colorScheme.primary.withValues(alpha: 0.2),
+          border: Border.all(color: colorScheme.primary, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(16),
         child: Text(
           // to capitalize first letter
           text.capitalizeFirst,
-          style: theme.textTheme.bodyMedium?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             color: isSelected
-                ? theme.colorScheme.onPrimary
-                : theme.colorScheme.onSurface,
+                ? colorScheme.onPrimary
+                : colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -226,6 +228,7 @@ class _MatchingWordState extends State<MatchingWord>
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = context.textTheme;
     return Stack(
       children: [
         Column(
@@ -234,8 +237,7 @@ class _MatchingWordState extends State<MatchingWord>
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(S.current.matching_word,
-                    style: const TextStyle(fontSize: 18)),
+                Text(S.current.matching_word, style: textTheme.titleMedium),
                 const SizedBox(width: 8),
                 // Replace the text timer with a linear progress indicator
               ],
@@ -285,7 +287,8 @@ class _MatchingWordState extends State<MatchingWord>
             else
               Column(
                 children: [
-                  Text(S.current.you_matched_correct_all_words),
+                  Text(S.current.you_matched_correct_all_words,
+                      style: textTheme.bodyMedium),
                 ],
               ),
           ],
