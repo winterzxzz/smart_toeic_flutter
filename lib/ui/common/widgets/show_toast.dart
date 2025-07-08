@@ -8,7 +8,15 @@ void showToast({
 }) {
   toastification.show(
       type: type,
-      description: Text(title),
+      description: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+        maxLines: 3,
+        textAlign: TextAlign.start,
+      ),
       primaryColor: Colors.white,
       alignment: Alignment.bottomCenter,
       pauseOnHover: false,
@@ -22,7 +30,7 @@ void showToast({
                     ? Colors.orange
                     : Colors.red,
       ),
-      showProgressBar: true,
+      showProgressBar: false,
       backgroundColor: type == ToastificationType.success
           ? Colors.green
           : type == ToastificationType.info
