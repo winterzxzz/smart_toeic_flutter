@@ -141,31 +141,42 @@ class CertificateCard extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(
-                    Icons.date_range,
-                    size: 16,
-                    color: theme.hintColor,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Issued: ${_formatDate(certificate.issueDate)}',
-                    style: textTheme.bodySmall?.copyWith(
-                      color: theme.hintColor,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.date_range,
+                          size: 16,
+                          color: theme.hintColor,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Issued: ${_formatDate(certificate.issueDate)}',
+                          style: textTheme.bodySmall?.copyWith(
+                            color: theme.hintColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const Spacer(),
-                  Icon(
-                    Icons.schedule,
-                    size: 16,
-                    color: theme.hintColor,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Expires: ${_formatDate(certificate.expirationDate)}',
-                    style: textTheme.bodySmall?.copyWith(
-                      color: theme.hintColor,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          size: 16,
+                          color: theme.hintColor,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Expires: ${_formatDate(certificate.expirationDate)}',
+                          style: textTheme.bodySmall?.copyWith(
+                            color: theme.hintColor,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ],
