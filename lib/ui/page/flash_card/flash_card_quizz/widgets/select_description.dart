@@ -163,7 +163,11 @@ class _SectionQuestionState extends State<SectionQuestion>
                         },
                       ),
                       const SizedBox(width: 8),
-                      Expanded(child: Text(level)),
+                      Expanded(
+                          child: Text(
+                        level,
+                        maxLines: 3,
+                      )),
                     ],
                   ),
                 ),
