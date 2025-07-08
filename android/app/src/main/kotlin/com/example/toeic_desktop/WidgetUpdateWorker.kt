@@ -37,10 +37,10 @@ class WidgetUpdateWorker(
                         if(flashCard != null) {
                             val isCanShowNotification = ContentPreferences.isCanShowNotification(applicationContext)
                             if(isCanShowNotification) {
-                                showNotification("${flashCard.word} ${flashCard.pronunciation}", "(${flashCard.partOfSpeech}) ${flashCard.definition}")
                             } else {
                                 ContentPreferences.setIsCanShowNotification(applicationContext, true)
                             }
+                            showNotification("${flashCard.word} ${flashCard.pronunciation}", "(${flashCard.partOfSpeech}) ${flashCard.definition}")
                             if(TOEICGlanceWidget.isWidgetAdded(applicationContext)) {
                                 TOEICGlanceWidget.updateSpecificWidgetByGlanceId(applicationContext, flashCard)
                             }

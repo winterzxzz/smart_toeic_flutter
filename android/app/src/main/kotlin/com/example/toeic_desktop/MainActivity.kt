@@ -94,7 +94,8 @@ class MainActivity : FlutterActivity() {
                                 if(flashcards.isNotEmpty()) {
                                     ContentPreferences.saveFlashCards(this, flashcards)
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        if(!WidgetWorkScheduler.isWorkManagerRunning(this@MainActivity)) {
+                                        // if(!WidgetWorkScheduler.isWorkManagerRunning(this@MainActivity)) {
+                                        WidgetWorkScheduler.cancelWidgetUpdate(this@MainActivity, WidgetUpdateWorker.PERIODIC_UPDATE_WORK)
                                             val reminderWordAfterTime = ContentPreferences.getReminderWordAfterTime(this@MainActivity)
                                             val value = reminderWordAfterTime.split(" ")?.first()?.toLong()
                                             val unit = reminderWordAfterTime.split(" ")?.last()?.toLowerCase()
@@ -109,7 +110,7 @@ class MainActivity : FlutterActivity() {
                                             } else {
                                                 WidgetWorkScheduler.schedulePeriodicWidgetUpdate(this@MainActivity)
                                             }
-                                        }
+                                        // }
                                     }
                                 }
                             }
