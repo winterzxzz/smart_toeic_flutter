@@ -7,7 +7,7 @@
 ## 🎯 Features
 
 - 🏡 **Home Widget for Flashcard Learning**  
-  Instantly access and review words from your flashcard set directly on your device’s home screen. The Home Widget makes it easy to practice vocabulary at any time, helping you reinforce learning throughout your day without opening the app.
+  Instantly access and review words from your flashcard set directly on your device’s home screen. The Home Widget makes it easy to practice vocabulary at any time, helping you reinforce learning throughout the day.
 
 - 🎯 **Real TOEIC Test Simulations**  
   Practice with tests that accurately mimic the format, difficulty, and timing of the actual TOEIC exam.
@@ -33,6 +33,8 @@
 - 💳 **In-App Purchases with ZaloPay**  
   Experience seamless in-app transactions with integrated ZaloPay payment support.
 
+- 📢 **Google AdMob Integration**  
+  Monetize your app with Google AdMob ads, supporting banners and interstitial formats.
 ---
 
 ## ⚙️ Technologies Used
