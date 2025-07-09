@@ -241,6 +241,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                       ? FontAwesomeIcons.check
                                       : FontAwesomeIcons.xmark,
                                   size: isSmallScreen ? 32 : 40,
+                                  color: Colors.white,
                                 ),
                               ),
                               const SizedBox(height: 12),
@@ -248,13 +249,17 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                 state.isCorrect
                                     ? S.current.great
                                     : S.current.try_harder,
-                                style: textTheme.titleMedium,
+                                style: textTheme.titleMedium?.copyWith(
+                                  color: Colors.white,
+                                ),
                               ),
                               Text(
                                 state.isCorrect
                                     ? S.current.you_answered_correctly
                                     : S.current.you_answered_incorrectly,
-                                style: textTheme.bodyMedium,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: Colors.white,
+                                ),
                               ),
                               const SizedBox(height: 16),
                               SizedBox(
