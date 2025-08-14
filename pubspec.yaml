@@ -91,6 +91,7 @@ dependencies:
   web3dart: ^2.7.1
   http: ^1.4.0
   photo_view: ^0.15.0
+  google_mlkit_image_labeling: ^0.14.1
 
 dev_dependencies:
   flutter_test:

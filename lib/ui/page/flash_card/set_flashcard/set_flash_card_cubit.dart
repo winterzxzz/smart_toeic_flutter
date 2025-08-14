@@ -198,4 +198,7 @@ class FlashCardCubit extends Cubit<FlashCardState> {
       }).toList(),
     ));
   }
+
+
+  
 }
