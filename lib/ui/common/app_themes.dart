@@ -129,7 +129,7 @@ class AppThemes {
           color: appbarColor,
         ),
         cardColor: cardColor,
-        tabBarTheme: TabBarTheme(
+        tabBarTheme: TabBarThemeData(
           unselectedLabelColor: brightness == Brightness.dark
               ? AppColors.backgroundLight
               : AppColors.backgroundDark,
@@ -142,7 +142,7 @@ class AppThemes {
         dividerTheme: const DividerThemeData(
           color: AppColors.gray1,
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: appbarColor,
         ),
         elevatedButtonTheme: brightness == Brightness.dark
@@ -154,7 +154,7 @@ class AppThemes {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: appbarColor,
         ),
-        dialogTheme: DialogTheme(
+        dialogTheme: DialogThemeData(
           backgroundColor: appbarColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
