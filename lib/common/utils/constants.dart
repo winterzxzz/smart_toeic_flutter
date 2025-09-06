@@ -203,6 +203,11 @@ class Constants {
           image: AppImages.icSetting,
           onNavigate: (context) => GoRouter.of(context).push(AppRouter.setting),
         ),
+        HomeItemTaskModel(
+          title: 'Rooms',
+          image: AppImages.icSetting,
+          onNavigate: (context) => GoRouter.of(context).push(AppRouter.rooms),
+        )
       ];
 
   static List<String> get primaryColorsHex => [

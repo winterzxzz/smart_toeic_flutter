@@ -16,6 +16,7 @@ import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_page.dart';
+import 'package:toeic_desktop/ui/page/rooms/rooms_page.dart';
 import 'package:toeic_desktop/ui/page/test/history_test/history_test_page.dart';
 import 'package:toeic_desktop/ui/page/onboarding/onboarding_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_page.dart';
@@ -48,16 +49,11 @@ class AppRouter {
       redirect: (context, state) {
         final isLogin = SharedPreferencesHelper().getCookies() != null;
         if (!isLogin) {
-          if (state.uri.path == bottomTab ||
-              state.uri.path == modeTest ||
-              state.uri.path == flashCardDetail ||
-              state.uri.path == flashCardLearningDetail ||
-              state.uri.path == flashCardLearnFlip ||
-              state.uri.path == flashCardQuizz ||
-              state.uri.path == flashCardQuizzResult ||
-              state.uri.path == resultTest ||
-              state.uri.path == upgradeAccount ||
-              state.uri.path == transcriptTest) {
+          if (state.uri.path != splash &&
+              state.uri.path != login &&
+              state.uri.path != register &&
+              state.uri.path != resetPassword &&
+              state.uri.path != onboarding) {
             return login;
           }
           return null;
@@ -94,6 +90,7 @@ class AppRouter {
   static const String blogDetail = "/blog-detail";
   static const String certificates = "/certificates";
   static const String imageView = "/image-view";
+  static const String rooms = '/rooms';
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -300,6 +297,11 @@ class AppRouter {
         final imageUrl = args['imageUrl'] as String;
         return ImagePreview(imageUrl: imageUrl);
       },
+    ),
+    GoRoute(
+      name: rooms,
+      path: rooms,
+      builder: (context, state) => const RoomsPage(),
     ),
   ];
 
