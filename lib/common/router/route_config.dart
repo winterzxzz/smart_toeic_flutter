@@ -12,6 +12,7 @@ import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_page.dart';
 import 'package:toeic_desktop/ui/page/image_view/image_view_page.dart';
+import 'package:toeic_desktop/ui/page/live_stream/live_stream_page.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
@@ -91,6 +92,7 @@ class AppRouter {
   static const String certificates = "/certificates";
   static const String imageView = "/image-view";
   static const String rooms = '/rooms';
+  static const String liveStream = '/live-stream';
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -302,6 +304,11 @@ class AppRouter {
       name: rooms,
       path: rooms,
       builder: (context, state) => const RoomsPage(),
+    ),
+    GoRoute(
+      name: liveStream,
+      path: liveStream,
+      builder: (context, state) => const LiveStreamPage(),
     ),
   ];
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/room_model.dart';
 import 'package:toeic_desktop/data/repositories/room_repository.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
@@ -122,11 +124,6 @@ class _RoomsPageState extends State<RoomsPage> {
   }
 
   void _onRoomTap(RoomModel room) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Tapped on ${room.title}'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    GoRouter.of(context).push(AppRouter.liveStream);
   }
 }
