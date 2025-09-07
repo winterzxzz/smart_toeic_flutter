@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/room_model.dart';
-import 'package:toeic_desktop/data/repositories/room_repository.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/page/rooms/rooms_cubit.dart';
+import 'package:toeic_desktop/ui/page/rooms/rooms_state.dart';
 import 'widgets/room_card.dart';
 
 class RoomsPage extends StatefulWidget {
@@ -15,110 +19,108 @@ class RoomsPage extends StatefulWidget {
 }
 
 class _RoomsPageState extends State<RoomsPage> {
-  final RoomRepository _roomRepository = RoomRepository();
-  List<RoomModel> _rooms = [];
-  bool _isLoading = true;
-  String? _error;
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => injector<RoomsCubit>(),
+      child: const Page(),
+    );
+  }
+}
+
+class Page extends StatefulWidget {
+  const Page({super.key});
+
+  @override
+  State<Page> createState() => _PageState();
+}
+
+class _PageState extends State<Page> {
+  late final RoomsCubit _roomsCubit;
 
   @override
   void initState() {
     super.initState();
-    _loadRooms();
-  }
-
-  Future<void> _loadRooms() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _error = null;
-      });
-
-      final rooms = await _roomRepository.getRooms();
-
-      setState(() {
-        _rooms = rooms;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
-    }
+    _roomsCubit = BlocProvider.of<RoomsCubit>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
-
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: Text('Live Streams', style: textTheme.titleMedium),
-            floating: true,
-            leading: const LeadingBackButton(),
-            elevation: 0,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: _loadRooms,
+      body: BlocBuilder<RoomsCubit, RoomsState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                title: Text('Live Streams', style: textTheme.titleMedium),
+                floating: true,
+                leading: const LeadingBackButton(),
+                elevation: 0,
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: _roomsCubit.getRooms,
+                  ),
+                ],
               ),
-            ],
-          ),
-          if (_isLoading)
-            const SliverFillRemaining(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          else if (_error != null)
-            SliverFillRemaining(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: colorScheme.error,
+              if (state.loadStatus == LoadStatus.loading)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else if (state.loadStatus == LoadStatus.failure)
+                SliverFillRemaining(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 64,
+                          color: colorScheme.error,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Failed to load rooms',
+                          style: textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          state.message,
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurface.withValues(alpha: 0.7),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: _roomsCubit.getRooms,
+                          child: const Text('Retry'),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Failed to load rooms',
-                      style: textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _error!,
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: _loadRooms,
-                      child: const Text('Retry'),
-                    ),
-                  ],
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.all(8),
+                  sliver: SliverList.separated(
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 8),
+                    itemBuilder: (context, index) {
+                      final room = state.rooms[index];
+                      return RoomCard(
+                          room: room, onTap: () => _onRoomTap(room));
+                    },
+                    itemCount: state.rooms.length,
+                  ),
                 ),
-              ),
-            )
-          else
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: SliverList.separated(
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemBuilder: (context, index) {
-                  final room = _rooms[index];
-                  return RoomCard(room: room, onTap: () => _onRoomTap(room));
-                },
-                itemCount: _rooms.length,
-              ),
-            ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

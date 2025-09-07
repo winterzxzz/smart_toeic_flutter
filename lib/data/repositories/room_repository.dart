@@ -1,6 +1,21 @@
+import 'package:dio/dio.dart';
+import 'package:either_dart/either.dart';
+import 'package:toeic_desktop/data/network/api_config/api_client.dart';
+import 'package:toeic_desktop/data/network/error/api_error.dart';
+
 import '../models/room_model.dart';
 
-class RoomRepository {
+abstract class RoomRepository {
+  Future<Either<ApiError, List<RoomModel>>> getRooms();
+  Future<Either<ApiError, List<RoomModel>>> getRoomsByCategory(String category);
+  Future<Either<ApiError, RoomModel>> getRoomById(String id);
+}
+
+class RoomRepositoryImpl implements RoomRepository {
+  final ApiClient _apiClient;
+
+  RoomRepositoryImpl(this._apiClient);
+
   static const List<RoomModel> _sampleRooms = [
     RoomModel(
       id: '1',
@@ -84,23 +99,28 @@ class RoomRepository {
     ),
   ];
 
-  Future<List<RoomModel>> getRooms() async {
+  @override
+  Future<Either<ApiError, List<RoomModel>>> getRooms() async {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
-    return _sampleRooms;
+    return const Right(_sampleRooms);
   }
 
-  Future<List<RoomModel>> getRoomsByCategory(String category) async {
+  @override
+  Future<Either<ApiError, List<RoomModel>>> getRoomsByCategory(
+      String category) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    return _sampleRooms.where((room) => room.category == category).toList();
+    return Right(
+        _sampleRooms.where((room) => room.category == category).toList());
   }
 
-  Future<RoomModel?> getRoomById(String id) async {
+  @override
+  Future<Either<ApiError, RoomModel>> getRoomById(String id) async {
     await Future.delayed(const Duration(milliseconds: 200));
     try {
-      return _sampleRooms.firstWhere((room) => room.id == id);
-    } catch (e) {
-      return null;
+      return Right(_sampleRooms.firstWhere((room) => room.id == id));
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
     }
   }
 }
