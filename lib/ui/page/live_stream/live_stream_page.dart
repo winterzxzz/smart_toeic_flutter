@@ -42,6 +42,11 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
       })
       ..on<ParticipantConnectedEvent>((e) {
         debugPrint("participant joined: ${e.participant.identity}");
+      })
+      ..on<TranscriptionEvent>((e) {
+        for (final segment in e.segments) {
+          debugPrint("transcription: ${segment.text}");
+        }
       });
 
     await _room.localParticipant?.setCameraEnabled(true);
