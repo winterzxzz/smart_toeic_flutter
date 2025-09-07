@@ -27,7 +27,8 @@ Future<void> init() async {
         () => TranscriptTestRepositoryImpl(injector()))
     ..registerLazySingleton<BlogRepository>(
         () => BlogRepositoryImpl(injector()))
-    ..registerLazySingleton<RoomRepository>(() => RoomRepositoryImpl(injector()));
+    ..registerLazySingleton<RoomRepository>(
+        () => RoomRepositoryImpl(injector()))
 
     // Services
     ..registerLazySingleton<SpeechService>(() => SpeechService())

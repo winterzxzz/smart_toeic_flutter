@@ -19,22 +19,19 @@ class RoomCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
+      color: colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 200, // Fixed height for image section
-              child: _buildImageSection(context),
-            ),
-            SizedBox(
-              height: 120, // Fixed height for content section
-              child: Padding(
+      child: SizedBox(
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: _buildImageSection(context)),
+              Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,12 +45,13 @@ class RoomCard extends StatelessWidget {
                         _buildDescription(textTheme),
                       ],
                     ),
+                    const SizedBox(height: 4),
                     _buildFooter(context, colorScheme, textTheme),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -64,29 +62,21 @@ class RoomCard extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-          child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
+          child: SizedBox.expand(
             child: Image.network(
               room.imageUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey[300],
-                  child: const Icon(
-                    Icons.image_not_supported,
-                    color: Colors.grey,
-                    size: 48,
-                  ),
+                return const Icon(
+                  Icons.image_not_supported,
+                  color: Colors.grey,
+                  size: 48,
                 );
               },
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
-                return Container(
-                  color: Colors.grey[300],
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
               },
             ),
@@ -137,7 +127,7 @@ class RoomCard extends StatelessWidget {
         fontWeight: FontWeight.w600,
         height: 1.2,
       ),
-      maxLines: 2,
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -149,7 +139,7 @@ class RoomCard extends StatelessWidget {
         color: Colors.grey[600],
         height: 1.3,
       ),
-      maxLines: 2,
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -161,16 +151,14 @@ class RoomCard extends StatelessWidget {
   ) {
     return Row(
       children: [
-        Icon(
+        const Icon(
           Icons.visibility,
           size: 14,
-          color: Colors.grey[600],
         ),
         const SizedBox(width: 4),
         Text(
           room.formattedViewCount,
           style: textTheme.bodySmall?.copyWith(
-            color: Colors.grey[600],
             fontWeight: FontWeight.w500,
           ),
         ),

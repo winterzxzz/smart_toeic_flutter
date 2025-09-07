@@ -6,7 +6,6 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/room_model.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
-import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/rooms/rooms_cubit.dart';
 import 'package:toeic_desktop/ui/page/rooms/rooms_state.dart';
 import 'widgets/room_card.dart';
@@ -22,7 +21,7 @@ class _RoomsPageState extends State<RoomsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => injector<RoomsCubit>(),
+      create: (context) => injector<RoomsCubit>()..getRooms(),
       child: const Page(),
     );
   }
@@ -56,13 +55,16 @@ class _PageState extends State<Page> {
               SliverAppBar(
                 title: Text('Live Streams', style: textTheme.titleMedium),
                 floating: true,
-                leading: const LeadingBackButton(),
+                automaticallyImplyLeading: false,
                 elevation: 0,
                 actions: [
                   IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: _roomsCubit.getRooms,
-                  ),
+                      onPressed: () {},
+                      icon: const Icon(Icons.video_call_rounded)),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.notification_add)),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
                 ],
               ),
               if (state.loadStatus == LoadStatus.loading)
@@ -107,9 +109,14 @@ class _PageState extends State<Page> {
               else
                 SliverPadding(
                   padding: const EdgeInsets.all(8),
-                  sliver: SliverList.separated(
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 8),
+                  sliver: SliverGrid.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.7,
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2,
+                    ),
                     itemBuilder: (context, index) {
                       final room = state.rooms[index];
                       return RoomCard(
