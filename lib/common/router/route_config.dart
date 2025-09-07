@@ -17,6 +17,7 @@ import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_page.dart';
+import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_page.dart';
 import 'package:toeic_desktop/ui/page/rooms/rooms_page.dart';
 import 'package:toeic_desktop/ui/page/test/history_test/history_test_page.dart';
 import 'package:toeic_desktop/ui/page/onboarding/onboarding_page.dart';
@@ -93,6 +94,7 @@ class AppRouter {
   static const String imageView = "/image-view";
   static const String rooms = '/rooms';
   static const String liveStream = '/live-stream';
+  static const String prepareLive = '/prepare-live';
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -309,6 +311,11 @@ class AppRouter {
       name: liveStream,
       path: liveStream,
       builder: (context, state) => const LiveStreamPage(),
+    ),
+    GoRoute(
+      name: prepareLive,
+      path: prepareLive,
+      builder: (context, state) => const PrepareLivePage(),
     ),
   ];
 

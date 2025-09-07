@@ -59,7 +59,7 @@ class _PageState extends State<Page> {
                 elevation: 0,
                 actions: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: _gotoPrePareLive,
                       icon: const Icon(Icons.video_call_rounded)),
                   IconButton(
                       onPressed: () {},
@@ -134,5 +134,9 @@ class _PageState extends State<Page> {
 
   void _onRoomTap(RoomModel room) {
     GoRouter.of(context).push(AppRouter.liveStream);
+  }
+
+  void _gotoPrePareLive() {
+    GoRouter.of(context).pushNamed(AppRouter.prepareLive);
   }
 }
