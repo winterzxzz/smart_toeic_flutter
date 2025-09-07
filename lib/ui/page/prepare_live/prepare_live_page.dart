@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_footer.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_header.dart';
+import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_menu.dart';
 
 class PrepareLivePage extends StatefulWidget {
   const PrepareLivePage({super.key});
@@ -95,6 +97,7 @@ class _PrepareLivePageState extends State<PrepareLivePage> {
 
   @override
   Widget build(BuildContext context) {
+    final height = context.sizze.height;
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -146,6 +149,14 @@ class _PrepareLivePageState extends State<PrepareLivePage> {
               right: 0,
               child: SafeArea(
                 child: PrepareLiveFooter(),
+              ),
+            ),
+
+            Positioned(
+              top: height * 0.15,
+              right: 10,
+              child: const SafeArea(
+                child: PrepareLiveMenu(),
               ),
             ),
           ],
