@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:toeic_desktop/main.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_footer.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_header.dart';
@@ -15,14 +15,14 @@ class PrepareLivePage extends StatefulWidget {
 }
 
 class _PrepareLivePageState extends State<PrepareLivePage> {
-  late final RTCVideoRenderer _localRenderer;
-  MediaStream? _localStream;
+  late CameraController _cameraController;
   bool _isCameraActive = false;
+  bool _isInitialized = false;
+  late CameraDescription _currentDescription;
 
   @override
   void initState() {
     super.initState();
-    _localRenderer = RTCVideoRenderer();
     _initializeRenderers();
     _requestPermissions();
   }
@@ -30,69 +30,112 @@ class _PrepareLivePageState extends State<PrepareLivePage> {
   void _requestPermissions() async {
     final permissions = await Permission.camera.request();
     if (permissions.isGranted) {
-      _bindLocalVideo();
+      _initializeRenderers();
     } else {
-      debugPrint('Camera permission denied');
-      // Handle permission denied case
+      debugPrint('Winter-Camera permission denied');
     }
   }
 
   void _initializeRenderers() async {
-    await _localRenderer.initialize();
-  }
-
-  void _bindLocalVideo() async {
+    if (cameras.length < 2) return;
     try {
-      final Map<String, dynamic> mediaConstraints = {
-        'audio': false,
-        'video': {
-          'mandatory': {
-            'minWidth': '640',
-            'minHeight': '480',
-            'minFrameRate': '30',
-          },
-          'facingMode': 'user',
-          'optional': [],
-        }
-      };
+      // Fallback to first camera if second doesn't exist
+      _currentDescription = cameras.length > 1 ? cameras[1] : cameras.first;
 
-      final MediaStream stream =
-          await navigator.mediaDevices.getUserMedia(mediaConstraints);
-      _localStream = stream;
-      _localRenderer.srcObject = stream;
+      _cameraController = CameraController(
+        _currentDescription,
+        ResolutionPreset.medium,
+      );
+
+      await _cameraController.initialize();
+
+      if (!mounted) return;
 
       setState(() {
         _isCameraActive = true;
+        _isInitialized = true;
       });
+
+      debugPrint('Winter-Camera initialized: ${_currentDescription.name}');
+    } on CameraException catch (e) {
+      switch (e.code) {
+        case 'CameraAccessDenied':
+          debugPrint('Winter-CameraAccessDenied');
+          break;
+        default:
+          debugPrint('Winter-CameraException: ${e.code} - ${e.description}');
+          break;
+      }
     } catch (e) {
-      debugPrint('Error accessing camera: $e');
+      debugPrint('Winter-Unknown camera error: $e');
+    }
+  }
+
+  void _switchCamera() async {
+    if (cameras.length < 2) return;
+
+    final CameraDescription newDescription = cameras.firstWhere(
+      (desc) => desc.lensDirection != _currentDescription.lensDirection,
+      orElse: () => _currentDescription,
+    );
+
+    try {
+      if (_cameraController.value.isInitialized) {
+        await _cameraController.dispose();
+      }
+      final CameraController newController =
+          CameraController(newDescription, ResolutionPreset.high);
+      await newController.initialize();
+      if (!mounted) return;
+      _cameraController = newController;
       setState(() {
-        _isCameraActive = false;
+        _currentDescription = newDescription;
+        _isCameraActive = true;
+        _isInitialized = true;
       });
-      // Handle error - maybe show a dialog or fallback UI
+      debugPrint('Winter-Switched to camera: ${newDescription.name}');
+    } catch (e) {
+      debugPrint('Winter-Error switching camera: $e');
+    }
+  }
+
+  void _toggleCamera() async {
+    try {
+      if (_isCameraActive) {
+        if (_cameraController.value.isInitialized) {
+          await _cameraController.dispose();
+        }
+        if (!mounted) return;
+        setState(() {
+          _isCameraActive = false;
+          // Keep _isInitialized true to indicate prior initialization
+        });
+        debugPrint('Winter-Camera paused (disposed)');
+      } else {
+        final CameraController newController =
+            CameraController(_currentDescription, ResolutionPreset.high);
+        await newController.initialize();
+        if (!mounted) return;
+        _cameraController = newController;
+        setState(() {
+          _isCameraActive = true;
+          _isInitialized = true;
+        });
+        debugPrint('Winter-Camera resumed (reinitialized)');
+      }
+    } catch (e) {
+      debugPrint('Winter-Error toggling camera (dispose/reinit): $e');
     }
   }
 
   @override
   void dispose() {
     _cleanupCamera();
-    _localRenderer.dispose();
     super.dispose();
   }
 
   void _cleanupCamera() async {
-    try {
-      if (_localStream != null) {
-        if (kIsWeb) {
-          _localStream!.getTracks().forEach((track) => track.stop());
-        }
-        await _localStream!.dispose();
-        _localStream = null;
-      }
-      _localRenderer.srcObject = null;
-    } catch (e) {
-      debugPrint('Error cleaning up camera: $e');
-    }
+    _cameraController.dispose();
   }
 
   @override
@@ -105,13 +148,8 @@ class _PrepareLivePageState extends State<PrepareLivePage> {
           children: [
             // Full screen video background
             Positioned.fill(
-              child: _isCameraActive
-                  ? RTCVideoView(
-                      _localRenderer,
-                      objectFit:
-                          RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                    )
-                  : Container(
+              child: !_isInitialized
+                  ? Container(
                       color: Colors.black,
                       child: const Center(
                         child: Column(
@@ -131,7 +169,31 @@ class _PrepareLivePageState extends State<PrepareLivePage> {
                           ],
                         ),
                       ),
-                    ),
+                    )
+                  : _isCameraActive
+                      ? FittedBox(
+                          fit: BoxFit.cover,
+                          child: SizedBox(
+                            width:
+                                _cameraController.value.previewSize?.height ??
+                                    1,
+                            height:
+                                _cameraController.value.previewSize?.width ?? 1,
+                            child: CameraPreview(_cameraController),
+                          ),
+                        )
+                      : Container(
+                          color: Colors.black,
+                          child: const Center(
+                            child: Text(
+                              'Camera is paused',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
             ),
             // Header overlay
             const Positioned(
@@ -155,8 +217,10 @@ class _PrepareLivePageState extends State<PrepareLivePage> {
             Positioned(
               top: height * 0.15,
               right: 10,
-              child: const SafeArea(
-                child: PrepareLiveMenu(),
+              child: SafeArea(
+                child: PrepareLiveMenu(
+                    onSwitchCamera: _switchCamera,
+                    onToggleCamera: _toggleCamera),
               ),
             ),
           ],
