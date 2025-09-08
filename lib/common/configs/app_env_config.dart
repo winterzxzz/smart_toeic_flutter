@@ -44,4 +44,15 @@ extension EnvironmentExt on Environment {
         return "ca-app-pub-3940256099942544/6300978111";
     }
   }
+
+  String get livekitWss {
+    switch (this) {
+      case Environment.dev:
+        return "wss://winterzxzz-tm30hn8t.livekit.cloud";
+      case Environment.stg:
+        return "wss://winterzxzz-tm30hn8t.livekit.cloud";
+      case Environment.prod:
+        return "wss://winterzxzz-tm30hn8t.livekit.cloud";
+    }
+  }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
-import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_footer.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_header.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_menu.dart';
 
@@ -20,6 +20,7 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
   late Room _room;
   late final EventsListener<RoomEvent> _listener;
   late VideoTrack? localVideoTrack;
+  String _currentTranscription = '';
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
 
     await _room.connect(
       'wss://winterzxzz-tm30hn8t.livekit.cloud',
-      'eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcInVzZXJJZFwiOjEsXCJ1c2VybmFtZVwiOlwiVW5rbm93bjE3NTczMTUyMTU3NDNcIixcImF2YXRhclVybFwiOlwiaHR0cHM6Ly9pLnByYXZhdGFyLmNjLzE1MD91PTE3NTczMTUyMTU3NDNcIixcImlzTXV0ZVVzZXJcIjpmYWxzZX0iLCJuYW1lIjoiVW5rbm93bjE3NTczMTUyMTU3NDMiLCJ2aWRlbyI6eyJyb29tIjoidGVzdGluZy0xIiwicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWV9LCJpc3MiOiJBUEl4MkQ1YUNTRWlldXYiLCJleHAiOjE3NTczMzY4MTUsIm5iZiI6MCwic3ViIjoiMV91c2VyIn0.-BfMS6Ce6vJ4tHFYPwRi7VnrIM7NH0Vse2YLBjgbm_U',
+      'eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcInVzZXJJZFwiOjEsXCJ1c2VybmFtZVwiOlwiVW5rbm93bjE3NTczNDM0NzE1MzhcIixcImF2YXRhclVybFwiOlwiaHR0cHM6Ly9pLnByYXZhdGFyLmNjLzE1MD91PTE3NTczNDM0NzE1MzhcIixcImlzTXV0ZVVzZXJcIjpmYWxzZX0iLCJuYW1lIjoiVW5rbm93bjE3NTczNDM0NzE1MzgiLCJ2aWRlbyI6eyJyb29tIjoidGVzdGluZy0xIiwicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWV9LCJpc3MiOiJBUEl4MkQ1YUNTRWlldXYiLCJleHAiOjE3NTczNjUwNzEsIm5iZiI6MCwic3ViIjoiMV91c2VyIn0.JgJZ-8phblXLSndNjGmzAesDaQa-tMF1k-DGQoDBYxo',
     );
 
     _room.addListener(_onChange);
@@ -48,12 +49,24 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
       ..on<RoomDisconnectedEvent>((_) {
         // handle disconnect
       })
+      ..on<RoomDisconnectedEvent>((_) {
+        GoRouter.of(context).pop();
+        debugPrint('Winter-room disconnected');
+      })
       ..on<ParticipantConnectedEvent>((e) {
-        debugPrint("participant joined: ${e.participant.identity}");
+        debugPrint("Winter-participant joined: ${e.participant.identity}");
+      })
+      ..on<ParticipantDisconnectedEvent>((e) {
+        debugPrint(
+            "Winter-participant disconnected: ${e.participant.identity}");
       })
       ..on<TranscriptionEvent>((e) {
         for (final segment in e.segments) {
-          debugPrint("transcription: ${segment.text}");
+          if (segment.isFinal) {
+            debugPrint("Winter-transcription: ${segment.text}");
+            _currentTranscription = segment.text;
+            setState(() {});
+          }
         }
       });
 
@@ -65,6 +78,11 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
     setState(() {});
   }
 
+  void _closeRoom() {
+    _room.disconnect();
+    GoRouter.of(context).pop();
+  }
+
   void _onChange() {
     // perform computations and then call setState
     // setState will trigger a build
@@ -72,6 +90,8 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
       // your updates here
     });
   }
+
+  void _toggleMic() async {}
 
   @override
   void dispose() {
@@ -99,20 +119,26 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
                     )
                   : const LoadingCircle(),
             ),
-            const Positioned(
+            Positioned(
               top: 0,
               left: 0,
               right: 0,
               child: SafeArea(
-                child: PrepareLiveHeader(),
+                child: PrepareLiveHeader(
+                  onClose: _closeRoom,
+                ),
               ),
             ),
-            const Positioned(
+            Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               child: SafeArea(
-                child: PrepareLiveFooter(),
+                child: Text(
+                  _currentTranscription,
+                  style: context.textTheme.bodySmall
+                      ?.copyWith(color: Colors.white),
+                ),
               ),
             ),
             Positioned(

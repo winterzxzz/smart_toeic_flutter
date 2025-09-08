@@ -5,7 +5,8 @@ import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 
 class PrepareLiveHeader extends StatelessWidget {
-  const PrepareLiveHeader({super.key});
+  final Function()? onClose;
+  const PrepareLiveHeader({super.key, this.onClose});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,11 @@ class PrepareLiveHeader extends StatelessWidget {
               onPressed: () {
                 showConfirmDialog(
                     context, S.current.exit, S.current.are_you_sure_exit, () {
-                  GoRouter.of(context).pop();
+                  if (onClose != null) {
+                    onClose!();
+                  } else {
+                    GoRouter.of(context).pop();
+                  }
                 });
               },
               icon: const Icon(Icons.close, color: Colors.white))

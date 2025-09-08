@@ -12,6 +12,7 @@ import 'package:toeic_desktop/data/models/entities/flash_card/word/word_random.d
 import 'package:toeic_desktop/data/models/entities/payment/payment.dart';
 import 'package:toeic_desktop/data/models/entities/payment/payment_status.dart';
 import 'package:toeic_desktop/data/models/entities/profile/profile_analysis.dart';
+import 'package:toeic_desktop/data/models/entities/rooms/room_db.dart';
 import 'package:toeic_desktop/data/models/entities/test/question.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_explain.dart';
 import 'package:toeic_desktop/data/models/entities/test/question_result.dart';
@@ -22,6 +23,7 @@ import 'package:toeic_desktop/data/models/entities/test/test.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test_set.dart';
+import 'package:toeic_desktop/data/models/request/create_room_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
@@ -221,16 +223,35 @@ abstract class ApiClient {
   @GET('/pub/word/4-random')
   Future<List<WordRandom>> getRandom4Words();
 
-  @GET('/pub/transcript-test-item/transcript-test-id?transcriptTestId={transcriptTestId}')
+  @GET(
+      '/pub/transcript-test-item/transcript-test-id?transcriptTestId={transcriptTestId}')
   Future<List<TranscriptTest>> getTranscriptTestDetail(
     @Path("transcriptTestId") String transcriptTestId,
   );
-  
+
   @GET('/pub/blog')
   Future<List<Blog>> getBlog();
 
   @GET('/pub/blog/search?search={search}')
   Future<List<Blog>> searchBlog(
     @Path("search") String search,
+  );
+
+  @POST('/user/profile/upload-file')
+  Future<String> uploadFile(
+    @Part(
+      name: "file",
+    )
+    File file,
+  );
+
+  @POST('/live-streaming/rooms')
+  Future<RoomDb> createRoom(
+    @Body() CreateRoomRequest request,
+  );
+
+  @POST('/live-streaming/rooms/:roomId/with-livekit')
+  Future<String> createLivekitRoom(
+    @Path("roomId") String roomId,
   );
 }

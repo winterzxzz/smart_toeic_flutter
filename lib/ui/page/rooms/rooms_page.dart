@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/data/models/room_model.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/room_model.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/rooms/rooms_cubit.dart';
 import 'package:toeic_desktop/ui/page/rooms/rooms_state.dart';

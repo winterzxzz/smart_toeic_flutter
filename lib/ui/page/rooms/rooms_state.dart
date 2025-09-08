@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/data/models/room_model.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/room_model.dart';
 
 class RoomsState extends Equatable {
   final LoadStatus loadStatus;

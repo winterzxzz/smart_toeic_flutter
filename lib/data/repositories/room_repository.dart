@@ -1,14 +1,24 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
+import 'package:livekit_client/livekit_client.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/data/models/entities/rooms/room_db.dart';
+import 'package:toeic_desktop/data/models/request/create_room_request.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
 
-import '../models/room_model.dart';
+import '../models/ui_models/rooms/room_model.dart';
 
 abstract class RoomRepository {
   Future<Either<ApiError, List<RoomModel>>> getRooms();
   Future<Either<ApiError, List<RoomModel>>> getRoomsByCategory(String category);
   Future<Either<ApiError, RoomModel>> getRoomById(String id);
+  Future<Either<Exception, Room>> connect(String token);
+  Future<Either<ApiError, RoomDb>> createRoom(CreateRoomRequest request);
+  Future<Either<Exception, LiveArgs>> startLive(RoomDb room);
 }
 
 class RoomRepositoryImpl implements RoomRepository {
@@ -121,6 +131,58 @@ class RoomRepositoryImpl implements RoomRepository {
       return Right(_sampleRooms.firstWhere((room) => room.id == id));
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, RoomDb>> createRoom(CreateRoomRequest request) async {
+    try {
+      final file = File(request.thumbnail);
+      final thumbnail = await _apiClient.uploadFile(file);
+      final newRequest = request.copyWith(thumbnail: thumbnail);
+      final response = await _apiClient.createRoom(newRequest);
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Room>> connect(String token) async {
+    try {
+      final room = Room(
+          roomOptions: const RoomOptions(
+        adaptiveStream: true,
+        dynacast: true,
+      ));
+      await room.connect(AppConfigs.livekitWss, token,
+          connectOptions: const ConnectOptions(autoSubscribe: true));
+      return Right(room);
+    } catch (e) {
+      return Left(Exception(e));
+    }
+  }
+
+  @override
+  Future<Either<Exception, LiveArgs>> startLive(RoomDb roomDb) async {
+    try {
+      final token = await _apiClient.createLivekitRoom(roomDb.id.toString());
+      final roomResponse = await connect(token);
+      late Room room;
+      roomResponse.fold((l) => throw l, (r) {
+        room = r;
+      });
+      final listener = room.createListener();
+      return Right(LiveArgs(
+        roomId: roomDb.id,
+        room: room,
+        listener: listener,
+        currentCameraDescription: null,
+        isOpenCamera: true,
+        isOpenMic: true,
+      ));
+    } catch (e) {
+      return Left(Exception(e));
     }
   }
 }

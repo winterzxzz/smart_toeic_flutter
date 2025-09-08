@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/data/models/room_model.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/room_model.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class RoomCard extends StatelessWidget {
