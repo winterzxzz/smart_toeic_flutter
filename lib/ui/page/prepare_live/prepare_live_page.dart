@@ -23,7 +23,6 @@ class _PrepareLivePageState extends State<PrepareLivePage> {
   @override
   void initState() {
     super.initState();
-    _initializeRenderers();
     _requestPermissions();
   }
 
