@@ -64,7 +64,10 @@ class CommentItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('User $index', style: context.textTheme.titleSmall),
+              Text('User $index',
+                  style: context.textTheme.titleSmall?.copyWith(
+                    color: Colors.white,
+                  )),
               Text('Message $index',
                   maxLines: 5,
                   overflow: TextOverflow.ellipsis,
@@ -110,8 +113,14 @@ class _PrepareLiveInputState extends State<PrepareLiveInput> {
           Expanded(
             child: TextField(
               controller: messageController,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: Colors.white,
+              ),
               decoration: InputDecoration(
                 hintText: 'Type a message...',
+                hintStyle: context.textTheme.bodySmall?.copyWith(
+                  color: Colors.white70,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide:
@@ -141,7 +150,8 @@ class _PrepareLiveInputState extends State<PrepareLiveInput> {
                 borderRadius: BorderRadius.circular(25),
               ),
               padding: const EdgeInsets.all(8),
-              child: const Icon(Icons.emoji_emotions, size: 24),
+              child: const Icon(Icons.emoji_emotions,
+                  size: 24, color: Colors.white),
             ),
           ),
           const SizedBox(width: 8),

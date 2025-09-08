@@ -18,11 +18,17 @@ class _PrepareLiveMenuState extends State<PrepareLiveMenu> {
       ),
       child: Column(
         children: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.mic)),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.mic, color: Colors.white)),
           const SizedBox(height: 10),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.camera)),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.camera, color: Colors.white)),
           const SizedBox(height: 10),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.settings, color: Colors.white)),
         ],
       ),
     );

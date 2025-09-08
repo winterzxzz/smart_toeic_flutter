@@ -31,7 +31,8 @@ class PrepareLiveHeader extends StatelessWidget {
                       Image.network('https://picsum.photos/200/300').image,
                 ),
                 const SizedBox(width: 4),
-                Text('Live Stream', style: textTheme.bodySmall),
+                Text('Live Stream',
+                    style: textTheme.bodySmall?.copyWith(color: Colors.white)),
               ],
             ),
           ),
@@ -42,7 +43,7 @@ class PrepareLiveHeader extends StatelessWidget {
                   GoRouter.of(context).pop();
                 });
               },
-              icon: const Icon(Icons.close))
+              icon: const Icon(Icons.close, color: Colors.white))
         ],
       ),
     );
