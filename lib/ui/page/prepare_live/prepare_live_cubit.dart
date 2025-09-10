@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toeic_desktop/main.dart';
@@ -13,7 +15,7 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
   late CameraController cameraController;
 
   void initialize() async {
-    if (cameras.length < 2) {
+    if (cameras.isEmpty) {
       emit(state.copyWith(
           loadStatus: LoadStatus.failure, message: 'Camera not available'));
       return;
@@ -49,7 +51,7 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
   }
 
   void switchCamera() async {
-    if (cameras.length < 2) {
+    if (cameras.isEmpty) {
       emit(state.copyWith(
           loadStatus: LoadStatus.failure, message: 'Camera not available'));
       return;
@@ -109,14 +111,43 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
 
   void selectImageFrom(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: source);
-    if (image == null) return;
-    emit(state.copyWith(thumbnail: File(image.path)));
+    final XFile? pickedImage = await picker.pickImage(source: source);
+    if (pickedImage == null) return;
+
+    final CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: pickedImage.path,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+        ),
+        IOSUiSettings(
+          title: 'Crop Image',
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+        ),
+      ],
+    );
+
+    if (croppedFile == null) return;
+
+    emit(state.copyWith(thumbnail: File(croppedFile.path)));
   }
 
   @override
-  Future<void> close() {
-    cameraController.dispose();
+  Future<void> close() async {
+    await cameraController.dispose();
     return super.close();
   }
 }

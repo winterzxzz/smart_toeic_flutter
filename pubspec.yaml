@@ -94,6 +94,7 @@ dependencies:
   livekit_client: ^2.3.1+hotfix.1
   flutter_webrtc: ^0.12.12+hotfix.1
   camera: ^0.11.2
+  image_cropper: ^9.1.0
 
 dev_dependencies:
   flutter_test:
