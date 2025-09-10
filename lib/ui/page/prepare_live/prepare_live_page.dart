@@ -138,6 +138,7 @@ class _PageState extends State<Page> {
                       onSelectImage: _prepareLiveCubit.selectImageFrom,
                       onEnterTitle: (title) {},
                       onSelectBroadcastTarget: () {},
+                      onStartLive: () {},
                     ),
                   ),
                 ),

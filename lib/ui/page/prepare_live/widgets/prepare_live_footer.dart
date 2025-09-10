@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 
 class PrepareLiveFooter extends StatefulWidget {
   const PrepareLiveFooter(
       {super.key,
       required this.onSelectImage,
       required this.onEnterTitle,
-      required this.onSelectBroadcastTarget});
+      required this.onSelectBroadcastTarget,
+      required this.onStartLive});
 
   final Function(ImageSource) onSelectImage;
   final Function(String) onEnterTitle;
   final Function() onSelectBroadcastTarget;
+  final Function() onStartLive;
 
   @override
   State<PrepareLiveFooter> createState() => _PrepareLiveFooterState();
@@ -26,30 +29,42 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
   Widget build(BuildContext context) {
     final width = context.sizze.width;
     return Container(
-      width: width * 0.7,
       padding: const EdgeInsets.all(16),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          _buildActionButton(
-            icon: Icons.people,
-            label: 'Participants',
-            isRequired: true,
-            onTap: () => widget.onSelectBroadcastTarget(),
+          SizedBox(
+            width: width * 0.7,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildActionButton(
+                  icon: Icons.people,
+                  label: 'Participants',
+                  isRequired: true,
+                  onTap: () => widget.onSelectBroadcastTarget(),
+                ),
+                const SizedBox(height: 12),
+                _buildActionButton(
+                  icon: Icons.edit,
+                  label: 'Enter Title',
+                  isRequired: false,
+                  onTap: () => widget.onEnterTitle(''),
+                ),
+                const SizedBox(height: 12),
+                _buildActionButton(
+                  icon: Icons.image,
+                  label: 'Set Thumbnail',
+                  isRequired: true,
+                  onTap: () => _setThumbnail(),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 12),
-          _buildActionButton(
-            icon: Icons.edit,
-            label: 'Enter Title',
-            isRequired: false,
-            onTap: () => widget.onEnterTitle(''),
-          ),
-          const SizedBox(height: 12),
-          _buildActionButton(
-            icon: Icons.image,
-            label: 'Set Thumbnail',
-            isRequired: true,
-            onTap: () => _setThumbnail(),
+          CustomButton(
+            child: const Text('Start Live'),
+            onPressed: () => widget.onStartLive(),
           ),
         ],
       ),
