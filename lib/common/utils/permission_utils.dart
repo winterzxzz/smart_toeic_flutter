@@ -60,6 +60,22 @@ class PermissionUtils {
     return false;
   }
 
+  static Future<bool> requestMicPermission(BuildContext context) async {
+    if (await Permission.microphone.isGranted) {
+      return true;
+    } else {
+      var status = await Permission.microphone.request();
+      if (status.isGranted) {
+        return true;
+      } else if (status.isPermanentlyDenied) {
+        if (context.mounted) {
+          await showOpenAppSettingsDialog(context);
+        }
+      }
+    }
+    return false;
+  }
+
   static Future<void> showOpenAppSettingsDialog(BuildContext context) async {
     await showDialog(
       context: context,

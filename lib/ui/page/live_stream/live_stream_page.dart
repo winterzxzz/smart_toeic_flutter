@@ -40,7 +40,7 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
 
     await _room.connect(
       'wss://winterzxzz-tm30hn8t.livekit.cloud',
-      'eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcInVzZXJJZFwiOjEsXCJ1c2VybmFtZVwiOlwiVW5rbm93bjE3NTczNDM0NzE1MzhcIixcImF2YXRhclVybFwiOlwiaHR0cHM6Ly9pLnByYXZhdGFyLmNjLzE1MD91PTE3NTczNDM0NzE1MzhcIixcImlzTXV0ZVVzZXJcIjpmYWxzZX0iLCJuYW1lIjoiVW5rbm93bjE3NTczNDM0NzE1MzgiLCJ2aWRlbyI6eyJyb29tIjoidGVzdGluZy0xIiwicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWV9LCJpc3MiOiJBUEl4MkQ1YUNTRWlldXYiLCJleHAiOjE3NTczNjUwNzEsIm5iZiI6MCwic3ViIjoiMV91c2VyIn0.JgJZ-8phblXLSndNjGmzAesDaQa-tMF1k-DGQoDBYxo',
+      'eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcInVzZXJJZFwiOjEsXCJ1c2VybmFtZVwiOlwiVW5rbm93bjE3NTc0Mjc4ODcxNTZcIixcImF2YXRhclVybFwiOlwiaHR0cHM6Ly9pLnByYXZhdGFyLmNjLzE1MD91PTE3NTc0Mjc4ODcxNTZcIixcImlzTXV0ZVVzZXJcIjpmYWxzZX0iLCJuYW1lIjoiVW5rbm93bjE3NTc0Mjc4ODcxNTYiLCJ2aWRlbyI6eyJyb29tIjoidGVzdGluZy0xIiwicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWV9LCJpc3MiOiJBUEl4MkQ1YUNTRWlldXYiLCJleHAiOjE3NTc0NDk0ODcsIm5iZiI6MCwic3ViIjoiMV91c2VyIn0.mQQDbpM0yzrZnQATNne95M4hd5u5yhMwa6XSY3r66n4',
     );
 
     _room.addListener(_onChange);
@@ -146,7 +146,11 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
               right: 10,
               child: SafeArea(
                 child: PrepareLiveMenu(
-                    onSwitchCamera: () {}, onToggleCamera: () {}),
+                    isOpenMic: true,
+                    isOpenCamera: true,
+                    onToggleMic: _toggleMic,
+                    onSwitchCamera: () {},
+                    onToggleCamera: () {}),
               ),
             ),
           ],

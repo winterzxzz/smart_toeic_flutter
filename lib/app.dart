@@ -29,6 +29,7 @@ import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/cubit/get_random_word_cubit.dart';
+import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_cubit.dart';
 import 'package:toeic_desktop/ui/page/rooms/rooms_cubit.dart';
 import 'package:toeic_desktop/ui/page/test/history_test/history_test_cubit.dart';
 import 'package:toeic_desktop/ui/page/reset_password/reset_password_cubit.dart';

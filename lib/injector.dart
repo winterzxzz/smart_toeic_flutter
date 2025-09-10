@@ -71,7 +71,8 @@ Future<void> init() async {
     ..registerFactory<CertificatesCubit>(() => CertificatesCubit(
           web3Service: injector(),
         ))
-    ..registerFactory<RoomsCubit>(() => RoomsCubit(injector()));
+    ..registerFactory<RoomsCubit>(() => RoomsCubit(injector()))
+    ..registerFactory<PrepareLiveCubit>(() => PrepareLiveCubit());
 
   // Singleton Cubits (long-lived objects)
   injector
