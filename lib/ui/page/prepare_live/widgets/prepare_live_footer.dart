@@ -1,8 +1,21 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class PrepareLiveFooter extends StatefulWidget {
-  const PrepareLiveFooter({super.key});
+  const PrepareLiveFooter(
+      {super.key,
+      required this.onSelectImage,
+      required this.onEnterTitle,
+      required this.onSelectBroadcastTarget});
+
+  final Function(ImageSource) onSelectImage;
+  final Function(String) onEnterTitle;
+  final Function() onSelectBroadcastTarget;
 
   @override
   State<PrepareLiveFooter> createState() => _PrepareLiveFooterState();
@@ -11,163 +24,130 @@ class PrepareLiveFooter extends StatefulWidget {
 class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
   @override
   Widget build(BuildContext context) {
-    final height = context.sizze.height;
     final width = context.sizze.width;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: height * 0.3,
-          width: width * 0.8,
-          child: ListView.separated(
-            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 8);
-            },
-            itemBuilder: (context, index) {
-              return CommentItem(index: index);
-            },
-            itemCount: 10,
+    return Container(
+      width: width * 0.7,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildActionButton(
+            icon: Icons.people,
+            label: 'Participants',
+            isRequired: true,
+            onTap: () => widget.onSelectBroadcastTarget(),
+          ),
+          const SizedBox(height: 12),
+          _buildActionButton(
+            icon: Icons.edit,
+            label: 'Enter Title',
+            isRequired: false,
+            onTap: () => widget.onEnterTitle(''),
+          ),
+          const SizedBox(height: 12),
+          _buildActionButton(
+            icon: Icons.image,
+            label: 'Set Thumbnail',
+            isRequired: true,
+            onTap: () => _setThumbnail(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required bool isRequired,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(25),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
           ),
         ),
-        const PrepareLiveInput(),
-      ],
-    );
-  }
-}
-
-class CommentItem extends StatelessWidget {
-  const CommentItem({
-    super.key,
-    required this.index,
-  });
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 16,
-            backgroundImage:
-                Image.network('https://picsum.photos/200/300').image,
-          ),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('User $index',
-                  style: context.textTheme.titleSmall?.copyWith(
-                    color: Colors.white,
-                  )),
-              Text('Message $index',
-                  maxLines: 5,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white70,
-                  )),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class PrepareLiveInput extends StatefulWidget {
-  const PrepareLiveInput({
-    super.key,
-  });
-
-  @override
-  State<PrepareLiveInput> createState() => _PrepareLiveInputState();
-}
-
-class _PrepareLiveInputState extends State<PrepareLiveInput> {
-  late final TextEditingController messageController;
-
-  @override
-  void initState() {
-    super.initState();
-    messageController = TextEditingController();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12),
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: TextField(
-              controller: messageController,
-              style: context.textTheme.bodySmall?.copyWith(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: context.textTheme.bodyMedium?.copyWith(
                 color: Colors.white,
-              ),
-              decoration: InputDecoration(
-                hintText: 'Type a message...',
-                hintStyle: context.textTheme.bodySmall?.copyWith(
-                  color: Colors.white70,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide:
-                      BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-                ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                fontWeight: FontWeight.w500,
               ),
             ),
-          ),
-          const SizedBox(width: 8),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(25),
+            if (isRequired) ...[
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  'Required',
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              padding: const EdgeInsets.all(8),
-              child: const Icon(Icons.emoji_emotions,
-                  size: 24, color: Colors.white),
-            ),
-          ),
-          const SizedBox(width: 8),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: const Icon(Icons.send, size: 24, color: Colors.white),
-            ),
-          ),
-        ],
+            ],
+          ],
+        ),
       ),
     );
+  }
+
+  void _setThumbnail() async {
+    final textTheme = context.textTheme;
+    // allow user to select image from gallery or capture from camera
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) {
+          return CupertinoActionSheet(
+            title: Text('Select Image',
+                style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+            actions: [
+              CupertinoActionSheetAction(
+                onPressed: () {
+                  widget.onSelectImage(ImageSource.gallery);
+                },
+                child: Text('Gallery',
+                    style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+              ),
+              CupertinoActionSheetAction(
+                onPressed: () {
+                  widget.onSelectImage(ImageSource.camera);
+                },
+                child: Text('Camera',
+                    style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              onPressed: () {
+                GoRouter.of(context).pop();
+              },
+              child: Text('Cancel',
+                  style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+            ),
+          );
+        });
   }
 }

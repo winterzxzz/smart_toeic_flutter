@@ -129,12 +129,16 @@ class _PageState extends State<Page> {
                   ),
                 ),
                 // Footer overlay
-                const Positioned(
+                Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
                   child: SafeArea(
-                    child: PrepareLiveFooter(),
+                    child: PrepareLiveFooter(
+                      onSelectImage: _prepareLiveCubit.selectImageFrom,
+                      onEnterTitle: (title) {},
+                      onSelectBroadcastTarget: () {},
+                    ),
                   ),
                 ),
 

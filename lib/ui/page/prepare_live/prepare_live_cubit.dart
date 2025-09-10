@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:toeic_desktop/main.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_state.dart';
 
@@ -102,6 +105,13 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
     } else {
       emit(state.copyWith(isOpenMic: true));
     }
+  }
+
+  void selectImageFrom(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+    if (image == null) return;
+    emit(state.copyWith(thumbnail: File(image.path)));
   }
 
   @override
