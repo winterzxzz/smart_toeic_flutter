@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/ui_models/participant_track.dart';
 
 class LiveStreamState extends Equatable {
   final LoadStatus loadStatus;
@@ -10,6 +11,8 @@ class LiveStreamState extends Equatable {
   final bool isOpenMic;
   final bool isVideoTrackReady;
   final CameraDescription? currentCameraDescription;
+  final List<ParticipantTrack> participantTracks;
+  final int numberUser;
 
   const LiveStreamState({
     required this.loadStatus,
@@ -19,6 +22,8 @@ class LiveStreamState extends Equatable {
     required this.isOpenMic,
     required this.isVideoTrackReady,
     required this.currentCameraDescription,
+    required this.participantTracks,
+    required this.numberUser,
   });
 
   // initial state
@@ -31,6 +36,8 @@ class LiveStreamState extends Equatable {
       isOpenMic: true,
       isVideoTrackReady: false,
       currentCameraDescription: null,
+      participantTracks: [],
+      numberUser: 0,
     );
   }
 
@@ -43,6 +50,8 @@ class LiveStreamState extends Equatable {
     bool? isOpenMic,
     bool? isVideoTrackReady,
     CameraDescription? currentCameraDescription,
+    List<ParticipantTrack>? participantTracks,
+    int? numberUser,
   }) {
     return LiveStreamState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -53,6 +62,8 @@ class LiveStreamState extends Equatable {
       isVideoTrackReady: isVideoTrackReady ?? this.isVideoTrackReady,
       currentCameraDescription:
           currentCameraDescription ?? this.currentCameraDescription,
+      participantTracks: participantTracks ?? this.participantTracks,
+      numberUser: numberUser ?? this.numberUser,
     );
   }
 
@@ -64,6 +75,8 @@ class LiveStreamState extends Equatable {
         isOpenCamera,
         isOpenMic,
         isVideoTrackReady,
-        currentCameraDescription
+        currentCameraDescription,
+        participantTracks,
+        numberUser,
       ];
 }

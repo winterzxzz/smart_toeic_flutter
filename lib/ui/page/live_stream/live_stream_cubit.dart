@@ -5,6 +5,7 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/ui_models/participant_track.dart';
 import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/data/network/repositories/room_repository.dart';
 import 'package:toeic_desktop/main.dart';
@@ -43,6 +44,15 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
                             CameraLensDirection.front
                         ? CameraPosition.front
                         : CameraPosition.back));
+        final videoTrackPublication = liveArgs
+            .room.localParticipant?.videoTrackPublications
+            .where((pub) => pub.track is VideoTrack)
+            .firstOrNull;
+        final videoTrack = videoTrackPublication?.track;
+
+        if (videoTrack is VideoTrack) {
+          emit(state.copyWith(isVideoTrackReady: true));
+        }
       } else {
         await liveArgs.room.localParticipant?.setCameraEnabled(false);
       }
@@ -51,22 +61,23 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
     } catch (e) {
       debugPrint('Winter-Error initializing live stream: $e');
     }
+
+    sortParticipants();
   }
 
   void setupListener() {
     liveArgs.listener
       ..on<RoomDisconnectedEvent>((_) {
-        // handle disconnect
-      })
-      ..on<RoomDisconnectedEvent>((_) {
         debugPrint('Winter-room disconnected');
       })
       ..on<ParticipantConnectedEvent>((e) {
         debugPrint("Winter-participant joined: ${e.participant.identity}");
+        increaseNumberUser();
       })
       ..on<ParticipantDisconnectedEvent>((e) {
         debugPrint(
             "Winter-participant disconnected: ${e.participant.identity}");
+        decreaseNumberUser();
       })
       ..on<TrackPublishedEvent>((e) {
         debugPrint("Winter-track published: ${e.publication.kind}");
@@ -80,6 +91,8 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
           emit(state.copyWith(isVideoTrackReady: false));
         }
       })
+      ..on<LocalTrackPublication>((_) => sortParticipants())
+      ..on<LocalTrackUnpublishedEvent>((_) => sortParticipants())
       ..on<TranscriptionEvent>((e) {
         for (final segment in e.segments) {
           if (segment.isFinal) {
@@ -132,6 +145,15 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
     } else {
       emit(state.copyWith(isOpenCamera: true, isVideoTrackReady: false));
       await liveArgs.room.localParticipant?.setCameraEnabled(true);
+      final videoTrackPublication = liveArgs
+          .room.localParticipant?.videoTrackPublications
+          .where((pub) => pub.track is VideoTrack)
+          .firstOrNull;
+      final videoTrack = videoTrackPublication?.track;
+
+      if (videoTrack is VideoTrack) {
+        emit(state.copyWith(isVideoTrackReady: true));
+      }
     }
   }
 
@@ -148,5 +170,40 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
       emit(state.copyWith(loadStatus: LoadStatus.failure));
       showToast(title: l.message, type: ToastificationType.error);
     }, (r) => emit(state.copyWith(loadStatus: LoadStatus.success)));
+  }
+
+  void sortParticipants() {
+    List<ParticipantTrack> userMediaTracks = [];
+    List<ParticipantTrack> screenTracks = [];
+    final localParticipantTracks =
+        liveArgs.room.localParticipant?.videoTrackPublications;
+    if (localParticipantTracks != null) {
+      for (var t in localParticipantTracks) {
+        if (t.isScreenShare) {
+          screenTracks.add(ParticipantTrack(
+            participant: liveArgs.room.localParticipant!,
+            videoTrack: t.track,
+          ));
+        } else {
+          userMediaTracks.add(ParticipantTrack(
+            participant: liveArgs.room.localParticipant!,
+            videoTrack: t.track,
+          ));
+        }
+      }
+    }
+    emit(state
+        .copyWith(participantTracks: [...screenTracks, ...userMediaTracks]));
+  }
+
+  void increaseNumberUser() {
+    final currentNumberUser = state.numberUser;
+    emit(state.copyWith(numberUser: currentNumberUser + 1));
+  }
+
+  void decreaseNumberUser() {
+    final currentNumberUser = state.numberUser;
+    if (currentNumberUser == 0) return;
+    emit(state.copyWith(numberUser: currentNumberUser - 1));
   }
 }
