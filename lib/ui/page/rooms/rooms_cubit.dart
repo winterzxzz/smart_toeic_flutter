@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/data/repositories/room_repository.dart';
+import 'package:toeic_desktop/data/network/repositories/room_repository.dart';
 import 'package:toeic_desktop/ui/page/rooms/rooms_state.dart';
 
 class RoomsCubit extends Cubit<RoomsState> {

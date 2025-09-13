@@ -10,7 +10,7 @@ import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
 
-import '../models/ui_models/rooms/room_model.dart';
+import '../../models/ui_models/rooms/room_model.dart';
 
 abstract class RoomRepository {
   Future<Either<ApiError, List<RoomModel>>> getRooms();
@@ -18,7 +18,7 @@ abstract class RoomRepository {
   Future<Either<ApiError, RoomModel>> getRoomById(String id);
   Future<Either<Exception, Room>> connect(String token);
   Future<Either<ApiError, RoomDb>> createRoom(CreateRoomRequest request);
-  Future<Either<Exception, LiveArgs>> startLive(RoomDb room);
+  Future<Either<ApiError, LiveArgs>> startLive(RoomDb room);
 }
 
 class RoomRepositoryImpl implements RoomRepository {
@@ -164,14 +164,14 @@ class RoomRepositoryImpl implements RoomRepository {
   }
 
   @override
-  Future<Either<Exception, LiveArgs>> startLive(RoomDb roomDb) async {
+  Future<Either<ApiError, LiveArgs>> startLive(RoomDb roomDb) async {
     try {
       final token = await _apiClient.createLivekitRoom(roomDb.id.toString());
-      final roomResponse = await connect(token);
-      late Room room;
-      roomResponse.fold((l) => throw l, (r) {
-        room = r;
-      });
+      final room = Room(
+          roomOptions: const RoomOptions(
+        adaptiveStream: true,
+        dynacast: true,
+      ));
       final listener = room.createListener();
       return Right(LiveArgs(
         roomId: roomDb.id,
@@ -180,9 +180,10 @@ class RoomRepositoryImpl implements RoomRepository {
         currentCameraDescription: null,
         isOpenCamera: true,
         isOpenMic: true,
+        token: token,
       ));
-    } catch (e) {
-      return Left(Exception(e));
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
     }
   }
 }

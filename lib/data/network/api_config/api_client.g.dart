@@ -1441,7 +1441,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/live-streaming/rooms',
+          '/user/bridge-nest/create-room-in-db',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -1474,7 +1474,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          '/live-streaming/rooms/:roomId/with-livekit',
+          '/user/bridge-nest/${roomId}/with-livekit',
           queryParameters: queryParameters,
           data: _data,
         )

@@ -9,6 +9,7 @@ class LiveArgs extends Equatable {
   final CameraDescription? currentCameraDescription;
   final bool isOpenCamera;
   final bool isOpenMic;
+  final String token;
 
   const LiveArgs({
     required this.roomId,
@@ -17,6 +18,7 @@ class LiveArgs extends Equatable {
     required this.currentCameraDescription,
     required this.isOpenCamera,
     required this.isOpenMic,
+    required this.token,
   });
 
   LiveArgs copyWith({
@@ -26,6 +28,7 @@ class LiveArgs extends Equatable {
     CameraDescription? currentCameraDescription,
     bool? isOpenCamera,
     bool? isOpenMic,
+    String? token,
   }) {
     return LiveArgs(
       roomId: roomId ?? this.roomId,
@@ -35,6 +38,7 @@ class LiveArgs extends Equatable {
           currentCameraDescription ?? this.currentCameraDescription,
       isOpenCamera: isOpenCamera ?? this.isOpenCamera,
       isOpenMic: isOpenMic ?? this.isOpenMic,
+      token: token ?? this.token,
     );
   }
 
@@ -45,6 +49,7 @@ class LiveArgs extends Equatable {
         listener,
         currentCameraDescription,
         isOpenCamera,
-        isOpenMic
+        isOpenMic,
+        token
       ];
 }

@@ -24,15 +24,13 @@ class RoomDb {
   @JsonKey(name: "thumbnail")
   final String thumbnail;
   @JsonKey(name: "liverId")
-  final int liverId;
-  @JsonKey(name: "livekitSid")
-  final dynamic livekitSid;
+  final String liverId;
   @JsonKey(name: "status")
   final String status;
   @JsonKey(name: "process")
   final String process;
   @JsonKey(name: "maxParticipants")
-  final dynamic maxParticipants;
+  final int maxParticipants;
   @JsonKey(name: "viewers")
   final int viewers;
   @JsonKey(name: "highestConcurrentViewers")
@@ -40,15 +38,15 @@ class RoomDb {
   @JsonKey(name: "numberOfUniqueUsers")
   final int numberOfUniqueUsers;
   @JsonKey(name: "startedAt")
-  final dynamic startedAt;
+  final DateTime? startedAt;
   @JsonKey(name: "finishedAt")
-  final dynamic finishedAt;
+  final DateTime? finishedAt;
   @JsonKey(name: "createdAt")
   final DateTime createdAt;
   @JsonKey(name: "updatedAt")
   final DateTime updatedAt;
   @JsonKey(name: "deletedAt")
-  final dynamic deletedAt;
+  final DateTime? deletedAt;
   @JsonKey(name: "liver")
   final Liver liver;
 
@@ -59,18 +57,17 @@ class RoomDb {
     required this.description,
     required this.thumbnail,
     required this.liverId,
-    required this.livekitSid,
     required this.status,
     required this.process,
     required this.maxParticipants,
     required this.viewers,
     required this.highestConcurrentViewers,
     required this.numberOfUniqueUsers,
-    required this.startedAt,
-    required this.finishedAt,
+    this.startedAt,
+    this.finishedAt,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.liver,
   });
 
@@ -80,19 +77,18 @@ class RoomDb {
     String? name,
     String? description,
     String? thumbnail,
-    int? liverId,
-    dynamic livekitSid,
+    String? liverId,
     String? status,
     String? process,
-    dynamic maxParticipants,
+    int? maxParticipants,
     int? viewers,
     int? highestConcurrentViewers,
     int? numberOfUniqueUsers,
-    dynamic startedAt,
-    dynamic finishedAt,
+    DateTime? startedAt,
+    DateTime? finishedAt,
     DateTime? createdAt,
     DateTime? updatedAt,
-    dynamic deletedAt,
+    DateTime? deletedAt,
     Liver? liver,
   }) =>
       RoomDb(
@@ -102,7 +98,6 @@ class RoomDb {
         description: description ?? this.description,
         thumbnail: thumbnail ?? this.thumbnail,
         liverId: liverId ?? this.liverId,
-        livekitSid: livekitSid ?? this.livekitSid,
         status: status ?? this.status,
         process: process ?? this.process,
         maxParticipants: maxParticipants ?? this.maxParticipants,
@@ -126,7 +121,7 @@ class RoomDb {
 @JsonSerializable()
 class Liver {
   @JsonKey(name: "id")
-  final int id;
+  final String id;
   @JsonKey(name: "username")
   final String username;
   @JsonKey(name: "avatarUrl")
@@ -139,7 +134,7 @@ class Liver {
   });
 
   Liver copyWith({
-    int? id,
+    String? id,
     String? username,
     String? avatarUrl,
   }) =>

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_cubit.dart';
@@ -80,9 +81,20 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              CustomButton(
-                child: const Text('Start Live'),
-                onPressed: () {},
+              BlocBuilder<PrepareLiveCubit, PrepareLiveState>(
+                builder: (context, state) {
+                  final isEnabled =
+                      state.liveName.isNotEmpty && state.thumbnail != null;
+                  return CustomButton(
+                    isLoading: state.loadStatus == LoadStatus.loading,
+                    onPressed: isEnabled
+                        ? () {
+                            _prepareLiveCubit.startCountDownTimer();
+                          }
+                        : null,
+                    child: const Text('Start Live'),
+                  );
+                },
               ),
             ],
           ),
@@ -117,9 +129,9 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            if (isThumbnail)
+            if (isThumbnail && thumbnail != null)
               Image.file(
-                thumbnail!,
+                thumbnail,
                 width: 20,
                 height: 20,
               )

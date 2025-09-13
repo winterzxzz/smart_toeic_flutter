@@ -245,12 +245,12 @@ abstract class ApiClient {
     File file,
   );
 
-  @POST('/live-streaming/rooms')
+  @POST('/user/bridge-nest/create-room-in-db')
   Future<RoomDb> createRoom(
     @Body() CreateRoomRequest request,
   );
 
-  @POST('/live-streaming/rooms/:roomId/with-livekit')
+  @POST('/user/bridge-nest/{roomId}/with-livekit')
   Future<String> createLivekitRoom(
     @Path("roomId") String roomId,
   );

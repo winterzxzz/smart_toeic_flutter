@@ -1,19 +1,27 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toeic_desktop/data/models/request/create_room_request.dart';
+import 'package:toeic_desktop/data/network/repositories/room_repository.dart';
 import 'package:toeic_desktop/main.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_state.dart';
 
 class PrepareLiveCubit extends Cubit<PrepareLiveState> {
-  PrepareLiveCubit() : super(PrepareLiveState.initial());
+  final RoomRepository _roomRepository;
+  PrepareLiveCubit(this._roomRepository) : super(PrepareLiveState.initial());
 
   late CameraController cameraController;
+
+  Timer? _countDownTimer;
 
   void initialize() async {
     if (cameras.isEmpty) {
@@ -78,6 +86,7 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
     } catch (e) {
       emit(state.copyWith(
           loadStatus: LoadStatus.failure, message: 'Camera not available'));
+      showToast(title: 'Camera not available', type: ToastificationType.error);
     }
   }
 
@@ -99,6 +108,7 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
     } catch (e) {
       emit(state.copyWith(
           loadStatus: LoadStatus.failure, message: 'Camera not available'));
+      showToast(title: 'Camera not available', type: ToastificationType.error);
     }
   }
 
@@ -150,6 +160,9 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
         loadStatus: LoadStatus.failure,
         message: 'Failed to crop image: ${e.toString()}',
       ));
+      showToast(
+          title: 'Failed to crop image: ${e.toString()}',
+          type: ToastificationType.error);
     }
   }
 
@@ -157,9 +170,64 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
     emit(state.copyWith(liveName: title));
   }
 
+  void startCountDownTimer() {
+    emit(state.copyWith(isCountDown: true, countDown: 5));
+    _countDownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      emit(state.copyWith(countDown: state.countDown - 1));
+      if (state.countDown <= 0) {
+        _countDownTimer?.cancel();
+        emit(state.copyWith(isCountDown: false));
+        startLive();
+      }
+    });
+  }
+
+  void cancelCountDownTimer() {
+    _countDownTimer?.cancel();
+    emit(state.copyWith(isCountDown: false));
+  }
+
+  void startLive() async {
+    emit(state.copyWith(loadStatus: LoadStatus.loading, message: ''));
+    if (state.liveName.isEmpty || state.thumbnail == null) {
+      emit(state.copyWith(
+          loadStatus: LoadStatus.failure,
+          message: 'Please enter title and set thumbnail'));
+      showToast(
+          title: 'Please enter title and set thumbnail',
+          type: ToastificationType.error);
+      return;
+    }
+    final createRoomRequest = CreateRoomRequest(
+      name: state.liveName,
+      description: 'No description',
+      thumbnail: state.thumbnail?.path ?? '',
+    );
+    final rs = await _roomRepository.createRoom(createRoomRequest);
+    rs.fold(
+        (l) => {
+              emit(state.copyWith(
+                  loadStatus: LoadStatus.failure, message: l.message)),
+              showToast(title: l.message, type: ToastificationType.error),
+            }, (r) async {
+      final rs2 = await _roomRepository.startLive(r);
+      rs2.fold(
+          (l) => {
+                emit(state.copyWith(
+                    loadStatus: LoadStatus.failure, message: l.message)),
+                showToast(title: l.message, type: ToastificationType.error),
+              }, (r) {
+        emit(state.copyWith(loadStatus: LoadStatus.success, liveArgs: r));
+      });
+    });
+  }
+
   @override
   Future<void> close() async {
-    await cameraController.dispose();
+    _countDownTimer?.cancel();
+    if (state.isInitialized && cameraController.value.isInitialized) {
+      await cameraController.dispose();
+    }
     return super.close();
   }
 }

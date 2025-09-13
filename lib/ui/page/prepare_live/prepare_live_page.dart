@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/utils/permission_utils.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_cubit.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_state.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_footer.dart';
@@ -58,10 +60,35 @@ class _PageState extends State<Page> {
     super.dispose();
   }
 
+  Color _getCountdownColor(int countdown) {
+    switch (countdown) {
+      case 5:
+      case 4:
+        return Colors.green;
+      case 3:
+      case 2:
+        return Colors.orange;
+      case 1:
+        return Colors.red;
+      default:
+        return Colors.white;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = context.sizze.height;
-    return BlocBuilder<PrepareLiveCubit, PrepareLiveState>(
+    return BlocConsumer<PrepareLiveCubit, PrepareLiveState>(
+      listenWhen: (previous, current) =>
+          previous.loadStatus != current.loadStatus,
+      listener: (context, state) {
+        if (state.loadStatus == LoadStatus.loading) {
+          AppNavigator(context: context)
+              .showLoadingOverlay(message: 'Preparing live...');
+        } else {
+          AppNavigator(context: context).hideLoadingOverlay();
+        }
+      },
       builder: (context, state) {
         return PopScope(
           canPop: false,
@@ -151,6 +178,102 @@ class _PageState extends State<Page> {
                     ),
                   ),
                 ),
+
+                // Countdown overlay
+                if (state.isCountDown)
+                  Positioned.fill(
+                    child: GestureDetector(
+                      onTap: () {
+                        _prepareLiveCubit.cancelCountDownTimer();
+                      },
+                      child: Container(
+                        color: Colors.black.withValues(alpha: 0.8),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AnimatedScale(
+                                scale: state.countDown > 0 ? 1.0 : 0.0,
+                                duration: const Duration(milliseconds: 300),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 500),
+                                  width: 200,
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color:
+                                          _getCountdownColor(state.countDown),
+                                      width: 6,
+                                    ),
+                                    color: _getCountdownColor(state.countDown)
+                                        .withValues(alpha: 0.1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color:
+                                            _getCountdownColor(state.countDown)
+                                                .withValues(alpha: 0.5),
+                                        blurRadius: 20,
+                                        spreadRadius: 5,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: TweenAnimationBuilder<double>(
+                                      key: ValueKey(state.countDown),
+                                      duration:
+                                          const Duration(milliseconds: 800),
+                                      tween:
+                                          Tween<double>(begin: 0.5, end: 1.0),
+                                      builder: (context, scale, child) {
+                                        return Transform.scale(
+                                          scale: scale,
+                                          child: Text(
+                                            '${state.countDown}',
+                                            style: TextStyle(
+                                              fontSize: 80,
+                                              fontWeight: FontWeight.bold,
+                                              color: _getCountdownColor(
+                                                  state.countDown),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              AnimatedOpacity(
+                                opacity: state.countDown > 0 ? 1.0 : 0.0,
+                                duration: const Duration(milliseconds: 300),
+                                child: const Text(
+                                  'Get Ready!',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              AnimatedOpacity(
+                                opacity: state.countDown > 0 ? 1.0 : 0.0,
+                                duration: const Duration(milliseconds: 300),
+                                child: const Text(
+                                  'Live stream will start soon, tap to cancel',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

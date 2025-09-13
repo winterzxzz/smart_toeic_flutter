@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/main.dart';
 
 class PrepareLiveState extends Equatable {
@@ -16,6 +17,9 @@ class PrepareLiveState extends Equatable {
   final File? thumbnail;
   final String? description;
   final ResolutionPreset resolutionPreset;
+  final int countDown;
+  final bool isCountDown;
+  final LiveArgs? liveArgs;
 
   const PrepareLiveState({
     required this.loadStatus,
@@ -28,6 +32,9 @@ class PrepareLiveState extends Equatable {
     this.thumbnail,
     required this.description,
     required this.resolutionPreset,
+    required this.countDown,
+    required this.isCountDown,
+    this.liveArgs,
   });
 
   factory PrepareLiveState.initial() {
@@ -42,6 +49,8 @@ class PrepareLiveState extends Equatable {
       thumbnail: null,
       description: '',
       resolutionPreset: ResolutionPreset.max,
+      countDown: 5,
+      isCountDown: false,
     );
   }
 
@@ -56,6 +65,9 @@ class PrepareLiveState extends Equatable {
     File? thumbnail,
     String? description,
     ResolutionPreset? resolutionPreset,
+    int? countDown,
+    bool? isCountDown,
+    LiveArgs? liveArgs,
   }) {
     return PrepareLiveState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -69,6 +81,9 @@ class PrepareLiveState extends Equatable {
       thumbnail: thumbnail ?? this.thumbnail,
       description: description ?? this.description,
       resolutionPreset: resolutionPreset ?? this.resolutionPreset,
+      countDown: countDown ?? this.countDown,
+      isCountDown: isCountDown ?? this.isCountDown,
+      liveArgs: liveArgs ?? this.liveArgs,
     );
   }
 
@@ -84,5 +99,8 @@ class PrepareLiveState extends Equatable {
         thumbnail,
         description,
         resolutionPreset,
+        countDown,
+        isCountDown,
+        liveArgs,
       ];
 }

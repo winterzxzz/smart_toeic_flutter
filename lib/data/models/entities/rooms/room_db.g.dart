@@ -12,20 +12,25 @@ RoomDb _$RoomDbFromJson(Map<String, dynamic> json) => RoomDb(
       name: json['name'] as String,
       description: json['description'] as String,
       thumbnail: json['thumbnail'] as String,
-      liverId: (json['liverId'] as num).toInt(),
-      livekitSid: json['livekitSid'],
+      liverId: json['liverId'] as String,
       status: json['status'] as String,
       process: json['process'] as String,
-      maxParticipants: json['maxParticipants'],
+      maxParticipants: (json['maxParticipants'] as num).toInt(),
       viewers: (json['viewers'] as num).toInt(),
       highestConcurrentViewers:
           (json['highestConcurrentViewers'] as num).toInt(),
       numberOfUniqueUsers: (json['numberOfUniqueUsers'] as num).toInt(),
-      startedAt: json['startedAt'],
-      finishedAt: json['finishedAt'],
+      startedAt: json['startedAt'] == null
+          ? null
+          : DateTime.parse(json['startedAt'] as String),
+      finishedAt: json['finishedAt'] == null
+          ? null
+          : DateTime.parse(json['finishedAt'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
-      deletedAt: json['deletedAt'],
+      deletedAt: json['deletedAt'] == null
+          ? null
+          : DateTime.parse(json['deletedAt'] as String),
       liver: Liver.fromJson(json['liver'] as Map<String, dynamic>),
     );
 
@@ -36,23 +41,22 @@ Map<String, dynamic> _$RoomDbToJson(RoomDb instance) => <String, dynamic>{
       'description': instance.description,
       'thumbnail': instance.thumbnail,
       'liverId': instance.liverId,
-      'livekitSid': instance.livekitSid,
       'status': instance.status,
       'process': instance.process,
       'maxParticipants': instance.maxParticipants,
       'viewers': instance.viewers,
       'highestConcurrentViewers': instance.highestConcurrentViewers,
       'numberOfUniqueUsers': instance.numberOfUniqueUsers,
-      'startedAt': instance.startedAt,
-      'finishedAt': instance.finishedAt,
+      'startedAt': instance.startedAt?.toIso8601String(),
+      'finishedAt': instance.finishedAt?.toIso8601String(),
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
-      'deletedAt': instance.deletedAt,
+      'deletedAt': instance.deletedAt?.toIso8601String(),
       'liver': instance.liver,
     };
 
 Liver _$LiverFromJson(Map<String, dynamic> json) => Liver(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       username: json['username'] as String,
       avatarUrl: json['avatarUrl'] as String,
     );

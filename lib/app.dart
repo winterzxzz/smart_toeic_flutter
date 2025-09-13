@@ -16,7 +16,7 @@ import 'package:toeic_desktop/data/network/repositories/payment_repository.dart'
 import 'package:toeic_desktop/data/network/repositories/proflie_respository.dart';
 import 'package:toeic_desktop/data/network/repositories/test_repository.dart';
 import 'package:toeic_desktop/data/network/repositories/transcript_test.dart';
-import 'package:toeic_desktop/data/repositories/room_repository.dart';
+import 'package:toeic_desktop/data/network/repositories/room_repository.dart';
 import 'package:toeic_desktop/data/services/noti_service.dart';
 import 'package:toeic_desktop/data/services/stt_service.dart';
 import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
