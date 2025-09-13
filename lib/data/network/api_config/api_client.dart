@@ -29,6 +29,7 @@ import 'package:toeic_desktop/data/models/request/flash_card_request.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
 import 'package:toeic_desktop/data/models/request/question_explain_request.dart';
 import 'package:toeic_desktop/data/models/request/result_item_request.dart';
+import 'package:toeic_desktop/data/models/response/livekit_response.dart';
 import 'package:toeic_desktop/data/models/response/reset_password_response.dart';
 
 part 'api_client.g.dart';
@@ -251,7 +252,7 @@ abstract class ApiClient {
   );
 
   @POST('/user/bridge-nest/{roomId}/with-livekit')
-  Future<String> createLivekitRoom(
+  Future<LivekitResponse> createLivekitRoom(
     @Path("roomId") String roomId,
   );
 }

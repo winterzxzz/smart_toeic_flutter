@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/permission_utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
@@ -86,6 +87,12 @@ class _PageState extends State<Page> {
           AppNavigator(context: context)
               .showLoadingOverlay(message: 'Preparing live...');
         } else {
+          if (state.loadStatus == LoadStatus.success &&
+              state.liveArgs != null) {
+            AppNavigator(context: context).pushReplacementNamed(
+                AppRouter.liveStream,
+                extra: {'liveArgs': state.liveArgs});
+          }
           AppNavigator(context: context).hideLoadingOverlay();
         }
       },

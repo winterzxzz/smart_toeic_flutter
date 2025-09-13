@@ -166,9 +166,9 @@ class RoomRepositoryImpl implements RoomRepository {
   @override
   Future<Either<ApiError, LiveArgs>> startLive(RoomDb roomDb) async {
     try {
-      final token = await _apiClient.createLivekitRoom(roomDb.id.toString());
+      final livekitResponse = await _apiClient.createLivekitRoom(roomDb.id.toString());
       final room = Room(
-          roomOptions: const RoomOptions(
+        roomOptions: const RoomOptions(
         adaptiveStream: true,
         dynacast: true,
       ));
@@ -180,7 +180,7 @@ class RoomRepositoryImpl implements RoomRepository {
         currentCameraDescription: null,
         isOpenCamera: true,
         isOpenMic: true,
-        token: token,
+        token: livekitResponse.token,
       ));
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));

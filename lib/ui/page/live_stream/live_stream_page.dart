@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_header.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_menu.dart';
 
 class LiveStreamPage extends StatefulWidget {
+  final LiveArgs liveArgs;
   const LiveStreamPage({
     super.key,
+    required this.liveArgs,
   });
 
   @override
@@ -17,8 +21,6 @@ class LiveStreamPage extends StatefulWidget {
 }
 
 class _LiveStreamPageState extends State<LiveStreamPage> {
-  late Room _room;
-  late final EventsListener<RoomEvent> _listener;
   late VideoTrack? localVideoTrack;
   String _currentTranscription = '';
 
@@ -29,26 +31,18 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
   }
 
   Future<void> _connect() async {
-    _room = Room(
-      roomOptions: const RoomOptions(
-        adaptiveStream: true,
-        dynacast: true,
-      ),
+
+    await widget.liveArgs.room.connect(
+      AppConfigs.livekitWss,
+      widget.liveArgs.token,
     );
 
-    _listener = _room.createListener();
-
-    await _room.connect(
-      'wss://winterzxzz-tm30hn8t.livekit.cloud',
-      'eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcInVzZXJJZFwiOjEsXCJ1c2VybmFtZVwiOlwiVW5rbm93bjE3NTc0Mjc4ODcxNTZcIixcImF2YXRhclVybFwiOlwiaHR0cHM6Ly9pLnByYXZhdGFyLmNjLzE1MD91PTE3NTc0Mjc4ODcxNTZcIixcImlzTXV0ZVVzZXJcIjpmYWxzZX0iLCJuYW1lIjoiVW5rbm93bjE3NTc0Mjc4ODcxNTYiLCJ2aWRlbyI6eyJyb29tIjoidGVzdGluZy0xIiwicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWV9LCJpc3MiOiJBUEl4MkQ1YUNTRWlldXYiLCJleHAiOjE3NTc0NDk0ODcsIm5iZiI6MCwic3ViIjoiMV91c2VyIn0.mQQDbpM0yzrZnQATNne95M4hd5u5yhMwa6XSY3r66n4',
-    );
-
-    _room.addListener(_onChange);
+    widget.liveArgs.room.addListener(_onChange);
     // used for specific events
-    _listener
+    widget.liveArgs.listener
       ..on<RoomDisconnectedEvent>((_) {
         // handle disconnect
-      })
+      })  
       ..on<RoomDisconnectedEvent>((_) {
         GoRouter.of(context).pop();
         debugPrint('Winter-room disconnected');
@@ -70,16 +64,16 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
         }
       });
 
-    await _room.localParticipant?.setCameraEnabled(true);
-    await _room.localParticipant?.setMicrophoneEnabled(true);
+    await widget.liveArgs.room.localParticipant?.setCameraEnabled(true);
+    await widget.liveArgs.room.localParticipant?.setMicrophoneEnabled(true);
     localVideoTrack =
-        _room.localParticipant?.videoTrackPublications.firstOrNull?.track;
+        widget.liveArgs.room.localParticipant?.videoTrackPublications.firstOrNull?.track;
 
     setState(() {});
   }
 
   void _closeRoom() {
-    _room.disconnect();
+    widget.liveArgs.room.disconnect();
     GoRouter.of(context).pop();
   }
 
@@ -95,7 +89,7 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
 
   @override
   void dispose() {
-    _room.disconnect();
+    widget.liveArgs.room.disconnect();
     super.dispose();
   }
 
@@ -109,11 +103,11 @@ class _LiveStreamPageState extends State<LiveStreamPage> {
         body: Stack(
           children: [
             Positioned.fill(
-              child: _room.localParticipant?.videoTrackPublications.firstOrNull
+              child: widget.liveArgs.room.localParticipant?.videoTrackPublications.firstOrNull
                           ?.track !=
                       null
                   ? VideoTrackRenderer(
-                      _room.localParticipant?.videoTrackPublications.firstOrNull
+                      widget.liveArgs.room.localParticipant?.videoTrackPublications.firstOrNull
                           ?.track as VideoTrack,
                       fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
                     )

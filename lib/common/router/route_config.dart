@@ -10,6 +10,7 @@ import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_page.dart';
 import 'package:toeic_desktop/ui/page/image_view/image_view_page.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_page.dart';
@@ -310,7 +311,11 @@ class AppRouter {
     GoRoute(
       name: liveStream,
       path: liveStream,
-      builder: (context, state) => const LiveStreamPage(),
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final liveArgs = args['liveArgs'] as LiveArgs;
+        return LiveStreamPage(liveArgs: liveArgs);
+      },
     ),
     GoRoute(
       name: prepareLive,

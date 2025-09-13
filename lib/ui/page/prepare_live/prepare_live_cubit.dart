@@ -217,7 +217,17 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
                     loadStatus: LoadStatus.failure, message: l.message)),
                 showToast(title: l.message, type: ToastificationType.error),
               }, (r) {
-        emit(state.copyWith(loadStatus: LoadStatus.success, liveArgs: r));
+        emit(state.copyWith(
+            loadStatus: LoadStatus.success,
+            liveArgs: r.copyWith(
+              currentCameraDescription: state.currentCameraDescription,
+              isOpenCamera: state.isOpenCamera,
+              isOpenMic: state.isOpenMic,
+              token: r.token,
+              room: r.room,
+              listener: r.listener,
+              roomId: r.roomId,
+            )));
       });
     });
   }
