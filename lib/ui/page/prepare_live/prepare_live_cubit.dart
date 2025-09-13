@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toeic_desktop/main.dart';
+import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_state.dart';
 
 class PrepareLiveCubit extends Cubit<PrepareLiveState> {
@@ -110,39 +111,50 @@ class PrepareLiveCubit extends Cubit<PrepareLiveState> {
   }
 
   void selectImageFrom(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedImage = await picker.pickImage(source: source);
-    if (pickedImage == null) return;
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedImage = await picker.pickImage(source: source);
+      if (pickedImage == null) return;
 
-    final CroppedFile? croppedFile = await ImageCropper().cropImage(
-      sourcePath: pickedImage.path,
-      uiSettings: [
-        AndroidUiSettings(
-          toolbarTitle: 'Crop Image',
-          toolbarColor: Colors.deepOrange,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9,
-          ],
-        ),
-        IOSUiSettings(
-          title: 'Crop Image',
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9,
-          ],
-        ),
-      ],
-    );
+      final CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedImage.path,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: AppColors.appBarDark,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+            aspectRatioPresets: [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9,
+            ],
+          ),
+          IOSUiSettings(
+            title: 'Crop Image',
+            aspectRatioPresets: [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9,
+            ],
+          ),
+        ],
+      );
 
-    if (croppedFile == null) return;
+      if (croppedFile == null) return;
 
-    emit(state.copyWith(thumbnail: File(croppedFile.path)));
+      emit(state.copyWith(thumbnail: File(croppedFile.path)));
+    } catch (e) {
+      emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+        message: 'Failed to crop image: ${e.toString()}',
+      ));
+    }
+  }
+
+  void updateTitle(String title) {
+    emit(state.copyWith(liveName: title));
   }
 
   @override

@@ -2,69 +2,89 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
+import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_cubit.dart';
+import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_state.dart';
+import 'package:toeic_desktop/ui/page/prepare_live/widgets/enter_title_model.dart';
 
 class PrepareLiveFooter extends StatefulWidget {
-  const PrepareLiveFooter(
-      {super.key,
-      required this.onSelectImage,
-      required this.onEnterTitle,
-      required this.onSelectBroadcastTarget,
-      required this.onStartLive});
-
-  final Function(ImageSource) onSelectImage;
-  final Function(String) onEnterTitle;
-  final Function() onSelectBroadcastTarget;
-  final Function() onStartLive;
+  const PrepareLiveFooter({super.key});
 
   @override
   State<PrepareLiveFooter> createState() => _PrepareLiveFooterState();
 }
 
 class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
+  late final PrepareLiveCubit _prepareLiveCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _prepareLiveCubit = BlocProvider.of<PrepareLiveCubit>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = context.sizze.width;
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             width: width * 0.7,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _buildActionButton(
-                  icon: Icons.people,
-                  label: 'Participants',
-                  isRequired: true,
-                  onTap: () => widget.onSelectBroadcastTarget(),
+                const SizedBox(height: 12),
+                BlocSelector<PrepareLiveCubit, PrepareLiveState, String>(
+                  selector: (state) {
+                    return state.liveName;
+                  },
+                  builder: (context, liveName) {
+                    return _buildActionButton(
+                      icon: Icons.edit,
+                      label: liveName.isEmpty ? 'Enter Title' : liveName,
+                      isHaveData: liveName.isNotEmpty,
+                      isThumbnail: false,
+                      onTap: () => _showTitleDialog(liveName),
+                    );
+                  },
                 ),
                 const SizedBox(height: 12),
-                _buildActionButton(
-                  icon: Icons.edit,
-                  label: 'Enter Title',
-                  isRequired: false,
-                  onTap: () => widget.onEnterTitle(''),
-                ),
-                const SizedBox(height: 12),
-                _buildActionButton(
-                  icon: Icons.image,
-                  label: 'Set Thumbnail',
-                  isRequired: true,
-                  onTap: () => _setThumbnail(),
+                BlocSelector<PrepareLiveCubit, PrepareLiveState, File?>(
+                  selector: (state) {
+                    return state.thumbnail;
+                  },
+                  builder: (context, thumbnail) {
+                    return _buildActionButton(
+                      icon: Icons.image,
+                      label: thumbnail != null
+                          ? 'Change Thumbnail'
+                          : 'Set Thumbnail',
+                      isHaveData: thumbnail != null,
+                      isThumbnail: true,
+                      thumbnail: thumbnail,
+                      onTap: () => _setThumbnail(),
+                    );
+                  },
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          CustomButton(
-            child: const Text('Start Live'),
-            onPressed: () => widget.onStartLive(),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              CustomButton(
+                child: const Text('Start Live'),
+                onPressed: () {},
+              ),
+            ],
           ),
         ],
       ),
@@ -74,30 +94,41 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
   Widget _buildActionButton({
     required IconData icon,
     required String label,
-    required bool isRequired,
+    required bool isHaveData,
+    required bool isThumbnail,
+    File? thumbnail,
     required VoidCallback onTap,
   }) {
+    final colorScheme = context.colorScheme;
+    final color = isHaveData ? colorScheme.primary : Colors.white;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(25),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
+            color: color.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(
-              icon,
-              color: Colors.white,
-              size: 20,
-            ),
+            if (isThumbnail)
+              Image.file(
+                thumbnail!,
+                width: 20,
+                height: 20,
+              )
+            else
+              Icon(
+                icon,
+                color: Colors.white,
+                size: 20,
+              ),
             const SizedBox(width: 8),
             Text(
               label,
@@ -106,7 +137,7 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            if (isRequired) ...[
+            if (!isHaveData) ...[
               const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -142,14 +173,16 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
             actions: [
               CupertinoActionSheetAction(
                 onPressed: () {
-                  widget.onSelectImage(ImageSource.gallery);
+                  _prepareLiveCubit.selectImageFrom(ImageSource.gallery);
+                  GoRouter.of(context).pop();
                 },
                 child: Text('Gallery',
                     style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
               ),
               CupertinoActionSheetAction(
                 onPressed: () {
-                  widget.onSelectImage(ImageSource.camera);
+                  _prepareLiveCubit.selectImageFrom(ImageSource.camera);
+                  GoRouter.of(context).pop();
                 },
                 child: Text('Camera',
                     style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
@@ -164,5 +197,16 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
             ),
           );
         });
+  }
+
+  void _showTitleDialog(String liveName) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return EnterTitleModel(
+            onEnterTitle: _prepareLiveCubit.updateTitle, liveName: liveName);
+      },
+    );
   }
 }

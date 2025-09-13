@@ -15,11 +15,11 @@ extension EnvironmentExt on Environment {
   String get baseUrl {
     switch (this) {
       case Environment.dev:
-        return "https://65541719a3c9.ngrok-free.app/api";
+        return "https://9e8a8e6a9d76.ngrok-free.app/api";
       case Environment.stg:
         return "https://9533ff5e30a0.ngrok-free.app/api";
       case Environment.prod:
-        return "https://65541719a3c9.ngrok-free.app/api";
+        return "https://9e8a8e6a9d76.ngrok-free.app/api";
     }
   }
 
