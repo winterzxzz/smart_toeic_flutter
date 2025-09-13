@@ -12,7 +12,9 @@ import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_cubit.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_state.dart';
+import 'package:toeic_desktop/ui/page/live_stream/widgets/grid_remotr_track.dart';
 import 'package:toeic_desktop/ui/page/live_stream/widgets/live_stream_footer.dart';
+import 'package:toeic_desktop/ui/page/live_stream/widgets/live_stream_transcription_footer.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_header.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_menu.dart';
 
@@ -119,6 +121,7 @@ class _PageState extends State<Page> {
                   right: 0,
                   child: SafeArea(
                     child: PrepareLiveHeader(
+                      viewCount: state.numberUser,
                       onClose: () async {
                         _liveStreamCubit.closeRoom().then((value) {
                           if (context.mounted) {
@@ -129,24 +132,49 @@ class _PageState extends State<Page> {
                     ),
                   ),
                 ),
-                const Positioned(
+                Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
                   child: SafeArea(
-                    child: LiveStreamFooter(),
+                    child: state.showFooter == LiveStreamShowFooter.comment
+                        ? const LiveStreamFooter()
+                        : LiveStreamTranscriptionFooter(
+                            transcription: state.currentTranscription),
                   ),
                 ),
+                // Grid Remote Tracks
+                if (state.isShowGridRemoteTracks)
+                  Positioned(
+                    top: height * 0.15,
+                    left: 10,
+                    right: 10,
+                    bottom: height * 0.2,
+                    child: SafeArea(
+                      child: GridRemoteTrack(
+                        remoteParticipantTracks: state.remoteParticipantTracks,
+                        isVisible: state.isShowGridRemoteTracks,
+                      ),
+                    ),
+                  ),
                 Positioned(
                   top: height * 0.15,
                   right: 10,
                   child: SafeArea(
                     child: PrepareLiveMenu(
-                        isOpenMic: state.isOpenMic,
-                        isOpenCamera: state.isOpenCamera,
-                        onToggleMic: _liveStreamCubit.toggleMic,
-                        onSwitchCamera: _liveStreamCubit.flipCamera,
-                        onToggleCamera: _liveStreamCubit.toggleCamera),
+                      isOpenMic: state.isOpenMic,
+                      isOpenCamera: state.isOpenCamera,
+                      onToggleMic: _liveStreamCubit.toggleMic,
+                      isScreenShare: state.isScreenShare,
+                      onToggleScreenShare: _liveStreamCubit.shareScreen,
+                      onSwitchCamera: _liveStreamCubit.flipCamera,
+                      onToggleCamera: _liveStreamCubit.toggleCamera,
+                      showFooter: state.showFooter,
+                      onToggleShowFooter: _liveStreamCubit.toggleShowFooter,
+                      onToggleGridRemote:
+                          _liveStreamCubit.toggleShowGridRemoteTracks,
+                      isShowGridRemote: state.isShowGridRemoteTracks,
+                    ),
                   ),
                 ),
               ],

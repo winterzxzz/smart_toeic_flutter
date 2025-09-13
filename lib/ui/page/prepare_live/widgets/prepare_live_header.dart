@@ -37,7 +37,7 @@ class PrepareLiveHeader extends StatelessWidget {
                     CircleAvatar(
                       radius: 18,
                       backgroundImage: Image.network(
-                              '${AppConfigs.baseUrl}${user?.avatar ?? ''}')
+                              '${AppConfigs.baseUrl.replaceAll('/api', '')}${user?.avatar}')
                           .image,
                     ),
                     const SizedBox(width: 4),

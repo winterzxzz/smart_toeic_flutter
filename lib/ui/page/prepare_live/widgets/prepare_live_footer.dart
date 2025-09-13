@@ -180,32 +180,28 @@ class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
         context: context,
         builder: (context) {
           return CupertinoActionSheet(
-            title: Text('Select Image',
-                style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+            title: Text('Select Image', style: textTheme.bodyMedium),
             actions: [
               CupertinoActionSheetAction(
                 onPressed: () {
                   _prepareLiveCubit.selectImageFrom(ImageSource.gallery);
                   GoRouter.of(context).pop();
                 },
-                child: Text('Gallery',
-                    style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+                child: Text('Gallery', style: textTheme.bodyMedium),
               ),
               CupertinoActionSheetAction(
                 onPressed: () {
                   _prepareLiveCubit.selectImageFrom(ImageSource.camera);
                   GoRouter.of(context).pop();
                 },
-                child: Text('Camera',
-                    style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+                child: Text('Camera', style: textTheme.bodyMedium),
               ),
             ],
             cancelButton: CupertinoActionSheetAction(
               onPressed: () {
                 GoRouter.of(context).pop();
               },
-              child: Text('Cancel',
-                  style: textTheme.bodyMedium?.copyWith(color: Colors.black)),
+              child: Text('Cancel', style: textTheme.bodyMedium),
             ),
           );
         });

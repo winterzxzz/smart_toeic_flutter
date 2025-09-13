@@ -3,16 +3,25 @@ import 'package:equatable/equatable.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/participant_track.dart';
 
+enum LiveStreamShowFooter {
+  comment,
+  transcription,
+}
+
 class LiveStreamState extends Equatable {
   final LoadStatus loadStatus;
   final String currentTranscription;
   final List<String> transcriptionHistory;
   final bool isOpenCamera;
   final bool isOpenMic;
+  final bool isScreenShare;
   final bool isVideoTrackReady;
+  final bool isShowGridRemoteTracks;
   final CameraDescription? currentCameraDescription;
-  final List<ParticipantTrack> participantTracks;
+  final List<ParticipantTrack> localParticipantTracks;
+  final List<ParticipantTrack> remoteParticipantTracks;
   final int numberUser;
+  final LiveStreamShowFooter showFooter;
 
   const LiveStreamState({
     required this.loadStatus,
@@ -20,10 +29,14 @@ class LiveStreamState extends Equatable {
     required this.transcriptionHistory,
     required this.isOpenCamera,
     required this.isOpenMic,
+    required this.isScreenShare,
     required this.isVideoTrackReady,
+    required this.isShowGridRemoteTracks,
     required this.currentCameraDescription,
-    required this.participantTracks,
+    required this.localParticipantTracks,
+    required this.remoteParticipantTracks,
     required this.numberUser,
+    required this.showFooter,
   });
 
   // initial state
@@ -34,10 +47,14 @@ class LiveStreamState extends Equatable {
       transcriptionHistory: [],
       isOpenCamera: true,
       isOpenMic: true,
+      isScreenShare: false,
       isVideoTrackReady: false,
+      isShowGridRemoteTracks: false,
       currentCameraDescription: null,
-      participantTracks: [],
+      localParticipantTracks: [],
+      remoteParticipantTracks: [],
       numberUser: 0,
+      showFooter: LiveStreamShowFooter.transcription,
     );
   }
 
@@ -48,10 +65,14 @@ class LiveStreamState extends Equatable {
     List<String>? transcriptionHistory,
     bool? isOpenCamera,
     bool? isOpenMic,
+    bool? isScreenShare,
     bool? isVideoTrackReady,
+    bool? isShowGridRemoteTracks,
     CameraDescription? currentCameraDescription,
-    List<ParticipantTrack>? participantTracks,
+    List<ParticipantTrack>? localParticipantTracks,
+    List<ParticipantTrack>? remoteParticipantTracks,
     int? numberUser,
+    LiveStreamShowFooter? showFooter,
   }) {
     return LiveStreamState(
       loadStatus: loadStatus ?? this.loadStatus,
@@ -59,11 +80,17 @@ class LiveStreamState extends Equatable {
       transcriptionHistory: transcriptionHistory ?? this.transcriptionHistory,
       isOpenCamera: isOpenCamera ?? this.isOpenCamera,
       isOpenMic: isOpenMic ?? this.isOpenMic,
+      isScreenShare: isScreenShare ?? this.isScreenShare,
       isVideoTrackReady: isVideoTrackReady ?? this.isVideoTrackReady,
+      isShowGridRemoteTracks: isShowGridRemoteTracks ?? this.isShowGridRemoteTracks,
       currentCameraDescription:
           currentCameraDescription ?? this.currentCameraDescription,
-      participantTracks: participantTracks ?? this.participantTracks,
+      localParticipantTracks:
+          localParticipantTracks ?? this.localParticipantTracks,
+      remoteParticipantTracks:
+          remoteParticipantTracks ?? this.remoteParticipantTracks,
       numberUser: numberUser ?? this.numberUser,
+      showFooter: showFooter ?? this.showFooter,
     );
   }
 
@@ -74,9 +101,13 @@ class LiveStreamState extends Equatable {
         transcriptionHistory,
         isOpenCamera,
         isOpenMic,
+        isScreenShare,
         isVideoTrackReady,
+        isShowGridRemoteTracks,
         currentCameraDescription,
-        participantTracks,
+        localParticipantTracks,
+        remoteParticipantTracks,
         numberUser,
+        showFooter,
       ];
 }

@@ -73,23 +73,21 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
       ..on<ParticipantConnectedEvent>((e) {
         debugPrint("Winter-participant joined: ${e.participant.identity}");
         increaseNumberUser();
+        sortParticipants();
       })
       ..on<ParticipantDisconnectedEvent>((e) {
         debugPrint(
             "Winter-participant disconnected: ${e.participant.identity}");
         decreaseNumberUser();
+        sortParticipants();
       })
       ..on<TrackPublishedEvent>((e) {
-        debugPrint("Winter-track published: ${e.publication.kind}");
-        if (e.publication.track is VideoTrack) {
-          emit(state.copyWith(isVideoTrackReady: true));
-        }
+        debugPrint("Winter-track published: ${e.publication.name}");
+        sortParticipants();
       })
       ..on<TrackUnpublishedEvent>((e) {
-        debugPrint("Winter-track unpublished: ${e.publication.kind}");
-        if (e.publication.track is VideoTrack) {
-          emit(state.copyWith(isVideoTrackReady: false));
-        }
+        debugPrint("Winter-track unpublished: ${e.publication.name}");
+        sortParticipants();
       })
       ..on<LocalTrackPublication>((_) => sortParticipants())
       ..on<LocalTrackUnpublishedEvent>((_) => sortParticipants())
@@ -175,25 +173,63 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
   void sortParticipants() {
     List<ParticipantTrack> userMediaTracks = [];
     List<ParticipantTrack> screenTracks = [];
-    final localParticipantTracks =
-        liveArgs.room.localParticipant?.videoTrackPublications;
-    if (localParticipantTracks != null) {
-      for (var t in localParticipantTracks) {
-        if (t.isScreenShare) {
-          screenTracks.add(ParticipantTrack(
-            participant: liveArgs.room.localParticipant!,
-            videoTrack: t.track,
-          ));
-        } else {
-          userMediaTracks.add(ParticipantTrack(
-            participant: liveArgs.room.localParticipant!,
-            videoTrack: t.track,
+    List<ParticipantTrack> remoteParticipantTracks = [];
+
+    final localParticipant = liveArgs.room.localParticipant;
+    final localVideoPublications = localParticipant?.videoTrackPublications;
+
+    final remoteParticipants = liveArgs.room.remoteParticipants.values;
+
+    // Local participant tracks
+    if (localVideoPublications != null) {
+      for (var pub in localVideoPublications) {
+        final track = pub.track;
+        if (track != null) {
+          final targetList = pub.isScreenShare ? screenTracks : userMediaTracks;
+          targetList.add(ParticipantTrack(
+            participant: localParticipant!,
+            videoTrack: track,
           ));
         }
       }
     }
-    emit(state
-        .copyWith(participantTracks: [...screenTracks, ...userMediaTracks]));
+
+    // Remote participant tracks
+    for (var remote in remoteParticipants) {
+      final publications = remote.videoTrackPublications;
+
+      if (publications.isNotEmpty) {
+        bool addedTrack = false;
+        for (var pub in publications) {
+          if (pub.track != null) {
+            remoteParticipantTracks.add(ParticipantTrack(
+              participant: remote,
+              videoTrack: pub.track,
+            ));
+            addedTrack = true;
+          }
+        }
+
+        // If none of the publications had tracks, add placeholder
+        if (!addedTrack) {
+          remoteParticipantTracks.add(ParticipantTrack(
+            participant: remote,
+            videoTrack: null,
+          ));
+        }
+      } else {
+        // No publications at all
+        remoteParticipantTracks.add(ParticipantTrack(
+          participant: remote,
+          videoTrack: null,
+        ));
+      }
+    }
+
+    emit(state.copyWith(
+      localParticipantTracks: [...screenTracks, ...userMediaTracks],
+      remoteParticipantTracks: remoteParticipantTracks,
+    ));
   }
 
   void increaseNumberUser() {
@@ -205,5 +241,29 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
     final currentNumberUser = state.numberUser;
     if (currentNumberUser == 0) return;
     emit(state.copyWith(numberUser: currentNumberUser - 1));
+  }
+
+  void shareScreen() {
+    if (state.isScreenShare) {
+      liveArgs.room.localParticipant?.setScreenShareEnabled(false);
+      emit(state.copyWith(isScreenShare: false));
+    } else {
+      liveArgs.room.localParticipant?.setScreenShareEnabled(true);
+      emit(state.copyWith(isScreenShare: true));
+    }
+  }
+
+  void toggleShowFooter() {
+    if (state.showFooter == LiveStreamShowFooter.comment) {
+      emit(state.copyWith(showFooter: LiveStreamShowFooter.transcription));
+    } else {
+      emit(state.copyWith(showFooter: LiveStreamShowFooter.comment));
+    }
+  }
+
+  void toggleShowGridRemoteTracks() {
+    final newValue = !state.isShowGridRemoteTracks;
+    debugPrint('Toggling grid remote tracks: $newValue');
+    emit(state.copyWith(isShowGridRemoteTracks: newValue));
   }
 }
