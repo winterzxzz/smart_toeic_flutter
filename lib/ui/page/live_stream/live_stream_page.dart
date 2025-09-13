@@ -1,155 +1,146 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
+import 'package:toeic_desktop/ui/page/live_stream/live_stream_cubit.dart';
+import 'package:toeic_desktop/ui/page/live_stream/live_stream_state.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_header.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_menu.dart';
 
-class LiveStreamPage extends StatefulWidget {
+class LiveStreamPage extends StatelessWidget {
   final LiveArgs liveArgs;
-  const LiveStreamPage({
+  const LiveStreamPage({super.key, required this.liveArgs});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LiveStreamCubit(liveArgs)..initialize(liveArgs),
+      child: Page(liveArgs: liveArgs),
+    );
+  }
+}
+
+class Page extends StatefulWidget {
+  final LiveArgs liveArgs;
+  const Page({
     super.key,
     required this.liveArgs,
   });
 
   @override
-  State<LiveStreamPage> createState() => _LiveStreamPageState();
+  State<Page> createState() => _PageState();
 }
 
-class _LiveStreamPageState extends State<LiveStreamPage> {
-  late VideoTrack? localVideoTrack;
-  String _currentTranscription = '';
+class _PageState extends State<Page> {
+  late final LiveStreamCubit _liveStreamCubit;
 
   @override
   void initState() {
     super.initState();
-    _connect();
-  }
-
-  Future<void> _connect() async {
-
-    await widget.liveArgs.room.connect(
-      AppConfigs.livekitWss,
-      widget.liveArgs.token,
-    );
-
-    widget.liveArgs.room.addListener(_onChange);
-    // used for specific events
-    widget.liveArgs.listener
-      ..on<RoomDisconnectedEvent>((_) {
-        // handle disconnect
-      })  
-      ..on<RoomDisconnectedEvent>((_) {
-        GoRouter.of(context).pop();
-        debugPrint('Winter-room disconnected');
-      })
-      ..on<ParticipantConnectedEvent>((e) {
-        debugPrint("Winter-participant joined: ${e.participant.identity}");
-      })
-      ..on<ParticipantDisconnectedEvent>((e) {
-        debugPrint(
-            "Winter-participant disconnected: ${e.participant.identity}");
-      })
-      ..on<TranscriptionEvent>((e) {
-        for (final segment in e.segments) {
-          if (segment.isFinal) {
-            debugPrint("Winter-transcription: ${segment.text}");
-            _currentTranscription = segment.text;
-            setState(() {});
-          }
-        }
-      });
-
-    await widget.liveArgs.room.localParticipant?.setCameraEnabled(true);
-    await widget.liveArgs.room.localParticipant?.setMicrophoneEnabled(true);
-    localVideoTrack =
-        widget.liveArgs.room.localParticipant?.videoTrackPublications.firstOrNull?.track;
-
-    setState(() {});
-  }
-
-  void _closeRoom() {
-    widget.liveArgs.room.disconnect();
-    GoRouter.of(context).pop();
-  }
-
-  void _onChange() {
-    // perform computations and then call setState
-    // setState will trigger a build
-    setState(() {
-      // your updates here
-    });
-  }
-
-  void _toggleMic() async {}
-
-  @override
-  void dispose() {
-    widget.liveArgs.room.disconnect();
-    super.dispose();
+    _liveStreamCubit = BlocProvider.of<LiveStreamCubit>(context);
+    _liveStreamCubit.setupListener();
   }
 
   @override
   Widget build(BuildContext context) {
     final height = context.sizze.height;
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: widget.liveArgs.room.localParticipant?.videoTrackPublications.firstOrNull
-                          ?.track !=
-                      null
-                  ? VideoTrackRenderer(
-                      widget.liveArgs.room.localParticipant?.videoTrackPublications.firstOrNull
-                          ?.track as VideoTrack,
-                      fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                    )
-                  : const LoadingCircle(),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: SafeArea(
-                child: PrepareLiveHeader(
-                  onClose: _closeRoom,
+    return BlocBuilder<LiveStreamCubit, LiveStreamState>(
+      builder: (context, state) {
+        return PopScope(
+          canPop: false,
+          child: Scaffold(
+            backgroundColor: Colors.black,
+            body: Stack(
+              children: [
+                Positioned.fill(
+                  child: state.isOpenCamera
+                      ? VideoTrackRenderer(
+                          _liveStreamCubit
+                              .liveArgs
+                              .room
+                              .localParticipant
+                              ?.videoTrackPublications
+                              .firstOrNull
+                              ?.track as VideoTrack,
+                          fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+                        )
+                      : Container(
+                          color: Colors.black,
+                          child: state.isOpenCamera
+                              ? const Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      LoadingCircle(),
+                                      SizedBox(height: 16),
+                                      Text(
+                                        'Starting camera...',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : const Center(
+                                  child: Icon(
+                                    Icons.videocam_off,
+                                    color: Colors.white54,
+                                    size: 64,
+                                  ),
+                                ),
+                        ),
                 ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: SafeArea(
-                child: Text(
-                  _currentTranscription,
-                  style: context.textTheme.bodySmall
-                      ?.copyWith(color: Colors.white),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: SafeArea(
+                    child: PrepareLiveHeader(
+                      onClose: () async {
+                        _liveStreamCubit.closeRoom().then((value) {
+                          if (context.mounted) {
+                            GoRouter.of(context).pop();
+                          }
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: SafeArea(
+                    child: Text(
+                      state.currentTranscription,
+                      style: context.textTheme.bodySmall
+                          ?.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: height * 0.15,
+                  right: 10,
+                  child: SafeArea(
+                    child: PrepareLiveMenu(
+                        isOpenMic: state.isOpenMic,
+                        isOpenCamera: state.isOpenCamera,
+                        onToggleMic: _liveStreamCubit.toggleMic,
+                        onSwitchCamera: _liveStreamCubit.flipCamera,
+                        onToggleCamera: _liveStreamCubit.toggleCamera),
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: height * 0.15,
-              right: 10,
-              child: SafeArea(
-                child: PrepareLiveMenu(
-                    isOpenMic: true,
-                    isOpenCamera: true,
-                    onToggleMic: _toggleMic,
-                    onSwitchCamera: () {},
-                    onToggleCamera: () {}),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
