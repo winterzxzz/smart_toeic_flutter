@@ -3,11 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:toeic_desktop/app.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
+import 'package:toeic_desktop/data/network/repositories/room_repository.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/ui/common/app_navigator.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_cubit.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_state.dart';
+import 'package:toeic_desktop/ui/page/live_stream/widgets/live_stream_footer.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_header.dart';
 import 'package:toeic_desktop/ui/page/prepare_live/widgets/prepare_live_menu.dart';
 
@@ -18,7 +23,9 @@ class LiveStreamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LiveStreamCubit(liveArgs)..initialize(liveArgs),
+      create: (context) =>
+          LiveStreamCubit(injector<RoomRepository>(), liveArgs: liveArgs)
+            ..initialize(liveArgs),
       child: Page(liveArgs: liveArgs),
     );
   }
@@ -48,7 +55,17 @@ class _PageState extends State<Page> {
   @override
   Widget build(BuildContext context) {
     final height = context.sizze.height;
-    return BlocBuilder<LiveStreamCubit, LiveStreamState>(
+    return BlocConsumer<LiveStreamCubit, LiveStreamState>(
+      listenWhen: (previous, current) =>
+          previous.loadStatus != current.loadStatus,
+      listener: (context, state) {
+        if (state.loadStatus == LoadStatus.loading) {
+          AppNavigator(context: context)
+              .showLoadingOverlay(message: 'Closing live...');
+        } else {
+          AppNavigator(context: context).hideLoadingOverlay();
+        }
+      },
       builder: (context, state) {
         return PopScope(
           canPop: false,
@@ -57,9 +74,9 @@ class _PageState extends State<Page> {
             body: Stack(
               children: [
                 Positioned.fill(
-                  child: state.isOpenCamera
+                  child: state.isOpenCamera && state.isVideoTrackReady
                       ? VideoTrackRenderer(
-                          _liveStreamCubit
+                          widget
                               .liveArgs
                               .room
                               .localParticipant
@@ -70,7 +87,7 @@ class _PageState extends State<Page> {
                         )
                       : Container(
                           color: Colors.black,
-                          child: state.isOpenCamera
+                          child: state.isOpenCamera && !state.isVideoTrackReady
                               ? const Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -112,16 +129,12 @@ class _PageState extends State<Page> {
                     ),
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
                   child: SafeArea(
-                    child: Text(
-                      state.currentTranscription,
-                      style: context.textTheme.bodySmall
-                          ?.copyWith(color: Colors.white),
-                    ),
+                    child: LiveStreamFooter(),
                   ),
                 ),
                 Positioned(

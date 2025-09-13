@@ -19,6 +19,8 @@ abstract class RoomRepository {
   Future<Either<Exception, Room>> connect(String token);
   Future<Either<ApiError, RoomDb>> createRoom(CreateRoomRequest request);
   Future<Either<ApiError, LiveArgs>> startLive(RoomDb room);
+  Future<Either<ApiError, void>> closeLive(int roomId);
+  Future<Either<ApiError, String>> joinLive(String roomName);
 }
 
 class RoomRepositoryImpl implements RoomRepository {
@@ -166,9 +168,10 @@ class RoomRepositoryImpl implements RoomRepository {
   @override
   Future<Either<ApiError, LiveArgs>> startLive(RoomDb roomDb) async {
     try {
-      final livekitResponse = await _apiClient.createLivekitRoom(roomDb.id.toString());
+      final livekitResponse =
+          await _apiClient.createLivekitRoom(roomDb.id.toString());
       final room = Room(
-        roomOptions: const RoomOptions(
+          roomOptions: const RoomOptions(
         adaptiveStream: true,
         dynacast: true,
       ));
@@ -182,6 +185,26 @@ class RoomRepositoryImpl implements RoomRepository {
         isOpenMic: true,
         token: livekitResponse.token,
       ));
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, void>> closeLive(int roomId) async {
+    try {
+      await _apiClient.deleteRoom(roomId.toString());
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, String>> joinLive(String roomName) async {
+    try {
+      final response = await _apiClient.updateLivekitRoom(roomName);
+      return Right(response.token);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));
     }

@@ -255,4 +255,14 @@ abstract class ApiClient {
   Future<LivekitResponse> createLivekitRoom(
     @Path("roomId") String roomId,
   );
+
+  @POST('/user/bridge-nest/{roomId}/close')
+  Future<void> deleteRoom(
+    @Path("roomId") String roomId,
+  );
+
+  @POST('/user/bridge-nest/{roomName}/join')
+  Future<LivekitResponse> updateLivekitRoom(
+    @Path("roomName") String roomName,
+  );
 }

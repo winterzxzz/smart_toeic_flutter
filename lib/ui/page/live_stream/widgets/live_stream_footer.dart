@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 
-class PrepareLiveFooter extends StatefulWidget {
-  const PrepareLiveFooter({super.key});
+class LiveStreamFooter extends StatefulWidget {
+  const LiveStreamFooter({super.key});
 
   @override
-  State<PrepareLiveFooter> createState() => _PrepareLiveFooterState();
+  State<LiveStreamFooter> createState() => _LiveStreamFooterState();
 }
 
-class _PrepareLiveFooterState extends State<PrepareLiveFooter> {
+class _LiveStreamFooterState extends State<LiveStreamFooter> {
   @override
   Widget build(BuildContext context) {
     final height = context.sizze.height;

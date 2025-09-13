@@ -2,14 +2,22 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
+import 'package:toeic_desktop/data/network/repositories/room_repository.dart';
 import 'package:toeic_desktop/main.dart';
+import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_state.dart';
 
 class LiveStreamCubit extends Cubit<LiveStreamState> {
+  final RoomRepository roomRepository;
   final LiveArgs liveArgs;
-  LiveStreamCubit(this.liveArgs) : super(LiveStreamState.initial());
+  LiveStreamCubit(
+    this.roomRepository, {
+    required this.liveArgs,
+  }) : super(LiveStreamState.initial());
 
   void initialize(LiveArgs liveArgs) async {
     emit(state.copyWith(
@@ -24,16 +32,17 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
 
       // Enable/disable microphone
       await liveArgs.room.localParticipant
-          ?.setMicrophoneEnabled(state.isOpenMic);
+          ?.setMicrophoneEnabled(liveArgs.isOpenMic);
 
       // Create and publish video track if camera is enabled
-      if (state.isOpenCamera && state.currentCameraDescription != null) {
+      if (liveArgs.isOpenCamera && liveArgs.currentCameraDescription != null) {
         await liveArgs.room.localParticipant?.setCameraEnabled(true,
             cameraCaptureOptions: CameraCaptureOptions(
-                cameraPosition: state.currentCameraDescription!.lensDirection ==
-                        CameraLensDirection.front
-                    ? CameraPosition.front
-                    : CameraPosition.back));
+                cameraPosition:
+                    liveArgs.currentCameraDescription!.lensDirection ==
+                            CameraLensDirection.front
+                        ? CameraPosition.front
+                        : CameraPosition.back));
       } else {
         await liveArgs.room.localParticipant?.setCameraEnabled(false);
       }
@@ -58,6 +67,18 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
       ..on<ParticipantDisconnectedEvent>((e) {
         debugPrint(
             "Winter-participant disconnected: ${e.participant.identity}");
+      })
+      ..on<TrackPublishedEvent>((e) {
+        debugPrint("Winter-track published: ${e.publication.kind}");
+        if (e.publication.track is VideoTrack) {
+          emit(state.copyWith(isVideoTrackReady: true));
+        }
+      })
+      ..on<TrackUnpublishedEvent>((e) {
+        debugPrint("Winter-track unpublished: ${e.publication.kind}");
+        if (e.publication.track is VideoTrack) {
+          emit(state.copyWith(isVideoTrackReady: false));
+        }
       })
       ..on<TranscriptionEvent>((e) {
         for (final segment in e.segments) {
@@ -107,9 +128,9 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
   void toggleCamera() async {
     if (state.isOpenCamera) {
       await liveArgs.room.localParticipant?.setCameraEnabled(false);
-      emit(state.copyWith(isOpenCamera: false));
+      emit(state.copyWith(isOpenCamera: false, isVideoTrackReady: false));
     } else {
-      emit(state.copyWith(isOpenCamera: true));
+      emit(state.copyWith(isOpenCamera: true, isVideoTrackReady: false));
       await liveArgs.room.localParticipant?.setCameraEnabled(true);
     }
   }
@@ -121,6 +142,11 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
   }
 
   Future<void> closeRoom() async {
-    await liveArgs.room.disconnect();
+    emit(state.copyWith(loadStatus: LoadStatus.loading));
+    final rs = await roomRepository.closeLive(liveArgs.roomId);
+    rs.fold((l) {
+      emit(state.copyWith(loadStatus: LoadStatus.failure));
+      showToast(title: l.message, type: ToastificationType.error);
+    }, (r) => emit(state.copyWith(loadStatus: LoadStatus.success)));
   }
 }

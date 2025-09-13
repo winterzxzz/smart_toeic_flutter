@@ -8,6 +8,7 @@ class LiveStreamState extends Equatable {
   final List<String> transcriptionHistory;
   final bool isOpenCamera;
   final bool isOpenMic;
+  final bool isVideoTrackReady;
   final CameraDescription? currentCameraDescription;
 
   const LiveStreamState({
@@ -16,6 +17,7 @@ class LiveStreamState extends Equatable {
     required this.transcriptionHistory,
     required this.isOpenCamera,
     required this.isOpenMic,
+    required this.isVideoTrackReady,
     required this.currentCameraDescription,
   });
 
@@ -27,6 +29,7 @@ class LiveStreamState extends Equatable {
       transcriptionHistory: [],
       isOpenCamera: true,
       isOpenMic: true,
+      isVideoTrackReady: false,
       currentCameraDescription: null,
     );
   }
@@ -38,6 +41,7 @@ class LiveStreamState extends Equatable {
     List<String>? transcriptionHistory,
     bool? isOpenCamera,
     bool? isOpenMic,
+    bool? isVideoTrackReady,
     CameraDescription? currentCameraDescription,
   }) {
     return LiveStreamState(
@@ -46,6 +50,7 @@ class LiveStreamState extends Equatable {
       transcriptionHistory: transcriptionHistory ?? this.transcriptionHistory,
       isOpenCamera: isOpenCamera ?? this.isOpenCamera,
       isOpenMic: isOpenMic ?? this.isOpenMic,
+      isVideoTrackReady: isVideoTrackReady ?? this.isVideoTrackReady,
       currentCameraDescription:
           currentCameraDescription ?? this.currentCameraDescription,
     );
@@ -58,6 +63,7 @@ class LiveStreamState extends Equatable {
         transcriptionHistory,
         isOpenCamera,
         isOpenMic,
+        isVideoTrackReady,
         currentCameraDescription
       ];
 }
