@@ -95,6 +95,8 @@ dependencies:
   flutter_webrtc: ^0.12.12+hotfix.1
   camera: ^0.11.2
   image_cropper: ^9.1.0
+  tflite_flutter: ^0.11.0
+  image: ^4.3.0
 
 dev_dependencies:
   flutter_test:
@@ -128,6 +130,8 @@ flutter:
     - assets/animations/
     - assets/audios/
     - assets/jsons/
+    - assets/model/
+    - assets/label/
 
 
   fonts:

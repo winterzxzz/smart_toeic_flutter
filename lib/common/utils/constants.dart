@@ -14,6 +14,12 @@ import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_cubit.dart';
 
 class Constants {
+  static const String ssdMobileNetV1 = 'assets/model/ssd_mobilenet_v1.tflite';
+  static const String ssdMobileNetV1LabelPath = 'assets/label/labels.txt';
+
+  static const int ssdCompatibleImageHeight = 300;
+  static const int ssdCompatibleImageWidth = 300;
+
   static List<ServiceItem> get services => [
         ServiceItem(
             icon: FontAwesomeIcons.robot,

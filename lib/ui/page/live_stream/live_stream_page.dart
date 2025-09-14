@@ -54,6 +54,29 @@ class _PageState extends State<Page> {
     _liveStreamCubit.setupListener();
   }
 
+  Widget _buildLocalVideoRenderer() {
+    final videoTrack = widget.liveArgs.room.localParticipant
+        ?.videoTrackPublications.firstOrNull?.track;
+
+    if (videoTrack != null) {
+      return VideoTrackRenderer(
+        videoTrack,
+        fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+      );
+    }
+
+    return Container(
+      color: Colors.black,
+      child: const Center(
+        child: Icon(
+          Icons.videocam_off,
+          color: Colors.white54,
+          size: 64,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = context.sizze.height;
@@ -66,6 +89,7 @@ class _PageState extends State<Page> {
               .showLoadingOverlay(message: 'Closing live...');
         } else {
           AppNavigator(context: context).hideLoadingOverlay();
+          GoRouter.of(context).pop();
         }
       },
       builder: (context, state) {
@@ -77,16 +101,7 @@ class _PageState extends State<Page> {
               children: [
                 Positioned.fill(
                   child: state.isOpenCamera && state.isVideoTrackReady
-                      ? VideoTrackRenderer(
-                          widget
-                              .liveArgs
-                              .room
-                              .localParticipant
-                              ?.videoTrackPublications
-                              .firstOrNull
-                              ?.track as VideoTrack,
-                          fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                        )
+                      ? _buildLocalVideoRenderer()
                       : Container(
                           color: Colors.black,
                           child: state.isOpenCamera && !state.isVideoTrackReady
@@ -122,27 +137,30 @@ class _PageState extends State<Page> {
                   child: SafeArea(
                     child: PrepareLiveHeader(
                       viewCount: state.numberUser,
-                      onClose: () async {
-                        _liveStreamCubit.closeRoom().then((value) {
-                          if (context.mounted) {
-                            GoRouter.of(context).pop();
-                          }
-                        });
+                      onClose: () {
+                        _liveStreamCubit.closeRoom();
                       },
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: SafeArea(
-                    child: state.showFooter == LiveStreamShowFooter.comment
-                        ? const LiveStreamFooter()
-                        : LiveStreamTranscriptionFooter(
-                            transcription: state.currentTranscription),
-                  ),
-                ),
+                state.showFooter == LiveStreamShowFooter.comment
+                    ? const Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: SafeArea(child: LiveStreamFooter()),
+                      )
+                    : (state.currentTranscription.isNotEmpty)
+                        ? Positioned(
+                            bottom: 20,
+                            left: 0,
+                            right: 0,
+                            child: SafeArea(
+                              child: LiveStreamTranscriptionFooter(
+                                  transcription: state.currentTranscription),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                 // Grid Remote Tracks
                 if (state.isShowGridRemoteTracks)
                   Positioned(

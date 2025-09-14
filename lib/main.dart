@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toeic_desktop/data/services/noti_service.dart';
+import 'package:toeic_desktop/data/services/tensorflow_service.dart';
 
 import 'app.dart';
 import 'common/configs/app_configs.dart';
@@ -13,6 +14,7 @@ late List<CameraDescription> cameras;
 void main() async {
   AppConfigs.env = Environment.dev;
   WidgetsFlutterBinding.ensureInitialized();
+  await TensorflowService.ssdMobileNet.initialize();
   await MobileAds.instance.updateRequestConfiguration(
     RequestConfiguration(testDeviceIds: ['105B2DCAFB40A94A3CE6C7EE0A4F4B72']),
   );
