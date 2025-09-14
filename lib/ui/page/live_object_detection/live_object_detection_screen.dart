@@ -188,7 +188,8 @@ class _LiveObjectDetectionScreenState extends State<LiveObjectDetectionScreen> {
     setState(() {
       _detector = detector;
       _objectDetectorStream = detector.resultsStream.listen((detectedObjects) {
-        if (mounted) setState(() => detectedObjectList = detectedObjects);
+        debugPrint('Winter-detectedObjects: $detectedObjects');
+        setState(() => detectedObjectList = detectedObjects);
       });
     });
   }
@@ -223,17 +224,18 @@ class _LiveObjectDetectionScreenState extends State<LiveObjectDetectionScreen> {
   }
 
   Future<void> _pickImageFromGallery() async {
-    final result = await _imagePicker.pickImage(source: ImageSource.gallery);
-    final readAsBytesSync = await result?.readAsBytes();
-    if (readAsBytesSync != null) {
-      // NavigationService.instance
-      //   ..pop()
-      //   ..pushNamed(AppRoutes.photoAnalyzedScreen, arguments: readAsBytesSync);
-    }
+    // final result = await _imagePicker.pickImage(source: ImageSource.gallery);
+    // final readAsBytesSync = await result?.readAsBytes();
+    // if (readAsBytesSync != null) {
+    //   NavigationService.instance
+    //     ..pop()
+    //     ..pushNamed(AppRoutes.photoAnalyzedScreen, arguments: readAsBytesSync);
+    // }
   }
 
   /// Callback to receive each frame [CameraImage] perform inference on it
   void onLatestImageAvailable(CameraImage cameraImage) {
+    debugPrint('Winter-onLatestImageAvailable');
     _detector?.processFrame(cameraImage);
   }
 }
