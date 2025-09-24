@@ -8,6 +8,7 @@ class AppConfigs {
 
   ///API Env
   static String get baseUrl => env.baseUrl;
+  static String get livekitWss => env.livekitWss;
   static String get bannerAdUnitId => env.bannerAdUnitId;
   static String get testAdUnitId => env.testAdUnitId;
   static String get mocKyBaseUrl => 'https://run.mocky.io';

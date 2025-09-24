@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -107,7 +108,7 @@ class _PageState extends State<Page> {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      _showForm();
+                      showModalSelectSource();
                     },
                   ),
                 ],
@@ -183,6 +184,39 @@ class _PageState extends State<Page> {
             )
           : null,
     );
+  }
+
+  void showModalSelectSource() {
+    final textTheme = context.textTheme;
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) {
+          return CupertinoActionSheet(
+            title: Text('Select Source', style: textTheme.bodyMedium),
+            actions: [
+              CupertinoActionSheetAction(
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                  _showForm();
+                },
+                child: Text('Add manually', style: textTheme.bodyMedium),
+              ),
+              CupertinoActionSheetAction(
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                  GoRouter.of(context).pushNamed(AppRouter.liveObjectDetection);
+                },
+                child: Text('Import by AI', style: textTheme.bodyMedium),
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              onPressed: () {
+                GoRouter.of(context).pop();
+              },
+              child: Text('Cancel', style: textTheme.bodyMedium),
+            ),
+          );
+        });
   }
 
   void _showForm() {

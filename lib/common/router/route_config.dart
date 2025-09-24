@@ -10,12 +10,17 @@ import 'package:toeic_desktop/data/models/enums/test_show.dart';
 import 'package:toeic_desktop/data/models/request/flash_card_quizz_score_request.dart';
 import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
+import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_page.dart';
 import 'package:toeic_desktop/ui/page/image_view/image_view_page.dart';
+import 'package:toeic_desktop/ui/page/live_object_detection/live_object_detection_screen.dart';
+import 'package:toeic_desktop/ui/page/live_stream/live_stream_page.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learning_detail/flash_card_detail_learning_page.dart';
+import 'package:toeic_desktop/ui/page/prepare_live/prepare_live_page.dart';
+import 'package:toeic_desktop/ui/page/rooms/rooms_page.dart';
 import 'package:toeic_desktop/ui/page/test/history_test/history_test_page.dart';
 import 'package:toeic_desktop/ui/page/onboarding/onboarding_page.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_page.dart';
@@ -48,16 +53,11 @@ class AppRouter {
       redirect: (context, state) {
         final isLogin = SharedPreferencesHelper().getCookies() != null;
         if (!isLogin) {
-          if (state.uri.path == bottomTab ||
-              state.uri.path == modeTest ||
-              state.uri.path == flashCardDetail ||
-              state.uri.path == flashCardLearningDetail ||
-              state.uri.path == flashCardLearnFlip ||
-              state.uri.path == flashCardQuizz ||
-              state.uri.path == flashCardQuizzResult ||
-              state.uri.path == resultTest ||
-              state.uri.path == upgradeAccount ||
-              state.uri.path == transcriptTest) {
+          if (state.uri.path != splash &&
+              state.uri.path != login &&
+              state.uri.path != register &&
+              state.uri.path != resetPassword &&
+              state.uri.path != onboarding) {
             return login;
           }
           return null;
@@ -94,6 +94,10 @@ class AppRouter {
   static const String blogDetail = "/blog-detail";
   static const String certificates = "/certificates";
   static const String imageView = "/image-view";
+  static const String rooms = '/rooms';
+  static const String liveStream = '/live-stream';
+  static const String prepareLive = '/prepare-live';
+  static const String liveObjectDetection = '/live-object-detection';
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -300,6 +304,30 @@ class AppRouter {
         final imageUrl = args['imageUrl'] as String;
         return ImagePreview(imageUrl: imageUrl);
       },
+    ),
+    GoRoute(
+      name: rooms,
+      path: rooms,
+      builder: (context, state) => const RoomsPage(),
+    ),
+    GoRoute(
+      name: liveStream,
+      path: liveStream,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final liveArgs = args['liveArgs'] as LiveArgs;
+        return LiveStreamPage(liveArgs: liveArgs);
+      },
+    ),
+    GoRoute(
+      name: prepareLive,
+      path: prepareLive,
+      builder: (context, state) => const PrepareLivePage(),
+    ),
+    GoRoute(
+      name: liveObjectDetection,
+      path: liveObjectDetection,
+      builder: (context, state) => const LiveObjectDetectionScreen(),
     ),
   ];
 

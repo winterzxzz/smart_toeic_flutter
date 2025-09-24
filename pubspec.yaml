@@ -91,6 +91,12 @@ dependencies:
   web3dart: ^2.7.1
   http: ^1.4.0
   photo_view: ^0.15.0
+  livekit_client: ^2.3.1+hotfix.1
+  flutter_webrtc: ^0.12.12+hotfix.1
+  camera: ^0.11.2
+  image_cropper: ^9.1.0
+  tflite_flutter: ^0.11.0
+  image: ^4.3.0
 
 dev_dependencies:
   flutter_test:
@@ -124,6 +130,8 @@ flutter:
     - assets/animations/
     - assets/audios/
     - assets/jsons/
+    - assets/model/
+    - assets/label/
 
 
   fonts:

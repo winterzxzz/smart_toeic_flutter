@@ -15,11 +15,11 @@ extension EnvironmentExt on Environment {
   String get baseUrl {
     switch (this) {
       case Environment.dev:
-        return "https://9533ff5e30a0.ngrok-free.app/api";
+        return "https://42f97bf4fb42.ngrok-free.app/api";
       case Environment.stg:
         return "https://9533ff5e30a0.ngrok-free.app/api";
       case Environment.prod:
-        return "https://9533ff5e30a0.ngrok-free.app/api";
+        return "https://42f97bf4fb42.ngrok-free.app/api";
     }
   }
 
@@ -42,6 +42,17 @@ extension EnvironmentExt on Environment {
         return "ca-app-pub-3940256099942544/6300978111";
       case Environment.prod:
         return "ca-app-pub-3940256099942544/6300978111";
+    }
+  }
+
+  String get livekitWss {
+    switch (this) {
+      case Environment.dev:
+        return "wss://winterzxzz-tm30hn8t.livekit.cloud";
+      case Environment.stg:
+        return "wss://winterzxzz-tm30hn8t.livekit.cloud";
+      case Environment.prod:
+        return "wss://winterzxzz-tm30hn8t.livekit.cloud";
     }
   }
 }
