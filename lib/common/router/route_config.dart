@@ -327,7 +327,7 @@ class AppRouter {
     GoRoute(
       name: liveObjectDetection,
       path: liveObjectDetection,
-      builder: (context, state) => const LiveObjectDetectionScreen(),
+      builder: (context, state) => const ObjectDetectionScreen(),
     ),
   ];
 

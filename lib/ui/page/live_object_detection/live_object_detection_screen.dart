@@ -1,241 +1,262 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:toeic_desktop/data/models/detected_object/detected_object_dm.dart';
-import 'package:toeic_desktop/data/models/ui_models/screen_params.dart';
-import 'package:toeic_desktop/data/services/detector.dart';
-import 'package:toeic_desktop/ui/page/live_object_detection/widgets/box_widget.dart';
-import 'package:toeic_desktop/ui/page/live_object_detection/widgets/rounded_button.dart';
+import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
+import 'dart:io';
+import 'dart:async';
+import 'package:toeic_desktop/main.dart';
 
-class LiveObjectDetectionScreen extends StatefulWidget {
-  const LiveObjectDetectionScreen({super.key});
+class ObjectDetectionScreen extends StatefulWidget {
+  const ObjectDetectionScreen({
+    super.key,
+  });
 
   @override
-  State<LiveObjectDetectionScreen> createState() =>
-      _LiveObjectDetectionScreenState();
+  State<ObjectDetectionScreen> createState() => _ObjectDetectionScreenState();
 }
 
-class _LiveObjectDetectionScreenState extends State<LiveObjectDetectionScreen> {
-  final _imagePicker = ImagePicker();
-
-  String? message;
-
-  late final AppLifecycleListener _appLifecycleListener;
-
-  /// List of available cameras
-  late List<CameraDescription> cameras;
-
-  int cameraIndex = 0;
-
-  /// Controller
-  CameraController? _cameraController;
-
-  /// Object Detector is running on a background [Isolate]. This is nullable
-  /// because acquiring a [Detector] is an asynchronous operation. This
-  /// value is `null` until the detector is initialized.
-  Detector? _detector;
-
-  StreamSubscription? _objectDetectorStream;
-
-  /// Results to draw bounding boxes
-  List<DetectedObjectDm>? detectedObjectList;
+class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
+  late CameraController _cameraController;
+  bool isCameraReady = false;
+  String result = "Tap capture to detect objects";
+  late ImageLabeler _imageLabeler;
+  bool isDetecting = false;
+  bool isCapturing = false;
 
   @override
   void initState() {
     super.initState();
-    _appLifecycleListener = AppLifecycleListener(
-      onResume: _init,
-      onInactive: () {
-        _cameraController?.stopImageStream();
-        _objectDetectorStream?.cancel();
-        _detector?.stop();
-      },
-    );
-    _init();
+    _initializeCamera();
+    _initializeMLKit();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final controller = _cameraController;
-    return Scaffold(
-      appBar: AppBar(title: const Text('Live Object Detection')),
-      body: controller == null || !controller.value.isInitialized
-          ? Center(child: Text(message ?? 'Initializing...'))
-          : Column(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1 / controller.value.aspectRatio,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      CameraPreview(controller),
-                      // Bounding boxes
-                      ...?detectedObjectList?.map(
-                        (detectedObject) => Positioned.fromRect(
-                          rect: detectedObject.renderLocation,
-                          child: BoxWidget.fromDetectedObject(detectedObject),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: ColoredBox(
-                    color: Colors.black,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RoundedButton(
-                          size: 48,
-                          side: BorderSide.none,
-                          color: Colors.white.withValues(alpha: 0.3),
-                          onTap: _pickImageFromGallery,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'assets/vectors/gallery.svg',
-                              width: 24,
-                              height: 24,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        RoundedButton(
-                          padding: const EdgeInsets.all(2),
-                          onTap: _takePicture,
-                        ),
-                        const SizedBox(width: 20),
-                        RoundedButton(
-                          size: 48,
-                          side: BorderSide.none,
-                          color: Colors.white.withValues(alpha: 0.3),
-                          onTap: _flipCamera,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'assets/vectors/repeate-music.svg',
-                              width: 28,
-                              height: 28,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+  /// Initialize Camera
+  Future<void> _initializeCamera() async {
+    _cameraController = CameraController(cameras[0], ResolutionPreset.ultraHigh,
+        enableAudio: false, fps: 60);
+
+    await _cameraController.initialize();
+    if (!mounted) return;
+
+    setState(() {
+      isCameraReady = true;
+    });
+  }
+
+  /// Initialize ML Kit
+  void _initializeMLKit() {
+    _imageLabeler = ImageLabeler(
+      options: ImageLabelerOptions(confidenceThreshold: 0.8),
     );
+  }
+
+  /// Capture and Detect Objects
+  Future<void> _captureAndDetect() async {
+    if (isDetecting || isCapturing) return;
+
+    setState(() {
+      isCapturing = true;
+      result = "Capturing...";
+    });
+
+    try {
+      // Take a picture
+      final XFile picture = await _cameraController.takePicture();
+
+      setState(() {
+        result = "Processing image...";
+      });
+
+      // Process the captured image
+      await _processImage(picture);
+    } catch (e) {
+      setState(() {
+        result = "Error: $e";
+      });
+    } finally {
+      setState(() {
+        isCapturing = false;
+      });
+    }
+  }
+
+  /// Process Captured Image
+  Future<void> _processImage(XFile imageFile) async {
+    try {
+      isDetecting = true;
+
+      final inputImage = InputImage.fromFile(File(imageFile.path));
+      final List<ImageLabel> labels =
+          await _imageLabeler.processImage(inputImage);
+
+      String detectedObjects = labels.isNotEmpty
+          ? labels
+              .map(
+                (label) =>
+                    "${label.label} - ${(label.confidence * 100).toStringAsFixed(2)}%",
+              )
+              .join("\n")
+          : "No object detected";
+
+      if (mounted) {
+        setState(() {
+          result = detectedObjects;
+        });
+      }
+
+      // Clean up the temporary file
+      await File(imageFile.path).delete();
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          result = "Error processing image: $e";
+        });
+      }
+    } finally {
+      isDetecting = false;
+    }
   }
 
   @override
   void dispose() {
+    _cameraController.dispose();
+    _imageLabeler.close();
     super.dispose();
-    _appLifecycleListener.dispose();
-    _cameraController?.dispose();
-    _objectDetectorStream?.cancel();
-    _detector?.stop();
   }
 
-  Future<void> _init() async {
-    await _initializeCamera();
-    await _initializeDetector();
+  MediaQueryData? mqData;
+  @override
+  Widget build(BuildContext context) {
+    mqData = MediaQuery.of(context);
+    return Scaffold(
+      /// -------------- Appbar --------------------- ///
+      appBar: AppBar(
+        backgroundColor: const Color(0xff213555),
+        title: const Text(
+          "Real-time Object Detection",
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        centerTitle: true,
+        leading: Image.asset(
+          "assets/icons/object.png",
+          color: Colors.blue,
+        ),
+      ),
+      backgroundColor: const Color(0xff3E5879),
 
-    /// Listen each frame from calling the image stream
-    await _cameraController?.startImageStream(onLatestImageAvailable);
+      ///----------------- BODY --------------------///
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            /// Camera Preview
+            Center(
+              child: SizedBox(
+                width: mqData!.size.width,
+                child: isCameraReady
+                    ? CameraPreview(_cameraController)
+                    : const Center(child: CircularProgressIndicator()),
+              ),
+            ),
 
-    /// previewSize is size of each image frame captured by controller
-    ///
-    /// 352x288 on iOS, 240p (320x240) on Android with ResolutionPreset.low
-    final size = _cameraController?.value.previewSize;
-    if (size != null) ScreenParams.previewSize = size;
+            /// Capture Button
+            Positioned(
+              bottom: 200,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: GestureDetector(
+                  onTap: isCapturing || isDetecting ? null : _captureAndDetect,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isCapturing || isDetecting
+                          ? Colors.grey
+                          : Colors.white,
+                      border: Border.all(
+                        color: isCapturing || isDetecting
+                            ? Colors.grey
+                            : Colors.orange,
+                        width: 4,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: isCapturing || isDetecting
+                        ? const Center(
+                            child: SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.orange),
+                              ),
+                            ),
+                          )
+                        : const Icon(
+                            Icons.camera_alt,
+                            size: 40,
+                            color: Colors.orange,
+                          ),
+                  ),
+                ),
+              ),
+            ),
 
-    if (mounted) setState(() {});
-  }
-
-  /// Initializes the camera by setting [_cameraController]
-  Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    if (cameras.isEmpty) {
-      message = 'No Camera Available';
-      if (mounted) setState(() {});
-      log('No Camera Available');
-      return;
-    }
-    // cameras[0] for back-camera
-    cameraIndex = 0;
-    final camera = cameras[cameraIndex];
-    _cameraController = CameraController(
-      camera,
-      ResolutionPreset.medium,
-      enableAudio: false,
+            /// Detection Result
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: mqData!.size.width,
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(
+                  color: Color(0x5af0bb78),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    const Text(
+                      "Detected Objects",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          const BoxShadow(color: Colors.black12, blurRadius: 4),
+                        ],
+                      ),
+                      child: Text(
+                        result,
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
-    await _cameraController?.initialize();
-  }
-
-  Future<void> _initializeDetector() async {
-    final detector = await Detector.start();
-    setState(() {
-      _detector = detector;
-      _objectDetectorStream = detector.resultsStream.listen((detectedObjects) {
-        debugPrint('Winter-detectedObjects: $detectedObjects');
-        setState(() => detectedObjectList = detectedObjects);
-      });
-    });
-  }
-
-  void _flipCamera() {
-    if (cameras.length <= 1) return;
-    final newIndex = cameraIndex == 1 ? 0 : 1;
-    cameraIndex = newIndex;
-    _cameraController?.stopImageStream();
-    _cameraController = CameraController(
-      cameras[newIndex],
-      ResolutionPreset.medium,
-      enableAudio: false,
-    )..initialize().then((_) async {
-        await _cameraController?.startImageStream(onLatestImageAvailable);
-        if (mounted) setState(() {});
-
-        /// previewSize is size of each image frame captured by controller
-        ///
-        /// 352x288 on iOS, 240p (320x240) on Android with ResolutionPreset.low
-        ScreenParams.previewSize =
-            _cameraController?.value.previewSize ?? ScreenParams.previewSize;
-      });
-  }
-
-  Future<void> _takePicture() async {
-    // final capturedImage = await _cameraController?.takePicture();
-    // final decodedImage = await capturedImage?.readAsBytes();
-    // NavigationService.instance
-    //   ..pop()
-    //   ..pushNamed(AppRoutes.photoAnalyzedScreen, arguments: decodedImage);
-  }
-
-  Future<void> _pickImageFromGallery() async {
-    // final result = await _imagePicker.pickImage(source: ImageSource.gallery);
-    // final readAsBytesSync = await result?.readAsBytes();
-    // if (readAsBytesSync != null) {
-    //   NavigationService.instance
-    //     ..pop()
-    //     ..pushNamed(AppRoutes.photoAnalyzedScreen, arguments: readAsBytesSync);
-    // }
-  }
-
-  /// Callback to receive each frame [CameraImage] perform inference on it
-  void onLatestImageAvailable(CameraImage cameraImage) {
-    debugPrint('Winter-onLatestImageAvailable');
-    _detector?.processFrame(cameraImage);
   }
 }

@@ -108,7 +108,7 @@ class AppThemes {
         scaffoldBackgroundColor: backgroundColor,
         appBarTheme: AppBarTheme(
           surfaceTintColor: Colors.transparent,
-          color: appbarColor,
+          backgroundColor: appbarColor,
           iconTheme: IconThemeData(
               color: brightness == Brightness.dark
                   ? AppColors.textWhite
@@ -125,7 +125,7 @@ class AppThemes {
                   fontWeight: FontWeight.bold,
                 ),
         ),
-        bottomAppBarTheme: BottomAppBarTheme(
+        bottomAppBarTheme: BottomAppBarThemeData(
           color: appbarColor,
         ),
         cardColor: cardColor,
