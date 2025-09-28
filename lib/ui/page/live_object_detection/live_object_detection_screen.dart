@@ -4,6 +4,9 @@ import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:toeic_desktop/main.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 
 class ObjectDetectionScreen extends StatefulWidget {
   const ObjectDetectionScreen({
@@ -21,6 +24,10 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
   late ImageLabeler _imageLabeler;
   bool isDetecting = false;
   bool isCapturing = false;
+
+  // New state for selection functionality
+  List<ImageLabel> detectedObjects = [];
+  Set<String> selectedItems = {};
 
   @override
   void initState() {
@@ -88,7 +95,7 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
       final List<ImageLabel> labels =
           await _imageLabeler.processImage(inputImage);
 
-      String detectedObjects = labels.isNotEmpty
+      String detectedObjectsText = labels.isNotEmpty
           ? labels
               .map(
                 (label) =>
@@ -99,7 +106,9 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
 
       if (mounted) {
         setState(() {
-          result = detectedObjects;
+          detectedObjects = labels;
+          result = detectedObjectsText;
+          selectedItems.clear(); // Clear previous selections
         });
       }
 
@@ -116,6 +125,49 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
     }
   }
 
+  /// Toggle item selection
+  void _toggleItemSelection(String itemKey) {
+    setState(() {
+      if (selectedItems.contains(itemKey)) {
+        selectedItems.remove(itemKey);
+      } else {
+        selectedItems.add(itemKey);
+      }
+    });
+  }
+
+  /// Save selected items
+  void _saveSelectedItems() {
+    if (selectedItems.isEmpty) return;
+
+    // Get selected labels
+    final selectedLabels = detectedObjects
+        .where((label) => selectedItems.contains(_getItemKey(label)))
+        .toList();
+
+    // Here you can implement your save logic
+    // For now, we'll show a snackbar with the selected items
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Saved ${selectedLabels.length} items: ${selectedLabels.map((l) => l.label).join(', ')}',
+        ),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+
+    // Clear selections after saving
+    setState(() {
+      selectedItems.clear();
+    });
+  }
+
+  /// Generate unique key for each detected item
+  String _getItemKey(ImageLabel label) {
+    return '${label.label}_${label.confidence}';
+  }
+
   @override
   void dispose() {
     _cameraController.dispose();
@@ -127,135 +179,214 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
   @override
   Widget build(BuildContext context) {
     mqData = MediaQuery.of(context);
+    final textTheme = context.textTheme;
     return Scaffold(
-      /// -------------- Appbar --------------------- ///
       appBar: AppBar(
-        backgroundColor: const Color(0xff213555),
-        title: const Text(
-          "Real-time Object Detection",
-          style: TextStyle(color: Colors.white, fontSize: 18),
+        title: Text(
+          "Detect Objects",
+          style: textTheme.titleLarge,
         ),
-        centerTitle: true,
-        leading: Image.asset(
-          "assets/icons/object.png",
-          color: Colors.blue,
-        ),
+        leading: const LeadingBackButton(),
+        actions: [
+          TextButton(
+            onPressed: selectedItems.isNotEmpty ? _saveSelectedItems : null,
+            child: const Text('Save'),
+          ),
+        ],
       ),
-      backgroundColor: const Color(0xff3E5879),
-
-      ///----------------- BODY --------------------///
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            /// Camera Preview
-            Center(
-              child: SizedBox(
-                width: mqData!.size.width,
-                child: isCameraReady
-                    ? CameraPreview(_cameraController)
-                    : const Center(child: CircularProgressIndicator()),
-              ),
-            ),
-
-            /// Capture Button
-            Positioned(
-              bottom: 200,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: GestureDetector(
-                  onTap: isCapturing || isDetecting ? null : _captureAndDetect,
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isCapturing || isDetecting
-                          ? Colors.grey
-                          : Colors.white,
-                      border: Border.all(
-                        color: isCapturing || isDetecting
-                            ? Colors.grey
-                            : Colors.orange,
-                        width: 4,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+      body: Stack(
+        children: [
+          // Full screen camera preview with tap-to-capture
+          Positioned.fill(
+            child: isCameraReady
+                ? GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap:
+                        isCapturing || isDetecting ? null : _captureAndDetect,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        CameraPreview(_cameraController),
+                        // Guidance overlay (top of screen)
+                        Positioned(
+                          top: 16,
+                          left: 0,
+                          right: 0,
+                          child: SafeArea(
+                            bottom: false,
+                            left: false,
+                            right: false,
+                            child: Center(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.35),
+                                  borderRadius: BorderRadius.circular(24),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          Colors.black.withValues(alpha: 0.2),
+                                      blurRadius: 8,
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.touch_app,
+                                      color:
+                                          Colors.white.withValues(alpha: 0.95),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      isCapturing || isDetecting
+                                          ? 'Processing...'
+                                          : 'Tap anywhere to capture',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    child: isCapturing || isDetecting
-                        ? const Center(
-                            child: SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.orange),
-                              ),
-                            ),
-                          )
-                        : const Icon(
-                            Icons.camera_alt,
-                            size: 40,
-                            color: Colors.orange,
-                          ),
-                  ),
+                  )
+                : const Center(child: LoadingCircle()),
+          ),
+          // Results panel - positioned to not hide capture button
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              constraints: BoxConstraints(
+                maxHeight:
+                    mqData!.size.height * 0.4, // Limit height to 40% of screen
+              ),
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Color(0x5af0bb78),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
               ),
-            ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (detectedObjects.isNotEmpty)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              const BoxShadow(
+                                  color: Colors.black12, blurRadius: 4),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              if (detectedObjects.isNotEmpty)
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Select items to save',
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey[700],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              const SizedBox(height: 8),
+                              ...detectedObjects.map((label) {
+                                final itemKey = _getItemKey(label);
+                                final isSelected =
+                                    selectedItems.contains(itemKey);
 
-            /// Detection Result
-            Positioned(
-              bottom: 0,
-              child: Container(
-                width: mqData!.size.width,
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: Color(0x5af0bb78),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Detected Objects",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          const BoxShadow(color: Colors.black12, blurRadius: 4),
-                        ],
-                      ),
-                      child: Text(
-                        result,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange,
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 8),
+                                  child: InkWell(
+                                    onTap: () => _toggleItemSelection(itemKey),
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: isSelected
+                                            ? Colors.orange
+                                                .withValues(alpha: 0.1)
+                                            : Colors.grey[50],
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: isSelected
+                                              ? Colors.orange
+                                              : Colors.grey[300]!,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Checkbox(
+                                            value: isSelected,
+                                            onChanged: (_) =>
+                                                _toggleItemSelection(itemKey),
+                                            activeColor: Colors.orange,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  label.label,
+                                                  style: textTheme.bodyLarge
+                                                      ?.copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: isSelected
+                                                        ? Colors.orange[800]
+                                                        : Colors.black87,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'Confidence: ${(label.confidence * 100).toStringAsFixed(1)}%',
+                                                  style: textTheme.bodySmall
+                                                      ?.copyWith(
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
