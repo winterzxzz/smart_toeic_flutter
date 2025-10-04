@@ -13,7 +13,7 @@ import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_page.dart';
 import 'package:toeic_desktop/ui/page/image_view/image_view_page.dart';
-import 'package:toeic_desktop/ui/page/live_object_detection/live_object_detection_screen.dart';
+import 'package:toeic_desktop/ui/page/live_object_detection/object_detector_view.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_page.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
@@ -327,7 +327,7 @@ class AppRouter {
     GoRoute(
       name: liveObjectDetection,
       path: liveObjectDetection,
-      builder: (context, state) => const ObjectDetectionScreen(),
+      builder: (context, state) => const ObjectDetectorView(),
     ),
   ];
 

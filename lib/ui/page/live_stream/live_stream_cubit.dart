@@ -37,24 +37,47 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
 
       // Create and publish video track if camera is enabled
       if (liveArgs.isOpenCamera && liveArgs.currentCameraDescription != null) {
-        await liveArgs.room.localParticipant?.setCameraEnabled(true,
-            cameraCaptureOptions: CameraCaptureOptions(
-                cameraPosition:
-                    liveArgs.currentCameraDescription!.lensDirection ==
-                            CameraLensDirection.front
-                        ? CameraPosition.front
-                        : CameraPosition.back));
-        final videoTrackPublication = liveArgs
-            .room.localParticipant?.videoTrackPublications
-            .where((pub) => pub.track is VideoTrack)
-            .firstOrNull;
-        final videoTrack = videoTrackPublication?.track;
+        debugPrint(
+            'Winter-Enabling camera with position: ${liveArgs.currentCameraDescription!.lensDirection}');
 
-        if (videoTrack is VideoTrack) {
-          emit(state.copyWith(isVideoTrackReady: true));
+        try {
+          await liveArgs.room.localParticipant?.setCameraEnabled(true,
+              cameraCaptureOptions: CameraCaptureOptions(
+                  cameraPosition:
+                      liveArgs.currentCameraDescription!.lensDirection ==
+                              CameraLensDirection.front
+                          ? CameraPosition.front
+                          : CameraPosition.back));
+
+          // Wait a bit for the track to be published
+          await Future.delayed(const Duration(milliseconds: 1000));
+
+          // Check for video track publication
+          final videoTrackPublications = liveArgs
+              .room.localParticipant?.videoTrackPublications
+              .where((pub) => pub.track is VideoTrack && !pub.isScreenShare)
+              .toList();
+
+          debugPrint(
+              'Winter-Video track publications count: ${videoTrackPublications?.length ?? 0}');
+
+          if (videoTrackPublications != null &&
+              videoTrackPublications.isNotEmpty) {
+            final videoTrack = videoTrackPublications.first.track;
+            debugPrint('Winter-Video track found: ${videoTrack.runtimeType}');
+            emit(state.copyWith(isVideoTrackReady: true));
+          } else {
+            debugPrint('Winter-No video track found after enabling camera');
+            emit(state.copyWith(isVideoTrackReady: false));
+          }
+        } catch (e) {
+          debugPrint('Winter-Error enabling camera: $e');
+          emit(state.copyWith(isVideoTrackReady: false));
         }
       } else {
+        debugPrint('Winter-Camera disabled or no camera description');
         await liveArgs.room.localParticipant?.setCameraEnabled(false);
+        emit(state.copyWith(isVideoTrackReady: false));
       }
 
       setupListener();
@@ -142,15 +165,27 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
       emit(state.copyWith(isOpenCamera: false, isVideoTrackReady: false));
     } else {
       emit(state.copyWith(isOpenCamera: true, isVideoTrackReady: false));
-      await liveArgs.room.localParticipant?.setCameraEnabled(true);
-      final videoTrackPublication = liveArgs
-          .room.localParticipant?.videoTrackPublications
-          .where((pub) => pub.track is VideoTrack)
-          .firstOrNull;
-      final videoTrack = videoTrackPublication?.track;
 
-      if (videoTrack is VideoTrack) {
-        emit(state.copyWith(isVideoTrackReady: true));
+      try {
+        await liveArgs.room.localParticipant?.setCameraEnabled(true);
+
+        // Wait for track to be published
+        await Future.delayed(const Duration(milliseconds: 1000));
+
+        final videoTrackPublications = liveArgs
+            .room.localParticipant?.videoTrackPublications
+            .where((pub) => pub.track is VideoTrack && !pub.isScreenShare)
+            .toList();
+
+        if (videoTrackPublications != null &&
+            videoTrackPublications.isNotEmpty) {
+          emit(state.copyWith(isVideoTrackReady: true));
+        } else {
+          emit(state.copyWith(isVideoTrackReady: false));
+        }
+      } catch (e) {
+        debugPrint('Winter-Error toggling camera: $e');
+        emit(state.copyWith(isVideoTrackReady: false));
       }
     }
   }
@@ -182,8 +217,12 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
 
     // Local participant tracks
     if (localVideoPublications != null) {
+      debugPrint(
+          'Winter-Local video publications count: ${localVideoPublications.length}');
       for (var pub in localVideoPublications) {
         final track = pub.track;
+        debugPrint(
+            'Winter-Local publication: ${pub.name}, track: ${track.runtimeType}, isScreenShare: ${pub.isScreenShare}');
         if (track != null) {
           final targetList = pub.isScreenShare ? screenTracks : userMediaTracks;
           targetList.add(ParticipantTrack(
@@ -192,6 +231,8 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
           ));
         }
       }
+    } else {
+      debugPrint('Winter-No local video publications found');
     }
 
     // Remote participant tracks
@@ -225,6 +266,13 @@ class LiveStreamCubit extends Cubit<LiveStreamState> {
         ));
       }
     }
+
+    debugPrint('=== SORT PARTICIPANTS DEBUG ===');
+    debugPrint('Screen tracks count: ${screenTracks.length}');
+    debugPrint('User media tracks count: ${userMediaTracks.length}');
+    debugPrint('Remote tracks count: ${remoteParticipantTracks.length}');
+    debugPrint(
+        'Total local tracks: ${screenTracks.length + userMediaTracks.length}');
 
     emit(state.copyWith(
       localParticipantTracks: [...screenTracks, ...userMediaTracks],

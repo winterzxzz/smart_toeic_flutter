@@ -9,7 +9,6 @@ import 'package:toeic_desktop/data/models/ui_models/rooms/live_args.dart';
 import 'package:toeic_desktop/data/network/repositories/room_repository.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_navigator.dart';
-import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_cubit.dart';
 import 'package:toeic_desktop/ui/page/live_stream/live_stream_state.dart';
 import 'package:toeic_desktop/ui/page/live_stream/widgets/grid_remotr_track.dart';
@@ -54,27 +53,140 @@ class _PageState extends State<Page> {
     _liveStreamCubit.setupListener();
   }
 
-  Widget _buildLocalVideoRenderer() {
-    final videoTrack = widget.liveArgs.room.localParticipant
-        ?.videoTrackPublications.firstOrNull?.track;
+  Widget _buildLocalVideoRenderer(LiveStreamState state) {
+    debugPrint('=== LOCAL VIDEO RENDERER DEBUG ===');
+    debugPrint('isOpenCamera: ${state.isOpenCamera}');
+    debugPrint('isVideoTrackReady: ${state.isVideoTrackReady}');
+    debugPrint(
+        'localParticipantTracks count: ${state.localParticipantTracks.length}');
 
+    // If camera is not open, show camera off state
+    if (!state.isOpenCamera) {
+      return Container(
+        color: Colors.black,
+        child: const Center(
+          child: Icon(
+            Icons.videocam_off,
+            color: Colors.white54,
+            size: 64,
+          ),
+        ),
+      );
+    }
+
+    // If video track is not ready, show loading state
+    if (!state.isVideoTrackReady) {
+      return Container(
+        color: Colors.black,
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: Colors.white),
+              SizedBox(height: 16),
+              Text(
+                'Starting camera...',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Try to find a video track from local participant tracks
+    VideoTrack? videoTrack;
+
+    // First try: Use state-managed tracks
+    if (state.localParticipantTracks.isNotEmpty) {
+      for (var track in state.localParticipantTracks) {
+        if (track.videoTrack != null && track.videoTrack is VideoTrack) {
+          videoTrack = track.videoTrack as VideoTrack;
+          debugPrint('Using state-managed track: ${videoTrack.runtimeType}');
+          break;
+        }
+      }
+    }
+
+    // Fallback: Use direct room access
+    if (videoTrack == null) {
+      final directVideoTrack = widget
+          .liveArgs.room.localParticipant?.videoTrackPublications
+          .where((pub) => pub.track is VideoTrack)
+          .firstOrNull
+          ?.track;
+
+      if (directVideoTrack is VideoTrack) {
+        videoTrack = directVideoTrack;
+        debugPrint('Using direct room track: ${videoTrack.runtimeType}');
+      }
+    }
+
+    // If we found a video track, render it
     if (videoTrack != null) {
+      return _buildVideoRenderer(videoTrack);
+    }
+
+    // No video track found - show error state
+    debugPrint('No video track found - showing error state');
+    return Container(
+      color: Colors.black,
+      child: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 64,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Camera Error',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            Text(
+              'Unable to start camera',
+              style: TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVideoRenderer(VideoTrack videoTrack) {
+    debugPrint('Building video renderer for: ${videoTrack.runtimeType}');
+
+    try {
       return VideoTrackRenderer(
         videoTrack,
         fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
       );
-    }
-
-    return Container(
-      color: Colors.black,
-      child: const Center(
-        child: Icon(
-          Icons.videocam_off,
-          color: Colors.white54,
-          size: 64,
+    } catch (e) {
+      debugPrint('VideoTrackRenderer failed: $e');
+      return Container(
+        color: Colors.red,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error, color: Colors.white, size: 48),
+              const SizedBox(height: 16),
+              const Text(
+                'Video Render Error',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              Text(
+                'Error: $e',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -99,36 +211,9 @@ class _PageState extends State<Page> {
             backgroundColor: Colors.black,
             body: Stack(
               children: [
+                // Video background - always render the video renderer
                 Positioned.fill(
-                  child: state.isOpenCamera && state.isVideoTrackReady
-                      ? _buildLocalVideoRenderer()
-                      : Container(
-                          color: Colors.black,
-                          child: state.isOpenCamera && !state.isVideoTrackReady
-                              ? const Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      LoadingCircle(),
-                                      SizedBox(height: 16),
-                                      Text(
-                                        'Starting camera...',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : const Center(
-                                  child: Icon(
-                                    Icons.videocam_off,
-                                    color: Colors.white54,
-                                    size: 64,
-                                  ),
-                                ),
-                        ),
+                  child: _buildLocalVideoRenderer(state),
                 ),
                 Positioned(
                   top: 0,
@@ -143,24 +228,21 @@ class _PageState extends State<Page> {
                     ),
                   ),
                 ),
-                state.showFooter == LiveStreamShowFooter.comment
-                    ? const Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: SafeArea(child: LiveStreamFooter()),
-                      )
-                    : (state.currentTranscription.isNotEmpty)
-                        ? Positioned(
-                            bottom: 20,
-                            left: 0,
-                            right: 0,
-                            child: SafeArea(
-                              child: LiveStreamTranscriptionFooter(
-                                  transcription: state.currentTranscription),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                // Footer - always show based on state
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: SafeArea(
+                    child: state.showFooter == LiveStreamShowFooter.comment
+                        ? const LiveStreamFooter()
+                        : state.currentTranscription.isNotEmpty
+                            ? LiveStreamTranscriptionFooter(
+                                transcription: state.currentTranscription,
+                              )
+                            : const SizedBox.shrink(),
+                  ),
+                ),
                 // Grid Remote Tracks
                 if (state.isShowGridRemoteTracks)
                   Positioned(
@@ -195,6 +277,52 @@ class _PageState extends State<Page> {
                     ),
                   ),
                 ),
+                // Debug overlay - remove this in production
+                if (true) // Set to false to hide debug info
+                  Positioned(
+                    top: 100,
+                    left: 10,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.7),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Debug Info:',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Text(
+                            'Camera: ${state.isOpenCamera}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 10),
+                          ),
+                          Text(
+                            'Video Ready: ${state.isVideoTrackReady}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 10),
+                          ),
+                          Text(
+                            'Tracks: ${state.localParticipantTracks.length}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 10),
+                          ),
+                          Text(
+                            'Footer: ${state.showFooter.name}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
