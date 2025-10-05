@@ -94,6 +94,14 @@ class MainActivity : FlutterActivity() {
                                 if(flashcards.isNotEmpty()) {
                                     ContentPreferences.saveFlashCards(this, flashcards)
                                     CoroutineScope(Dispatchers.IO).launch {
+                                        // Immediate refresh of both widgets
+                                        try {
+                                            TOEICGlanceWidget.updateSpecificWidgetByGlanceId(this@MainActivity, flashcards.first())
+                                        } catch (_: Exception) {}
+                                        try {
+                                            FlashcardListGlanceWidget.updateListStateWithAllFlashcards(this@MainActivity)
+                                        } catch (_: Exception) {}
+
                                         if(!WidgetWorkScheduler.isWorkManagerRunning(this@MainActivity)) {
                                             val reminderWordAfterTime = ContentPreferences.getReminderWordAfterTime(this@MainActivity)
                                             val value = reminderWordAfterTime.split(" ")?.first()?.toLong()

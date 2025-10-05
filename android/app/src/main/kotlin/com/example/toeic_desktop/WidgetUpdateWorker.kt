@@ -44,6 +44,9 @@ class WidgetUpdateWorker(
                             if(TOEICGlanceWidget.isWidgetAdded(applicationContext)) {
                                 TOEICGlanceWidget.updateSpecificWidgetByGlanceId(applicationContext, flashCard)
                             }
+                            if(FlashcardListGlanceWidget.isWidgetAdded(applicationContext)) {
+                                FlashcardListGlanceWidget.updateListStateWithAllFlashcards(applicationContext)
+                            }
                             ContentPreferences.setCurrentFlashCardIndex(applicationContext, (currentIndex + 1) % flashCards.size)
                         }
                     }
