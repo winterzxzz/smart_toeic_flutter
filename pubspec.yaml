@@ -95,7 +95,6 @@ dependencies:
   flutter_webrtc: ^0.12.12+hotfix.1
   camera: ^0.11.1
   image_cropper: ^9.1.0
-  tflite_flutter: ^0.11.0
   image: ^4.3.0
   # google_mlkit_image_labeling: ^0.14.1
   google_mlkit_object_detection:
