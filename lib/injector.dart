@@ -29,6 +29,8 @@ Future<void> init() async {
         () => BlogRepositoryImpl(injector()))
     ..registerLazySingleton<RoomRepository>(
         () => RoomRepositoryImpl(injector()))
+    ..registerLazySingleton<ChatAiRepository>(
+        () => ChatAiRepositoryImpl(injector()))
 
     // Services
     ..registerLazySingleton<SpeechService>(() => SpeechService())
@@ -72,7 +74,8 @@ Future<void> init() async {
           web3Service: injector(),
         ))
     ..registerFactory<RoomsCubit>(() => RoomsCubit(injector()))
-    ..registerFactory<PrepareLiveCubit>(() => PrepareLiveCubit(injector()));
+    ..registerFactory<PrepareLiveCubit>(() => PrepareLiveCubit(injector()))
+    ..registerFactory<ChatAiCubit>(() => ChatAiCubit(injector()));
 
   // Singleton Cubits (long-lived objects)
   injector

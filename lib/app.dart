@@ -22,6 +22,8 @@ import 'package:toeic_desktop/data/services/stt_service.dart';
 import 'package:toeic_desktop/data/services/transcript_checker_service.dart';
 import 'package:toeic_desktop/data/services/web3_service.dart';
 import 'package:toeic_desktop/data/services/widget_service.dart';
+import 'package:toeic_desktop/data/network/repositories/chat_ai_repository.dart';
+import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_cubit.dart';
 import 'package:toeic_desktop/ui/page/certificates/certificates_cubit.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_cubit.dart';
 import 'package:toeic_desktop/ui/page/blogs/blog_cubit.dart';

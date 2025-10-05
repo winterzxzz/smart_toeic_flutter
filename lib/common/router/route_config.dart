@@ -38,6 +38,7 @@ import 'package:toeic_desktop/ui/page/test/choose_mode_test/mode_test_page.dart'
 import 'package:toeic_desktop/ui/page/test/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
 import 'package:toeic_desktop/ui/page/certificates/certificates_page.dart';
+import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_page.dart';
 
 import '../../ui/page/splash/splash_page.dart';
 
@@ -98,6 +99,7 @@ class AppRouter {
   static const String liveStream = '/live-stream';
   static const String prepareLive = '/prepare-live';
   static const String liveObjectDetection = '/live-object-detection';
+  static const String chatAi = '/chat-ai';
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -328,6 +330,11 @@ class AppRouter {
       name: liveObjectDetection,
       path: liveObjectDetection,
       builder: (context, state) => const ObjectDetectorView(),
+    ),
+    GoRoute(
+      name: chatAi,
+      path: chatAi,
+      builder: (context, state) => const ChatAiPage(),
     ),
   ];
 

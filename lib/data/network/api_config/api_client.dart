@@ -265,4 +265,25 @@ abstract class ApiClient {
   Future<LivekitResponse> updateLivekitRoom(
     @Path("roomName") String roomName,
   );
+
+  @POST("/user/ai-chat/session")
+  Future<String> createAiChatSession(
+    @Field("title") String title,
+  );
+
+  @POST('/user/ai-chat/send-message')
+  Future<String> sendAiChatMessage(
+    @Field("sessionId") String sessionId,
+    @Field("content") String content,
+  );
+
+  @GET('/user/ai-chat/history/{sessionId}')
+  Future<String> getAiChatHistory(
+    @Path("sessionId") String sessionId,
+  );
+
+  @DELETE('/user/ai-chat/history/{sessionId}')
+  Future<void> deleteAiChatHistory(
+    @Path("sessionId") String sessionId,
+  );
 }

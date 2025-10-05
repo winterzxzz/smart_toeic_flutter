@@ -48,12 +48,13 @@ dependencies:
   go_router: ^14.2.2
   dio: ^5.5.0+1
   json_annotation: ^4.9.0
+  freezed_annotation: ^2.4.4
   retrofit: ^4.1.0
   device_info_plus: ^10.1.1
   permission_handler: ^11.3.1
   loader_overlay: ^4.0.1
   pretty_dio_logger: ^1.4.0
-  retrofit_generator: ^8.1.2
+  retrofit_generator: ^9.1.9
   either_dart: ^1.0.0
   # for dependency injection => https://pub.dev/packages/get_it
   get_it: ^7.7.0
@@ -108,6 +109,7 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.4.11
   json_serializable: ^6.7.1
+  freezed: ^2.5.7
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
