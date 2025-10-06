@@ -21,6 +21,7 @@ class ChatAiCubit extends Cubit<ChatAiState> {
   StreamSubscription<Map<String, dynamic>>? _sessionCreatedSubscription;
   StreamSubscription<Map<String, dynamic>>? _chatStreamSubscription;
   StreamSubscription<Map<String, dynamic>>? _streamCompleteSubscription;
+  String? _tempSessionId;
 
   void _initializeSocket() {
     // Kết nối tới server Socket.IO
@@ -31,11 +32,35 @@ class ChatAiCubit extends Cubit<ChatAiState> {
     _sessionCreatedSubscription =
         _socketService.sessionCreatedStream.listen((data) {
       final sessionId = data['sessionId'] as String?;
-      if (sessionId != null) {
+      if (sessionId == null) return;
+
+      // If we created a temp session, replace its id with the real one
+      final current = state.selectedSession;
+      if (current != null && (current.id == _tempSessionId)) {
+        final updatedSelected = ChatSession(
+          id: sessionId,
+          title: current.title,
+          createdAt: current.createdAt,
+        );
+        final updatedSessions = state.sessions
+            .map((s) => s.id == _tempSessionId ? updatedSelected : s)
+            .toList();
+        _tempSessionId = null;
         emit(state.copyWith(
-            selectedSession: ChatSession(
-                id: sessionId, title: '', createdAt: DateTime.now())));
+          selectedSession: updatedSelected,
+          sessions: updatedSessions,
+        ));
+        return;
       }
+
+      // Fallback: if nothing selected, select the created session
+      emit(state.copyWith(
+        selectedSession: ChatSession(
+          id: sessionId,
+          title: state.selectedSession?.title ?? '',
+          createdAt: DateTime.now(),
+        ),
+      ));
     });
 
     // Lắng nghe event chat_stream
@@ -47,8 +72,9 @@ class ChatAiCubit extends Cubit<ChatAiState> {
     });
 
     // Lắng nghe event stream_complete
-    _streamCompleteSubscription = _socketService.streamCompleteStream.listen((data) {
-      emit(state.copyWith(isStreaming: false));
+    _streamCompleteSubscription =
+        _socketService.streamCompleteStream.listen((data) {
+      finishStreaming();
     });
   }
 
@@ -80,14 +106,6 @@ class ChatAiCubit extends Cubit<ChatAiState> {
       // Nếu đang streaming, cập nhật message hiện tại
       emit(state.copyWith(
         streamingMessage: state.streamingMessage + chunk,
-        messages: [
-          ...state.messages,
-          ChatMessage(
-              id: DateTime.now().microsecondsSinceEpoch.toString(),
-              content: chunk,
-              isUser: false,
-              createdAt: DateTime.now())
-        ],
       ));
     }
   }
@@ -122,18 +140,29 @@ class ChatAiCubit extends Cubit<ChatAiState> {
     res.fold(
       (l) => emit(state.copyWith(isLoading: false, error: l)),
       (r) {
-        // Demo parsing, expect r as JSON list
         try {
-          final List<dynamic> data = r as List<dynamic>;
-          final parsed = data
-              .map((e) => ChatMessage(
-                    id: e['id'] as String,
-                    content: e['content'] as String,
-                    isUser: e['is_user'] as bool,
-                    createdAt: DateTime.parse(e['created_at'] as String),
-                  ))
-              .toList();
-          emit(state.copyWith(messages: parsed, isLoading: false));
+          // r is JSON string from API
+          final List<dynamic> data = jsonDecode(r) as List<dynamic>;
+          final messages = data.map((raw) {
+            final Map<String, dynamic> e = raw as Map<String, dynamic>;
+            final String id = (e['id'] ??
+                    e['_id'] ??
+                    DateTime.now().microsecondsSinceEpoch.toString())
+                .toString();
+            final String content = (e['content'] ?? '').toString();
+            final String role = (e['role'] ?? '').toString();
+            final String createdAtStr = (e['createdAt'] ??
+                    e['created_at'] ??
+                    DateTime.now().toIso8601String())
+                .toString();
+            return ChatMessage(
+              id: id,
+              content: content,
+              isUser: role == 'user',
+              createdAt: DateTime.tryParse(createdAtStr) ?? DateTime.now(),
+            );
+          }).toList();
+          emit(state.copyWith(messages: messages, isLoading: false));
         } catch (_) {
           emit(state.copyWith(messages: const [], isLoading: false));
         }
@@ -151,7 +180,42 @@ class ChatAiCubit extends Cubit<ChatAiState> {
       createdAt: DateTime.now(),
     );
 
+    // Derive a title from the first message
+    String deriveTitle(String text) {
+      final trimmed = text.trim();
+      if (trimmed.isEmpty) return '';
+      final normalized = trimmed.replaceAll(RegExp(r'\s+'), ' ');
+      return normalized.length <= 60 ? normalized : normalized.substring(0, 60);
+    }
+
+    ChatSession? selected = state.selectedSession;
+    List<ChatSession> sessions = state.sessions;
+
+    // If no session selected, create a temp one using the first message as title
+    if (selected == null) {
+      _tempSessionId = 'temp_${DateTime.now().microsecondsSinceEpoch}';
+      final temp = ChatSession(
+        id: _tempSessionId!,
+        title: deriveTitle(userMsg.content),
+        createdAt: DateTime.now(),
+      );
+      sessions = [...sessions, temp];
+      selected = temp;
+    } else if (selected.title.trim().isEmpty) {
+      // If session exists but has no title, set it from the first message
+      final renamed = ChatSession(
+        id: selected.id,
+        title: deriveTitle(userMsg.content),
+        createdAt: selected.createdAt,
+      );
+      final selectedId = selected.id;
+      sessions = sessions.map((s) => s.id == selectedId ? renamed : s).toList();
+      selected = renamed;
+    }
+
     emit(state.copyWith(
+      sessions: sessions,
+      selectedSession: selected,
       messages: [...state.messages, userMsg],
       input: '',
       isLoading: true,
@@ -162,7 +226,7 @@ class ChatAiCubit extends Cubit<ChatAiState> {
 
     // Fallback: nếu Socket.IO không hoạt động, sử dụng HTTP API
     final res = await _repository.sendAiChatMessage(
-        sessionId: state.selectedSession?.id ?? '',
+        sessionId: selected.id.startsWith('temp_') ? '' : selected.id,
         content: userMsg.content,
         socketId: _socketService.socketId ?? '');
     res.fold(

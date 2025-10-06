@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_cubit.dart';
@@ -98,10 +99,12 @@ class Page extends StatelessWidget {
                           horizontal: 12,
                           vertical: 16,
                         ),
-                        itemCount: state.messages.length + (state.isStreaming ? 1 : 0),
+                        itemCount:
+                            state.messages.length + (state.isStreaming ? 1 : 0),
                         itemBuilder: (context, index) {
                           // Hiển thị streaming message nếu đang streaming
-                          if (index == state.messages.length && state.isStreaming) {
+                          if (index == state.messages.length &&
+                              state.isStreaming) {
                             return Align(
                               alignment: Alignment.centerLeft,
                               child: Container(
@@ -113,18 +116,17 @@ class Page extends StatelessWidget {
                                       .surfaceContainerHighest,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Flexible(
-                                  child: Builder(
-                                    builder: (context) {
-                                      final decodedText = _decodeString(state.streamingMessage);
-                                      return Text(decodedText);
-                                    }
-                                  ),
-                                ),
+                                child: Builder(builder: (context) {
+                                  final decodedText =
+                                      _decodeString(state.streamingMessage);
+                                  return MarkdownBody(
+                                    data: decodedText,
+                                  );
+                                }),
                               ),
                             );
                           }
-                          
+
                           final m = state.messages[index];
                           return Align(
                             alignment: m.isUser
@@ -144,7 +146,9 @@ class Page extends StatelessWidget {
                                         .surfaceContainerHighest,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Text(m.content),
+                              child: MarkdownBody(
+                                data: m.content,
+                              ),
                             ),
                           );
                         },
@@ -163,13 +167,11 @@ class Page extends StatelessWidget {
 
     // Try JSON-like decoding when string appears quoted
     try {
-      final looksQuoted =
-          (input.startsWith('"') && input.endsWith('"')) ||
+      final looksQuoted = (input.startsWith('"') && input.endsWith('"')) ||
           (input.startsWith("'") && input.endsWith("'"));
       if (looksQuoted) {
-        final normalized = input.startsWith("'")
-            ? input.replaceAll("'", '"')
-            : input;
+        final normalized =
+            input.startsWith("'") ? input.replaceAll("'", '"') : input;
         final decoded = jsonDecode(normalized);
         if (decoded is String) return decoded;
       }
@@ -178,9 +180,7 @@ class Page extends StatelessWidget {
     }
 
     // Fallback: basic unescape without slicing
-    return input
-        .replaceAll('\\n', '\n')
-        .replaceAll('\\"', '"');
+    return input.replaceAll('\\n', '\n').replaceAll('\\"', '"');
   }
 }
 

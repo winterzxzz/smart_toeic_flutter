@@ -8,28 +8,37 @@ class SocketService {
   SocketService._internal();
 
   IO.Socket? _socket;
-  String? _socketId; 
+  String? _socketId;
   // get session id
-  final StreamController<Map<String, dynamic>> _sessionCreatedController = 
+  final StreamController<Map<String, dynamic>> _sessionCreatedController =
       StreamController<Map<String, dynamic>>.broadcast();
-  final StreamController<Map<String, dynamic>> _chatStreamController = 
+  final StreamController<Map<String, dynamic>> _streamStartedController =
       StreamController<Map<String, dynamic>>.broadcast();
-  final StreamController<Map<String, dynamic>> _streamCompleteController = 
+  final StreamController<Map<String, dynamic>> _chatStreamController =
+      StreamController<Map<String, dynamic>>.broadcast();
+  final StreamController<Map<String, dynamic>> _streamCompleteController =
       StreamController<Map<String, dynamic>>.broadcast();
   // Getters for streams
-  Stream<Map<String, dynamic>> get sessionCreatedStream => _sessionCreatedController.stream;
-  Stream<Map<String, dynamic>> get chatStreamStream => _chatStreamController.stream;
-  Stream<Map<String, dynamic>> get streamCompleteStream => _streamCompleteController.stream;
+  Stream<Map<String, dynamic>> get sessionCreatedStream =>
+      _sessionCreatedController.stream;
+  Stream<Map<String, dynamic>> get streamStartedStream =>
+      _streamStartedController.stream;
+  Stream<Map<String, dynamic>> get chatStreamStream =>
+      _chatStreamController.stream;
+  Stream<Map<String, dynamic>> get streamCompleteStream =>
+      _streamCompleteController.stream;
   String? get socketId => _socketId;
 
   bool get isConnected => _socket?.connected ?? false;
 
   Future<void> connect(String serverUrl) async {
     try {
-      _socket = IO.io(serverUrl, IO.OptionBuilder()
-          .setTransports(['websocket'])
-          .enableAutoConnect()
-          .build());
+      _socket = IO.io(
+          serverUrl,
+          IO.OptionBuilder()
+              .setTransports(['websocket'])
+              .enableAutoConnect()
+              .build());
 
       _socket!.onConnect((_) {
         debugPrint('Socket connected');
@@ -50,15 +59,18 @@ class SocketService {
         _sessionCreatedController.add(data);
       });
 
+      _socket!.on('stream_start', (data) {
+        _streamStartedController.add(data);
+      });
+
       // Lắng nghe event chat_stream
       _socket!.on('chat_stream', (data) {
         _chatStreamController.add(data);
       });
 
-      // _socket!.on('stream_complete', (data) {
-      //   _streamCompleteController.add(data);
-      // });
-
+      _socket!.on('stream_complete', (data) {
+        _streamCompleteController.add(data);
+      });
     } catch (e) {
       debugPrint('Error connecting to socket: $e');
     }
@@ -85,6 +97,7 @@ class SocketService {
 
   void dispose() {
     _sessionCreatedController.close();
+    _streamStartedController.close();
     _chatStreamController.close();
     _streamCompleteController.close();
     disconnect();
