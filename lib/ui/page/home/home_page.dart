@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
@@ -19,30 +20,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  NativeAd? _nativeAd;
+  bool _isNativeAdReady = false;
+
   @override
   void initState() {
     super.initState();
+    _loadNativeAd();
   }
 
   @override
   void dispose() {
+    _nativeAd?.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return const Page();
+  void _loadNativeAd() {
+    // Android test native ad unit ID from Google
+    const adUnitId = 'ca-app-pub-3940256099942544/2247696110';
+    final nativeAd = NativeAd(
+      adUnitId: adUnitId,
+      factoryId: 'listTile',
+      request: const AdRequest(),
+      listener: NativeAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _nativeAd = ad as NativeAd;
+            _isNativeAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    nativeAd.load();
   }
-}
-
-class Page extends StatelessWidget {
-  const Page({
-    super.key,
-  });
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = context.textTheme;  
+    final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
     final size = context.sizze;
     return Scaffold(
@@ -123,6 +140,14 @@ class Page extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
+              if (_isNativeAdReady)
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: SizedBox(
+                    height: 330,
+                    child: AdWidget(ad: _nativeAd!),
+                  ),
+                ),
               HomeSectionTask(
                 sectionTitle: S.current.exam_preparation,
                 tasks: Constants.homeExamPreparationTasks,
@@ -137,3 +162,5 @@ class Page extends StatelessWidget {
     );
   }
 }
+
+// Page class removed; UI lives in _HomePageState

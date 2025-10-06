@@ -21,6 +21,25 @@ import com.example.toeic_desktop.model.FlashCard
 import com.example.toeic_desktop.data.ContentPreferences
 import com.example.toeic_desktop.data.ColorPreferences
 import java.util.concurrent.TimeUnit
+import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.view.ViewGroup
+import android.view.Gravity
+import android.graphics.Typeface
+import android.util.TypedValue
+import android.content.res.Resources
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
+import com.google.android.gms.ads.nativead.MediaView
+import android.graphics.drawable.GradientDrawable
+import android.widget.Button
+import android.graphics.Color
+import android.widget.ImageView
+import android.widget.FrameLayout
+import android.view.View
+import android.view.ViewOutlineProvider
+import android.graphics.Outline
 
 
 class MainActivity : FlutterActivity() {
@@ -45,6 +64,15 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+
+        // Register NativeAdFactory for Flutter google_mobile_ads (factoryId: "listTile")
+        try {
+            GoogleMobileAdsPlugin.registerNativeAdFactory(
+                flutterEngine,
+                "listTile",
+                ListTileNativeAdFactory(this)
+            )
+        } catch (_: Exception) {}
 
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, ALARM_CHANNEL)
             .setMethodCallHandler { call, result ->
@@ -201,4 +229,122 @@ class MainActivity : FlutterActivity() {
             }
         }
     }
+}
+
+class ListTileNativeAdFactory(private val context: Context) : GoogleMobileAdsPlugin.NativeAdFactory {
+    override fun createNativeAd(
+        nativeAd: NativeAd,
+        customOptions: MutableMap<String, Any>?
+    ): NativeAdView {
+        val adView = NativeAdView(context)
+
+        // Root container with rounded white background
+        val container = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            gravity = Gravity.CENTER_VERTICAL
+            background = GradientDrawable().apply {
+                setColor(Color.WHITE)
+                cornerRadius = dp(12).toFloat() // ✅ Bo góc container
+            }
+            setPadding(dp(12), dp(12), dp(12), dp(12))
+        }
+
+        // 1) Image (Media) — rounded top corners
+        val mediaContainer = FrameLayout(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                dp(180)
+            ).apply {
+                bottomMargin = dp(12)
+            }
+            clipToOutline = true
+            outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: Outline) {
+                    // Bo góc trên ảnh
+                    outline.setRoundRect(0, 0, view.width, view.height, dp(12).toFloat())
+                }
+            }
+        }
+
+        val mediaView = MediaView(context).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+        }
+        mediaContainer.addView(mediaView)
+        adView.mediaView = mediaView
+        container.addView(mediaContainer)
+
+        // 2) Content (Headline + Body)
+        val contentColumn = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        val headlineView = TextView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = dp(6)
+            }
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+            setTypeface(typeface, Typeface.BOLD)
+            setTextColor(Color.BLACK)
+        }
+        adView.headlineView = headlineView
+        contentColumn.addView(headlineView)
+
+        val bodyView = TextView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                bottomMargin = dp(10)
+            }
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            setTextColor(Color.parseColor("#555555"))
+        }
+        adView.bodyView = bodyView
+        contentColumn.addView(bodyView)
+        container.addView(contentColumn)
+
+        // 3) CTA Button
+        val ctaButton = Button(context).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            textSize = 14f
+            setTextColor(Color.WHITE)
+            isAllCaps = false
+            background = GradientDrawable().apply {
+                setColor(Color.parseColor("#26A69A"))
+                cornerRadius = dp(8).toFloat()
+            }
+        }
+        adView.callToActionView = ctaButton
+        container.addView(ctaButton)
+
+        adView.addView(container)
+
+        // Populate ad content
+        (adView.headlineView as TextView).text = nativeAd.headline
+        (adView.bodyView as TextView).text = nativeAd.body ?: ""
+        (adView.callToActionView as Button).text = nativeAd.callToAction ?: "Install now"
+
+        adView.setNativeAd(nativeAd)
+        return adView
+    }
+
+    private fun dp(value: Int): Int = (value * Resources.getSystem().displayMetrics.density).toInt()
 }
