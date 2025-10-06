@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
+import 'package:toeic_desktop/data/models/chatbox/ai_chat_session.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
@@ -270,6 +271,9 @@ abstract class ApiClient {
   Future<String> createAiChatSession(
     @Field("title") String title,
   );
+
+  @GET("/user/ai-chat/list-sessions")
+  Future<List<AiChatSession>> getListSession();
 
   @POST('/user/ai-chat/send')
   Future<String> sendAiChatMessage(

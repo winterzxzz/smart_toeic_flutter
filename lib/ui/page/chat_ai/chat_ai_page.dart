@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_cubit.dart';
+import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_state.dart';
 
 class ChatAiPage extends StatelessWidget {
   const ChatAiPage({super.key});
@@ -111,30 +113,13 @@ class Page extends StatelessWidget {
                                       .surfaceContainerHighest,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Builder(
-                                        builder: (context) {
-                                          final decodedText = _decodeString(state.streamingMessage);
-                                          return Text(decodedText);
-                                        }
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    SizedBox(
-                                      width: 12,
-                                      height: 12,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                          Theme.of(context).colorScheme.primary,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                child: Flexible(
+                                  child: Builder(
+                                    builder: (context) {
+                                      final decodedText = _decodeString(state.streamingMessage);
+                                      return Text(decodedText);
+                                    }
+                                  ),
                                 ),
                               ),
                             );
@@ -174,11 +159,28 @@ class Page extends StatelessWidget {
   }
 
   String _decodeString(String input) {
-    final decodedText = input
-        .replaceAll('\\n', '\n') // Replace escaped newlines
-        .replaceAll('\\"', '"'); // Replace escaped quotes
-    // remove first and last
-    return decodedText.substring(1, decodedText.length - 1);
+    if (input.isEmpty) return '';
+
+    // Try JSON-like decoding when string appears quoted
+    try {
+      final looksQuoted =
+          (input.startsWith('"') && input.endsWith('"')) ||
+          (input.startsWith("'") && input.endsWith("'"));
+      if (looksQuoted) {
+        final normalized = input.startsWith("'")
+            ? input.replaceAll("'", '"')
+            : input;
+        final decoded = jsonDecode(normalized);
+        if (decoded is String) return decoded;
+      }
+    } catch (_) {
+      // ignore and fallback
+    }
+
+    // Fallback: basic unescape without slicing
+    return input
+        .replaceAll('\\n', '\n')
+        .replaceAll('\\"', '"');
   }
 }
 

@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
+import 'package:toeic_desktop/data/models/chatbox/ai_chat_session.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
 
 abstract class ChatAiRepository {
   Future<Either<ApiError, String>> createAiChatSession(String title);
+  Future<Either<ApiError, List<AiChatSession>>> getAiChatSessions();
   Future<Either<ApiError, String>> sendAiChatMessage({
     required String sessionId,
     required String content,
@@ -23,6 +25,16 @@ class ChatAiRepositoryImpl extends ChatAiRepository {
   Future<Either<ApiError, String>> createAiChatSession(String title) async {
     try {
       final response = await _apiClient.createAiChatSession(title);
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, List<AiChatSession>>> getAiChatSessions() async {
+    try {
+      final response = await _apiClient.getListSession();
       return Right(response);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));

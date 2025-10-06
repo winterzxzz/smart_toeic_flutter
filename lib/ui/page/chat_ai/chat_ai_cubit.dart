@@ -2,50 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:toeic_desktop/common/configs/app_configs.dart';
 import 'package:toeic_desktop/common/services/socket_service.dart';
-import 'package:toeic_desktop/data/network/error/api_error.dart';
+import 'package:toeic_desktop/data/models/chatbox/ai_chat_session.dart';
 import 'package:toeic_desktop/data/network/repositories/chat_ai_repository.dart';
+import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_state.dart';
 
-part 'chat_ai_cubit.freezed.dart';
-
-@freezed
-class ChatMessage with _$ChatMessage {
-  const factory ChatMessage({
-    required String id,
-    required String content,
-    required bool isUser,
-    required DateTime createdAt,
-  }) = _ChatMessage;
-}
-
-@freezed
-class ChatSession with _$ChatSession {
-  const factory ChatSession({
-    required String id,
-    required String title,
-    required DateTime createdAt,
-  }) = _ChatSession;
-}
-
-@freezed
-class ChatAiState with _$ChatAiState {
-  const factory ChatAiState({
-    @Default([]) List<ChatSession> sessions,
-    ChatSession? selectedSession,
-    @Default([]) List<ChatMessage> messages,
-    @Default(false) bool isLoading,
-    ApiError? error,
-    @Default('') String input,
-    @Default('') String streamingMessage,
-    @Default(false) bool isStreaming,
-  }) = _ChatAiState;
-}
+// State, message, session moved to chat_ai_state.dart using Equatable
 
 class ChatAiCubit extends Cubit<ChatAiState> {
   ChatAiCubit(this._repository) : super(const ChatAiState()) {
     _initializeSocket();
+    _loadSessions();
   }
 
   final ChatAiRepository _repository;
@@ -84,11 +52,42 @@ class ChatAiCubit extends Cubit<ChatAiState> {
     });
   }
 
+  Future<void> _loadSessions() async {
+    emit(state.copyWith(isLoading: true, error: null));
+    final res = await _repository.getAiChatSessions();
+    res.fold(
+      (l) => emit(state.copyWith(isLoading: false, error: l)),
+      (r) {
+        try {
+          final List<AiChatSession> data = r;
+          final sessions = data
+              .map((e) => ChatSession(
+                    id: e.id,
+                    title: e.title,
+                    createdAt: e.createdAt,
+                  ))
+              .toList();
+          emit(state.copyWith(sessions: sessions, isLoading: false));
+        } catch (_) {
+          emit(state.copyWith(sessions: const [], isLoading: false));
+        }
+      },
+    );
+  }
+
   void _handleStreamingChunk(String chunk) {
     if (state.isStreaming) {
       // Nếu đang streaming, cập nhật message hiện tại
       emit(state.copyWith(
         streamingMessage: state.streamingMessage + chunk,
+        messages: [
+          ...state.messages,
+          ChatMessage(
+              id: DateTime.now().microsecondsSinceEpoch.toString(),
+              content: chunk,
+              isUser: false,
+              createdAt: DateTime.now())
+        ],
       ));
     }
   }
@@ -125,7 +124,7 @@ class ChatAiCubit extends Cubit<ChatAiState> {
       (r) {
         // Demo parsing, expect r as JSON list
         try {
-          final List<dynamic> data = jsonDecode(r) as List<dynamic>;
+          final List<dynamic> data = r as List<dynamic>;
           final parsed = data
               .map((e) => ChatMessage(
                     id: e['id'] as String,
