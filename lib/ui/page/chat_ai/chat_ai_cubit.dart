@@ -133,7 +133,33 @@ class ChatAiCubit extends Cubit<ChatAiState> {
     );
   }
 
+  void createTempSession() {
+    final tempId = 'temp_${DateTime.now().microsecondsSinceEpoch}';
+    final temp = ChatSession(
+      id: tempId,
+      title: '',
+      createdAt: DateTime.now(),
+    );
+    emit(state.copyWith(
+      sessions: [...state.sessions, temp],
+      selectedSession: temp,
+      messages: const [],
+      error: null,
+    ));
+    _tempSessionId = tempId;
+  }
+
   Future<void> selectSession(ChatSession session) async {
+    // If selecting a temp session, do not call API
+    if (session.id.startsWith('temp_')) {
+      emit(state.copyWith(
+        selectedSession: session,
+        messages: const [],
+        isLoading: false,
+        error: null,
+      ));
+      return;
+    }
     emit(
         state.copyWith(selectedSession: session, isLoading: true, error: null));
     final res = await _repository.getAiChatHistory(session.id);
@@ -263,6 +289,18 @@ class ChatAiCubit extends Cubit<ChatAiState> {
   Future<void> deleteCurrentSession() async {
     final session = state.selectedSession;
     if (session == null) return;
+    // If temp session, just remove locally
+    if (session.id.startsWith('temp_')) {
+      final remaining =
+          state.sessions.where((s) => s.id != session.id).toList();
+      emit(state.copyWith(
+        sessions: remaining,
+        selectedSession: remaining.isEmpty ? null : remaining.last,
+        messages: const [],
+        isLoading: false,
+      ));
+      return;
+    }
     emit(state.copyWith(isLoading: true, error: null));
     final res = await _repository.deleteAiChatHistory(session.id);
     res.fold(
