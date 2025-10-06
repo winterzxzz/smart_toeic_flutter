@@ -35,6 +35,7 @@ Future<void> init() async {
     // Services
     ..registerLazySingleton<SpeechService>(() => SpeechService())
     ..registerLazySingleton<NotiService>(() => NotiService())
+    ..registerLazySingleton<AdService>(() => AdService())
     ..registerLazySingleton<WidgetService>(() => WidgetService())
     ..registerLazySingleton<Web3Service>(() => Web3Service());
   // Cubit dependencies (short-lived objects)
