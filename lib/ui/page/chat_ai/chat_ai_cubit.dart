@@ -293,27 +293,35 @@ class ChatAiCubit extends Cubit<ChatAiState> {
     if (session.id.startsWith('temp_')) {
       final remaining =
           state.sessions.where((s) => s.id != session.id).toList();
+      final nextSelected = remaining.isEmpty ? null : remaining.last;
       emit(state.copyWith(
         sessions: remaining,
-        selectedSession: remaining.isEmpty ? null : remaining.last,
+        selectedSession: nextSelected,
         messages: const [],
         isLoading: false,
       ));
+      if (nextSelected != null) {
+        await selectSession(nextSelected);
+      }
       return;
     }
     emit(state.copyWith(isLoading: true, error: null));
     final res = await _repository.deleteAiChatHistory(session.id);
     res.fold(
       (l) => emit(state.copyWith(isLoading: false, error: l)),
-      (r) {
+      (r) async {
         final remaining =
             state.sessions.where((s) => s.id != session.id).toList();
+        final nextSelected = remaining.isEmpty ? null : remaining.last;
         emit(state.copyWith(
           sessions: remaining,
-          selectedSession: remaining.isEmpty ? null : remaining.last,
+          selectedSession: nextSelected,
           messages: const [],
           isLoading: false,
         ));
+        if (nextSelected != null) {
+          await selectSession(nextSelected);
+        }
       },
     );
   }

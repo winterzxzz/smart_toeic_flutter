@@ -79,6 +79,7 @@ class AppImages {
   static const icBlog = 'assets/vectors/ic_blog.svg';
   static const icPremium = 'assets/vectors/ic_premium.svg';
   static const icSetting = 'assets/vectors/ic_setting.svg';
+  static const icAi = 'assets/vectors/ic_ai.svg';
   static const icDarkModeActive = 'assets/vectors/ic_dark_mode_active.svg';
   static const icDarkModeInactive = 'assets/vectors/ic_dark_mode_inactive.svg';
   static const icHome = 'assets/vectors/ic_home.svg';
