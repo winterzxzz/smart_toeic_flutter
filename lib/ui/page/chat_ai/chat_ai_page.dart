@@ -80,65 +80,11 @@ class Page extends StatelessWidget {
                 ),
               Expanded(
                 child: state.messages.isEmpty
-                    ? const _EmptyChat()
-                    : ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 16,
-                        ),
-                        itemCount:
-                            state.messages.length + (state.isStreaming ? 1 : 0),
-                        itemBuilder: (context, index) {
-                          // Hiển thị streaming message nếu đang streaming
-                          if (index == state.messages.length &&
-                              state.isStreaming) {
-                            return Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 6),
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .surfaceContainerHighest,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Builder(builder: (context) {
-                                  final decodedText =
-                                      _decodeString(state.streamingMessage);
-                                  return MarkdownBody(
-                                    data: decodedText,
-                                  );
-                                }),
-                              ),
-                            );
-                          }
-
-                          final m = state.messages[index];
-                          return Align(
-                            alignment: m.isUser
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: m.isUser
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withValues(alpha: 0.15)
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .surfaceContainerHighest,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: MarkdownBody(
-                                data: m.content,
-                              ),
-                            ),
-                          );
-                        },
+                    ? const _SuggestionPanel()
+                    : _MessageList(
+                        messages: state.messages,
+                        isStreaming: state.isStreaming,
+                        streamingMessage: state.streamingMessage,
                       ),
               ),
               const _InputBar(),
@@ -148,39 +94,151 @@ class Page extends StatelessWidget {
       },
     );
   }
-
-  String _decodeString(String input) {
-    if (input.isEmpty) return '';
-
-    // Try JSON-like decoding when string appears quoted
-    try {
-      final looksQuoted = (input.startsWith('"') && input.endsWith('"')) ||
-          (input.startsWith("'") && input.endsWith("'"));
-      if (looksQuoted) {
-        final normalized =
-            input.startsWith("'") ? input.replaceAll("'", '"') : input;
-        final decoded = jsonDecode(normalized);
-        if (decoded is String) return decoded;
-      }
-    } catch (_) {
-      // ignore and fallback
-    }
-
-    // Fallback: basic unescape without slicing
-    return input.replaceAll('\\n', '\n').replaceAll('\\"', '"');
-  }
 }
 
-class _EmptyChat extends StatelessWidget {
-  const _EmptyChat();
+String _decodeStringText(String input) {
+  if (input.isEmpty) return '';
+  try {
+    final looksQuoted = (input.startsWith('"') && input.endsWith('"')) ||
+        (input.startsWith("'") && input.endsWith("'"));
+    if (looksQuoted) {
+      final normalized =
+          input.startsWith("'") ? input.replaceAll("'", '"') : input;
+      final decoded = jsonDecode(normalized);
+      if (decoded is String) return decoded;
+    }
+  } catch (_) {
+    // ignore
+  }
+  return input.replaceAll('\\n', '\n').replaceAll('\\"', '"');
+}
+
+class _MessageList extends StatelessWidget {
+  const _MessageList({
+    required this.messages,
+    required this.isStreaming,
+    required this.streamingMessage,
+  });
+
+  final List<ChatMessage> messages;
+  final bool isStreaming;
+  final String streamingMessage;
 
   @override
   Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 16,
+      ),
+      itemCount: messages.length + (isStreaming ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index == messages.length && isStreaming) {
+          return const _StreamingBubble();
+        }
+        final m = messages[index];
+        return _MessageBubble(message: m);
+      },
+    );
+  }
+}
+
+class _MessageBubble extends StatelessWidget {
+  const _MessageBubble({required this.message});
+
+  final ChatMessage message;
+
+  @override
+  Widget build(BuildContext context) {
+    final isUser = message.isUser;
+    return Align(
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isUser
+              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15)
+              : Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: MarkdownBody(
+          data: message.content,
+        ),
+      ),
+    );
+  }
+}
+
+class _StreamingBubble extends StatelessWidget {
+  const _StreamingBubble();
+
+  @override
+  Widget build(BuildContext context) {
+    final decodedText = _decodeStringText(
+      context.read<ChatAiCubit>().state.streamingMessage,
+    );
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: MarkdownBody(data: decodedText),
+      ),
+    );
+  }
+}
+
+class _SuggestionPanel extends StatelessWidget {
+  const _SuggestionPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    final suggestions = <String>[
+      'Give me 5 TOEIC Part 5 practice questions.',
+      'Explain common grammar for TOEIC Part 5: verbs vs nouns.',
+      'Create a 10-word TOEIC vocabulary quiz with answers.',
+      'How to improve TOEIC listening Part 3 quickly?',
+      'Summarize strategies for TOEIC Reading Part 7.',
+    ];
+
     return Center(
-      child: Text(
-        'Start a new conversation from the drawer',
-        style: Theme.of(context).textTheme.titleMedium,
-        textAlign: TextAlign.center,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Try a quick TOEIC prompt',
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              alignment: WrapAlignment.center,
+              children: suggestions.map((q) {
+                return OutlinedButton(
+                  onPressed: () {
+                    final cubit = context.read<ChatAiCubit>();
+                    cubit.onInputChanged(q);
+                    cubit.sendMessage();
+                  },
+                  child: Text(
+                    q,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
