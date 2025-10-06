@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_cubit.dart';
 
 class ChatAiPage extends StatelessWidget {
   const ChatAiPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => injector<ChatAiCubit>(),
+      child: const Page(),
+    );
+  }
+}
+
+class Page extends StatelessWidget {
+  const Page({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +96,50 @@ class ChatAiPage extends StatelessWidget {
                           horizontal: 12,
                           vertical: 16,
                         ),
-                        itemCount: state.messages.length,
+                        itemCount: state.messages.length + (state.isStreaming ? 1 : 0),
                         itemBuilder: (context, index) {
+                          // Hiển thị streaming message nếu đang streaming
+                          if (index == state.messages.length && state.isStreaming) {
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 6),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerHighest,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Builder(
+                                        builder: (context) {
+                                          final decodedText = _decodeString(state.streamingMessage);
+                                          return Text(decodedText);
+                                        }
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    SizedBox(
+                                      width: 12,
+                                      height: 12,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                          Theme.of(context).colorScheme.primary,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          
                           final m = state.messages[index];
                           return Align(
                             alignment: m.isUser
@@ -96,7 +153,7 @@ class ChatAiPage extends StatelessWidget {
                                     ? Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(0.15)
+                                        .withValues(alpha: 0.15)
                                     : Theme.of(context)
                                         .colorScheme
                                         .surfaceContainerHighest,
@@ -114,6 +171,14 @@ class ChatAiPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _decodeString(String input) {
+    final decodedText = input
+        .replaceAll('\\n', '\n') // Replace escaped newlines
+        .replaceAll('\\"', '"'); // Replace escaped quotes
+    // remove first and last
+    return decodedText.substring(1, decodedText.length - 1);
   }
 }
 
@@ -165,20 +230,25 @@ class _InputBar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            BlocSelector<ChatAiCubit, ChatAiState, bool>(
-              selector: (s) => s.isLoading,
-              builder: (context, isLoading) {
+            BlocSelector<ChatAiCubit, ChatAiState, (bool, bool)>(
+              selector: (s) => (s.isLoading, s.isStreaming),
+              builder: (context, state) {
+                final (isLoading, isStreaming) = state;
                 return IconButton(
-                  onPressed: isLoading
-                      ? null
-                      : () => context.read<ChatAiCubit>().sendMessage(),
-                  icon: isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.send_rounded),
+                  onPressed: isStreaming
+                      ? () => context.read<ChatAiCubit>().finishStreaming()
+                      : isLoading
+                          ? null
+                          : () => context.read<ChatAiCubit>().sendMessage(),
+                  icon: isStreaming
+                      ? const Icon(Icons.stop_rounded)
+                      : isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.send_rounded),
                 );
               },
             ),

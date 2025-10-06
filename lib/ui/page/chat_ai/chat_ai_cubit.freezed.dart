@@ -372,6 +372,8 @@ mixin _$ChatAiState {
   bool get isLoading => throw _privateConstructorUsedError;
   ApiError? get error => throw _privateConstructorUsedError;
   String get input => throw _privateConstructorUsedError;
+  String get streamingMessage => throw _privateConstructorUsedError;
+  bool get isStreaming => throw _privateConstructorUsedError;
 
   /// Create a copy of ChatAiState
   /// with the given fields replaced by the non-null parameter values.
@@ -392,7 +394,9 @@ abstract class $ChatAiStateCopyWith<$Res> {
       List<ChatMessage> messages,
       bool isLoading,
       ApiError? error,
-      String input});
+      String input,
+      String streamingMessage,
+      bool isStreaming});
 
   $ChatSessionCopyWith<$Res>? get selectedSession;
 }
@@ -418,6 +422,8 @@ class _$ChatAiStateCopyWithImpl<$Res, $Val extends ChatAiState>
     Object? isLoading = null,
     Object? error = freezed,
     Object? input = null,
+    Object? streamingMessage = null,
+    Object? isStreaming = null,
   }) {
     return _then(_value.copyWith(
       sessions: null == sessions
@@ -444,6 +450,14 @@ class _$ChatAiStateCopyWithImpl<$Res, $Val extends ChatAiState>
           ? _value.input
           : input // ignore: cast_nullable_to_non_nullable
               as String,
+      streamingMessage: null == streamingMessage
+          ? _value.streamingMessage
+          : streamingMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      isStreaming: null == isStreaming
+          ? _value.isStreaming
+          : isStreaming // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -476,7 +490,9 @@ abstract class _$$ChatAiStateImplCopyWith<$Res>
       List<ChatMessage> messages,
       bool isLoading,
       ApiError? error,
-      String input});
+      String input,
+      String streamingMessage,
+      bool isStreaming});
 
   @override
   $ChatSessionCopyWith<$Res>? get selectedSession;
@@ -501,6 +517,8 @@ class __$$ChatAiStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? error = freezed,
     Object? input = null,
+    Object? streamingMessage = null,
+    Object? isStreaming = null,
   }) {
     return _then(_$ChatAiStateImpl(
       sessions: null == sessions
@@ -527,6 +545,14 @@ class __$$ChatAiStateImplCopyWithImpl<$Res>
           ? _value.input
           : input // ignore: cast_nullable_to_non_nullable
               as String,
+      streamingMessage: null == streamingMessage
+          ? _value.streamingMessage
+          : streamingMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+      isStreaming: null == isStreaming
+          ? _value.isStreaming
+          : isStreaming // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -540,7 +566,9 @@ class _$ChatAiStateImpl implements _ChatAiState {
       final List<ChatMessage> messages = const [],
       this.isLoading = false,
       this.error,
-      this.input = ''})
+      this.input = '',
+      this.streamingMessage = '',
+      this.isStreaming = false})
       : _sessions = sessions,
         _messages = messages;
 
@@ -572,10 +600,16 @@ class _$ChatAiStateImpl implements _ChatAiState {
   @override
   @JsonKey()
   final String input;
+  @override
+  @JsonKey()
+  final String streamingMessage;
+  @override
+  @JsonKey()
+  final bool isStreaming;
 
   @override
   String toString() {
-    return 'ChatAiState(sessions: $sessions, selectedSession: $selectedSession, messages: $messages, isLoading: $isLoading, error: $error, input: $input)';
+    return 'ChatAiState(sessions: $sessions, selectedSession: $selectedSession, messages: $messages, isLoading: $isLoading, error: $error, input: $input, streamingMessage: $streamingMessage, isStreaming: $isStreaming)';
   }
 
   @override
@@ -590,7 +624,11 @@ class _$ChatAiStateImpl implements _ChatAiState {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error) &&
-            (identical(other.input, input) || other.input == input));
+            (identical(other.input, input) || other.input == input) &&
+            (identical(other.streamingMessage, streamingMessage) ||
+                other.streamingMessage == streamingMessage) &&
+            (identical(other.isStreaming, isStreaming) ||
+                other.isStreaming == isStreaming));
   }
 
   @override
@@ -601,7 +639,9 @@ class _$ChatAiStateImpl implements _ChatAiState {
       const DeepCollectionEquality().hash(_messages),
       isLoading,
       error,
-      input);
+      input,
+      streamingMessage,
+      isStreaming);
 
   /// Create a copy of ChatAiState
   /// with the given fields replaced by the non-null parameter values.
@@ -619,7 +659,9 @@ abstract class _ChatAiState implements ChatAiState {
       final List<ChatMessage> messages,
       final bool isLoading,
       final ApiError? error,
-      final String input}) = _$ChatAiStateImpl;
+      final String input,
+      final String streamingMessage,
+      final bool isStreaming}) = _$ChatAiStateImpl;
 
   @override
   List<ChatSession> get sessions;
@@ -633,6 +675,10 @@ abstract class _ChatAiState implements ChatAiState {
   ApiError? get error;
   @override
   String get input;
+  @override
+  String get streamingMessage;
+  @override
+  bool get isStreaming;
 
   /// Create a copy of ChatAiState
   /// with the given fields replaced by the non-null parameter values.

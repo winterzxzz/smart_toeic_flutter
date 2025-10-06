@@ -210,9 +210,9 @@ class Constants {
           onNavigate: (context) => GoRouter.of(context).push(AppRouter.setting),
         ),
         HomeItemTaskModel(
-          title: 'Rooms',
+          title: 'Ai Chat',
           image: AppImages.icSetting,
-          onNavigate: (context) => GoRouter.of(context).push(AppRouter.rooms),
+          onNavigate: (context) => GoRouter.of(context).push(AppRouter.chatAi),
         )
       ];
 

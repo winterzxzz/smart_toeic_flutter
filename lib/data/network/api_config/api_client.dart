@@ -271,10 +271,11 @@ abstract class ApiClient {
     @Field("title") String title,
   );
 
-  @POST('/user/ai-chat/send-message')
+  @POST('/user/ai-chat/send')
   Future<String> sendAiChatMessage(
     @Field("sessionId") String sessionId,
     @Field("content") String content,
+    @Field("socketId") String socketId,
   );
 
   @GET('/user/ai-chat/history/{sessionId}')

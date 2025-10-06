@@ -1296,16 +1296,24 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<String> sendAiChatMessage(String sessionId, String content) async {
+  Future<String> sendAiChatMessage(
+    String sessionId,
+    String content,
+    String socketId,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'sessionId': sessionId, 'content': content};
+    final _data = {
+      'sessionId': sessionId,
+      'content': content,
+      'socketId': socketId,
+    };
     final _options = _setStreamType<String>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/user/ai-chat/send-message',
+            '/user/ai-chat/send',
             queryParameters: queryParameters,
             data: _data,
           )

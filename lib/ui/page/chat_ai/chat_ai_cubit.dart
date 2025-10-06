@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/common/services/socket_service.dart';
 import 'package:toeic_desktop/data/network/error/api_error.dart';
 import 'package:toeic_desktop/data/network/repositories/chat_ai_repository.dart';
 
@@ -35,13 +38,60 @@ class ChatAiState with _$ChatAiState {
     @Default(false) bool isLoading,
     ApiError? error,
     @Default('') String input,
+    @Default('') String streamingMessage,
+    @Default(false) bool isStreaming,
   }) = _ChatAiState;
 }
 
 class ChatAiCubit extends Cubit<ChatAiState> {
-  ChatAiCubit(this._repository) : super(const ChatAiState());
+  ChatAiCubit(this._repository) : super(const ChatAiState()) {
+    _initializeSocket();
+  }
 
   final ChatAiRepository _repository;
+  final SocketService _socketService = SocketService();
+  StreamSubscription<Map<String, dynamic>>? _sessionCreatedSubscription;
+  StreamSubscription<Map<String, dynamic>>? _chatStreamSubscription;
+  StreamSubscription<Map<String, dynamic>>? _streamCompleteSubscription;
+
+  void _initializeSocket() {
+    // Kết nối tới server Socket.IO
+    // cắt đoạn /api/
+    _socketService.connect(AppConfigs.baseUrl.replaceAll('/api', ''));
+
+    // Lắng nghe event session_created
+    _sessionCreatedSubscription =
+        _socketService.sessionCreatedStream.listen((data) {
+      final sessionId = data['sessionId'] as String?;
+      if (sessionId != null) {
+        emit(state.copyWith(
+            selectedSession: ChatSession(
+                id: sessionId, title: '', createdAt: DateTime.now())));
+      }
+    });
+
+    // Lắng nghe event chat_stream
+    _chatStreamSubscription = _socketService.chatStreamStream.listen((data) {
+      final chunk = data['chunk'] as String?;
+      if (chunk != null) {
+        _handleStreamingChunk(chunk);
+      }
+    });
+
+    // Lắng nghe event stream_complete
+    _streamCompleteSubscription = _socketService.streamCompleteStream.listen((data) {
+      emit(state.copyWith(isStreaming: false));
+    });
+  }
+
+  void _handleStreamingChunk(String chunk) {
+    if (state.isStreaming) {
+      // Nếu đang streaming, cập nhật message hiện tại
+      emit(state.copyWith(
+        streamingMessage: state.streamingMessage + chunk,
+      ));
+    }
+  }
 
   void onInputChanged(String value) => emit(state.copyWith(input: value));
 
@@ -93,38 +143,58 @@ class ChatAiCubit extends Cubit<ChatAiState> {
   }
 
   Future<void> sendMessage() async {
-    final session = state.selectedSession;
-    if (session == null || state.input.trim().isEmpty) return;
+    if (state.input.trim().isEmpty) return;
+
     final userMsg = ChatMessage(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       content: state.input.trim(),
       isUser: true,
       createdAt: DateTime.now(),
     );
+
     emit(state.copyWith(
       messages: [...state.messages, userMsg],
       input: '',
       isLoading: true,
+      isStreaming: true,
+      streamingMessage: '',
       error: null,
     ));
 
-    final res =
-        await _repository.sendAiChatMessage(session.id, userMsg.content);
+    // Fallback: nếu Socket.IO không hoạt động, sử dụng HTTP API
+    final res = await _repository.sendAiChatMessage(
+        sessionId: state.selectedSession?.id ?? '',
+        content: userMsg.content,
+        socketId: _socketService.socketId ?? '');
     res.fold(
-      (l) => emit(state.copyWith(isLoading: false, error: l)),
+      (l) =>
+          emit(state.copyWith(isLoading: false, isStreaming: false, error: l)),
       (r) {
-        final aiMsg = ChatMessage(
-          id: DateTime.now().microsecondsSinceEpoch.toString(),
-          content: r,
-          isUser: false,
-          createdAt: DateTime.now(),
-        );
-        emit(state.copyWith(
-          messages: [...state.messages, aiMsg],
-          isLoading: false,
-        ));
+        // Nếu không có streaming, thêm message hoàn chỉnh
+        if (!state.isStreaming) {
+          emit(state.copyWith(
+            isLoading: false,
+          ));
+        }
       },
     );
+  }
+
+  void finishStreaming() {
+    if (state.isStreaming && state.streamingMessage.isNotEmpty) {
+      final aiMsg = ChatMessage(
+        id: DateTime.now().microsecondsSinceEpoch.toString(),
+        content: state.streamingMessage,
+        isUser: false,
+        createdAt: DateTime.now(),
+      );
+      emit(state.copyWith(
+        messages: [...state.messages, aiMsg],
+        isLoading: false,
+        isStreaming: false,
+        streamingMessage: '',
+      ));
+    }
   }
 
   Future<void> deleteCurrentSession() async {
@@ -145,5 +215,14 @@ class ChatAiCubit extends Cubit<ChatAiState> {
         ));
       },
     );
+  }
+
+  @override
+  Future<void> close() {
+    _sessionCreatedSubscription?.cancel();
+    _chatStreamSubscription?.cancel();
+    _streamCompleteSubscription?.cancel();
+    _socketService.dispose();
+    return super.close();
   }
 }

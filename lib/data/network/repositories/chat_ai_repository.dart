@@ -5,8 +5,11 @@ import 'package:toeic_desktop/data/network/error/api_error.dart';
 
 abstract class ChatAiRepository {
   Future<Either<ApiError, String>> createAiChatSession(String title);
-  Future<Either<ApiError, String>> sendAiChatMessage(
-      String sessionId, String content);
+  Future<Either<ApiError, String>> sendAiChatMessage({
+    required String sessionId,
+    required String content,
+    required String socketId,
+  });
   Future<Either<ApiError, String>> getAiChatHistory(String sessionId);
   Future<Either<ApiError, void>> deleteAiChatHistory(String sessionId);
 }
@@ -46,11 +49,14 @@ class ChatAiRepositoryImpl extends ChatAiRepository {
     }
   }
 
-  @override
-  Future<Either<ApiError, String>> sendAiChatMessage(
-      String sessionId, String content) async {
+  @override 
+  Future<Either<ApiError, String>> sendAiChatMessage({
+    required String sessionId,
+    required String content,
+    required String socketId,
+  }) async {
     try {
-      final response = await _apiClient.sendAiChatMessage(sessionId, content);
+      final response = await _apiClient.sendAiChatMessage(sessionId, content, socketId);
       return Right(response);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));

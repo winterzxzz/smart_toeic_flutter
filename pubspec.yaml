@@ -98,11 +98,11 @@ dependencies:
   image_cropper: ^9.1.0
   image: ^4.3.0
   # google_mlkit_image_labeling: ^0.14.1
-  google_mlkit_object_detection:
-    path: ../google_mlkit_object_detection
+  google_mlkit_object_detection: ^0.15.0
   path_provider: ^2.1.4
   google_mlkit_commons: any
   path: ^1.9.1
+  socket_io_client: ^2.0.3+1
 
 dev_dependencies:
   flutter_test:
