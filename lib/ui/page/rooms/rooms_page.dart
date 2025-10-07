@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/data/models/entities/rooms/room_db.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/ui_models/rooms/room_model.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
@@ -132,7 +133,7 @@ class _PageState extends State<Page> {
     );
   }
 
-  void _onRoomTap(RoomModel room) {
+  void _onRoomTap(RoomDb room) {
     GoRouter.of(context).push(AppRouter.liveStream);
   }
 

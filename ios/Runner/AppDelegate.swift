@@ -2,6 +2,7 @@ import UIKit
 import Flutter
 import flutter_local_notifications
 import WidgetKit
+import google_mobile_ads
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -9,6 +10,14 @@ import WidgetKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+
+    // Register Native Ad Factory
+    let nativeAdFactory = ListTileNativeAdFactory()
+    FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+      self,
+      factoryId: "listTile_ios",
+      nativeAdFactory: nativeAdFactory
+    )
 
     // Setup for flutter_local_notifications
     FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in

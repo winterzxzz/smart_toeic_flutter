@@ -248,7 +248,7 @@ class ListTileNativeAdFactory(private val context: Context) : GoogleMobileAdsPlu
             gravity = Gravity.CENTER_VERTICAL
             background = GradientDrawable().apply {
                 setColor(Color.WHITE)
-                cornerRadius = dp(12).toFloat() // ✅ Bo góc container
+                cornerRadius = dp(12).toFloat() 
             }
             setPadding(dp(12), dp(12), dp(12), dp(12))
         }

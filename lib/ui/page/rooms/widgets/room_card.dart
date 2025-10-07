@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:toeic_desktop/data/models/ui_models/rooms/room_model.dart';
+import 'package:toeic_desktop/common/configs/app_configs.dart';
+import 'package:toeic_desktop/data/models/entities/rooms/room_db.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 
 class RoomCard extends StatelessWidget {
-  final RoomModel room;
+  final RoomDb room;
   final VoidCallback? onTap;
 
   const RoomCard({
@@ -64,7 +65,7 @@ class RoomCard extends StatelessWidget {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
           child: SizedBox.expand(
             child: Image.network(
-              room.imageUrl,
+              '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${room.thumbnail}',
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return const Icon(
@@ -82,7 +83,7 @@ class RoomCard extends StatelessWidget {
             ),
           ),
         ),
-        if (room.isLive)
+        if (room.status == "STREAMING")
           Positioned(
             top: 8,
             left: 8,
@@ -122,7 +123,7 @@ class RoomCard extends StatelessWidget {
 
   Widget _buildTitle(TextTheme textTheme) {
     return Text(
-      room.title,
+      room.name,
       style: textTheme.titleSmall?.copyWith(
         fontWeight: FontWeight.w600,
         height: 1.2,
@@ -157,28 +158,11 @@ class RoomCard extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Text(
-          room.formattedViewCount,
+          room.viewers.toString(),
           style: textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.w500,
           ),
         ),
-        const Spacer(),
-        if (room.category != null)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              room.category!,
-              style: textTheme.bodySmall?.copyWith(
-                color: colorScheme.primary,
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
       ],
     );
   }

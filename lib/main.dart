@@ -14,14 +14,19 @@ late List<CameraDescription> cameras;
 void main() async {
   AppConfigs.env = Environment.dev;
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Configure for test ads only - no device ID needed for test ad units
   await MobileAds.instance.updateRequestConfiguration(
-    RequestConfiguration(testDeviceIds: ['105B2DCAFB40A94A3CE6C7EE0A4F4B72']),
+    RequestConfiguration(
+      testDeviceIds: <String>[], // Empty list works with test ad unit IDs
+    ),
   );
+  
   await MobileAds.instance.initialize();
   await init();
   await injector<SharedPreferencesHelper>().initialize();
   await injector<NotiService>().initialize();
-  injector<AdService>().initialize();
+  await injector<AdService>().initialize();
   cameras = await availableCameras();
   runApp(const MyApp());
 }

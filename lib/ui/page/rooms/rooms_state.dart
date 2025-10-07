@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:toeic_desktop/data/models/entities/rooms/room_db.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
-import 'package:toeic_desktop/data/models/ui_models/rooms/room_model.dart';
 
 class RoomsState extends Equatable {
   final LoadStatus loadStatus;
   final String message;
-  final List<RoomModel> rooms;
+  final List<RoomDb> rooms;
 
   const RoomsState({
     required this.loadStatus,
@@ -22,7 +22,7 @@ class RoomsState extends Equatable {
   RoomsState copyWith({
     LoadStatus? loadStatus,
     String? message,
-    List<RoomModel>? rooms,
+    List<RoomDb>? rooms,
   }) =>
       RoomsState(
         loadStatus: loadStatus ?? this.loadStatus,

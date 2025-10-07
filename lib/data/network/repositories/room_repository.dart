@@ -13,7 +13,7 @@ import 'package:toeic_desktop/data/network/error/api_error.dart';
 import '../../models/ui_models/rooms/room_model.dart';
 
 abstract class RoomRepository {
-  Future<Either<ApiError, List<RoomModel>>> getRooms();
+  Future<Either<ApiError, List<RoomDb>>> getRooms();
   Future<Either<ApiError, List<RoomModel>>> getRoomsByCategory(String category);
   Future<Either<ApiError, RoomModel>> getRoomById(String id);
   Future<Either<Exception, Room>> connect(String token);
@@ -112,10 +112,13 @@ class RoomRepositoryImpl implements RoomRepository {
   ];
 
   @override
-  Future<Either<ApiError, List<RoomModel>>> getRooms() async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 500));
-    return const Right(_sampleRooms);
+  Future<Either<ApiError, List<RoomDb>>> getRooms() async {
+    try {
+      final response = await _apiClient.getRooms();
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
   }
 
   @override

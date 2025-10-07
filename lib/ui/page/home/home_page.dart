@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
+import 'package:toeic_desktop/data/services/ad_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
+import 'dart:developer';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_section_task.dart';
@@ -20,41 +23,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  NativeAd? _nativeAd;
-  bool _isNativeAdReady = false;
+  late AdService _adService;
 
   @override
   void initState() {
     super.initState();
-    _loadNativeAd();
-  }
-
-  @override
-  void dispose() {
-    _nativeAd?.dispose();
-    super.dispose();
-  }
-
-  void _loadNativeAd() {
-    // Android test native ad unit ID from Google
-    const adUnitId = 'ca-app-pub-3940256099942544/2247696110';
-    final nativeAd = NativeAd(
-      adUnitId: adUnitId,
-      factoryId: 'listTile',
-      request: const AdRequest(),
-      listener: NativeAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _nativeAd = ad as NativeAd;
-            _isNativeAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
-    nativeAd.load();
+    _adService = injector<AdService>();
+    // Check ad status after a delay to see if it's loaded
+    Future.delayed(const Duration(seconds: 3), () {
+      log('HomePage: Native ad ready: ${_adService.isNativeAdReady}');
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -140,12 +121,12 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 16,
               ),
-              if (_isNativeAdReady)
+              if (_adService.isNativeAdReady)
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   child: SizedBox(
                     height: 330,
-                    child: AdWidget(ad: _nativeAd!),
+                    child: AdWidget(ad: _adService.nativeAd!),
                   ),
                 ),
               HomeSectionTask(
@@ -163,4 +144,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// Page class removed; UI lives in _HomePageState

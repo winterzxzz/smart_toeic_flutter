@@ -24,7 +24,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    // Show app open ad once after first frame, if available
+    // Show app open ad immediately when onboarding loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       injector<AdService>().showAppOpenAdIfAvailable();
     });

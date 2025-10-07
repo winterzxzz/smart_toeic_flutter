@@ -153,12 +153,13 @@ class FlashcardListGlanceWidget : GlanceAppWidget() {
                                         ),
                                     )
                                     Text(
-                                        text = " ${fc.word} ${fc.pronunciation}",
+                                        text = " ${fc.word} ${fc.pronunciation}: ${fc.definition}",
                                         style = TextStyle(
                                             fontSize = 14.sp,
                                             color = ColorProvider(day = Color(0xFF111827), night = Color(0xFFE5E7EB))
                                         ),
                                     )
+                                    
                                 }
                             }
                             if (flashcards.size > maxItems) {

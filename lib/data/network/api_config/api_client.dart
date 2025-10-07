@@ -267,6 +267,10 @@ abstract class ApiClient {
     @Path("roomName") String roomName,
   );
 
+
+  @GET('/user/bridge-nest/rooms')
+  Future<List<RoomDb>> getRooms();
+
   @POST("/user/ai-chat/session")
   Future<String> createAiChatSession(
     @Field("title") String title,
