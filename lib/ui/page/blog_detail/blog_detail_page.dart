@@ -94,9 +94,8 @@ class _BlogDetailState extends State<BlogDetail> {
                   CachedNetworkImage(
                     imageUrl: widget.blog.image ?? '',
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Image.asset(
-                      AppImages.bgImagePlaceholder,
-                      fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: LoadingCircle(),
                     ),
                     errorWidget: (context, url, error) => Image.asset(
                       AppImages.bgImagePlaceholder,

@@ -7,6 +7,7 @@ import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
+import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 
 class BlogHorizontalCard extends StatelessWidget {
@@ -52,9 +53,8 @@ class BlogHorizontalCard extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: blog.image ?? '',
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Image.asset(
-                      AppImages.bgImagePlaceholder,
-                      fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: LoadingCircle(size: 24),
                     ),
                     errorWidget: (context, url, error) => Image.asset(
                       AppImages.bgImagePlaceholder,
