@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppStyleColor {
   static ColorScheme lightColorScheme = ColorScheme.fromSeed(
@@ -26,8 +27,8 @@ class AppStyle {
     appBarTheme: AppBarTheme(
       //elevation: 0,
       centerTitle: true,
-      titleTextStyle: const TextStyle(
-        fontSize: 16,
+      titleTextStyle: TextStyle(
+        fontSize: 16.spMin,
         color: AppStyleColor.black333,
       ),
       foregroundColor: AppStyleColor.black333,
@@ -71,8 +72,8 @@ class AppStyle {
       //elevation: 0,
 
       centerTitle: true,
-      titleTextStyle: const TextStyle(
-        fontSize: 16,
+      titleTextStyle: TextStyle(
+        fontSize: 16.spMin,
         color: Colors.white,
       ),
       foregroundColor: Colors.white,

@@ -51,48 +51,48 @@ class AppThemes {
 
     return TextTheme(
       displayLarge: TextStyle(
-        fontSize: 96.0.sp,
+        fontSize: 96.0.spMin,
         color: textColor,
       ),
       displayMedium: TextStyle(
-        fontSize: 60.0.sp,
+        fontSize: 60.0.spMin,
         color: textColor,
       ),
       displaySmall: TextStyle(
-        fontSize: 48.0.sp,
+        fontSize: 48.0.spMin,
         color: textColor,
       ),
       headlineMedium: TextStyle(
-        fontSize: 34.0.sp,
+        fontSize: 34.0.spMin,
         color: textColor,
       ),
       headlineSmall: TextStyle(
-        fontSize: 24.0.sp,
+        fontSize: 24.0.spMin,
         color: textColor,
       ),
       titleLarge: TextStyle(
-        fontSize: 20.0.sp,
+        fontSize: 20.0.spMin,
         color: textColor,
         fontWeight: FontWeight.w500,
       ),
       titleMedium: TextStyle(
-        fontSize: 16.0.sp,
+        fontSize: 16.0.spMin,
         color: textColor,
       ),
       titleSmall: TextStyle(
-        fontSize: 14.0.sp,
+        fontSize: 14.0.spMin,
         color: textColor,
         fontWeight: FontWeight.w500,
       ),
-      bodyLarge: TextStyle(fontSize: 16.0.sp, color: textColor),
-      bodyMedium: TextStyle(fontSize: 14.0.sp, color: textColor),
-      bodySmall: TextStyle(fontSize: 12.0.sp, color: textColor),
+      bodyLarge: TextStyle(fontSize: 16.0.spMin, color: textColor),
+      bodyMedium: TextStyle(fontSize: 14.0.spMin, color: textColor),
+      bodySmall: TextStyle(fontSize: 12.0.spMin, color: textColor),
       labelLarge: TextStyle(
-        fontSize: 14.0.sp,
+        fontSize: 14.0.spMin,
         color: textColor,
         fontWeight: FontWeight.w500,
       ),
-      labelSmall: TextStyle(fontSize: 14.0.sp, color: textColor),
+      labelSmall: TextStyle(fontSize: 14.0.spMin, color: textColor),
     );
   }
 
@@ -114,14 +114,14 @@ class AppThemes {
                   ? AppColors.textWhite
                   : AppColors.textBlack),
           titleTextStyle: brightness == Brightness.dark
-              ? const TextStyle(
+              ? TextStyle(
                   color: AppColors.textWhite,
-                  fontSize: 18,
+                  fontSize: 18.spMin,
                   fontWeight: FontWeight.bold,
                 )
-              : const TextStyle(
+              : TextStyle(
                   color: AppColors.textBlack,
-                  fontSize: 18,
+                  fontSize: 18.spMin,
                   fontWeight: FontWeight.bold,
                 ),
         ),
