@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_flip_card/flutter_flip_card.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
-import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_state.dart';
@@ -66,7 +65,10 @@ class _PageState extends State<Page> {
               children: [
                 Text(
                   title,
-                  style: textTheme.titleMedium,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp,
+                  ),
                 ),
                 BlocSelector<FlashCardLearnFlipCubit, FlashCardLearnFlipState,
                     (int, int)>(
@@ -77,6 +79,7 @@ class _PageState extends State<Page> {
                       '${counts.$1}/${counts.$2} ${S.current.words}',
                       style: textTheme.bodySmall?.copyWith(
                         color: AppColors.textGray,
+                        fontSize: 12.sp,
                       ),
                     );
                   },
@@ -86,17 +89,17 @@ class _PageState extends State<Page> {
           },
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(5),
+          preferredSize: Size.fromHeight(6.h),
           child: BlocBuilder<FlashCardLearnFlipCubit, FlashCardLearnFlipState>(
             buildWhen: (previous, current) =>
                 previous.currentIndex != current.currentIndex ||
                 previous.flashCards.length != current.flashCards.length,
             builder: (context, state) {
               return LinearProgressIndicator(
-                minHeight: 5,
+                minHeight: 6.h,
                 value: (state.currentIndex + 1) / state.flashCards.length,
                 backgroundColor: colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4.r),
               );
             },
           ),
@@ -113,7 +116,7 @@ class _PageState extends State<Page> {
                       onTap: () => _cubit.flipCard(),
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(16.w),
                         child: FlipCard(
                           animationDuration: const Duration(milliseconds: 300),
                           rotateSide: state.isFlipped
@@ -137,68 +140,46 @@ class _PageState extends State<Page> {
                 ),
                 // Navigation buttons
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16.w),
                   child: Column(
                     children: [
                       // Show Answer button
-                      CustomButton(
-                        height: 50,
+                      _buildControlButton(
+                        context,
                         onPressed: () => _cubit.flipCard(),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              state.isFlipped
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              state.isFlipped
-                                  ? S.current.hide_answer
-                                  : S.current.show_answer,
-                            ),
-                          ],
-                        ),
+                        icon: state.isFlipped
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
+                        label: state.isFlipped
+                            ? S.current.hide_answer
+                            : S.current.show_answer,
+                        isPrimary: true,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       // Navigation buttons
                       Row(
                         children: [
                           Expanded(
-                            child: CustomButton(
-                              height: 50,
+                            child: _buildControlButton(
+                              context,
                               onPressed: state.currentIndex > 0
                                   ? () => _cubit.previousCard()
                                   : null,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.arrow_back_ios_new_rounded),
-                                  const SizedBox(width: 8),
-                                  Text(S.current.previous),
-                                ],
-                              ),
+                              icon: Icons.arrow_back_ios_new_rounded,
+                              label: S.current.previous,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16.w),
                           Expanded(
-                            child: CustomButton(
-                              height: 50,
+                            child: _buildControlButton(
+                              context,
                               onPressed: state.currentIndex <
                                       state.flashCards.length - 1
                                   ? () => _cubit.nextCard()
                                   : null,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(S.current.next),
-                                  const SizedBox(width: 8),
-                                  const Icon(Icons.arrow_forward_ios_rounded),
-                                ],
-                              ),
+                              icon: Icons.arrow_forward_ios_rounded,
+                              label: S.current.next,
+                              isTrailingIcon: true,
                             ),
                           ),
                         ],
@@ -210,6 +191,65 @@ class _PageState extends State<Page> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildControlButton(
+    BuildContext context, {
+    required VoidCallback? onPressed,
+    required IconData icon,
+    required String label,
+    bool isPrimary = false,
+    bool isTrailingIcon = false,
+  }) {
+    final colorScheme = context.colorScheme;
+    final baseColor =
+        isPrimary ? colorScheme.primary : colorScheme.surfaceContainerHighest;
+    final onBaseColor =
+        isPrimary ? colorScheme.onPrimary : colorScheme.onSurface;
+
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        height: 56.h,
+        decoration: BoxDecoration(
+          color:
+              onPressed == null ? baseColor.withValues(alpha: 0.3) : baseColor,
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!isTrailingIcon) ...[
+              Icon(icon,
+                  color: onPressed == null
+                      ? onBaseColor.withValues(alpha: 0.5)
+                      : onBaseColor,
+                  size: 20.spMin),
+              SizedBox(width: 8.w),
+            ],
+            Text(
+              label,
+              style: context.textTheme.labelLarge?.copyWith(
+                color: onPressed == null
+                    ? onBaseColor.withValues(alpha: 0.5)
+                    : onBaseColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (isTrailingIcon) ...[
+              SizedBox(width: 8.w),
+              Icon(icon,
+                  color: onPressed == null
+                      ? onBaseColor.withValues(alpha: 0.5)
+                      : onBaseColor,
+                  size: 20.spMin),
+            ],
+          ],
+        ),
       ),
     );
   }
