@@ -136,14 +136,17 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                     } else {
                       final questionResult =
                           getQuestionResult(state.questionsResult);
-                      return IgnorePointer(
-                        child: RadioGroup<String>(
-                          groupValue: questionResult?.useranswer ?? '',
-                          onChanged: (value) {},
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ...List.generate(
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Radio options wrapped in IgnorePointer
+                          IgnorePointer(
+                            child: RadioGroup<String>(
+                              groupValue: questionResult?.useranswer ?? '',
+                              onChanged: (value) {},
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(
                                   widget.question.options.length,
                                   (index) {
                                     final option =
@@ -207,115 +210,117 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                                     );
                                   },
                                 ),
-                                if (questionResult?.correctanswer.trim() !=
-                                        questionResult?.useranswer.trim() ||
-                                    questionResult == null)
-                                  Column(
-                                    children: [
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        '${S.current.correct_answer}: ${widget.question.correctAnswer}',
-                                        style: textTheme.bodyMedium?.copyWith(
-                                          color: AppColors.success,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
+                              ),
+                            ),
+                          ),
+                          // Correct answer text (outside IgnorePointer)
+                          if (questionResult?.correctanswer.trim() !=
+                                  questionResult?.useranswer.trim() ||
+                              questionResult == null)
+                            Column(
+                              children: [
+                                const SizedBox(height: 8),
+                                Text(
+                                  '${S.current.correct_answer}: ${widget.question.correctAnswer}',
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.success,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                if (widget.question.part >= 5) ...[
-                                  const SizedBox(height: 8),
-                                  BlocBuilder<UserCubit, UserState>(
-                                    builder: (context, state) {
-                                      final isPremium =
-                                          state.user?.isPremium() ?? false;
-                                      if (!isPremium) {
+                                ),
+                              ],
+                            ),
+                          // AI Explain button (outside IgnorePointer - now clickable!)
+                          if (widget.question.part >= 5) ...[
+                            const SizedBox(height: 8),
+                            BlocBuilder<UserCubit, UserState>(
+                              builder: (context, userState) {
+                                final isPremium =
+                                    userState.user?.isPremium() ?? false;
+                                if (!isPremium) {
+                                  return CustomButton(
+                                    height: 50,
+                                    onPressed: () {
+                                      GoRouter.of(context)
+                                          .pushNamed(AppRouter.upgradeAccount);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const FaIcon(
+                                          FontAwesomeIcons.lock,
+                                          size: 14,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          S.current.upgrade_to_use_ai,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return BlocBuilder<PracticeTestCubit,
+                                          PracticeTestState>(
+                                      buildWhen: (previous, current) =>
+                                          previous.loadStatusExplain !=
+                                              current.loadStatusExplain ||
+                                          previous.loadingExplainQuestionId !=
+                                              current.loadingExplainQuestionId,
+                                      builder: (context, practiceState) {
+                                        final isLoading = practiceState
+                                                    .loadStatusExplain ==
+                                                LoadStatus.loading &&
+                                            practiceState
+                                                    .loadingExplainQuestionId ==
+                                                widget.question.id;
                                         return CustomButton(
                                           height: 50,
-                                          onPressed: () {
-                                            GoRouter.of(context).pushNamed(
-                                                AppRouter.upgradeAccount);
-                                          },
+                                          isLoading: isLoading,
+                                          onPressed: isLoading
+                                              ? null
+                                              : () async {
+                                                  await cubit
+                                                      .getExplainQuestion(
+                                                          widget.question);
+                                                },
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              const FaIcon(
-                                                FontAwesomeIcons.lock,
-                                                size: 14,
-                                              ),
+                                              if (isLoading)
+                                                const LoadingCircle(
+                                                  size: 20,
+                                                )
+                                              else
+                                                const FaIcon(
+                                                  FontAwesomeIcons
+                                                      .wandMagicSparkles,
+                                                  size: 14,
+                                                ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                S.current.upgrade_to_use_ai,
+                                                S.current.create_answer_by_ai,
                                               ),
                                             ],
                                           ),
                                         );
-                                      } else {
-                                        return BlocBuilder<PracticeTestCubit,
-                                                PracticeTestState>(
-                                            buildWhen: (previous, current) =>
-                                                previous.loadStatusExplain !=
-                                                    current.loadStatusExplain ||
-                                                previous.loadingExplainQuestionId !=
-                                                    current
-                                                        .loadingExplainQuestionId,
-                                            builder: (context, state) {
-                                              final isLoading = state
-                                                          .loadStatusExplain ==
-                                                      LoadStatus.loading &&
-                                                  state.loadingExplainQuestionId ==
-                                                      widget.question.id;
-                                              return CustomButton(
-                                                height: 50,
-                                                isLoading: isLoading,
-                                                onPressed: isLoading
-                                                    ? null
-                                                    : () async {
-                                                        await cubit
-                                                            .getExplainQuestion(
-                                                                widget
-                                                                    .question);
-                                                      },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    if (isLoading)
-                                                      const LoadingCircle(
-                                                        size: 20,
-                                                      )
-                                                    else
-                                                      const FaIcon(
-                                                        FontAwesomeIcons.lock,
-                                                        size: 14,
-                                                      ),
-                                                    const SizedBox(width: 8),
-                                                    Text(
-                                                      S.current
-                                                          .create_answer_by_ai,
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            });
-                                      }
-                                    },
-                                  )
-                                ],
-                                if (widget.question.questionExplain !=
-                                    null) ...[
-                                  const SizedBox(height: 8),
-                                  ExplanationUI(
-                                    questionExplain:
-                                        widget.question.questionExplain!,
-                                  )
-                                ]
-                              ]),
-                        ),
+                                      });
+                                }
+                              },
+                            )
+                          ],
+                          // Explanation UI (outside IgnorePointer)
+                          if (widget.question.questionExplain != null) ...[
+                            const SizedBox(height: 8),
+                            ExplanationUI(
+                              questionExplain: widget.question.questionExplain!,
+                            )
+                          ]
+                        ],
                       );
                     }
                   },
