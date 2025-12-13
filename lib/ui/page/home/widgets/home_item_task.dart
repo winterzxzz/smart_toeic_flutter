@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:toeic_desktop/data/models/ui_models/home_item_task_model.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
@@ -30,19 +31,18 @@ class HomeItemTask extends StatelessWidget {
           Card(
             margin: EdgeInsets.zero,
             child: SizedBox(
-              height: 90,
-              width: 80,
+              width: 105.w,
+              height: 105.w,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Spacer(),
                     SvgPicture.asset(
-                      width: 32,
-                      height: 32,
+                      width: 32.w,
+                      height: 32.w,
                       homeItemTaskModel.image,
                       colorFilter: ColorFilter.mode(
                         colorScheme.primary,
@@ -63,7 +63,7 @@ class HomeItemTask extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 8),
+          8.verticalSpace,
           Text(
             homeItemTaskModel.title,
             style: textTheme.bodySmall,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/enums/test_type.dart';
@@ -54,16 +55,16 @@ class _PageState extends State<Page> {
             slivers: [
               SliverAppBar(
                 floating: true,
-                toolbarHeight: 55,
+                toolbarHeight: 55.w,
                 title: Text(
                   S.current.tests,
                   style: textTheme.titleMedium,
                 ),
                 actions: [
                   Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    height: 45,
-                    width: 150,
+                    margin: EdgeInsets.only(right: 8.w),
+                    height: 45.w,
+                    width: 150.w,
                     child: CustomDropdownExample<String>(
                       data: TestType.values.map((e) => e.name).toList(),
                       dataString: TestType.values.map((e) => e.name).toList(),
@@ -86,12 +87,12 @@ class _PageState extends State<Page> {
                   )
                 else
                   SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
                     sliver: SliverList.separated(
                       itemCount: state.filteredTests.length,
                       separatorBuilder: (context, index) =>
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.w),
                       itemBuilder: (context, index) {
                         return TestCard(
                           key: ValueKey(state.filteredTests[index].id),

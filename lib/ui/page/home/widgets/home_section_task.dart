@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toeic_desktop/data/models/ui_models/home_item_task_model.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_item_task.dart';
@@ -25,12 +26,10 @@ class HomeSectionTask extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(
-          height: 16,
-        ),
+        16.verticalSpace,
         Wrap(
-          spacing: 12,
-          runSpacing: 16,
+          spacing: 12.w,
+          runSpacing: 16.w,
           children: tasks
               .map((e) => HomeItemTask(
                     homeItemTaskModel: e,

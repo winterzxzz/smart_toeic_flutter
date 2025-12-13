@@ -213,11 +213,6 @@ class Constants {
           title: 'Ai Chat',
           image: AppImages.icAi,
           onNavigate: (context) => GoRouter.of(context).push(AppRouter.chatAi),
-        ), 
-        HomeItemTaskModel(
-          title: 'Live Stream',
-          image: AppImages.icLiveStream,
-          onNavigate: (context) => GoRouter.of(context).push(AppRouter.prepareLive),
         ),
       ];
 
