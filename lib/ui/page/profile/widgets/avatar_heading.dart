@@ -41,69 +41,86 @@ class _AvatarHeadingState extends State<AvatarHeading> {
           builder: (context, user) {
             final bool hasAvatar = user?.avatar.isNotEmpty ?? false;
 
-            return CircleAvatar(
-              radius: 48,
-              backgroundColor: colorScheme.secondaryContainer,
-              backgroundImage: hasAvatar ? null : null,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (hasAvatar)
-                    ClipOval(
-                      child: CustomCachedImage(
-                        imageUrl:
-                            '${AppConfigs.baseUrl.replaceAll('/api', '')}${user?.avatar}',
-                        width: 96,
-                        height: 96,
-                        fit: BoxFit.cover,
-                        errorWidget: Container(
+            return Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 4,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: CircleAvatar(
+                radius: 48,
+                backgroundColor: colorScheme.secondaryContainer,
+                backgroundImage: hasAvatar ? null : null,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (hasAvatar)
+                      ClipOval(
+                        child: CustomCachedImage(
+                          imageUrl:
+                              '${AppConfigs.baseUrl.replaceAll('/api', '')}${user?.avatar}',
                           width: 96,
                           height: 96,
-                          color: colorScheme.secondaryContainer,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                user?.name.characters.first.toUpperCase() ??
-                                    'U',
-                                style: textTheme.titleLarge,
-                              ),
-                            ],
+                          fit: BoxFit.cover,
+                          errorWidget: Container(
+                            width: 96,
+                            height: 96,
+                            color: colorScheme.secondaryContainer,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  user?.name.characters.first.toUpperCase() ??
+                                      'U',
+                                  style: textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            user?.name.characters.first.toUpperCase() ?? 'U',
+                            style: textTheme.titleLarge,
+                          ),
+                        ],
+                      ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: InkWell(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primary,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                            size: 16,
                           ),
                         ),
                       ),
-                    )
-                  else
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          user?.name.characters.first.toUpperCase() ?? 'U',
-                          style: textTheme.titleLarge,
-                        ),
-                      ],
                     ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: InkWell(
-                      onTap: () {
-                        _pickImage();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: colorScheme.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
-                          size: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
@@ -114,7 +131,7 @@ class _AvatarHeadingState extends State<AvatarHeading> {
           },
           builder: (context, isPremium) {
             return Positioned(
-              top: -28,
+              top: -30,
               left: 0,
               right: 0,
               child: SvgPicture.asset(
