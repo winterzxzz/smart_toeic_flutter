@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
-import 'package:toeic_desktop/ui/common/app_context.dart';
-import 'package:toeic_desktop/ui/common/widgets/capitalize_first_letter_input.dart';
+
 import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
+import 'package:toeic_desktop/ui/page/profile/widgets/text_field_heading.dart';
 
 class FormUpdateProfileArgs {
   final String? name;
@@ -53,10 +53,7 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
-    final textTheme = context.textTheme;
-    final colorScheme = context.colorScheme;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -64,92 +61,37 @@ class _FormUpdateProfileWidgetState extends State<FormUpdateProfileWidget> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              S.current.name_hint,
-                style: textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              inputFormatters: [CapitalizeFirstLetterFormatter()],
+            TextFieldHeading(
+              label: S.current.name_hint,
+              hintText: S.current.name_hint,
               controller: nameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.textGray),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: colorScheme.primary),
-                ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
+              icon: FontAwesomeIcons.user,
             ),
             const SizedBox(height: 16),
-            Text(
-              S.current.bio_hint,
-              style: textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              inputFormatters: [CapitalizeFirstLetterFormatter()],
+            TextFieldHeading(
+              label: S.current.bio_label,
+              hintText: S.current.bio_label,
               controller: bioController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.textGray),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: colorScheme.primary),
-                ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
               maxLines: 5,
+              icon: FontAwesomeIcons.addressCard,
             ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () => GoRouter.of(context).pop(),
-                    child: Text(S.current.cancel),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: BlocConsumer<UserCubit, UserState>(
-                    listenWhen: (pre, current) =>
-                        pre.updateStatus != current.updateStatus,
-                    listener: (context, state) {
-                      if (state.updateStatus == LoadStatus.success) {
-                        GoRouter.of(context).pop();
-                      }
-                    },
-                    buildWhen: (pre, current) =>
-                        pre.updateStatus != current.updateStatus,
-                    builder: (context, state) {
-                      return CustomButton(
-                        onPressed: () {
-                          if (state.updateStatus == LoadStatus.loading) return;
-                          widget.args.onSave(
-                            nameController.text,
-                            bioController.text,
-                          );
-                        },
-                        isLoading: state.updateStatus == LoadStatus.loading,
-                        child: Text(S.current.save_button),
-                      );
-                    },
-                  ),
-                ),
-              ],
+            const SizedBox(height: 16),
+            BlocBuilder<UserCubit, UserState>(
+              bloc: context.read<UserCubit>(),
+              builder: (context, state) {
+                return CustomButton(
+                  width: double.infinity,
+                  onPressed: () {
+                    if (state.updateStatus == LoadStatus.loading) return;
+                    widget.args.onSave(
+                      nameController.text,
+                      bioController.text,
+                    );
+                  },
+                  isLoading: state.updateStatus == LoadStatus.loading,
+                  child: Text(S.current.save_button),
+                );
+              },
             ),
           ],
         ),

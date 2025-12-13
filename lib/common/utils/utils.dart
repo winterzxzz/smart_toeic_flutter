@@ -96,19 +96,22 @@ class Utils {
       isScrollControlled: true,
       useSafeArea: true,
       backgroundColor: theme.scaffoldBackgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
+      clipBehavior: Clip.hardEdge,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 1,
-          minChildSize: 1,
-          maxChildSize: 1,
+          initialChildSize: 0.9,
+          minChildSize: 0.5,
+          maxChildSize: 0.95,
+          expand: false,
           builder: (context, scrollController) {
             return Scaffold(
               appBar: AppBar(
                 title: Text(title ?? ''),
                 leading: LeadingBackButton(isClose: isClose),
+                centerTitle: true,
               ),
               body: child,
             );
