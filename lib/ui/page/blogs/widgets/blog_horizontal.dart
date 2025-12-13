@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 
 class BlogHorizontalCard extends StatelessWidget {
@@ -16,73 +19,104 @@ class BlogHorizontalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
-    return Card(
+    final colorScheme = context.colorScheme;
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16.r),
         onTap: () {
           showBlogModalBottomSheet(context);
         },
         child: SizedBox(
-          height: 110,
+          height: 120.w,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  bottomLeft: Radius.circular(16),
+                ),
                 child: SizedBox(
-                  width: 130,
-                  child: Image.network(
-                    blog.image ?? '',
+                  width: 120.w,
+                  child: CachedNetworkImage(
+                    imageUrl: blog.image ?? '',
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Image.asset(
+                      AppImages.bgImagePlaceholder,
+                      fit: BoxFit.cover,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      AppImages.bgImagePlaceholder,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
               Expanded(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  padding: EdgeInsets.all(12.r),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: getCategoryColor(blog.category ?? ''),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          blog.category ?? '',
-                          style: textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textWhite,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 4.w,
+                            ),
+                            decoration: BoxDecoration(
+                              color: getCategoryColor(blog.category ?? '')
+                                  .withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Text(
+                              blog.category ?? '',
+                              style: textTheme.labelSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: getCategoryColor(blog.category ?? ''),
+                              ),
+                            ),
                           ),
-                        ),
+                          8.verticalSpace,
+                          Text(
+                            blog.title ?? '',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      // Title
-                      Text(
-                        blog.title ?? '',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: textTheme.titleSmall,
-                      ),
-                      const Spacer(),
                       Row(
                         children: [
                           Text(
                             S.current.read_more,
                             style: textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w400,
+                              color: colorScheme.primary,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          const FaIcon(
-                            FontAwesomeIcons.chevronRight,
-                            size: 14,
-                            color: AppColors.textGray,
+                          4.horizontalSpace,
+                          FaIcon(
+                            FontAwesomeIcons.arrowRight,
+                            size: 12.spMin,
+                            color: colorScheme.primary,
                           ),
                         ],
                       )

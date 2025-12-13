@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
@@ -60,49 +60,70 @@ class _PageState extends State<Page> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
+              floating: true,
               title: Text(
                 S.current.blogs_title,
-                style: textTheme.titleMedium,
+                style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              floating: true,
+              centerTitle: false,
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 50,
-                margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                child: TextField(
-                  onChanged: (value) {
-                    _timer?.cancel();
-                    _timer = Timer(const Duration(milliseconds: 500), () {
-                      _cubit.searchBlog(value);
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: S.current.search_blogs,
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      size: 18,
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _SearchBarDelegate(
+                minHeight: 74.w,
+                maxHeight: 74.w,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                  child: Container(
+                    height: 50.w,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                    filled: true,
-                    isDense: true,
-                    fillColor: theme.cardColor,
-                    hintStyle: textTheme.bodyMedium?.copyWith(
-                      color: theme.hintColor,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: AppColors.gray1,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: colorScheme.primary,
+                    child: TextField(
+                      onChanged: (value) {
+                        _timer?.cancel();
+                        _timer = Timer(const Duration(milliseconds: 500), () {
+                          _cubit.searchBlog(value);
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: S.current.search_blogs,
+                        prefixIcon: Icon(
+                          Icons.search,
+                          size: 20,
+                          color: theme.hintColor,
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        isDense: true,
+                        hintStyle: textTheme.bodyMedium?.copyWith(
+                          color: theme.hintColor,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: colorScheme.primary,
+                            width: 1.5,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -110,8 +131,7 @@ class _PageState extends State<Page> {
               ),
             ),
             SliverPadding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               sliver: BlocBuilder<BlogCubit, BlogState>(
                 builder: (context, state) {
                   if (state.loadStatus == LoadStatus.loading) {
@@ -127,7 +147,7 @@ class _PageState extends State<Page> {
                   }
                   return SliverList.separated(
                     separatorBuilder: (context, index) {
-                      return const SizedBox(height: 12);
+                      return const SizedBox(height: 16);
                     },
                     itemBuilder: (context, index) {
                       final blog = state.searchBlogs[index];
@@ -138,9 +158,41 @@ class _PageState extends State<Page> {
                 },
               ),
             ),
+            const SliverToBoxAdapter(child: SizedBox(height: 32)),
           ],
         ),
       ),
     );
+  }
+}
+
+class _SearchBarDelegate extends SliverPersistentHeaderDelegate {
+  _SearchBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => maxHeight;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SearchBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
