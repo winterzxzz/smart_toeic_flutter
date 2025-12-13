@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -65,44 +66,64 @@ class _PageState extends State<Page> with SingleTickerProviderStateMixin {
           ),
           centerTitle: true,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48),
-            child: TabBar(
-              controller: _tabController,
-              dividerHeight: 0,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: colorScheme.primary,
-              labelColor: colorScheme.primary,
-              unselectedLabelColor: Colors.grey,
-              tabs: [
-                Tab(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.list,
-                        size: 16,
-                        color: textTheme.titleSmall?.color,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(S.current.my_list, style: textTheme.titleSmall),
-                    ],
-                  ),
+            preferredSize: Size.fromHeight(56.w),
+            child: Container(
+              height: 40,
+              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
+              decoration: BoxDecoration(
+                color: Colors.grey.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                dividerHeight: 0,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: colorScheme.surface,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                Tab(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.book,
-                        size: 16,
-                        color: textTheme.titleSmall?.color,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(S.current.studying, style: textTheme.titleSmall),
-                    ],
+                labelColor: colorScheme.primary,
+                unselectedLabelColor: Colors.grey,
+                labelStyle:
+                    textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                unselectedLabelStyle: textTheme.titleSmall,
+                padding: const EdgeInsets.all(4),
+                tabs: [
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.list,
+                          size: 16.spMin,
+                        ),
+                        SizedBox(width: 8.w),
+                        Text(S.current.my_list),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.book,
+                          size: 16.spMin,
+                        ),
+                        SizedBox(width: 8.w),
+                        Text(S.current.studying),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

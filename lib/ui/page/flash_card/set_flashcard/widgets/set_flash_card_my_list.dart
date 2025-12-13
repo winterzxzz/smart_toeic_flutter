@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
@@ -39,23 +40,23 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
       body: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0.w),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 CustomButton(
-                  height: 50,
+                  height: 50.h,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const FaIcon(FontAwesomeIcons.plus, size: 16),
-                      const SizedBox(width: 8),
+                      FaIcon(FontAwesomeIcons.plus, size: 16.spMin),
+                      SizedBox(width: 8.w),
                       Text(S.current.create_flashcard_sets),
                     ],
                   ),
                   onPressed: () => showCreateSetFlashCardBottomSheet(context),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
               ]),
             ),
           ),
@@ -75,7 +76,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                   );
                 }
                 return SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                   sliver: SliverList.separated(
                     itemBuilder: (context, index) {
                       return SetFlashCardItem(
@@ -83,7 +84,7 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return const SizedBox(height: 16);
+                      return SizedBox(height: 8.h);
                     },
                     itemCount: state.flashCards.length,
                   ),
@@ -91,8 +92,8 @@ class _SetFlashCardMyListPageState extends State<SetFlashCardMyListPage> {
               }
             },
           ),
-          const SliverPadding(
-            padding: EdgeInsets.only(bottom: 16),
+          SliverPadding(
+            padding: EdgeInsets.only(bottom: 16.h),
           ),
         ],
       ),

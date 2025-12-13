@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ class SetFlashCardLearningItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+    final colorScheme = context.colorScheme;
     final tags = [
       TagWidget(
         icon: FontAwesomeIcons.bookBookmark,
@@ -34,79 +36,128 @@ class SetFlashCardLearningItem extends StatelessWidget {
             '${S.current.last_studied}: ${DateFormat('dd/MM/yyyy').format(flashcard.lastStudied)}',
       ),
     ];
-    return Card(
-      margin: EdgeInsets.zero,
-      clipBehavior: Clip.hardEdge,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: InkWell(
-        onTap: () {
-          GoRouter.of(context).pushNamed(
-            AppRouter.flashCardLearningDetail,
-            extra: {'setFlashCardLearning': flashcard},
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: .04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      flashcard.setFlashcardId.title,
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16.r),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              GoRouter.of(context).pushNamed(
+                AppRouter.flashCardLearningDetail,
+                extra: {'setFlashCardLearning': flashcard},
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: colorScheme.primary,
+                    width: 4.w,
                   ),
-                  if (_getNumberOfQuestionsReview(flashcard) > 0)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.error,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        '${_getNumberOfQuestionsReview(flashcard)} ${S.current.to_reviews}',
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    )
-                ],
-              ),
-              Text(
-                flashcard.setFlashcardId.description,
-                style: textTheme.bodyMedium,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 4),
-              SizedBox(
-                height: 24,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: tags.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 8),
-                  itemBuilder: (context, index) {
-                    return tags[index];
-                  },
                 ),
               ),
-            ],
+              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          flashcard.setFlashcardId.title,
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18.sp,
+                            color: colorScheme.onSurface,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (_getNumberOfQuestionsReview(flashcard) > 0)
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.error,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Text(
+                            '${_getNumberOfQuestionsReview(flashcard)} ${S.current.to_reviews}',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: Colors.white,
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    flashcard.setFlashcardId.description,
+                    style: textTheme.bodySmall?.copyWith(
+                      fontSize: 13.sp,
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.4,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 16.h),
+                  Wrap(
+                    spacing: 8.w,
+                    runSpacing: 8.h,
+                    children: tags.map((tag) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.secondaryContainer
+                              .withValues(alpha: 0.5),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FaIcon(
+                              tag.icon,
+                              size: 12.spMin,
+                              color: colorScheme.primary,
+                            ),
+                            SizedBox(width: 6.w),
+                            Text(
+                              tag.text,
+                              style: textTheme.labelSmall?.copyWith(
+                                color: colorScheme.primary,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +34,6 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
     final tags = [
@@ -50,119 +50,192 @@ class _SetFlashCardItemState extends State<SetFlashCardItem> {
           text: widget.flashcard.isPublic ? 'Public' : 'Private'),
     ];
 
-    return Card(
-      margin: EdgeInsets.zero,
-      clipBehavior: Clip.hardEdge,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: .04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      child: InkWell(
-        onTap: () {
-          GoRouter.of(context).pushNamed(AppRouter.flashCardDetail, extra: {
-            'title': widget.flashcard.title,
-            'setId': widget.flashcard.id,
-          });
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.flashcard.title,
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16.r),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              GoRouter.of(context).pushNamed(AppRouter.flashCardDetail, extra: {
+                'title': widget.flashcard.title,
+                'setId': widget.flashcard.id,
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: colorScheme.primary,
+                    width: 4.w,
                   ),
-                  PopupMenuButton(
-                    icon: const Icon(Icons.more_vert, size: 16),
-                    color: theme.appBarTheme.backgroundColor,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    onSelected: (value) {
-                      switch (value) {
-                        case 'edit':
-                          showEditSetFlashCardBottomSheet(context);
-                          break;
-                        case 'delete':
-                          showConfirmDialog(
-                            context,
-                            S.current.delete,
-                            S.current.are_you_sure_delete_flashcard,
-                            () {
-                              _cubit.deleteFlashCardSet(widget.flashcard.id);
-                            },
-                          );
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Row(
+                ),
+              ),
+              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const FaIcon(
-                              FontAwesomeIcons.penToSquare,
-                              size: 14,
-                            ),
-                            const SizedBox(width: 8),
                             Text(
-                              S.current.edit,
-                              style: textTheme.bodyMedium,
+                              widget.flashcard.title,
+                              style: textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18.sp,
+                                color: colorScheme.onSurface,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              widget.flashcard.description,
+                              style: textTheme.bodySmall?.copyWith(
+                                fontSize: 13.sp,
+                                color: colorScheme.onSurfaceVariant,
+                                height: 1.4,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
                       ),
-                      PopupMenuItem(
-                        value: 'delete',
+                      SizedBox(width: 8.w),
+                      PopupMenuButton(
+                        icon: Icon(Icons.more_horiz,
+                            size: 24.spMin, color: colorScheme.outline),
+                        color: colorScheme.surface,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        offset: Offset(0, 8.h),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onSelected: (value) {
+                          switch (value) {
+                            case 'edit':
+                              showEditSetFlashCardBottomSheet(context);
+                              break;
+                            case 'delete':
+                              showConfirmDialog(
+                                context,
+                                S.current.delete,
+                                S.current.are_you_sure_delete_flashcard,
+                                () {
+                                  _cubit
+                                      .deleteFlashCardSet(widget.flashcard.id);
+                                },
+                              );
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'edit',
+                            height: 40.h,
+                            child: Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.penToSquare,
+                                  size: 14.spMin,
+                                  color: colorScheme.onSurface,
+                                ),
+                                SizedBox(width: 12.w),
+                                Text(
+                                  S.current.edit,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            height: 40.h,
+                            value: 'delete',
+                            child: Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.trash,
+                                  size: 14.spMin,
+                                  color: colorScheme.error,
+                                ),
+                                SizedBox(width: 12.w),
+                                Text(
+                                  S.current.delete,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: colorScheme.error,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  Wrap(
+                    spacing: 8.w,
+                    runSpacing: 8.h,
+                    children: tags.map((tag) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.secondaryContainer
+                              .withValues(alpha: 0.5),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             FaIcon(
-                              FontAwesomeIcons.trash,
-                              size: 14,
-                              color: colorScheme.error,
+                              tag.icon,
+                              size: 12.spMin,
+                              color: colorScheme.primary,
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 6.w),
                             Text(
-                              S.current.delete,
-                              style: textTheme.bodyMedium?.copyWith(
-                                color: colorScheme.error,
+                              tag.text,
+                              style: textTheme.labelSmall?.copyWith(
+                                color: colorScheme.primary,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11.sp,
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
-              Text(
-                widget.flashcard.description,
-                style: textTheme.bodyMedium,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 4),
-              SizedBox(
-                height: 24,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: tags.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 8),
-                  itemBuilder: (context, index) {
-                    return tags[index];
-                  },
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

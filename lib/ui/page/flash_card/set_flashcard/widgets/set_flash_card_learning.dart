@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
@@ -29,9 +30,9 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: SizedBox(
-              height: 16,
+              height: 16.h,
             ),
           ),
           BlocBuilder<FlashCardCubit, FlashCardState>(
@@ -47,7 +48,7 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
                   );
                 }
                 return SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                   sliver: SliverList.separated(
                     itemBuilder: (context, index) {
                       return SetFlashCardLearningItem(
@@ -55,7 +56,7 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return const SizedBox(height: 16);
+                      return SizedBox(height: 8.h);
                     },
                     itemCount: state.flashCardsLearning.length,
                   ),
@@ -64,9 +65,9 @@ class _SetFlashCardLearningPageState extends State<SetFlashCardLearningPage> {
               return const SliverToBoxAdapter(child: SizedBox());
             },
           ),
-          const SliverPadding(
-            padding: EdgeInsets.only(bottom: 16),
-            sliver: SliverToBoxAdapter(child: SizedBox()),
+          SliverPadding(
+            padding: EdgeInsets.only(bottom: 16.h),
+            sliver: const SliverToBoxAdapter(child: SizedBox()),
           ),
         ],
       ),
