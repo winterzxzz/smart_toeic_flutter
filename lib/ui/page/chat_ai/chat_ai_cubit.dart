@@ -259,12 +259,27 @@ class ChatAiCubit extends Cubit<ChatAiState> {
       (l) =>
           emit(state.copyWith(isLoading: false, isStreaming: false, error: l)),
       (r) {
-        // Nếu không có streaming, thêm message hoàn chỉnh
-        if (!state.isStreaming) {
-          emit(state.copyWith(
-            isLoading: false,
-          ));
-        }
+        // Use HTTP response as fallback if streaming didn't receive any chunks
+        // Wait a short time to see if streaming delivers content
+        Future.delayed(const Duration(milliseconds: 500), () {
+          // If still streaming but no content received via socket, use HTTP response
+          if (state.isStreaming &&
+              state.streamingMessage.isEmpty &&
+              r.isNotEmpty) {
+            final aiMsg = ChatMessage(
+              id: DateTime.now().microsecondsSinceEpoch.toString(),
+              content: r,
+              isUser: false,
+              createdAt: DateTime.now(),
+            );
+            emit(state.copyWith(
+              messages: [...state.messages, aiMsg],
+              isLoading: false,
+              isStreaming: false,
+              streamingMessage: '',
+            ));
+          }
+        });
       },
     );
   }
