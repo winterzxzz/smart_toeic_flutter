@@ -13,7 +13,6 @@ import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_cubit.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/flash_card_quizz_state.dart';
-import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/confidence_level.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/enter_translation.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/enter_word.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_quizz/widgets/matching_word.dart';
@@ -68,7 +67,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final theme = context.theme;
     final textTheme = context.textTheme;
-    final colorScheme = context.colorScheme;
     final navigator = AppNavigator(context: context);
     final size = MediaQuery.of(context).size;
     final isSmallScreen = size.width < 600;
@@ -142,13 +140,6 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               '${state.typeQuizzIndex}-${state.currentIndex}'),
                           builder: (context) {
                             switch (state.typeQuizzIndex) {
-                              case 0:
-                                return ConfidenceLevel(
-                                  fcLearning: state
-                                      .flashCardLearning[state.currentIndex],
-                                  key: ValueKey(
-                                      'confidence-${state.currentIndex}'),
-                                );
                               case 1:
                                 return MatchingWord(
                                   list: state.flashCardLearning,
@@ -205,11 +196,33 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: state.isCorrect ? Colors.green : Colors.pink,
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: state.isCorrect
+                            ? [
+                                const Color(0xFF4CAF50),
+                                const Color(0xFF2E7D32),
+                              ]
+                            : [
+                                const Color(0xFFE91E63),
+                                const Color(0xFFC2185B),
+                              ],
                       ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                        topRight: Radius.circular(24),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: (state.isCorrect
+                                  ? const Color(0xFF4CAF50)
+                                  : const Color(0xFFE91E63))
+                              .withOpacity(0.4),
+                          blurRadius: 20,
+                          offset: const Offset(0, -5),
+                        ),
+                      ],
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -219,64 +232,97 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                           builder: (context, child) {
                             return LinearProgressIndicator(
                               value: _timerController.value,
-                              backgroundColor: Colors.transparent,
-                              color: state.isCorrect
-                                  ? colorScheme.primary
-                                  : colorScheme.error,
-                              minHeight: 3,
+                              backgroundColor: Colors.white.withOpacity(0.2),
+                              color: Colors.white,
+                              minHeight: 4,
                             );
                           },
                         ),
                         Padding(
-                          padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+                          padding: EdgeInsets.all(isSmallScreen ? 16 : 24),
                           child: Column(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: const BoxDecoration(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.2),
                                   shape: BoxShape.circle,
                                 ),
-                                child: FaIcon(
-                                  state.isCorrect
-                                      ? FontAwesomeIcons.check
-                                      : FontAwesomeIcons.xmark,
-                                  size: isSmallScreen ? 32 : 40,
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: FaIcon(
+                                    state.isCorrect
+                                        ? FontAwesomeIcons.check
+                                        : FontAwesomeIcons.xmark,
+                                    size: isSmallScreen ? 28 : 36,
+                                    color: state.isCorrect
+                                        ? const Color(0xFF4CAF50)
+                                        : const Color(0xFFE91E63),
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 16),
                               Text(
                                 state.isCorrect
                                     ? S.current.great
                                     : S.current.try_harder,
-                                style: textTheme.titleMedium,
+                                style: textTheme.headlineSmall?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
+                              const SizedBox(height: 8),
                               Text(
                                 state.isCorrect
                                     ? S.current.you_answered_correctly
                                     : S.current.you_answered_incorrectly,
-                                style: textTheme.bodyMedium,
+                                style: textTheme.bodyLarge?.copyWith(
+                                  color: Colors.white.withOpacity(0.9),
+                                ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 24),
                               SizedBox(
                                 width: double.infinity,
-                                height: 50,
+                                height: 56,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
+                                    foregroundColor: state.isCorrect
+                                        ? const Color(0xFF4CAF50)
+                                        : const Color(0xFFE91E63),
+                                    elevation: 0,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
                                   ),
                                   onPressed: () {
                                     _cubit.next();
                                   },
-                                  child: Text(
-                                    S.current.next_question,
-                                    style: textTheme.titleSmall?.copyWith(
-                                      color: state.isCorrect
-                                          ? Colors.green
-                                          : Colors.red,
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        S.current.next_question,
+                                        style: textTheme.titleMedium?.copyWith(
+                                          color: state.isCorrect
+                                              ? const Color(0xFF4CAF50)
+                                              : const Color(0xFFE91E63),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      FaIcon(
+                                        FontAwesomeIcons.arrowRight,
+                                        size: 16,
+                                        color: state.isCorrect
+                                            ? const Color(0xFF4CAF50)
+                                            : const Color(0xFFE91E63),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

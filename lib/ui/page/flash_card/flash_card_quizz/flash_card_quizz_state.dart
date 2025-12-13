@@ -31,7 +31,7 @@ class FlashCardQuizzState extends Equatable {
         flashCardLearning: [],
         flashCardQuizzScoreRequest: [],
         currentIndex: 0,
-        typeQuizzIndex: 0,
+        typeQuizzIndex: 1,
         isAnimating: false,
         isCorrect: false,
         isFinish: false,

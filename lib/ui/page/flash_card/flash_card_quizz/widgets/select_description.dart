@@ -36,6 +36,11 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Guard against null flashcardId
+    if (fcLearning.flashcardId == null) {
+      return const SizedBox.shrink();
+    }
+
     return BlocConsumer<GetRandomWordCubit, GetRandomWordState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.failure) {

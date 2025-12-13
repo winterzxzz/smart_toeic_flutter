@@ -36,6 +36,12 @@ class _EnterTranslationState extends State<EnterTranslation> {
 
   @override
   Widget build(BuildContext context) {
+    // Guard against null flashcardId
+    final flashcard = widget.fcLearning.flashcardId;
+    if (flashcard == null) {
+      return const SizedBox.shrink();
+    }
+
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
     return Column(

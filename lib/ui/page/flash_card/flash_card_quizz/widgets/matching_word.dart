@@ -39,8 +39,14 @@ class _MatchingWordState extends State<MatchingWord>
   void initState() {
     super.initState();
     _cubit = context.read<FlashCardQuizzCubit>();
-    availableWords = List.from(widget.list)..shuffle();
-    availableTranslations = List.from(widget.list)..shuffle();
+    // Filter out items with null flashcardId to prevent null check errors
+    final validCards =
+        widget.list.where((card) => card.flashcardId != null).toList();
+    // Limit the number of words to avoid overwhelming the user
+    const int maxWords = 5;
+    final limitedCards = validCards.take(maxWords).toList();
+    availableWords = List.from(limitedCards)..shuffle();
+    availableTranslations = List.from(limitedCards)..shuffle();
 
     // Initialize shake animation controller
     _shakeController = AnimationController(
@@ -216,9 +222,7 @@ class _MatchingWordState extends State<MatchingWord>
           // to capitalize first letter
           text.capitalizeFirst,
           style: textTheme.bodyMedium?.copyWith(
-            color: isSelected
-                ? colorScheme.onPrimary
-                : colorScheme.onSurface,
+            color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -310,11 +314,15 @@ class _MatchingWordState extends State<MatchingWord>
   }
 }
 
-// Add this custom Curve class at the bottom of the file
+// Custom shake curve that satisfies Flutter's curve requirements
+// (returns 0.0 at t=0.0 and 1.0 at t=1.0)
 class ShakeCurve extends Curve {
   @override
   double transform(double t) {
-    return sin(t * pi * 8);
+    // Use a decaying sinusoidal wave for shake effect
+    // The shake amplitude decreases as t approaches 1.0
+    // We add t to ensure the curve ends at 1.0
+    return t + sin(t * pi * 8) * (1 - t) * 0.5;
   }
 }
 

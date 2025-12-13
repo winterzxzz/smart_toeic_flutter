@@ -46,18 +46,24 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
         emit(state.copyWith(
             loadStatus: LoadStatus.failure, message: l2.message));
         showToast(title: l2.message, type: ToastificationType.error);
-      },
-          (r2) => emit(state.copyWith(
-              loadStatus: LoadStatus.success,
-              flashCardLearning: r2,
-              flashCardQuizzScoreRequest: r2
-                  .map((e) => FlashCardQuizzScoreRequest(
-                        id: e.id,
-                        word: e.flashcardId?.word,
-                        numOfQuiz: 0,
-                        isChangeDifficulty: true,
-                      ))
-                  .toList())));
+      }, (r2) {
+        // Filter out items with null flashcardId and limit to maxQuestions
+        const int maxQuestions = 5;
+        final validCards =
+            r2.where((e) => e.flashcardId != null).take(maxQuestions).toList();
+
+        emit(state.copyWith(
+            loadStatus: LoadStatus.success,
+            flashCardLearning: validCards,
+            flashCardQuizzScoreRequest: validCards
+                .map((e) => FlashCardQuizzScoreRequest(
+                      id: e.id,
+                      word: e.flashcardId?.word,
+                      numOfQuiz: 0,
+                      isChangeDifficulty: true,
+                    ))
+                .toList()));
+      });
     });
   }
 
@@ -92,17 +98,6 @@ class FlashCardQuizzCubit extends Cubit<FlashCardQuizzState> {
         }
       }
     }
-  }
-
-  void updateConfidenceLevel(double confidenceLevel, String id) {
-    emit(state.copyWith(
-        flashCardQuizzScoreRequest: state.flashCardQuizzScoreRequest.map((e) {
-      if (e.id == id) {
-        return e.copyWith(difficultRate: confidenceLevel);
-      }
-      return e;
-    }).toList()));
-    next();
   }
 
   void answer(String word, bool isCorrect, {bool isTrigger = true}) {
