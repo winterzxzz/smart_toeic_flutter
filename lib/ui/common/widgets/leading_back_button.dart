@@ -6,9 +6,11 @@ class LeadingBackButton extends StatelessWidget {
     super.key,
     this.isClose = false,
     this.onPressed,
+    this.color,
   });
   final bool isClose;
   final VoidCallback? onPressed;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +20,8 @@ class LeadingBackButton extends StatelessWidget {
             GoRouter.of(context).pop();
           },
       icon: isClose
-          ? const Icon(Icons.close, size: 16)
-          : const Icon(Icons.arrow_back_ios, size: 16),
+          ? Icon(Icons.close, size: 16, color: color)
+          : Icon(Icons.arrow_back_ios, size: 16, color: color),
     );
   }
 }
