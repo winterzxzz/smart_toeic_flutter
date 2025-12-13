@@ -116,7 +116,8 @@ class _HomePageState extends State<HomePage> {
                       color: (Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : colorScheme.primary)
-                          .withOpacity(_currentIndex == entry.key ? 0.9 : 0.4),
+                          .withValues(
+                              alpha: _currentIndex == entry.key ? 0.9 : 0.4),
                     ),
                   );
                 }).toList(),
