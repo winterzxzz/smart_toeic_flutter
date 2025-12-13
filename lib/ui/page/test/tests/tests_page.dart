@@ -54,17 +54,22 @@ class _PageState extends State<Page> {
           return CustomScrollView(
             slivers: [
               SliverAppBar(
-                floating: true,
-                toolbarHeight: 55.w,
+                pinned: true,
+                floating: false,
+                toolbarHeight: 60.w,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                surfaceTintColor: Colors.transparent,
                 title: Text(
                   S.current.tests,
-                  style: textTheme.titleMedium,
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 actions: [
                   Container(
-                    margin: EdgeInsets.only(right: 8.w),
-                    height: 45.w,
-                    width: 150.w,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 8.w, horizontal: 16.w),
+                    width: 140.w,
                     child: CustomDropdownExample<String>(
                       data: TestType.values.map((e) => e.name).toList(),
                       dataString: TestType.values.map((e) => e.name).toList(),
@@ -87,12 +92,11 @@ class _PageState extends State<Page> {
                   )
                 else
                   SliverPadding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                    padding: EdgeInsets.fromLTRB(16.w, 4.w, 16.w, 32.w),
                     sliver: SliverList.separated(
                       itemCount: state.filteredTests.length,
                       separatorBuilder: (context, index) =>
-                          SizedBox(height: 16.w),
+                          SizedBox(height: 12.w),
                       itemBuilder: (context, index) {
                         return TestCard(
                           key: ValueKey(state.filteredTests[index].id),

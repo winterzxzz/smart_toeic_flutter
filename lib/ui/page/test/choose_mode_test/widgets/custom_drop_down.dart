@@ -41,21 +41,34 @@ class _CustomDropdownExampleState<T> extends State<CustomDropdownExample<T>> {
       items: widget.data,
       hintText: widget.dataString.first,
       decoration: CustomDropdownDecoration(
-        closedBorder: Border.all(color: colorScheme.primary),
+        closedBorder: Border.all(
+          color: AppColors.gray1,
+        ),
+        closedBorderRadius: BorderRadius.circular(12),
+        expandedBorderRadius: BorderRadius.circular(12),
         closedFillColor: color,
         expandedFillColor: color,
-        headerStyle: textTheme.bodySmall?.copyWith(height: 0.1),
-        hintStyle: textTheme.bodySmall,
-        listItemStyle: textTheme.bodySmall,
+        headerStyle: textTheme.bodyMedium,
+        hintStyle: textTheme.bodyMedium?.copyWith(color: AppColors.textGray),
+        listItemStyle: textTheme.bodyMedium,
         closedSuffixIcon: const FaIcon(
           FontAwesomeIcons.chevronDown,
-          size: 10,
+          size: 14,
+          color: AppColors.textGray,
+        ),
+        expandedSuffixIcon: const FaIcon(
+          FontAwesomeIcons.chevronUp,
+          size: 14,
+          color: AppColors.textGray,
         ),
       ),
       hintBuilder: (context, hint, enabled) {
         final index = widget.data.indexOf(jobRoleCtrl.value as T);
         return Text(
           widget.dataString[index],
+          style: textTheme.bodyMedium,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         );
       },
       onChanged: (value) {

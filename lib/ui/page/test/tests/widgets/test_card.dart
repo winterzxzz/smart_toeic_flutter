@@ -22,30 +22,17 @@ class TestCard extends StatelessWidget {
     final userAttempt = test.userAttempt;
     final isAttempted = userAttempt!.count! > 0;
     final textTheme = context.textTheme;
-    final colorScheme = context.colorScheme;
-    final tags = [
-      if (test.duration != null)
-        TagWidget(
-            icon: FontAwesomeIcons.clock,
-            text: "${test.duration} ${S.current.min}"),
-      if (test.difficulty != null)
-        TagWidget(
-            icon: FontAwesomeIcons.turnUp,
-            text: "${S.current.level}: ${test.difficulty}"),
-      if (userAttempt.count != null)
-        TagWidget(
-            icon: FontAwesomeIcons.fileLines,
-            text: "${userAttempt.count} ${S.current.attempts}"),
-    ];
 
     return Card(
+      elevation: 0,
       margin: EdgeInsets.zero,
       clipBehavior: Clip.hardEdge,
+      color: Theme.of(context).cardColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-            color: isAttempted ? colorScheme.primary : Colors.transparent,
-            width: 1),
+          color: AppColors.gray1.withValues(alpha: 0.5),
+        ),
       ),
       child: InkWell(
         onTap: () {
@@ -54,52 +41,81 @@ class TestCard extends StatelessWidget {
           });
         },
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title and checkmark in a row for mobile
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Text(
                       test.title ?? '',
                       style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
+                        height: 1.3,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  if (isAttempted)
+                  if (isAttempted) ...[
+                    const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: isAttempted
-                            ? AppColors.success.withValues(alpha: 0.15)
-                            : Colors.grey[400],
-                        borderRadius: BorderRadius.circular(8),
+                        color: AppColors.success.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: AppColors.success.withValues(alpha: 0.2),
+                        ),
                       ),
-                      child: TestLastStudiedAtTimeText(
-                        updatedAt: test.updatedAt,
-                        createdAt: test.createdAt,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const FaIcon(
+                            FontAwesomeIcons.checkDouble,
+                            size: 10,
+                            color: AppColors.success,
+                          ),
+                          if (userAttempt.count != null) ...[
+                            const SizedBox(width: 4),
+                            Text(
+                              "${userAttempt.count}",
+                              style: textTheme.labelSmall?.copyWith(
+                                color: AppColors.success,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
+                  ],
                 ],
               ),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 24,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: tags.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 8),
-                  itemBuilder: (context, index) {
-                    return tags[index];
-                  },
+              const SizedBox(height: 12),
+              if (isAttempted) ...[
+                TestLastStudiedAtTimeText(
+                  updatedAt: test.updatedAt,
+                  createdAt: test.createdAt,
                 ),
+                const SizedBox(height: 12),
+              ],
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  if (test.duration != null)
+                    TagWidget(
+                        icon: FontAwesomeIcons.clock,
+                        text: "${test.duration} ${S.current.min}"),
+                  if (test.difficulty != null)
+                    TagWidget(
+                        icon: FontAwesomeIcons.layerGroup,
+                        text: "${S.current.level}: ${test.difficulty}"),
+                ],
               ),
             ],
           ),
