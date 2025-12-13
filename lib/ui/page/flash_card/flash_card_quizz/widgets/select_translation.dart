@@ -93,104 +93,106 @@ class _SectionQuestionState extends State<SectionQuestion> {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      key: widget.widgetKey,
-      children: [
-        Text.rich(
-          style: textTheme.titleMedium,
-          TextSpan(
-            children: [
-              TextSpan(
-                text: S.current.select_meaning,
-                style: textTheme.bodyLarge,
-              ),
-              TextSpan(
-                text: " '${widget.fcLearning.flashcardId!.word}'",
-                style: textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.error,
+    return RadioGroup<String>(
+      groupValue: selectedAnswer,
+      onChanged: (value) {
+        if (value == null) return;
+        setState(() {
+          isCheck = true;
+          selectedAnswer = value;
+        });
+        _cubit.answer(
+            widget.fcLearning.flashcardId!.word,
+            value.toLowerCase() ==
+                widget.fcLearning.flashcardId!.translation.toLowerCase());
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        key: widget.widgetKey,
+        children: [
+          Text.rich(
+            style: textTheme.titleMedium,
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: S.current.select_meaning,
+                  style: textTheme.bodyLarge,
                 ),
-              ),
-              TextSpan(
-                text: ' ?',
-                style: textTheme.bodyLarge,
-              ),
-            ],
+                TextSpan(
+                  text: " '${widget.fcLearning.flashcardId!.word}'",
+                  style: textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.error,
+                  ),
+                ),
+                TextSpan(
+                  text: ' ?',
+                  style: textTheme.bodyLarge,
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 32),
-        ...shuffledList.map((level) {
-          return Column(
-            children: [
-              const SizedBox(height: 32),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    isCheck = true;
-                    selectedAnswer = level;
-                  });
-                  _cubit.answer(
-                      widget.fcLearning.flashcardId!.word,
-                      level.toLowerCase() ==
-                          widget.fcLearning.flashcardId!.translation
-                              .toLowerCase());
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: colorScheme.outline),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Radio(
-                        value: level,
-                        groupValue: selectedAnswer,
-                        onChanged: (value) {
-                          setState(() {
-                            isCheck = true;
-                            selectedAnswer = level;
-                          });
-                          _cubit.answer(
-                              widget.fcLearning.flashcardId!.word,
-                              level.toLowerCase() ==
-                                  widget.fcLearning.flashcardId!.translation
-                                      .toLowerCase());
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                          child: Text(
-                        level.isNotEmpty
-                            ? level[0].toUpperCase() + level.substring(1)
-                            : '',
-                        style: textTheme.bodyMedium,
-                      )),
-                    ],
+          const SizedBox(height: 32),
+          ...shuffledList.map((level) {
+            return Column(
+              children: [
+                const SizedBox(height: 32),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isCheck = true;
+                      selectedAnswer = level;
+                    });
+                    _cubit.answer(
+                        widget.fcLearning.flashcardId!.word,
+                        level.toLowerCase() ==
+                            widget.fcLearning.flashcardId!.translation
+                                .toLowerCase());
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    height: 70,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: colorScheme.outline),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Radio(
+                          value: level,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                            child: Text(
+                          level.isNotEmpty
+                              ? level[0].toUpperCase() + level.substring(1)
+                              : '',
+                          style: textTheme.bodyMedium,
+                        )),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        }),
-        const SizedBox(height: 32),
-        Visibility(
-            visible: isCheck,
-            child: Builder(builder: (context) {
-              return Column(
-                children: [
-                  const SizedBox(height: 8),
-                  Text(
-                    '${S.current.answer}: ${widget.fcLearning.flashcardId!.translation}',
-                    style: textTheme.bodyLarge,
-                  ),
-                ],
-              );
-            }))
-      ],
+              ],
+            );
+          }),
+          const SizedBox(height: 32),
+          Visibility(
+              visible: isCheck,
+              child: Builder(builder: (context) {
+                return Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    Text(
+                      '${S.current.answer}: ${widget.fcLearning.flashcardId!.translation}',
+                      style: textTheme.bodyLarge,
+                    ),
+                  ],
+                );
+              }))
+        ],
+      ),
     );
   }
 }

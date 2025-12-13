@@ -73,230 +73,250 @@ class _QuestionInfoWidgetState extends State<QuestionInfoWidget> {
                       previous.isShowAnswer != current.isShowAnswer,
                   builder: (context, state) {
                     if (state.testShow == TestShow.test) {
-                      return Column(children: [
-                        ...List.generate(
-                          widget.question.options.length,
-                          (index) {
-                            final option = widget.question.options[index];
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: Center(
-                                    child: Radio<String>(
-                                      value: option.id ?? '',
-                                      groupValue: widget.question.userAnswer,
-                                      activeColor: colorScheme.primary,
-                                      onChanged: (value) {
-                                        cubit.setUserAnswer(
-                                            widget.question, value!);
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 10),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '${option.id ?? ''}. ',
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                if (option.content
-                                        .toString()
-                                        .trim()
-                                        .isNotEmpty &&
-                                    widget.question.part >= 3) ...[
-                                  const SizedBox(width: 4),
-                                  Expanded(
-                                    child: Container(
-                                      margin: const EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        option.content.toString().trim(),
-                                        style: textTheme.bodyMedium?.copyWith(
-                                          height: 1.5,
-                                        ),
+                      return RadioGroup<String>(
+                        groupValue: widget.question.userAnswer ?? '',
+                        onChanged: (value) {
+                          if (value != null) {
+                            cubit.setUserAnswer(widget.question, value);
+                          }
+                        },
+                        child: Column(children: [
+                          ...List.generate(
+                            widget.question.options.length,
+                            (index) {
+                              final option = widget.question.options[index];
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: Center(
+                                      child: Radio<String>(
+                                        value: option.id ?? '',
+                                        toggleable: false,
+                                        activeColor: colorScheme.primary,
                                       ),
                                     ),
                                   ),
-                                ]
-                              ],
-                            );
-                          },
-                        ),
-                      ]);
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '${option.id ?? ''}. ',
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  if (option.content
+                                          .toString()
+                                          .trim()
+                                          .isNotEmpty &&
+                                      widget.question.part >= 3) ...[
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          option.content.toString().trim(),
+                                          style: textTheme.bodyMedium?.copyWith(
+                                            height: 1.5,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ]
+                                ],
+                              );
+                            },
+                          ),
+                        ]),
+                      );
                     } else {
                       final questionResult =
                           getQuestionResult(state.questionsResult);
-                      return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...List.generate(
-                              widget.question.options.length,
-                              (index) {
-                                final option = widget.question.options[index];
-                                Color? color;
-                                if (questionResult?.useranswer == option.id) {
-                                  if (questionResult?.correctanswer ==
-                                      option.id) {
-                                    color = Colors.green.withValues(alpha: 0.5);
-                                  } else {
-                                    color = Colors.red.withValues(alpha: 0.5);
-                                  }
-                                }
-                                return Container(
-                                  color: color,
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                        child: Radio<String>(
-                                          value: option.id ?? '',
-                                          groupValue:
-                                              questionResult?.useranswer,
-                                          activeColor: Colors.red,
-                                          onChanged: null,
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          '${option.id}.',
-                                          style: textTheme.bodyMedium?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Expanded(
-                                        child: Container(
-                                          margin:
-                                              const EdgeInsets.only(top: 10),
-                                          child: Text(
-                                            option.content.toString().trim(),
-                                            style: textTheme.bodyMedium?.copyWith(
-                                              height: 1.5,
+                      return IgnorePointer(
+                        child: RadioGroup<String>(
+                          groupValue: questionResult?.useranswer ?? '',
+                          onChanged: (value) {},
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ...List.generate(
+                                  widget.question.options.length,
+                                  (index) {
+                                    final option =
+                                        widget.question.options[index];
+                                    Color? color;
+                                    if (questionResult?.useranswer ==
+                                        option.id) {
+                                      if (questionResult?.correctanswer ==
+                                          option.id) {
+                                        color =
+                                            Colors.green.withValues(alpha: 0.5);
+                                      } else {
+                                        color =
+                                            Colors.red.withValues(alpha: 0.5);
+                                      }
+                                    }
+                                    return Container(
+                                      color: color,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: Radio<String>(
+                                              value: option.id ?? '',
+                                              toggleable: false,
+                                              activeColor: Colors.red,
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                            if (questionResult?.correctanswer.trim() !=
-                                    questionResult?.useranswer.trim() ||
-                                questionResult == null)
-                              Column(
-                                children: [
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '${S.current.correct_answer}: ${widget.question.correctAnswer}',
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.success,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            if (widget.question.part >= 5) ...[
-                              const SizedBox(height: 8),
-                              BlocBuilder<UserCubit, UserState>(
-                                builder: (context, state) {
-                                  final isPremium =
-                                      state.user?.isPremium() ?? false;
-                                  if (!isPremium) {
-                                    return CustomButton(
-                                      height: 50,
-                                      onPressed: () {
-                                        GoRouter.of(context).pushNamed(
-                                            AppRouter.upgradeAccount);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const FaIcon(
-                                            FontAwesomeIcons.lock,
-                                            size: 14,
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 10),
+                                            child: Text(
+                                              '${option.id}.',
+                                              style: textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            S.current.upgrade_to_use_ai,
-                                          ),
+                                          const SizedBox(width: 4),
+                                          Expanded(
+                                            child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 10),
+                                              child: Text(
+                                                option.content
+                                                    .toString()
+                                                    .trim(),
+                                                style: textTheme.bodyMedium
+                                                    ?.copyWith(
+                                                  height: 1.5,
+                                                ),
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     );
-                                  } else {
-                                    return BlocBuilder<PracticeTestCubit,
-                                            PracticeTestState>(
-                                        buildWhen: (previous, current) =>
-                                            previous.loadStatusExplain !=
-                                                current.loadStatusExplain ||
-                                            previous.loadingExplainQuestionId !=
-                                                current
-                                                    .loadingExplainQuestionId,
-                                        builder: (context, state) {
-                                          final isLoading = state
-                                                      .loadStatusExplain ==
-                                                  LoadStatus.loading &&
-                                              state.loadingExplainQuestionId ==
-                                                  widget.question.id;
-                                          return CustomButton(
-                                            height: 50,
-                                            isLoading: isLoading,
-                                            onPressed: isLoading
-                                                ? null
-                                                : () async {
-                                                    await cubit
-                                                        .getExplainQuestion(
-                                                            widget.question);
-                                                  },
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                if (isLoading)
-                                                  const LoadingCircle(
-                                                    size: 20,
-                                                  )
-                                                else
-                                                  const FaIcon(
-                                                    FontAwesomeIcons.lock,
-                                                    size: 14,
-                                                  ),
-                                                const SizedBox(width: 8),
-                                                Text(
-                                                  S.current.create_answer_by_ai,
+                                  },
+                                ),
+                                if (questionResult?.correctanswer.trim() !=
+                                        questionResult?.useranswer.trim() ||
+                                    questionResult == null)
+                                  Column(
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        '${S.current.correct_answer}: ${widget.question.correctAnswer}',
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          color: AppColors.success,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                if (widget.question.part >= 5) ...[
+                                  const SizedBox(height: 8),
+                                  BlocBuilder<UserCubit, UserState>(
+                                    builder: (context, state) {
+                                      final isPremium =
+                                          state.user?.isPremium() ?? false;
+                                      if (!isPremium) {
+                                        return CustomButton(
+                                          height: 50,
+                                          onPressed: () {
+                                            GoRouter.of(context).pushNamed(
+                                                AppRouter.upgradeAccount);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              const FaIcon(
+                                                FontAwesomeIcons.lock,
+                                                size: 14,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                S.current.upgrade_to_use_ai,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {
+                                        return BlocBuilder<PracticeTestCubit,
+                                                PracticeTestState>(
+                                            buildWhen: (previous, current) =>
+                                                previous.loadStatusExplain !=
+                                                    current.loadStatusExplain ||
+                                                previous.loadingExplainQuestionId !=
+                                                    current
+                                                        .loadingExplainQuestionId,
+                                            builder: (context, state) {
+                                              final isLoading = state
+                                                          .loadStatusExplain ==
+                                                      LoadStatus.loading &&
+                                                  state.loadingExplainQuestionId ==
+                                                      widget.question.id;
+                                              return CustomButton(
+                                                height: 50,
+                                                isLoading: isLoading,
+                                                onPressed: isLoading
+                                                    ? null
+                                                    : () async {
+                                                        await cubit
+                                                            .getExplainQuestion(
+                                                                widget
+                                                                    .question);
+                                                      },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    if (isLoading)
+                                                      const LoadingCircle(
+                                                        size: 20,
+                                                      )
+                                                    else
+                                                      const FaIcon(
+                                                        FontAwesomeIcons.lock,
+                                                        size: 14,
+                                                      ),
+                                                    const SizedBox(width: 8),
+                                                    Text(
+                                                      S.current
+                                                          .create_answer_by_ai,
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          );
-                                        });
-                                  }
-                                },
-                              )
-                            ],
-                            if (widget.question.questionExplain != null) ...[
-                              const SizedBox(height: 8),
-                              ExplanationUI(
-                                questionExplain:
-                                    widget.question.questionExplain!,
-                              )
-                            ]
-                          ]);
+                                              );
+                                            });
+                                      }
+                                    },
+                                  )
+                                ],
+                                if (widget.question.questionExplain !=
+                                    null) ...[
+                                  const SizedBox(height: 8),
+                                  ExplanationUI(
+                                    questionExplain:
+                                        widget.question.questionExplain!,
+                                  )
+                                ]
+                              ]),
+                        ),
+                      );
                     }
                   },
                 );

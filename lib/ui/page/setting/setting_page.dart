@@ -60,52 +60,54 @@ class _SettingPageState extends State<SettingPage> {
               },
               builder: (context, themeMode) {
                 return SettingsCard(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RadioListTile<int>(
-                        title: Text(
-                          S.current.follow_system,
-                          style: textTheme.bodyMedium,
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        value: ThemeMode.system.index,
-                        contentPadding: AppStyle.edgeInsetsH12,
-                        groupValue: themeMode.index,
-                        onChanged: (e) {
+                  child: RadioGroup<int>(
+                    groupValue: themeMode.index,
+                    onChanged: (val) {
+                      if (val != null) {
+                        if (val == ThemeMode.system.index) {
                           appSettingCubit.changeThemeMode(
                               themeMode: ThemeMode.system);
-                        },
-                      ),
-                      RadioListTile<int>(
-                        title: Text(
-                          S.current.light_mode,
-                          style: textTheme.bodyMedium,
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        value: ThemeMode.light.index,
-                        contentPadding: AppStyle.edgeInsetsH12,
-                        groupValue: themeMode.index,
-                        onChanged: (e) {
+                        } else if (val == ThemeMode.light.index) {
                           appSettingCubit.changeThemeMode(
                               themeMode: ThemeMode.light);
-                        },
-                      ),
-                      RadioListTile<int>(
-                        title: Text(
-                          S.current.dark_mode,
-                          style: textTheme.bodyMedium,
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        value: ThemeMode.dark.index,
-                        contentPadding: AppStyle.edgeInsetsH12,
-                        groupValue: themeMode.index,
-                        onChanged: (e) {
+                        } else if (val == ThemeMode.dark.index) {
                           appSettingCubit.changeThemeMode(
                               themeMode: ThemeMode.dark);
-                        },
-                      ),
-                    ],
+                        }
+                      }
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RadioListTile<int>(
+                          title: Text(
+                            S.current.follow_system,
+                            style: textTheme.bodyMedium,
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          value: ThemeMode.system.index,
+                          contentPadding: AppStyle.edgeInsetsH12,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(
+                            S.current.light_mode,
+                            style: textTheme.bodyMedium,
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          value: ThemeMode.light.index,
+                          contentPadding: AppStyle.edgeInsetsH12,
+                        ),
+                        RadioListTile<int>(
+                          title: Text(
+                            S.current.dark_mode,
+                            style: textTheme.bodyMedium,
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          value: ThemeMode.dark.index,
+                          contentPadding: AppStyle.edgeInsetsH12,
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -123,31 +125,31 @@ class _SettingPageState extends State<SettingPage> {
               },
               builder: (context, language) {
                 return SettingsCard(
-                  child: Column(
-                    children: [
-                      RadioListTile<Language>(
-                        title: Text(
-                          S.current.english,
-                          style: textTheme.bodyMedium,
+                  child: RadioGroup<Language>(
+                    groupValue: language,
+                    onChanged: (val) {
+                      if (val != null) {
+                        appSettingCubit.changeLanguage(language: val);
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        RadioListTile<Language>(
+                          title: Text(
+                            S.current.english,
+                            style: textTheme.bodyMedium,
+                          ),
+                          value: Language.english,
                         ),
-                        value: Language.english,
-                        groupValue: language,
-                        onChanged: (e) {
-                          appSettingCubit.changeLanguage(language: e!);
-                        },
-                      ),
-                      RadioListTile<Language>(
-                        title: Text(
-                          S.current.vietnamese,
-                          style: textTheme.bodyMedium,
+                        RadioListTile<Language>(
+                          title: Text(
+                            S.current.vietnamese,
+                            style: textTheme.bodyMedium,
+                          ),
+                          value: Language.vietnamese,
                         ),
-                        value: Language.vietnamese,
-                        groupValue: language,
-                        onChanged: (e) {
-                          appSettingCubit.changeLanguage(language: e!);
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
