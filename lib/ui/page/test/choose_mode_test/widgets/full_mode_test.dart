@@ -27,7 +27,7 @@ class FullTestMode extends StatelessWidget {
         children: [
           ProtipWidget(
             text: S.current.full_mode_tips,
-            backgroundColor: Colors.yellowAccent,
+            backgroundColor: Colors.orange.withValues(alpha: 0.1),
             textColor: Colors.orange,
           ),
           const SizedBox(height: 8),

@@ -32,32 +32,36 @@ class _PracticeModeState extends State<PracticeMode> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = context.textTheme;  
+    final textTheme = context.textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProtipWidget(
             text: S.current.practive_part_tips,
-            backgroundColor: Colors.green,
-            textColor: Colors.green),
-        const SizedBox(height: 16),
+            backgroundColor: AppColors.success.withValues(alpha: 0.1),
+            textColor: AppColors.success),
+        const SizedBox(height: 24),
         Text(
           S.current.select_part_to_practice,
-          style: textTheme.bodyMedium,
+          style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
-        ...Constants.parts.map((part) => QuestionPart(
-            part: part,
-            isSelected: selectedParts.contains(part.partEnum),
-            onChanged: (part) {
-              // exist in selectedParts
-              if (selectedParts.contains(part.partEnum)) {
-                selectedParts.remove(part.partEnum);
-              } else {
-                selectedParts.add(part.partEnum);
-              }
-              setState(() {});
-            })),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
+        ...Constants.parts.map((part) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: QuestionPart(
+                  part: part,
+                  isSelected: selectedParts.contains(part.partEnum),
+                  onChanged: (part) {
+                    // exist in selectedParts
+                    if (selectedParts.contains(part.partEnum)) {
+                      selectedParts.remove(part.partEnum);
+                    } else {
+                      selectedParts.add(part.partEnum);
+                    }
+                    setState(() {});
+                  }),
+            )),
+        const SizedBox(height: 24),
         CustomDropdownExample<String>(
           data: Constants.timeLimit,
           dataString: Constants.timeLimit,
