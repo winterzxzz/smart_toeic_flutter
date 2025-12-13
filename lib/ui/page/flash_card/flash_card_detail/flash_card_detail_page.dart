@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
@@ -9,7 +10,6 @@ import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
-import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
 import 'package:toeic_desktop/ui/common/widgets/loading_circle.dart';
 import 'package:toeic_desktop/ui/common/widgets/no_data_found_widget.dart';
@@ -78,12 +78,16 @@ class _PageState extends State<Page> {
                   children: [
                     Text(
                       widget.title,
-                      style: textTheme.titleMedium,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       '${state.flashCards.length} ${S.current.words}',
                       style: textTheme.bodySmall?.copyWith(
                         color: AppColors.textGray,
+                        fontSize: 12.sp,
                       ),
                     ),
                   ],
@@ -105,44 +109,52 @@ class _PageState extends State<Page> {
                 if (state.flashCards.isNotEmpty)
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Column(
                         children: [
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.h),
                           // Action Buttons
-                          _buildActionButton(
-                            context,
-                            icon: Icons.play_circle_outline_rounded,
-                            label: S.current.practice_flashcards,
-                            onPressed: () {
-                              GoRouter.of(context).pushNamed(
-                                AppRouter.flashCardQuizz,
-                                extra: {'id': widget.setId},
-                              );
-                            },
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildActionButton(
+                                  context,
+                                  icon: Icons.play_circle_outline_rounded,
+                                  label: S.current.practice_flashcards,
+                                  onPressed: () {
+                                    GoRouter.of(context).pushNamed(
+                                      AppRouter.flashCardQuizz,
+                                      extra: {'id': widget.setId},
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: _buildActionButton(
+                                  context,
+                                  icon: Icons.shuffle,
+                                  label: S.current.view_randomly,
+                                  onPressed: () {
+                                    GoRouter.of(context).pushNamed(
+                                      AppRouter.flashCardLearnFlip,
+                                      extra: {
+                                        'title': widget.title,
+                                        'flashCards': _cubit.state.flashCards,
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 12),
-                          _buildActionButton(
-                            context,
-                            icon: Icons.shuffle,
-                            label: S.current.view_randomly,
-                            onPressed: () {
-                              GoRouter.of(context).pushNamed(
-                                AppRouter.flashCardLearnFlip,
-                                extra: {
-                                  'title': widget.title,
-                                  'flashCards': _cubit.state.flashCards,
-                                },
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.h),
                         ],
                       ),
                     ),
                   ),
                 SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   sliver: state.flashCards.isEmpty
                       ? const SliverFillRemaining(
                           child: NotDataFoundWidget(),
@@ -151,7 +163,7 @@ class _PageState extends State<Page> {
                           itemBuilder: (context, index) =>
                               FlashcardTile(flashcard: state.flashCards[index]),
                           separatorBuilder: (context, index) =>
-                              const SizedBox(height: 8),
+                              SizedBox(height: 12.h),
                           itemCount: state.flashCards.length,
                         ),
                 ),
@@ -221,15 +233,32 @@ class _PageState extends State<Page> {
     required String label,
     required VoidCallback onPressed,
   }) {
-    return CustomButton(
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 16),
-          const SizedBox(width: 12),
-          Text(label),
-        ],
+    final colorScheme = context.colorScheme;
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        height: 80.h,
+        decoration: BoxDecoration(
+          color: colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: colorScheme.outlineVariant),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 28.spMin, color: colorScheme.primary),
+            SizedBox(height: 8.h),
+            Text(
+              label,
+              style: context.textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: colorScheme.primary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toeic_desktop/common/utils/utils.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/confirm_dia_log.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_detail/flash_card_detail_cubit.dart';
@@ -42,266 +42,300 @@ class _FlashcardTileState extends State<FlashcardTile>
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
-    return Card(
-      clipBehavior: Clip.hardEdge,
-      margin: EdgeInsets.zero,
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            isExpanded = !isExpanded;
-          });
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        Text(
-                          widget.flashcard.word,
-                          style: textTheme.titleSmall,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        // Add a button to play the pronunciation
-                        InkWell(
-                          onTap: () {
-                            _speak(widget.flashcard.word);
-                          },
-                          borderRadius: BorderRadius.circular(16),
-                          child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color:
-                                    colorScheme.primary.withValues(alpha: 0.1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.volume_up_outlined,
-                                color: colorScheme.primary,
-                              )),
-                        ),
-                      ],
-                    ),
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: .04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16.r),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                isExpanded = !isExpanded;
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: colorScheme.primary,
+                    width: 4.w,
                   ),
-                  Flexible(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Flexible(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: colorScheme.primary.withValues(alpha: 0.7),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              widget.flashcard.partOfSpeech.join(', '),
-                              style: textTheme.bodySmall?.copyWith(
-                                color: AppColors.textWhite,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        PopupMenuButton(
-                          icon: const Icon(Icons.more_vert, size: 16),
-                          color: theme.appBarTheme.backgroundColor,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 'edit':
-                                Utils.showModalBottomSheetForm(
-                                  context: context,
-                                  title: S.current.edit,
-                                  child: BlocProvider.value(
-                                    value: _cubit,
-                                    child: FlashCardDetailForm(
-                                      args: FlashCardDetailFormArgs(
-                                        type: FlashCardDetailFormType.edit,
-                                        flashCard: widget.flashcard,
-                                        onSave: (flashCardRequest) {
-                                          _cubit.updateFlashCard(
-                                            widget.flashcard.id,
-                                            flashCardRequest.word,
-                                            flashCardRequest.translation,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                );
-                                break;
-                              case 'delete':
-                                showConfirmDialog(
-                                  context,
-                                  S.current.delete,
-                                  S.current.are_you_sure_delete_flashcard,
-                                  () {
-                                    context
-                                        .read<FlashCardDetailCubit>()
-                                        .deleteFlashCard(
-                                          widget.flashcard.id,
-                                        );
-                                  },
-                                );
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              value: 'edit',
-                              child: Row(
-                                children: [
-                                  const FaIcon(
-                                    FontAwesomeIcons.penToSquare,
-                                    size: 14,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    S.current.edit,
-                                    style: textTheme.bodyMedium,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            PopupMenuItem(
-                              value: 'delete',
-                              child: Row(
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.trash,
-                                    size: 14,
-                                    color: colorScheme.error,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    S.current.delete,
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      color: colorScheme.error,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                ),
               ),
-              Column(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    children: [
-                      _buildPronunciation(widget.flashcard.pronunciation, 'UK'),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${S.current.translate}: ',
-                                style: textTheme.bodyMedium?.copyWith(
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                widget.flashcard.word,
+                                style: textTheme.titleMedium?.copyWith(
+                                  fontSize: 18.sp,
                                   fontWeight: FontWeight.bold,
+                                  color: colorScheme.primary,
                                 ),
                               ),
-                              TextSpan(
-                                text: widget.flashcard.translation,
-                                style: textTheme.bodyMedium?.copyWith(
-                                  fontStyle: FontStyle.italic,
+                            ),
+                            SizedBox(width: 8.w),
+                            InkWell(
+                              onTap: () {
+                                _speak(widget.flashcard.word);
+                              },
+                              borderRadius: BorderRadius.circular(16.r),
+                              child: Container(
+                                padding: EdgeInsets.all(6.w),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primaryContainer,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.volume_up_rounded,
+                                  color: colorScheme.primary,
+                                  size: 18.spMin,
                                 ),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: colorScheme.secondaryContainer,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Text(
+                          widget.flashcard.partOfSpeech.join(', '),
+                          style: textTheme.labelSmall?.copyWith(
+                            color: colorScheme.onSecondaryContainer,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
                       ),
-                      AnimatedRotation(
-                        turns: isExpanded ? 0.5 : 0,
-                        duration: const Duration(milliseconds: 200),
-                        child: const FaIcon(
-                          FontAwesomeIcons.chevronDown,
-                          size: 16,
+                      SizedBox(width: 4.w),
+                      PopupMenuButton(
+                        icon: Icon(Icons.more_vert_rounded,
+                            size: 20.spMin, color: colorScheme.outline),
+                        color: colorScheme.surface,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
-                      ),
-                      const SizedBox(width: 16),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onSelected: (value) {
+                          switch (value) {
+                            case 'edit':
+                              Utils.showModalBottomSheetForm(
+                                context: context,
+                                title: S.current.edit,
+                                child: BlocProvider.value(
+                                  value: _cubit,
+                                  child: FlashCardDetailForm(
+                                    args: FlashCardDetailFormArgs(
+                                      type: FlashCardDetailFormType.edit,
+                                      flashCard: widget.flashcard,
+                                      onSave: (flashCardRequest) {
+                                        _cubit.updateFlashCard(
+                                          widget.flashcard.id,
+                                          flashCardRequest.word,
+                                          flashCardRequest.translation,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                              break;
+                            case 'delete':
+                              showConfirmDialog(
+                                context,
+                                S.current.delete,
+                                S.current.are_you_sure_delete_flashcard,
+                                () {
+                                  context
+                                      .read<FlashCardDetailCubit>()
+                                      .deleteFlashCard(
+                                        widget.flashcard.id,
+                                      );
+                                },
+                              );
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'edit',
+                            height: 40.h,
+                            child: Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.penToSquare,
+                                  size: 14.spMin,
+                                  color: colorScheme.onSurface,
+                                ),
+                                SizedBox(width: 12.w),
+                                Text(
+                                  S.current.edit,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 'delete',
+                            height: 40.h,
+                            child: Row(
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.trash,
+                                  size: 14.spMin,
+                                  color: colorScheme.error,
+                                ),
+                                SizedBox(width: 12.w),
+                                Text(
+                                  S.current.delete,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: colorScheme.error,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (isExpanded) ...[
-                          const SizedBox(height: 8),
-                          Text(
-                            '${S.current.definition}:',
-                            style: textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                  SizedBox(height: 12.h),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildPronunciation(widget.flashcard.pronunciation, 'UK'),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '${S.current.translate}: ',
+                                    style: textTheme.bodyMedium,
+                                  ),
+                                  TextSpan(
+                                    text: widget.flashcard.translation,
+                                    style: textTheme.titleSmall?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: colorScheme.onSurface,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          Text(
-                            widget.flashcard.definition,
-                            style: textTheme.bodyMedium?.copyWith(
-                              fontStyle: FontStyle.italic,
+                          AnimatedRotation(
+                            turns: isExpanded ? 0.5 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              size: 24.spMin,
+                              color: colorScheme.primary,
                             ),
                           ),
-                          Text(
-                            '${S.current.example_sentences}:',
-                            style: textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          if (widget.flashcard.exampleSentence.isNotEmpty) ...[
-                            const SizedBox(height: 4),
-                            ...widget.flashcard.exampleSentence
-                                .map((example) => Text(
-                                      '- $example',
-                                      style: textTheme.bodyMedium?.copyWith(
-                                        fontStyle: FontStyle.italic,
-                                      ),
-                                    )),
+                        ],
+                      ),
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (isExpanded) ...[
+                              SizedBox(height: 12.h),
+                              Divider(
+                                  height: 1, color: colorScheme.outlineVariant),
+                              SizedBox(height: 12.h),
+                              Text(
+                                '${S.current.definition}:',
+                                style: textTheme.labelLarge?.copyWith(
+                                  color: colorScheme.primary,
+                                ),
+                              ),
+                              Text(
+                                widget.flashcard.definition,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  height: 1.4,
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Text(
+                                '${S.current.example_sentences}:',
+                                style: textTheme.labelLarge?.copyWith(
+                                  color: colorScheme.primary,
+                                ),
+                              ),
+                              if (widget.flashcard.exampleSentence.isNotEmpty)
+                                ...widget.flashcard.exampleSentence
+                                    .map((example) => Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 2.h),
+                                          child: Text(
+                                            '- $example',
+                                            style:
+                                                textTheme.bodyMedium?.copyWith(
+                                              fontStyle: FontStyle.italic,
+                                              color:
+                                                  colorScheme.onSurfaceVariant,
+                                            ),
+                                          ),
+                                        )),
+                              SizedBox(height: 8.h),
+                              Text(
+                                '${S.current.note}:',
+                                style: textTheme.labelLarge?.copyWith(
+                                  color: colorScheme.primary,
+                                ),
+                              ),
+                              Text(
+                                widget.flashcard.note,
+                                style: textTheme.bodyMedium,
+                              ),
+                            ]
                           ],
-                          const SizedBox(height: 4),
-                          Text(
-                            '${S.current.note}:',
-                            style: textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            widget.flashcard.note,
-                            style: textTheme.bodyMedium?.copyWith(
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ]
-                      ],
-                    ),
-                  )
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -310,22 +344,32 @@ class _FlashcardTileState extends State<FlashcardTile>
 
   Widget _buildPronunciation(String pronunciation, String label) {
     final textTheme = context.textTheme;
-    return Row(
-      children: [
-        Text(
-          '$label:',
-          style: textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+    final colorScheme = context.colorScheme;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(6.r),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '$label: ',
+            style: textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.primary,
+            ),
           ),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          pronunciation,
-          style: textTheme.bodyMedium?.copyWith(
-            fontStyle: FontStyle.italic,
+          Text(
+            '/$pronunciation/',
+            style: textTheme.bodySmall?.copyWith(
+              fontStyle: FontStyle.italic,
+              fontFamily: 'Roboto', // Ensure support for phonetic chars
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
