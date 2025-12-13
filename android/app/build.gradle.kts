@@ -76,5 +76,6 @@ dependencies {
 
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-guava:1.6.4")
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
 
 }
