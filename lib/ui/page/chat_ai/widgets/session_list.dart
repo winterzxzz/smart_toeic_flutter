@@ -70,10 +70,11 @@ class SessionList extends StatelessWidget {
       ..sort((a, b) {
         DateTime parseLabel(String l) {
           if (l == 'Today') return DateTime(now.year, now.month, now.day);
-          if (l == 'Yesterday')
+          if (l == 'Yesterday') {
             return DateTime(now.year, now.month, now.day).subtract(
               const Duration(days: 1),
             );
+          }
           final parts = l.split('-');
           return DateTime(
             int.parse(parts[0]),

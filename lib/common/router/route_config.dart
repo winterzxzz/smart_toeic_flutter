@@ -12,7 +12,6 @@ import 'package:toeic_desktop/data/models/ui_models/payment_return.dart';
 import 'package:toeic_desktop/data/models/ui_models/result_model.dart';
 import 'package:toeic_desktop/ui/page/flash_card/flash_card_learn_flip/flash_card_learn_flip_page.dart';
 import 'package:toeic_desktop/ui/page/image_view/image_view_page.dart';
-import 'package:toeic_desktop/ui/page/live_object_detection/object_detector_view.dart';
 import 'package:toeic_desktop/ui/page/personal_analysis/analysis_page.dart';
 import 'package:toeic_desktop/ui/page/blog_detail/blog_detail_page.dart';
 import 'package:toeic_desktop/ui/page/entrypoint/entrypoint_page.dart';
@@ -302,30 +301,6 @@ class AppRouter {
         final imageUrl = args['imageUrl'] as String;
         return ImagePreview(imageUrl: imageUrl);
       },
-    ),
-    // GoRoute(
-    //   name: rooms,
-    //   path: rooms,
-    //   builder: (context, state) => const RoomsPage(),
-    // ),
-    // GoRoute(
-    //   name: liveStream,
-    //   path: liveStream,
-    //   builder: (context, state) {
-    //     final args = state.extra as Map<String, dynamic>;
-    //     final liveArgs = args['liveArgs'] as LiveArgs;
-    //     return LiveStreamPage(liveArgs: liveArgs);
-    //   },
-    // ),
-    // GoRoute(
-    //   name: prepareLive,
-    //   path: prepareLive,
-    //   builder: (context, state) => const PrepareLivePage(),
-    // ),
-    GoRoute(
-      name: liveObjectDetection,
-      path: liveObjectDetection,
-      builder: (context, state) => const ObjectDetectorView(),
     ),
     GoRoute(
       name: chatAi,

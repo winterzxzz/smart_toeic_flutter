@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:toastification/toastification.dart';
-import 'package:toeic_desktop/app.dart';
-import 'package:toeic_desktop/common/configs/app_configs.dart';
-import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
@@ -26,27 +22,10 @@ class BlogDetail extends StatefulWidget {
 }
 
 class _BlogDetailState extends State<BlogDetail> {
-  late final BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
 
   @override
   void initState() {
     super.initState();
-    if (injector<UserCubit>().state.user != null &&
-        injector<UserCubit>().state.user!.isPremium() == false) {
-      _bannerAd = BannerAd(
-        adUnitId: AppConfigs.bannerAdUnitId,
-        request: const AdRequest(),
-        size: AdSize.mediumRectangle,
-        listener: BannerAdListener(
-          onAdLoaded: (_) => setState(() => _isBannerAdReady = true),
-          onAdFailedToLoad: (ad, err) {
-            debugPrint('Failed to load banner ad: ${err.message}');
-            ad.dispose();
-          },
-        ),
-      )..load();
-    }
   }
 
   @override
@@ -97,18 +76,7 @@ class _BlogDetailState extends State<BlogDetail> {
                 ),
               ),
             ),
-          ),
-          if (_isBannerAdReady)
-            Positioned(
-              bottom: 10,
-              left: 0,
-              right: 0,
-              child: SizedBox(
-                width: _bannerAd.size.width.toDouble(),
-                height: _bannerAd.size.height.toDouble(),
-                child: AdWidget(ad: _bannerAd),
-              ),
-            ),
+          )
         ],
       ),
     );

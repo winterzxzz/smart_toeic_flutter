@@ -7,7 +7,6 @@ import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/onboarding/widgets/onboarding_content.dart';
-import 'package:toeic_desktop/data/services/ad_service.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -24,10 +23,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    // Show app open ad immediately when onboarding loads
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      injector<AdService>().showAppOpenAdIfAvailable();
-    });
   }
 
   @override

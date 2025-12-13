@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class SocketService {
   static final SocketService _instance = SocketService._internal();
   factory SocketService() => _instance;
   SocketService._internal();
 
-  IO.Socket? _socket;
+  io.Socket? _socket;
   String? _socketId;
   // get session id
   final StreamController<Map<String, dynamic>> _sessionCreatedController =
@@ -33,9 +33,9 @@ class SocketService {
 
   Future<void> connect(String serverUrl) async {
     try {
-      _socket = IO.io(
+      _socket = io.io(
           serverUrl,
-          IO.OptionBuilder()
+          io.OptionBuilder()
               .setTransports(['websocket'])
               .enableAutoConnect()
               .build());

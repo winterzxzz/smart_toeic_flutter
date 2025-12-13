@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
-import 'package:toeic_desktop/data/services/ad_service.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
-import 'dart:developer';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/app_images.dart';
 import 'package:toeic_desktop/ui/page/home/widgets/home_section_task.dart';
@@ -23,19 +19,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late AdService _adService;
 
   @override
   void initState() {
     super.initState();
-    _adService = injector<AdService>();
-    // Check ad status after a delay to see if it's loaded
-    Future.delayed(const Duration(seconds: 3), () {
-      log('HomePage: Native ad ready: ${_adService.isNativeAdReady}');
-      if (mounted) {
-        setState(() {});
-      }
-    });
   }
 
   @override
@@ -121,14 +108,6 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 16,
               ),
-              if (_adService.isNativeAdReady)
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: SizedBox(
-                    height: 330,
-                    child: AdWidget(ad: _adService.nativeAd!),
-                  ),
-                ),
               HomeSectionTask(
                 sectionTitle: S.current.exam_preparation,
                 tasks: Constants.homeExamPreparationTasks,
