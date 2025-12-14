@@ -11,22 +11,44 @@ import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_state.dart';
 // State, message, session moved to chat_ai_state.dart using Equatable
 
 /// Decode a JSON-encoded string response.
-/// Handles strings wrapped in quotes and escaped characters like \n, \".
+/// Handles:
+/// 1. JSON object with 'message' or 'content' field: {"message": "...", ...}
+/// 2. Strings wrapped in quotes: "some text with \\n newlines"
+/// 3. Escaped characters like \n, \"
 String _decodeJsonString(String input) {
   if (input.isEmpty) return '';
+
+  final trimmed = input.trim();
+
   try {
+    // First, try to parse as a JSON object (API response case)
+    if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+      final Map<String, dynamic> jsonObj = jsonDecode(trimmed);
+      // Try common field names for message content
+      final String? content = jsonObj['reply'] as String? ??
+          jsonObj['message'] as String? ??
+          jsonObj['content'] as String? ??
+          jsonObj['text'] as String? ??
+          jsonObj['response'] as String?;
+      if (content != null && content.isNotEmpty) {
+        // Recursively decode in case the content itself is escaped
+        return _decodeJsonString(content);
+      }
+    }
+
     // Check if the string looks like a JSON-encoded string (starts and ends with quotes)
-    final looksQuoted = (input.startsWith('"') && input.endsWith('"')) ||
-        (input.startsWith("'") && input.endsWith("'"));
+    final looksQuoted = (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+        (trimmed.startsWith("'") && trimmed.endsWith("'"));
     if (looksQuoted) {
       final normalized =
-          input.startsWith("'") ? input.replaceAll("'", '"') : input;
+          trimmed.startsWith("'") ? trimmed.replaceAll("'", '"') : trimmed;
       final decoded = jsonDecode(normalized);
       if (decoded is String) return decoded;
     }
   } catch (_) {
     // If JSON decode fails, fall through to manual replacement
   }
+
   // Fallback: manually replace common escape sequences
   return input.replaceAll('\\n', '\n').replaceAll('\\"', '"');
 }
