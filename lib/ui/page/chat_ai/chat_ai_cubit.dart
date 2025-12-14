@@ -10,6 +10,27 @@ import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_state.dart';
 
 // State, message, session moved to chat_ai_state.dart using Equatable
 
+/// Decode a JSON-encoded string response.
+/// Handles strings wrapped in quotes and escaped characters like \n, \".
+String _decodeJsonString(String input) {
+  if (input.isEmpty) return '';
+  try {
+    // Check if the string looks like a JSON-encoded string (starts and ends with quotes)
+    final looksQuoted = (input.startsWith('"') && input.endsWith('"')) ||
+        (input.startsWith("'") && input.endsWith("'"));
+    if (looksQuoted) {
+      final normalized =
+          input.startsWith("'") ? input.replaceAll("'", '"') : input;
+      final decoded = jsonDecode(normalized);
+      if (decoded is String) return decoded;
+    }
+  } catch (_) {
+    // If JSON decode fails, fall through to manual replacement
+  }
+  // Fallback: manually replace common escape sequences
+  return input.replaceAll('\\n', '\n').replaceAll('\\"', '"');
+}
+
 class ChatAiCubit extends Cubit<ChatAiState> {
   ChatAiCubit(this._repository) : super(const ChatAiState()) {
     _initializeSocket();
@@ -175,7 +196,8 @@ class ChatAiCubit extends Cubit<ChatAiState> {
                     e['_id'] ??
                     DateTime.now().microsecondsSinceEpoch.toString())
                 .toString();
-            final String content = (e['content'] ?? '').toString();
+            final String rawContent = (e['content'] ?? '').toString();
+            final String content = _decodeJsonString(rawContent);
             final String role = (e['role'] ?? '').toString();
             final String createdAtStr = (e['createdAt'] ??
                     e['created_at'] ??
@@ -268,7 +290,7 @@ class ChatAiCubit extends Cubit<ChatAiState> {
               r.isNotEmpty) {
             final aiMsg = ChatMessage(
               id: DateTime.now().microsecondsSinceEpoch.toString(),
-              content: r,
+              content: _decodeJsonString(r),
               isUser: false,
               createdAt: DateTime.now(),
             );
@@ -286,9 +308,10 @@ class ChatAiCubit extends Cubit<ChatAiState> {
 
   void finishStreaming() {
     if (state.isStreaming && state.streamingMessage.isNotEmpty) {
+      final decodedContent = _decodeJsonString(state.streamingMessage);
       final aiMsg = ChatMessage(
         id: DateTime.now().microsecondsSinceEpoch.toString(),
-        content: state.streamingMessage,
+        content: decodedContent,
         isUser: false,
         createdAt: DateTime.now(),
       );
