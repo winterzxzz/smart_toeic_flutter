@@ -20,12 +20,16 @@ class _ApiClient implements ApiClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<UserEntity> signUp(String email, String name, String password) async {
+  Future<RegisterResponse> signUp(
+    String email,
+    String name,
+    String password,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'email': email, 'name': name, 'password': password};
-    final _options = _setStreamType<UserEntity>(
+    final _options = _setStreamType<RegisterResponse>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,9 +40,9 @@ class _ApiClient implements ApiClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserEntity _value;
+    late RegisterResponse _value;
     try {
-      _value = UserEntity.fromJson(_result.data!);
+      _value = RegisterResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, _result);
       rethrow;
@@ -47,12 +51,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<UserEntity> login(String email, String password) async {
+  Future<AuthResponse> login(String email, String password) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {'email': email, 'password': password};
-    final _options = _setStreamType<UserEntity>(
+    final _options = _setStreamType<AuthResponse>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -63,9 +67,9 @@ class _ApiClient implements ApiClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserEntity _value;
+    late AuthResponse _value;
     try {
-      _value = UserEntity.fromJson(_result.data!);
+      _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, _result);
       rethrow;

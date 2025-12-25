@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:toeic_desktop/data/models/chatbox/ai_chat_session.dart';
+import 'package:toeic_desktop/data/models/entities/auth/auth_response.dart';
+import 'package:toeic_desktop/data/models/entities/auth/register_response.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card_ai_gen.dart';
@@ -41,14 +43,14 @@ abstract class ApiClient {
 
   // AUTH USER
   @POST('/user/auth/signup')
-  Future<UserEntity> signUp(
+  Future<RegisterResponse> signUp(
     @Field("email") String email,
     @Field("name") String name,
     @Field("password") String password,
   );
 
   @POST('/user/auth/login')
-  Future<UserEntity> login(
+  Future<AuthResponse> login(
     @Field("email") String email,
     @Field("password") String password,
   );
@@ -266,7 +268,6 @@ abstract class ApiClient {
   Future<LivekitResponse> updateLivekitRoom(
     @Path("roomName") String roomName,
   );
-
 
   @GET('/user/bridge-nest/rooms')
   Future<List<RoomDb>> getRooms();

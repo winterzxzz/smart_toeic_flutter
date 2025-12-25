@@ -1,8 +1,9 @@
-import UIKit
 import Flutter
-import flutter_local_notifications
+import UIKit
 import WidgetKit
-import google_mobile_ads
+import flutter_local_notifications
+
+// import google_mobile_ads
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -12,12 +13,12 @@ import google_mobile_ads
   ) -> Bool {
 
     // Register Native Ad Factory
-    let nativeAdFactory = ListTileNativeAdFactory()
-    FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
-      self,
-      factoryId: "listTile_ios",
-      nativeAdFactory: nativeAdFactory
-    )
+    // let nativeAdFactory = ListTileNativeAdFactory()
+    // FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+    //   self,
+    //   factoryId: "listTile_ios",
+    //   nativeAdFactory: nativeAdFactory
+    // )
 
     // Setup for flutter_local_notifications
     FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
@@ -25,47 +26,49 @@ import google_mobile_ads
     }
 
     let controller: FlutterViewController = window?.rootViewController as! FlutterViewController
-    let nativeChannel = FlutterMethodChannel(name: "com.example.toeic_desktop/widget", binaryMessenger: controller.binaryMessenger)
+    let nativeChannel = FlutterMethodChannel(
+      name: "com.example.toeic_desktop/widget", binaryMessenger: controller.binaryMessenger)
 
-    nativeChannel.setMethodCallHandler { (call: FlutterMethodCall, result: @escaping FlutterResult) in
+    nativeChannel.setMethodCallHandler {
+      (call: FlutterMethodCall, result: @escaping FlutterResult) in
       if call.method == "updateWidgetColor" {
         if let args = call.arguments as? [String: Any],
-           let message = args["colorHex"] as? String {
+          let message = args["colorHex"] as? String
+        {
           print("Received from Flutter: \(message)")
           result("iOS received: \(message)")
         } else {
           result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid arguments", details: nil))
         }
-      }
-        else if call.method == "schedulePeriodicWidgetUpdate" {
-            if let args = call.arguments as? [String: Any],
-               let flashcardData = args["flashCardShowInWidgetList"] as? [String: Any],
-               let flashcardList = flashcardData["flashCardShowInWidgetList"] as? [[String: String]] {
+      } else if call.method == "schedulePeriodicWidgetUpdate" {
+        if let args = call.arguments as? [String: Any],
+          let flashcardData = args["flashCardShowInWidgetList"] as? [String: Any],
+          let flashcardList = flashcardData["flashCardShowInWidgetList"] as? [[String: String]]
+        {
 
-                let userDefaults = UserDefaults(suiteName: "group.winterzxzz")
-                let encoder = JSONEncoder()
-                
-                let flashcards = flashcardList.compactMap { dict -> FlashCard? in
-                    guard let word = dict["word"], let definition = dict["definition"] else { return nil }
-                    return FlashCard(word: word, definition: definition)
-                }
+          let userDefaults = UserDefaults(suiteName: "group.winterzxzz")
+          let encoder = JSONEncoder()
 
-                print("flashcards: \(flashcards)")
-                
-                if let encoded = try? encoder.encode(flashcards) {
-                    userDefaults?.set(encoded, forKey: "flashcards")
-                    userDefaults?.synchronize()
-                }
+          let flashcards = flashcardList.compactMap { dict -> FlashCard? in
+            guard let word = dict["word"], let definition = dict["definition"] else { return nil }
+            return FlashCard(word: word, definition: definition)
+          }
 
-                // load widget
-                WidgetCenter.shared.reloadAllTimelines()
-                result("Widget data updated successfully")
-                
-            } else {
-                result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid arguments", details: nil))
-            }
+          print("flashcards: \(flashcards)")
+
+          if let encoded = try? encoder.encode(flashcards) {
+            userDefaults?.set(encoded, forKey: "flashcards")
+            userDefaults?.synchronize()
+          }
+
+          // load widget
+          WidgetCenter.shared.reloadAllTimelines()
+          result("Widget data updated successfully")
+
+        } else {
+          result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid arguments", details: nil))
         }
-        else {
+      } else {
         result(FlutterMethodNotImplemented)
       }
     }

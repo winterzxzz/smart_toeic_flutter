@@ -3,6 +3,7 @@ import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/global_blocs/user/user_cubit.dart';
 import 'package:toeic_desktop/common/utils/app_validartor.dart';
+import 'package:toeic_desktop/data/models/entities/auth/auth_response.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/network/repositories/auth_repository.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -15,15 +16,17 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this.authRepo) : super(LoginState.initial());
 
   Future<void> login(String email, String password) async {
+    // 1. Reset state
     emit(state.copyWith(loadStatus: LoadStatus.initial));
+
     try {
+      // 2. Validation (Giữ nguyên logic của bạn)
       if (!AppValidator.validateEmpty(email)) {
         throw (S.current.empty_email_error);
       }
       if (!AppValidator.validateEmpty(password)) {
         throw (S.current.empty_password_error);
       }
-
       if (!AppValidator.validateEmail(email)) {
         throw (S.current.invalid_email_error);
       }
@@ -33,24 +36,62 @@ class LoginCubit extends Cubit<LoginState> {
       if (!AppValidator.validatePassword(password)) {
         throw (S.current.invalid_password_error);
       }
-      if (!AppValidator.validateLength(password, 6, 30)) {
-        throw (S.current.confirm_password_length_error);
-      }
+
+      // 3. Loading
       emit(state.copyWith(loadStatus: LoadStatus.loading));
+
+      // 4. Gọi API
+      // Lưu ý: authRepo.login cần trả về Either<Failure, AuthResponse>
       final result = await authRepo.login(email, password);
-      result.fold((l) {
-        emit(state.copyWith(
-            loadStatus: LoadStatus.failure, errorMessage: l.message));
-        showToast(
-          title: l.message,
-          type: ToastificationType.error,
-        );
-      }, (response) {
-        injector<UserCubit>().updateUser(response);
-        emit(state.copyWith(loadStatus: LoadStatus.success));
-      });
+
+      result.fold(
+        // === TRƯỜNG HỢP GỌI API THẤT BẠI (Lỗi mạng, 404, 500...) ===
+        (failure) {
+          emit(state.copyWith(
+            loadStatus: LoadStatus.failure,
+            errorMessage: failure.message,
+          ));
+          showToast(
+            title: failure.message,
+            type: ToastificationType.error,
+          );
+        },
+
+        // === TRƯỜNG HỢP GỌI API THÀNH CÔNG (Data trả về từ server) ===
+        (authResponse) {
+          // Dùng switch để tự động cast kiểu dữ liệu (Dart 3 Pattern Matching)
+          switch (authResponse) {
+            case AuthSuccess success:
+              injector<UserCubit>().updateUser(success.user);
+
+              emit(state.copyWith(loadStatus: LoadStatus.success));
+              break;
+
+            case AuthChallenge challenge:
+              String message = challenge.message;
+
+              if (challenge.requiresEmailConfirmation) {
+                message = "Vui lòng xác thực email trước khi đăng nhập.";
+              }
+
+              if (challenge.securityAlert != null) {
+                message =
+                    "${challenge.securityAlert!.message} (${challenge.securityAlert!.riskLevel})";
+              }
+
+              emit(state.copyWith(
+                  loadStatus: LoadStatus.failure, errorMessage: message));
+
+              showToast(
+                title: message,
+                type: ToastificationType
+                    .warning, // Dùng warning thay vì error cho case này
+              );
+              break;
+          }
+        },
+      );
     } catch (e) {
-      // clear errormessage before
       emit(state.copyWith(
           loadStatus: LoadStatus.failure, errorMessage: e.toString()));
       showToast(
