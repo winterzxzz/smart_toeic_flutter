@@ -16,6 +16,8 @@ abstract class AuthRepository {
   });
 
   Future<Either<ApiError, ResetPasswordResponse>> resetPassword(String email);
+
+  Future<Either<ApiError, AuthResponse>> confirmLogin(String tokenId);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -53,6 +55,16 @@ class AuthRepositoryImpl extends AuthRepository {
       String email) async {
     try {
       final result = await apiClient.resetPassword(email);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, AuthResponse>> confirmLogin(String tokenId) async {
+    try {
+      final result = await apiClient.confirmLogin(tokenId);
       return Right(result);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));

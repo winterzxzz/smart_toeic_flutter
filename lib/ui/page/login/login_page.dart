@@ -69,6 +69,10 @@ class _PageState extends State<Page> {
         if (state.loadStatus == LoadStatus.success) {
           GoRouter.of(context).goNamed(AppRouter.bottomTab);
         }
+        if (state.authChallenge != null) {
+          context.pushNamed(AppRouter.waitingVerify,
+              extra: state.authChallenge);
+        }
       },
       child: Scaffold(
         body: Center(
@@ -182,4 +186,3 @@ class _PageState extends State<Page> {
     );
   }
 }
-

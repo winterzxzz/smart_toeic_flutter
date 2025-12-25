@@ -34,6 +34,8 @@ import 'package:toeic_desktop/ui/page/test/result_test/result_test_page.dart';
 import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_page.dart';
 import 'package:toeic_desktop/ui/page/certificates/certificates_page.dart';
 import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_page.dart';
+import 'package:toeic_desktop/ui/page/login/waiting_verify_page.dart';
+import 'package:toeic_desktop/data/models/entities/auth/auth_response.dart';
 
 import '../../ui/page/splash/splash_page.dart';
 
@@ -53,7 +55,8 @@ class AppRouter {
               state.uri.path != login &&
               state.uri.path != register &&
               state.uri.path != resetPassword &&
-              state.uri.path != onboarding) {
+              state.uri.path != onboarding &&
+              state.uri.path != waitingVerify) {
             return login;
           }
           return null;
@@ -95,6 +98,7 @@ class AppRouter {
   static const String prepareLive = '/prepare-live';
   static const String liveObjectDetection = '/live-object-detection';
   static const String chatAi = '/chat-ai';
+  static const String waitingVerify = '/waiting-verify';
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -306,6 +310,14 @@ class AppRouter {
       name: chatAi,
       path: chatAi,
       builder: (context, state) => const ChatAiPage(),
+    ),
+    GoRoute(
+      name: waitingVerify,
+      path: waitingVerify,
+      builder: (context, state) {
+        final challenge = state.extra as AuthChallenge;
+        return WaitingVerifyPage(challenge: challenge);
+      },
     ),
   ];
 

@@ -58,6 +58,11 @@ abstract class ApiClient {
   @GET('/user/auth/getinfor')
   Future<UserEntity> getUser();
 
+  @POST('/user/auth/security/confirm-login')
+  Future<AuthResponse> confirmLogin(
+    @Query("tokenId") String tokenId,
+  );
+
   // PROFILE
   @GET('/user/profile/analysis')
   Future<ProfileAnalysis> getProfileAnalysis();

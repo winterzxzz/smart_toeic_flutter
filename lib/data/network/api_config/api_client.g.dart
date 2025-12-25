@@ -105,6 +105,33 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<AuthResponse> confirmLogin(String tokenId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'tokenId': tokenId};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<AuthResponse>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/user/auth/security/confirm-login',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late AuthResponse _value;
+    try {
+      _value = AuthResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ProfileAnalysis> getProfileAnalysis() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

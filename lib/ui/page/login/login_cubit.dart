@@ -17,7 +17,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login(String email, String password) async {
     // 1. Reset state
-    emit(state.copyWith(loadStatus: LoadStatus.initial));
+    emit(LoginState.initial());
 
     try {
       // 2. Validation (Giữ nguyên logic của bạn)
@@ -68,25 +68,10 @@ class LoginCubit extends Cubit<LoginState> {
               break;
 
             case AuthChallenge challenge:
-              String message = challenge.message;
-
-              if (challenge.requiresEmailConfirmation) {
-                message = "Vui lòng xác thực email trước khi đăng nhập.";
-              }
-
-              if (challenge.securityAlert != null) {
-                message =
-                    "${challenge.securityAlert!.message} (${challenge.securityAlert!.riskLevel})";
-              }
-
               emit(state.copyWith(
-                  loadStatus: LoadStatus.failure, errorMessage: message));
-
-              showToast(
-                title: message,
-                type: ToastificationType
-                    .warning, // Dùng warning thay vì error cho case này
-              );
+                loadStatus: LoadStatus.loaded,
+                authChallenge: challenge,
+              ));
               break;
           }
         },
