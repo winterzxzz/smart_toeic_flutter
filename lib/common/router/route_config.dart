@@ -314,8 +314,7 @@ class AppRouter {
       name: waitingVerify,
       path: waitingVerify,
       builder: (context, state) {
-        final tokenId = state.extra as String;
-        return VerifyLoginPage(tokenId: tokenId);
+        return const WaitingVerifyPage();
       },
     ),
   ];

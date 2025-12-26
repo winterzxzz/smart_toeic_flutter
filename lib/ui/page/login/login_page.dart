@@ -75,13 +75,11 @@ class _PageState extends State<Page> {
         if (state.authChallenge != null &&
             state.authChallenge is AuthChallenge) {
           final challenge = state.authChallenge as AuthChallenge;
-          // Show toast instead of navigating
-          String message = challenge.message;
-          if (challenge.requiresEmailConfirmation) {
-            message = challenge.message;
-          }
+          // Navigate to waiting verify page
+          GoRouter.of(context).pushNamed(AppRouter.waitingVerify);
+
           showToast(
-            title: message,
+            title: challenge.message,
             type: ToastificationType.info,
           );
         }

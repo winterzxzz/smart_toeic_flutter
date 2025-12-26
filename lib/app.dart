@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_links/app_links.dart';
 import 'package:dio/dio.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
@@ -67,49 +66,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late AppLinks _appLinks;
-  StreamSubscription<Uri>? _linkSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    _initDeepLinks();
-  }
-
-  @override
-  void dispose() {
-    _linkSubscription?.cancel();
-    super.dispose();
-  }
-
-  Future<void> _initDeepLinks() async {
-    _appLinks = AppLinks();
-
-    // Check initial link if app was closed
-    try {
-      final initialUri = await _appLinks.getInitialLink();
-      if (initialUri != null) {
-        _handleDeepLink(initialUri);
-      }
-    } catch (e) {
-      // Ignore
-    }
-
-    // Listen to incoming links
-    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      _handleDeepLink(uri);
-    });
-  }
-
-  void _handleDeepLink(Uri uri) {
-    if (uri.path.contains('/account/security/confirm')) {
-      final tokenId = uri.queryParameters['tokenId'];
-      if (tokenId != null && tokenId.isNotEmpty) {
-        AppRouter.router.pushNamed(AppRouter.waitingVerify, extra: tokenId);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(

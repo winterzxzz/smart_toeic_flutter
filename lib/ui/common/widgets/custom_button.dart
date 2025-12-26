@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final bool isLoading;
   final double height;
   final double? width;
+  final Color? backgroundColor;
   const CustomButton({
     super.key,
     required this.child,
@@ -16,6 +17,7 @@ class CustomButton extends StatelessWidget {
     this.isLoading = false,
     this.height = 55,
     this.width,
+    this.backgroundColor,
   });
 
   @override
@@ -27,7 +29,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: theme.colorScheme.primary,
+          backgroundColor: backgroundColor ?? theme.colorScheme.primary,
           disabledBackgroundColor: theme.disabledColor,
           foregroundColor: AppColors.textWhite,
           textStyle: theme.textTheme.bodySmall?.copyWith(
