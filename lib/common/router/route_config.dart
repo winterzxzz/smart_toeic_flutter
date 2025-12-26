@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
+import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/set_flash_card/set_flash_card_learning.dart';
@@ -35,7 +35,6 @@ import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_
 import 'package:toeic_desktop/ui/page/certificates/certificates_page.dart';
 import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_page.dart';
 import 'package:toeic_desktop/ui/page/login/waiting_verify_page.dart';
-import 'package:toeic_desktop/data/models/entities/auth/auth_response.dart';
 
 import '../../ui/page/splash/splash_page.dart';
 
@@ -48,8 +47,8 @@ class AppRouter {
       routes: _routes,
       debugLogDiagnostics: true,
       navigatorKey: navigationKey,
-      redirect: (context, state) {
-        final isLogin = SharedPreferencesHelper().getCookies() != null;
+      redirect: (context, state) async {
+        final isLogin = await SecureStorageHelper.instance.getCookies() != null;
         if (!isLogin) {
           if (state.uri.path != splash &&
               state.uri.path != login &&
@@ -315,8 +314,8 @@ class AppRouter {
       name: waitingVerify,
       path: waitingVerify,
       builder: (context, state) {
-        final challenge = state.extra as AuthChallenge;
-        return WaitingVerifyPage(challenge: challenge);
+        final tokenId = state.extra as String;
+        return VerifyLoginPage(tokenId: tokenId);
       },
     ),
   ];

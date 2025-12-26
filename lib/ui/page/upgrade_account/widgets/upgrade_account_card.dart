@@ -51,8 +51,8 @@ class UpgradeAccountCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: isCurrentPlan
-                ? primaryColor.withOpacity(0.15)
-                : Colors.black.withOpacity(0.05),
+                ? primaryColor.withValues(alpha: .15)
+                : Colors.black.withValues(alpha: .05),
             blurRadius: 10.r,
             offset: Offset(0, 4.h),
           ),
@@ -179,13 +179,13 @@ class UpgradeAccountCard extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         primaryColor,
-                        primaryColor.withOpacity(0.8),
+                        primaryColor.withValues(alpha: .8),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(20.r),
                     boxShadow: [
                       BoxShadow(
-                        color: primaryColor.withOpacity(0.3),
+                        color: primaryColor.withValues(alpha: .3),
                         blurRadius: 8.r,
                         offset: Offset(0, 4.h),
                       ),

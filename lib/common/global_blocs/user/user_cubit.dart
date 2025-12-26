@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
+import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
 import 'package:toeic_desktop/data/models/entities/profile/user_entity.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/data/models/request/profile_update_request.dart';
@@ -39,7 +39,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> removeUser(BuildContext context) async {
-    await SharedPreferencesHelper().removeCookies();
+    SecureStorageHelper.instance.removeCookies();
     emit(const UserState());
     await resetSingletonCubitsAndInitAgain();
     AppRouter.clearAndNavigate('/');

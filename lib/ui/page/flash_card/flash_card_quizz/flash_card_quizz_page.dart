@@ -218,7 +218,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                           color: (state.isCorrect
                                   ? const Color(0xFF4CAF50)
                                   : const Color(0xFFE91E63))
-                              .withOpacity(0.4),
+                              .withValues(alpha: .4),
                           blurRadius: 20,
                           offset: const Offset(0, -5),
                         ),
@@ -232,7 +232,8 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                           builder: (context, child) {
                             return LinearProgressIndicator(
                               value: _timerController.value,
-                              backgroundColor: Colors.white.withOpacity(0.2),
+                              backgroundColor:
+                                  Colors.white.withValues(alpha: .2),
                               color: Colors.white,
                               minHeight: 4,
                             );
@@ -245,7 +246,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                               Container(
                                 padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Colors.white.withValues(alpha: .2),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Container(
@@ -281,7 +282,7 @@ class _PageState extends State<Page> with TickerProviderStateMixin {
                                     ? S.current.you_answered_correctly
                                     : S.current.you_answered_incorrectly,
                                 style: textTheme.bodyLarge?.copyWith(
-                                  color: Colors.white.withOpacity(0.9),
+                                  color: Colors.white.withValues(alpha: .9),
                                 ),
                               ),
                               const SizedBox(height: 24),

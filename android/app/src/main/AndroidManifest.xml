@@ -58,13 +58,6 @@
                     android:host="winter-toeic.com"
                     />
             </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="yourapp" />
-            </intent-filter>
         </activity>
 
         <!-- UCrop Activity for image cropping -->

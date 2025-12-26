@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
-import 'package:toeic_desktop/data/database/share_preferences_helper.dart';
+import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
 
 import '../../../common/utils/logger.dart';
 
@@ -25,7 +25,7 @@ class ApiInterceptors extends QueuedInterceptorsWrapper {
 
           cookieMap[key] = value;
         }
-        SharedPreferencesHelper().storeCookies(cookieMap);
+        SecureStorageHelper.instance.storeCookies(cookieMap);
         return;
       }
     });
@@ -35,7 +35,7 @@ class ApiInterceptors extends QueuedInterceptorsWrapper {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final cookie = SharedPreferencesHelper().getCookies();
+    final cookie = await SecureStorageHelper.instance.getCookies();
     options.headers['Accept'] = 'application/json';
     options.headers[HttpHeaders.cookieHeader] = cookie;
     if (cookie != null) {
@@ -53,7 +53,7 @@ class ApiInterceptors extends QueuedInterceptorsWrapper {
         "⚠️ ERROR[$statusCode] => PATH: $path \n Response: ${err.response?.data}");
     switch (statusCode) {
       case 401:
-        SharedPreferencesHelper().removeCookies();
+        SecureStorageHelper.instance.removeCookies();
         GoRouter.of(AppRouter.navigationKey.currentContext!)
             .go(AppRouter.login);
         handler.next(err);

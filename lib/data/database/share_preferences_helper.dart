@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:toeic_desktop/common/utils/constants.dart';
@@ -15,7 +14,6 @@ class SharedPreferencesHelper {
   static const _userId = 'sendbird_user_id';
   static const _theme = 'theme';
   static const _isUseBiometric = 'is_use_biometric';
-  static const _cookie = 'cookie';
   static const _primaryColor = 'primary_color';
   static const _isDailyReminder = 'is_daily_reminder';
   static const _dailyReminderTime = 'daily_reminder_time';
@@ -178,23 +176,5 @@ class SharedPreferencesHelper {
 
   Future<bool> removeSendBirdUserId() async {
     return await _prefs.remove(_userId);
-  }
-
-  Future<void> storeCookies(Map<String, String> cookieMap) async {
-    final cookiesJson = jsonEncode(cookieMap);
-    await _prefs.setString(_cookie, cookiesJson);
-  }
-
-  String? getCookies() {
-    final cookiesJson = _prefs.getString(_cookie);
-    if (cookiesJson != null) {
-      final cookieMap = jsonDecode(cookiesJson) as Map<String, dynamic>;
-      return cookieMap.entries.map((e) => '${e.key}=${e.value}').join('; ');
-    }
-    return null;
-  }
-
-  Future<void> removeCookies() async {
-    await _prefs.remove(_cookie);
   }
 }
