@@ -44,39 +44,32 @@ class _BiometricSectionState extends State<BiometricSection> {
 
   Future<void> _toggleBiometric(bool value) async {
     try {
-      if (value) {
-        // Try to authenticate first before enabling
-        final result = await BiometricHelper.instance.authenticate(
-          localizedReason: 'Xác thực để bật đăng nhập sinh trắc học',
-        );
+      // Require biometric verification for both enabling and disabling
+      final result = await BiometricHelper.instance.authenticate(
+        localizedReason: value
+            ? 'Xác thực để bật đăng nhập sinh trắc học'
+            : 'Xác thực để tắt đăng nhập sinh trắc học',
+      );
 
-        debugPrint('[BiometricSection] authenticate result: $result');
+      debugPrint('[BiometricSection] authenticate result: $result');
 
-        if (result == BiometricResult.success) {
-          await SecureStorageHelper.instance.setBiometricEnabled(true);
-          setState(() {
-            _isEnabled = true;
-          });
-          showToast(
-            title: 'Đã bật đăng nhập sinh trắc học',
-            type: ToastificationType.success,
-          );
-        } else {
-          debugPrint(
-              '[BiometricSection] authenticate failed with result: $result');
-          showToast(
-            title: 'Xác thực thất bại',
-            type: ToastificationType.error,
-          );
-        }
-      } else {
-        await SecureStorageHelper.instance.setBiometricEnabled(false);
+      if (result == BiometricResult.success) {
+        await SecureStorageHelper.instance.setBiometricEnabled(value);
         setState(() {
-          _isEnabled = false;
+          _isEnabled = value;
         });
         showToast(
-          title: 'Đã tắt đăng nhập sinh trắc học',
-          type: ToastificationType.info,
+          title: value
+              ? 'Đã bật đăng nhập sinh trắc học'
+              : 'Đã tắt đăng nhập sinh trắc học',
+          type: value ? ToastificationType.success : ToastificationType.info,
+        );
+      } else {
+        debugPrint(
+            '[BiometricSection] authenticate failed with result: $result');
+        showToast(
+          title: 'Xác thực thất bại',
+          type: ToastificationType.error,
         );
       }
     } catch (e, stackTrace) {
