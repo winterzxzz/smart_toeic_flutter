@@ -5,6 +5,7 @@ import 'package:toeic_desktop/common/router/route_config.dart';
 import 'package:toeic_desktop/data/models/entities/transcript/transcript_test_set.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/ui/common/widgets/custom_cached_image.dart';
 
 class TranscriptTestItem extends StatelessWidget {
   const TranscriptTestItem({
@@ -56,11 +57,11 @@ class TranscriptTestItem extends StatelessWidget {
                     color: Color(0xFFE7F0FF),
                   ),
                   child: test.image != null
-                      ? Image.network(
-                          '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${test.image}',
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.image_not_supported,
-                                  color: Colors.grey),
+                      ? CustomCachedImage(
+                          imageUrl:
+                              '${AppConfigs.baseUrl.replaceAll('/api', '')}/uploads${test.image}',
+                          errorWidget: const Icon(Icons.image_not_supported,
+                              color: Colors.grey),
                           fit: BoxFit.cover,
                         )
                       : const Icon(Icons.music_note, color: Colors.blueAccent),
