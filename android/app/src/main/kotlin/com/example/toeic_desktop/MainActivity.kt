@@ -13,7 +13,7 @@ import androidx.glance.appwidget.updateAll
 import com.example.toeic_desktop.data.ColorPreferences
 import com.example.toeic_desktop.data.ContentPreferences
 import com.example.toeic_desktop.model.FlashCard
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.TimeUnit
@@ -21,7 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
     companion object {
         private const val CHANNEL = "com.example.toeic_desktop/deeplink"
         private const val WIDGET_CHANNEL = "com.example.toeic_desktop/widget"

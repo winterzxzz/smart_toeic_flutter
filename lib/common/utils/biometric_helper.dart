@@ -51,6 +51,9 @@ class BiometricHelper {
         return BiometricResult.lockedOut;
       }
       return BiometricResult.error;
+    } catch (e) {
+      // Catch any other error (e.g., desktop not supported)
+      return BiometricResult.error;
     }
   }
 

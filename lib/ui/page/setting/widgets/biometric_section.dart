@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path/path.dart' as S;
 import 'package:toeic_desktop/common/utils/biometric_helper.dart';
 import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
+import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/ui/common/app_style.dart';
 import 'package:toeic_desktop/ui/common/widgets/show_toast.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/setting_card.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/settting_switch.dart';
@@ -39,35 +43,48 @@ class _BiometricSectionState extends State<BiometricSection> {
   }
 
   Future<void> _toggleBiometric(bool value) async {
-    if (value) {
-      // Try to authenticate first before enabling
-      final result = await BiometricHelper.instance.authenticate(
-        localizedReason: 'Xác thực để bật đăng nhập sinh trắc học',
-      );
+    try {
+      if (value) {
+        // Try to authenticate first before enabling
+        final result = await BiometricHelper.instance.authenticate(
+          localizedReason: 'Xác thực để bật đăng nhập sinh trắc học',
+        );
 
-      if (result == BiometricResult.success) {
-        await SecureStorageHelper.instance.setBiometricEnabled(true);
+        debugPrint('[BiometricSection] authenticate result: $result');
+
+        if (result == BiometricResult.success) {
+          await SecureStorageHelper.instance.setBiometricEnabled(true);
+          setState(() {
+            _isEnabled = true;
+          });
+          showToast(
+            title: 'Đã bật đăng nhập sinh trắc học',
+            type: ToastificationType.success,
+          );
+        } else {
+          debugPrint(
+              '[BiometricSection] authenticate failed with result: $result');
+          showToast(
+            title: 'Xác thực thất bại',
+            type: ToastificationType.error,
+          );
+        }
+      } else {
+        await SecureStorageHelper.instance.setBiometricEnabled(false);
         setState(() {
-          _isEnabled = true;
+          _isEnabled = false;
         });
         showToast(
-          title: 'Đã bật đăng nhập sinh trắc học',
-          type: ToastificationType.success,
-        );
-      } else {
-        showToast(
-          title: 'Xác thực thất bại',
-          type: ToastificationType.error,
+          title: 'Đã tắt đăng nhập sinh trắc học',
+          type: ToastificationType.info,
         );
       }
-    } else {
-      await SecureStorageHelper.instance.setBiometricEnabled(false);
-      setState(() {
-        _isEnabled = false;
-      });
+    } catch (e, stackTrace) {
+      debugPrint('[BiometricSection] Error in _toggleBiometric: $e');
+      debugPrint('[BiometricSection] StackTrace: $stackTrace');
       showToast(
-        title: 'Đã tắt đăng nhập sinh trắc học',
-        type: ToastificationType.info,
+        title: 'Đã xảy ra lỗi: $e',
+        type: ToastificationType.error,
       );
     }
   }
@@ -78,27 +95,30 @@ class _BiometricSectionState extends State<BiometricSection> {
       return const SizedBox.shrink();
     }
 
-    if (!_isSupported) {
-      return const SizedBox.shrink();
-    }
+    // if (!_isSupported) {
+    //   return const SizedBox.shrink();
+    // }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       margin: const EdgeInsets.only(top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Bảo mật',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+          Padding(
+            padding: AppStyle.edgeInsetsA12,
+            child: Text(
+              "Security",
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color:
+                    context.textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+              ),
+            ),
           ),
-          const SizedBox(height: 8),
           SettingsCard(
             child: SettingsSwitch(
-              title: 'Đăng nhập sinh trắc học',
-              subtitle: 'Sử dụng vân tay hoặc Face ID để đăng nhập',
+              title: 'Biometric login',
+              subtitle: 'Use fingerprint or Face ID to login',
               value: _isEnabled,
               onChanged: _toggleBiometric,
             ),

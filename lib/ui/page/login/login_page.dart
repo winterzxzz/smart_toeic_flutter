@@ -89,11 +89,15 @@ class _LoginPageContentState extends State<_LoginPageContent> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Không'),
+            child: Text('Không',
+                style: context.textTheme.titleSmall
+                    ?.copyWith(color: AppColors.textGray)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Bật'),
+            child: Text('Bật',
+                style: context.textTheme.titleSmall
+                    ?.copyWith(color: AppColors.primary)),
           ),
         ],
       ),

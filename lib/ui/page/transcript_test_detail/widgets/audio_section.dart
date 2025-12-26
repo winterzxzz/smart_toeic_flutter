@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_cubit.dart';
 import 'package:toeic_desktop/ui/page/transcript_test_detail/transcript_test_detail_state.dart';
+import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
 
 class AudioSection extends StatefulWidget {
   const AudioSection({
@@ -26,7 +28,6 @@ class _AudioSectionState extends State<AudioSection> {
   bool _isPlaying = true;
   bool _isCompleted = false;
 
-  // Stream subscriptions for proper cleanup
   StreamSubscription<Duration?>? _durationSubscription;
   StreamSubscription<bool>? _playingSubscription;
   StreamSubscription<Duration>? _positionSubscription;
@@ -38,37 +39,27 @@ class _AudioSectionState extends State<AudioSection> {
     _initializeAudioPlayer();
   }
 
-  void _initializeAudioPlayer() {
+  Future<void> _initializeAudioPlayer() async {
+    final cookie = await SecureStorageHelper.instance.getCookies();
+
     _audioPlayer = AudioPlayer();
 
-    _audioPlayer?.setUrl(widget.audioUrl).then((_) {
-      if (mounted) {
-        _audioPlayer?.play();
-      }
+    await _audioPlayer?.setUrl(widget.audioUrl, headers: {
+      HttpHeaders.cookieHeader: cookie ?? '',
     });
+
+    _audioPlayer?.play();
 
     _durationSubscription = _audioPlayer?.durationStream.listen((duration) {
-      if (mounted) {
-        setState(() {
-          _duration = duration;
-        });
-      }
-    });
-
-    _playingSubscription = _audioPlayer?.playingStream.listen((playing) {
-      if (mounted) {
-        setState(() {
-          _isPlaying = playing;
-        });
-      }
+      if (mounted) setState(() => _duration = duration);
     });
 
     _positionSubscription = _audioPlayer?.positionStream.listen((position) {
-      if (mounted) {
-        setState(() {
-          _position = position;
-        });
-      }
+      if (mounted) setState(() => _position = position);
+    });
+
+    _playingSubscription = _audioPlayer?.playingStream.listen((playing) {
+      if (mounted) setState(() => _isPlaying = playing);
     });
 
     _playerStateSubscription = _audioPlayer?.playerStateStream.listen((state) {
@@ -121,13 +112,10 @@ class _AudioSectionState extends State<AudioSection> {
 
   @override
   void dispose() {
-    // Cancel all stream subscriptions
     _durationSubscription?.cancel();
     _playingSubscription?.cancel();
     _positionSubscription?.cancel();
     _playerStateSubscription?.cancel();
-
-    // Dispose audio player
     _audioPlayer?.dispose();
     super.dispose();
   }
@@ -136,6 +124,7 @@ class _AudioSectionState extends State<AudioSection> {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
+
     return BlocListener<TranscriptTestDetailCubit, TranscriptTestDetailState>(
       listenWhen: (previous, current) =>
           previous.isShowAiVoice != current.isShowAiVoice,
@@ -233,14 +222,5 @@ class _AudioSectionState extends State<AudioSection> {
 String formatDuration(Duration duration) {
   final minutes = duration.inMinutes;
   final seconds = duration.inSeconds % 60;
-
-  String minutesStr = minutes.toString();
-  String secondsStr = seconds.toString();
-  if (minutes < 10) {
-    minutesStr = '0$minutes';
-  }
-  if (seconds < 10) {
-    secondsStr = '0$seconds';
-  }
-  return '$minutesStr:$secondsStr';
+  return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 }

@@ -1,7 +1,9 @@
-import 'package:just_audio/just_audio.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:toeic_desktop/ui/common/app_colors.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
+import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
 
 class TestAudioSection extends StatefulWidget {
   const TestAudioSection({
@@ -22,39 +24,58 @@ class _TestAudioSectionState extends State<TestAudioSection> {
   bool _initialized = false;
   bool _isPlaying = false;
   bool _isCompleted = false;
+  String? _cookie;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCookieAndInit();
+  }
+
+  Future<void> _loadCookieAndInit() async {
+    final cookie = await SecureStorageHelper.instance.getCookies();
+    setState(() {
+      _cookie = cookie;
+    });
+
+    _audioPlayer = AudioPlayer();
+
+    _audioPlayer?.durationStream.listen((duration) {
+      setState(() {
+        _duration = duration;
+      });
+    });
+
+    _audioPlayer?.positionStream.listen((position) {
+      setState(() {
+        _position = position;
+      });
+    });
+
+    _audioPlayer?.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        setState(() {
+          _isCompleted = true;
+          _isPlaying = false;
+        });
+      }
+    });
+
+    _audioPlayer?.playingStream.listen((playing) {
+      setState(() {
+        _isPlaying = playing;
+      });
+    });
+  }
 
   Future<void> _initAudioPlayer() async {
-    if (_initialized) return;
-    _audioPlayer = AudioPlayer()
-      ..setUrl(widget.audioUrl).then((value) {
-        setState(() {
-          _initialized = true;
-        });
-      })
-      ..play()
-      ..durationStream.listen((duration) {
-        setState(() {
-          _duration = duration;
-        });
-      })
-      ..playingStream.listen((playing) {
-        setState(() {
-          _isPlaying = playing;
-        });
-      })
-      ..positionStream.listen((position) {
-        setState(() {
-          _position = position;
-        });
-      })
-      ..playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          setState(() {
-            _isCompleted = true;
-            _isPlaying = false;
-          });
-        }
-      });
+    if (_initialized || _cookie == null) return;
+    await _audioPlayer?.setUrl(widget.audioUrl, headers: {
+      HttpHeaders.cookieHeader: _cookie!,
+    });
+    setState(() {
+      _initialized = true;
+    });
   }
 
   void _handleSeekStart(double p) {
@@ -102,6 +123,7 @@ class _TestAudioSectionState extends State<TestAudioSection> {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final colorScheme = context.colorScheme;
+
     return Container(
       height: 44,
       margin: const EdgeInsets.only(bottom: 8),
@@ -186,14 +208,7 @@ class _TestAudioSectionState extends State<TestAudioSection> {
 String formatDuration(Duration duration) {
   final minutes = duration.inMinutes;
   final seconds = duration.inSeconds % 60;
-
-  String minutesStr = minutes.toString();
-  String secondsStr = seconds.toString();
-  if (minutes < 10) {
-    minutesStr = '0$minutes';
-  }
-  if (seconds < 10) {
-    secondsStr = '0$seconds';
-  }
+  final minutesStr = minutes < 10 ? '0$minutes' : '$minutes';
+  final secondsStr = seconds < 10 ? '0$seconds' : '$seconds';
   return '$minutesStr:$secondsStr';
 }

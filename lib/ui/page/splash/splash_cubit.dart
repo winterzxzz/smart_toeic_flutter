@@ -38,25 +38,31 @@ class SplashCubit extends Cubit<SplashState> {
   }
 
   Future<void> authenticateWithBiometric() async {
-    final result = await BiometricHelper.instance.authenticate();
+    try {
+      final result = await BiometricHelper.instance.authenticate();
 
-    switch (result) {
-      case BiometricResult.success:
-        await _verifyWithBackend();
-        break;
-      case BiometricResult.failed:
-      case BiometricResult.lockedOut:
-      case BiometricResult.error:
-        emit(state.copyWith(
-          loadStatus: LoadStatus.failure,
-          requiresBiometric: false,
-        ));
-        break;
-      case BiometricResult.notAvailable:
-      case BiometricResult.notEnrolled:
-        // Biometric not available, try backend verification anyway
-        await _verifyWithBackend();
-        break;
+      switch (result) {
+        case BiometricResult.success:
+          await _verifyWithBackend();
+          break;
+        case BiometricResult.failed:
+        case BiometricResult.lockedOut:
+        case BiometricResult.error:
+        case BiometricResult.notAvailable:
+        case BiometricResult.notEnrolled:
+          // Any failure -> go to login
+          emit(state.copyWith(
+            loadStatus: LoadStatus.failure,
+            requiresBiometric: false,
+          ));
+          break;
+      }
+    } catch (e) {
+      // Catch any unexpected error and go to login
+      emit(state.copyWith(
+        loadStatus: LoadStatus.failure,
+        requiresBiometric: false,
+      ));
     }
   }
 
