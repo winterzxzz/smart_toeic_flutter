@@ -10,6 +10,7 @@ class SecureStorageHelper {
   static const _apiTokenKey = 'api_token';
   static const _userIdKey = 'user_id';
   static const _cookieKey = 'cookie';
+  static const _biometricEnabledKey = 'biometric_enabled';
 
   final FlutterSecureStorage _storage;
 
@@ -85,5 +86,23 @@ class SecureStorageHelper {
 
   void removeCookies() async {
     await _storage.delete(key: _cookieKey);
+  }
+
+  // Biometric authentication methods
+  Future<void> setBiometricEnabled(bool enabled) async {
+    await _storage.write(key: _biometricEnabledKey, value: enabled.toString());
+  }
+
+  Future<bool> getBiometricEnabled() async {
+    try {
+      final value = await _storage.read(key: _biometricEnabledKey);
+      return value == 'true';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> removeBiometricEnabled() async {
+    await _storage.delete(key: _biometricEnabledKey);
   }
 }

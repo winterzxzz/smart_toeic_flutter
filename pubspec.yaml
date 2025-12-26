@@ -94,6 +94,7 @@ dependencies:
   path_provider: ^2.1.4
   path: ^1.9.1
   socket_io_client: ^2.0.3+1
+  local_auth: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:toeic_desktop/app.dart';
 import 'package:toeic_desktop/common/router/route_config.dart';
+import 'package:toeic_desktop/common/utils/biometric_helper.dart';
+import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
 import 'package:toeic_desktop/data/models/entities/auth/auth_response.dart';
 import 'package:toeic_desktop/data/models/enums/load_status.dart';
 import 'package:toeic_desktop/language/generated/l10n.dart';
@@ -24,21 +26,19 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<LoginCubit>(),
-      child: const Page(),
+      child: const _LoginPageContent(),
     );
   }
 }
 
-class Page extends StatefulWidget {
-  const Page({
-    super.key,
-  });
+class _LoginPageContent extends StatefulWidget {
+  const _LoginPageContent();
 
   @override
-  State<Page> createState() => _PageState();
+  State<_LoginPageContent> createState() => _LoginPageContentState();
 }
 
-class _PageState extends State<Page> {
+class _LoginPageContentState extends State<_LoginPageContent> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
 
@@ -63,6 +63,55 @@ class _PageState extends State<Page> {
         passwordController.text.isNotEmpty;
   }
 
+  Future<void> _showBiometricSetupDialog() async {
+    final canUseBiometric = await BiometricHelper.instance.canCheckBiometrics();
+    final isDeviceSupported =
+        await BiometricHelper.instance.isDeviceSupported();
+
+    if (!canUseBiometric || !isDeviceSupported) {
+      // Device doesn't support biometric, go directly to home
+      if (mounted) {
+        GoRouter.of(context).goNamed(AppRouter.bottomTab);
+      }
+      return;
+    }
+
+    if (!mounted) return;
+
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Đăng nhập sinh trắc học'),
+        content: const Text(
+          'Bạn có muốn bật đăng nhập bằng vân tay/Face ID cho lần sau không?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Không'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Bật'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      await SecureStorageHelper.instance.setBiometricEnabled(true);
+      showToast(
+        title: 'Đã bật đăng nhập sinh trắc học',
+        type: ToastificationType.success,
+      );
+    }
+
+    if (mounted) {
+      GoRouter.of(context).goNamed(AppRouter.bottomTab);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
@@ -70,7 +119,7 @@ class _PageState extends State<Page> {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.loadStatus == LoadStatus.success) {
-          GoRouter.of(context).goNamed(AppRouter.bottomTab);
+          _showBiometricSetupDialog();
         }
         if (state.authChallenge != null &&
             state.authChallenge is AuthChallenge) {

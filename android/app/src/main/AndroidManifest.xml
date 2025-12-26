@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <queries>
     <intent>
         <action android:name="android.speech.RecognitionService" />
@@ -59,6 +60,8 @@
                     />
             </intent-filter>
         </activity>
+
+        
 
         <!-- UCrop Activity for image cropping -->
         <activity

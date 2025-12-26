@@ -16,20 +16,32 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => injector<SplashCubit>()..getUser(),
-      child: const Page(),
+      child: const _Page(),
     );
   }
 }
 
-class Page extends StatelessWidget {
-  const Page({
-    super.key,
-  });
+class _Page extends StatefulWidget {
+  const _Page();
+
+  @override
+  State<_Page> createState() => _PageState();
+}
+
+class _PageState extends State<_Page> {
+  bool _biometricTriggered = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
+        // Handle biometric requirement
+        if (state.requiresBiometric && !_biometricTriggered) {
+          _biometricTriggered = true;
+          context.read<SplashCubit>().authenticateWithBiometric();
+        }
+
+        // Handle navigation
         if (state.loadStatus == LoadStatus.success) {
           GoRouter.of(context).goNamed(AppRouter.bottomTab);
         } else if (state.loadStatus == LoadStatus.failure) {
@@ -52,8 +64,7 @@ class Page extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-      ) // This trailing comma makes auto-formatting nicer for build methods.
-          ),
+      )),
     );
   }
 }

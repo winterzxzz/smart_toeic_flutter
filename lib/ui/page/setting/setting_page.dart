@@ -4,6 +4,7 @@ import 'package:toeic_desktop/common/global_blocs/setting/app_setting_cubit.dart
 import 'package:toeic_desktop/language/generated/l10n.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
 import 'package:toeic_desktop/ui/common/widgets/leading_back_button.dart';
+import 'package:toeic_desktop/ui/page/setting/widgets/biometric_section.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/color_section.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/language_section.dart';
 import 'package:toeic_desktop/ui/page/setting/widgets/reminder_section.dart';
@@ -46,6 +47,7 @@ class _SettingPageState extends State<SettingPage> {
             LanguageSection(),
             SizedBox(height: 16),
             ColorSection(),
+            BiometricSection(),
             SizedBox(height: 16),
             ReminderSection(),
             SizedBox(height: 32),
