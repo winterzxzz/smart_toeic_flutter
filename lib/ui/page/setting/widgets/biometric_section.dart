@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:path/path.dart' as S;
 import 'package:toeic_desktop/common/utils/biometric_helper.dart';
 import 'package:toeic_desktop/data/database/secure_storage_helper.dart';
 import 'package:toeic_desktop/ui/common/app_context.dart';
@@ -88,9 +86,9 @@ class _BiometricSectionState extends State<BiometricSection> {
       return const SizedBox.shrink();
     }
 
-    // if (!_isSupported) {
-    //   return const SizedBox.shrink();
-    // }
+    if (!_isSupported) {
+      return const SizedBox.shrink();
+    }
 
     return Container(
       margin: const EdgeInsets.only(top: 16),

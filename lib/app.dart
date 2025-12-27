@@ -128,7 +128,7 @@ class _MyAppState extends State<MyApp> {
                   );
                 },
                 child: ScreenUtilInit(
-                  designSize: const Size(375, 812),
+                  designSize: const Size(430, 932),
                   minTextAdapt: true,
                   child: _buildMaterialApp(
                     locale: state.language.local,
