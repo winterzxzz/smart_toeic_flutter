@@ -53,7 +53,7 @@ class ApiInterceptors extends QueuedInterceptorsWrapper {
         "⚠️ ERROR[$statusCode] => PATH: $path \n Response: ${err.response?.data}");
     switch (statusCode) {
       case 401:
-        SecureStorageHelper.instance.removeCookies();
+        await SecureStorageHelper.instance.removeCookies();
         GoRouter.of(AppRouter.navigationKey.currentContext!)
             .go(AppRouter.login);
         handler.next(err);

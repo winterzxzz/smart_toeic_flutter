@@ -39,7 +39,9 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> removeUser(BuildContext context) async {
-    SecureStorageHelper.instance.removeCookies();
+    await SecureStorageHelper.instance.removeCookies();
+    await SecureStorageHelper.instance.removeToken();
+    await SecureStorageHelper.instance.removeUserId();
     emit(const UserState());
     await resetSingletonCubitsAndInitAgain();
     AppRouter.clearAndNavigate('/');

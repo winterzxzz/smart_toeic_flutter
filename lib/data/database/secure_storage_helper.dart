@@ -22,12 +22,12 @@ class SecureStorageHelper {
   static SecureStorageHelper get instance => _instance;
 
   //Save token
-  void saveToken(String token) async {
+  Future<void> saveToken(String token) async {
     await _storage.write(key: _apiTokenKey, value: token);
   }
 
   //Remove token
-  void removeToken() async {
+  Future<void> removeToken() async {
     await _storage.delete(key: _apiTokenKey);
   }
 
@@ -50,7 +50,7 @@ class SecureStorageHelper {
     }
   }
 
-  void setUserId(String userId) async {
+  Future<void> setUserId(String userId) async {
     await _storage.write(key: _userIdKey, value: userId);
   }
 
@@ -66,7 +66,7 @@ class SecureStorageHelper {
     }
   }
 
-  void removeUserId() async {
+  Future<void> removeUserId() async {
     await _storage.delete(key: _userIdKey);
   }
 
@@ -84,7 +84,7 @@ class SecureStorageHelper {
     return null;
   }
 
-  void removeCookies() async {
+  Future<void> removeCookies() async {
     await _storage.delete(key: _cookieKey);
   }
 
