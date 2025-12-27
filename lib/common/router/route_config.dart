@@ -35,6 +35,7 @@ import 'package:toeic_desktop/ui/page/check_payment_status/check_payment_status_
 import 'package:toeic_desktop/ui/page/certificates/certificates_page.dart';
 import 'package:toeic_desktop/ui/page/chat_ai/chat_ai_page.dart';
 import 'package:toeic_desktop/ui/page/login/waiting_verify_page.dart';
+import 'package:toeic_desktop/ui/page/verify_otp/verify_otp_page.dart';
 
 import '../../ui/page/splash/splash_page.dart';
 
@@ -55,7 +56,8 @@ class AppRouter {
               state.uri.path != register &&
               state.uri.path != resetPassword &&
               state.uri.path != onboarding &&
-              state.uri.path != waitingVerify) {
+              state.uri.path != waitingVerify &&
+              state.uri.path != verifyOtp) {
             return login;
           }
           return null;
@@ -98,6 +100,7 @@ class AppRouter {
   static const String liveObjectDetection = '/live-object-detection';
   static const String chatAi = '/chat-ai';
   static const String waitingVerify = '/waiting-verify';
+  static const String verifyOtp = '/verify-otp';
 
   // GoRouter configuration
   static final _routes = <RouteBase>[
@@ -315,6 +318,16 @@ class AppRouter {
       path: waitingVerify,
       builder: (context, state) {
         return const WaitingVerifyPage();
+      },
+    ),
+    GoRoute(
+      name: verifyOtp,
+      path: verifyOtp,
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        final key = args['key'] as String;
+        final email = args['email'] as String;
+        return VerifyOtpPage(verificationKey: key, email: email);
       },
     ),
   ];

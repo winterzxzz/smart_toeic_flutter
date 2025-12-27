@@ -4,6 +4,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:toeic_desktop/data/models/chatbox/ai_chat_session.dart';
 import 'package:toeic_desktop/data/models/entities/auth/auth_response.dart';
+import 'package:toeic_desktop/data/models/entities/auth/otp_verify_reponse.dart';
 import 'package:toeic_desktop/data/models/entities/auth/register_response.dart';
 import 'package:toeic_desktop/data/models/entities/blog/blog.dart';
 import 'package:toeic_desktop/data/models/entities/flash_card/flash_card/flash_card.dart';
@@ -42,11 +43,23 @@ abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
   // AUTH USER
-  @POST('/user/auth/signup')
+  @POST('/user/auth/local-signup-cache')
   Future<RegisterResponse> signUp(
     @Field("email") String email,
     @Field("name") String name,
     @Field("password") String password,
+  );
+
+  @POST('/user/auth/otp/verify-email')
+  Future<OtpVerifyReponse> requestVerifyOtp(
+    @Field("key") String key,
+    @Field("email") String email,
+  );
+
+  @POST('/user/auth/request/verify-email')
+  Future<AuthSuccess> verifyOtp(
+    @Field("otp") String otp,
+    @Field("email") String email,
   );
 
   @POST('/user/auth/login')

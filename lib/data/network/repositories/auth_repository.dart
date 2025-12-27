@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 import 'package:toeic_desktop/data/models/entities/auth/auth_response.dart';
+import 'package:toeic_desktop/data/models/entities/auth/otp_verify_reponse.dart';
 import 'package:toeic_desktop/data/models/entities/auth/register_response.dart';
 import 'package:toeic_desktop/data/models/response/reset_password_response.dart';
 import 'package:toeic_desktop/data/network/api_config/api_client.dart';
@@ -18,6 +19,11 @@ abstract class AuthRepository {
   Future<Either<ApiError, ResetPasswordResponse>> resetPassword(String email);
 
   Future<Either<ApiError, AuthResponse>> confirmLogin(String tokenId);
+
+  Future<Either<ApiError, OtpVerifyReponse>> requestVerifyOtp(
+      String key, String email);
+
+  Future<Either<ApiError, AuthSuccess>> verifyOtp(String otp, String email);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -65,6 +71,28 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<ApiError, AuthResponse>> confirmLogin(String tokenId) async {
     try {
       final result = await apiClient.confirmLogin(tokenId);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, OtpVerifyReponse>> requestVerifyOtp(
+      String key, String email) async {
+    try {
+      final result = await apiClient.requestVerifyOtp(key, email);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ApiError.fromDioError(e));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, AuthSuccess>> verifyOtp(
+      String otp, String email) async {
+    try {
+      final result = await apiClient.verifyOtp(otp, email);
       return Right(result);
     } on DioException catch (e) {
       return Left(ApiError.fromDioError(e));

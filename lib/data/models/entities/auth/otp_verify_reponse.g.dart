@@ -1,17 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'register_response.dart';
+part of 'otp_verify_reponse.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) =>
-    RegisterResponse(
+OtpVerifyReponse _$OtpVerifyReponseFromJson(Map<String, dynamic> json) =>
+    OtpVerifyReponse(
       key: json['key'] as String,
+      email: json['email'] as String,
     );
 
-Map<String, dynamic> _$RegisterResponseToJson(RegisterResponse instance) =>
+Map<String, dynamic> _$OtpVerifyReponseToJson(OtpVerifyReponse instance) =>
     <String, dynamic>{
       'key': instance.key,
+      'email': instance.email,
     };

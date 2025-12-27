@@ -49,8 +49,11 @@ class RegisterCubit extends Cubit<RegisterState> {
         );
       }, (response) {
         emit(state.copyWith(
-            loadDataStatus: LoadStatus.success,
-            message: S.current.register_success_login_to_continue));
+          loadDataStatus: LoadStatus.success,
+          message: S.current.register_success_login_to_continue,
+          verificationKey: response.key,
+          email: email,
+        ));
         showToast(
           title: S.current.register_success_login_to_continue,
           type: ToastificationType.success,

@@ -69,8 +69,10 @@ class _PageState extends State<Page> {
     final navigator = RegisterNavigator(context: context);
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
-        if (LoadStatus.success == state.loadDataStatus) {
-          navigator.navigateToLogin();
+        if (LoadStatus.success == state.loadDataStatus &&
+            state.verificationKey != null &&
+            state.email != null) {
+          navigator.navigateToVerifyOtp(state.verificationKey!, state.email!);
         }
       },
       child: Scaffold(

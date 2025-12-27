@@ -46,6 +46,7 @@ import 'package:toeic_desktop/ui/page/test/practice_test/practice_test_cubit.dar
 import 'package:toeic_desktop/ui/page/reigster/register_cubit.dart';
 import 'package:toeic_desktop/ui/page/splash/splash_cubit.dart';
 import 'package:toeic_desktop/ui/page/login/waiting_verify_cubit.dart';
+import 'package:toeic_desktop/ui/page/verify_otp/verify_otp_cubit.dart';
 import 'package:toeic_desktop/ui/page/upgrade_account/upgrade_account_cubit.dart';
 import 'common/configs/app_configs.dart';
 import 'common/global_blocs/setting/app_setting_cubit.dart';

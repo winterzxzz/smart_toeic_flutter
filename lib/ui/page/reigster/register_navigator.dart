@@ -12,4 +12,11 @@ class RegisterNavigator extends AppNavigator {
   void navigateToResetPassword() {
     GoRouter.of(context).pushNamed(AppRouter.resetPassword);
   }
+
+  void navigateToVerifyOtp(String key, String email) {
+    GoRouter.of(context).pushNamed(
+      AppRouter.verifyOtp,
+      extra: {'key': key, 'email': email},
+    );
+  }
 }
