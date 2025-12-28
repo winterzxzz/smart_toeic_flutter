@@ -11,6 +11,7 @@ import 'package:toeic_desktop/ui/common/widgets/custom_button.dart';
 import 'package:toeic_desktop/ui/page/verify_otp/verify_otp_cubit.dart';
 import 'package:toeic_desktop/ui/page/verify_otp/verify_otp_navigator.dart';
 import 'package:toeic_desktop/ui/page/verify_otp/verify_otp_state.dart';
+import 'package:toeic_desktop/ui/common/mixins/biometric_setup_mixin.dart';
 
 class VerifyOtpPage extends StatelessWidget {
   final String verificationKey;
@@ -39,7 +40,8 @@ class _VerifyOtpView extends StatefulWidget {
   State<_VerifyOtpView> createState() => _VerifyOtpViewState();
 }
 
-class _VerifyOtpViewState extends State<_VerifyOtpView> {
+class _VerifyOtpViewState extends State<_VerifyOtpView>
+    with BiometricSetupMixin {
   late TextEditingController otpController;
 
   @override
@@ -79,7 +81,11 @@ class _VerifyOtpViewState extends State<_VerifyOtpView> {
           previous.verifyOtpStatus != current.verifyOtpStatus,
       listener: (context, state) {
         if (LoadStatus.success == state.verifyOtpStatus) {
-          navigator.navigateToHome();
+          showBiometricSetupDialog(
+            onComplete: () {
+              navigator.navigateToHome();
+            },
+          );
         }
       },
       child: Scaffold(
